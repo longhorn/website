@@ -1,4 +1,4 @@
-FROM rancherlabs/submariner-website:build as build
+FROM rancherlabs/longhorn-website:build as build
 ENV HUGO_ENV production
 
 WORKDIR /run
@@ -14,7 +14,7 @@ COPY static static
 COPY themes themes
 COPY .git .git
 
-RUN ["hugo", "--buildFuture", "--baseURL=https://staging.submariner.io", "--destination=/output"]
+RUN ["hugo", "--buildFuture", "--baseURL=https://staging.longhorn.io", "--destination=/output"]
 
 # Make sure something got built
 RUN stat /output/index.html

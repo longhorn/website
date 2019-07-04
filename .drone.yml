@@ -14,7 +14,7 @@ steps:
     context: .
     dockerfile: Dockerfile.prod
     dry_run: true
-    repo: rancherlabs/submariner-website
+    repo: rancherlabs/longhorn-website
     password:
       from_secret: docker_password
     username:
@@ -39,7 +39,7 @@ steps:
     context: .
     dockerfile: Dockerfile.dev
     group: publish
-    repo: rancherlabs/submariner-website
+    repo: rancherlabs/longhorn-website
     tag: dev
     password:
       from_secret: docker_password
@@ -68,7 +68,7 @@ steps:
     context: .
     dockerfile: Dockerfile.staging
     group: publish
-    repo: rancherlabs/submariner-website
+    repo: rancherlabs/longhorn-website
     tag: staging
     password:
       from_secret: docker_password
@@ -96,7 +96,7 @@ steps:
     context: .
     dockerfile: Dockerfile.prod
     group: publish
-    repo: rancherlabs/submariner-website
+    repo: rancherlabs/longhorn-website
     tag: latest
     password:
       from_secret: docker_password

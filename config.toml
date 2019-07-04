@@ -1,6 +1,6 @@
 baseURL = ""
 languageCode = "en-us"
-title = "Submariner"
+title = "Longhorn"
 theme = "xmin"
 pluralizeListTitles = false
 enableRobotsTXT = true
