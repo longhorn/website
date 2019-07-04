@@ -1,0 +1,18 @@
+{
+  "name": "k3s-website",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "./scripts/dev",
+    "dev-theme": "./scripts/dev -t ../website-theme",
+    "build-algolia": "node ./scripts/build-algolia.js",
+    "publish-algolia": "node ./scripts/publish-algolia.js"
+  },
+  "dependencies": {
+    "atomic-algolia": "^0.3.15",
+    "instantsearch.js": "^2.8.0",
+    "jquery": "^3.3.1",
+    "jsdom": "^11.11.0",
+    "md5": "^2.2.1"
+  }
+}
