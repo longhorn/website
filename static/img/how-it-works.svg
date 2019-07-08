@@ -5,9 +5,9 @@
 <style type="text/css">
 	.st0{fill:#2A3534;}
 	.st1{fill:none;stroke:#D1D1D1;stroke-width:5;stroke-miterlimit:10;}
-	.st2{fill:none;stroke:#287EFB;stroke-width:5;stroke-miterlimit:10;}
-	.st3{fill:#287EFB;}
-	.st4{fill:#2ADFC3;}
+	.st2{fill:none;stroke:#B036AF;stroke-width:5;stroke-miterlimit:10;}
+	.st3{fill:#B036AF;}
+	.st4{fill:#CDE35C;}
 	.st5{fill:#AAF2E7;}
 	.st6{fill:#F3F3F3;}
 	.st7{fill:#1C2423;}
@@ -15,7 +15,7 @@
 </style>
 <title>how-it-works</title>
 <g>
-	
+
 		<rect x="718.5" y="108.5" transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 1403.5288 -668.4712)" class="st0" width="635.1" height="518"/>
 	<polygon class="st0" points="0,685.1 0,50.2 518,50 518,685.1 	"/>
 	<polyline class="st1" points="587.6,309.1 535.4,367.6 478,367.6 	"/>

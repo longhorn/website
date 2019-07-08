@@ -7,16 +7,18 @@ body {
 
 body {
   font-family: "Roboto", sans-serif;
+  font-weight: 400;
   margin: 0;
   background-color: #F3F3F3; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: 'Fira Sans', sans-serif;
+  font-weight: 300;
   color: #969d9c;
   margin-top: 0; }
 
 h4, h5, h6 {
-  color: #287EFB; }
+  color: #B036AF; }
 
 h1 {
   margin-bottom: 3rem;
@@ -98,7 +100,7 @@ nav.main-nav {
     text-align: center; }
     nav.main-nav .menu a {
       text-decoration: none;
-      color: #287EFB; }
+      color: #B036AF; }
       nav.main-nav .menu a.btn:last-child {
         color: white; }
 
@@ -175,9 +177,9 @@ ul.underlined {
     padding: 10px 0; }
 
 a.btn {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: 'Fira Sans', sans-serif;
   text-transform: uppercase;
-  background: #2ADFC3;
+  background: #CDE35C;
   color: white;
   padding: .75rem 35px;
   text-decoration: none;
@@ -251,12 +253,12 @@ section {
   text-align: center; }
 
 .bg-primary {
-  background-color: #287EFB; }
+  background-color: #B036AF; }
   .bg-primary h1, .bg-primary h2, .bg-primary h3, .bg-primary h4, .bg-primary h5, .bg-primary h6, .bg-primary p, .bg-primary a {
     color: #F3F3F3; }
 
 .bg-secondary {
-  background-color: #2ADFC3; }
+  background-color: #CDE35C; }
   .bg-secondary h1, .bg-secondary h2, .bg-secondary h3, .bg-secondary h4, .bg-secondary h5, .bg-secondary h6, .bg-secondary p, .bg-secondary a {
     color: #F3F3F3; }
 
@@ -274,7 +276,7 @@ section {
   display: inline-block;
   margin: 0;
   padding: 10px 20px;
-  background-color: #2ADFC3;
+  background-color: #CDE35C;
   color: #F3F3F3;
   position: relative; }
   .folder h4:after {
@@ -284,12 +286,12 @@ section {
     right: -60px;
     border-top: solid 30px transparent;
     border-right: solid 30px transparent;
-    border-bottom: solid 30px #2ADFC3;
-    border-left: solid 30px #2ADFC3; }
+    border-bottom: solid 30px #CDE35C;
+    border-left: solid 30px #CDE35C; }
 .folder .bg-light {
   background-color: white;
   padding: 40px;
-  border-top: solid #2ADFC3 15px;
+  border-top: solid #CDE35C 15px;
   box-shadow: rgba(56, 71, 69, 0.5) 0 0 20px; }
 .folder .grid-three h5 {
   margin: 0;
@@ -330,7 +332,7 @@ section {
         font-size: 14px;
         font-weight: bold;
         text-decoration: none;
-        color: #287EFB; }
+        color: #B036AF; }
       .docs .tree-nav ul li ul {
         margin-left: 10px; }
 .docs main {
@@ -391,7 +393,7 @@ section {
     box-shadow: rgba(56, 71, 69, 0.5) 0 0 20px;
     padding: 5rem; }
   .get-started .bg-primary {
-    background: #287EFB;
+    background: #B036AF;
     grid-row: 5 / span 3;
     grid-column: 1 / span 6;
     color: white;
