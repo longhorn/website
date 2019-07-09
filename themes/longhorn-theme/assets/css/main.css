@@ -8,16 +8,15 @@ body {
 body {
   font-family: "Roboto", sans-serif;
   margin: 0;
-  background-color: #FFF; }
+  background-color: #F3F3F3; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Poppins", sans-serif;
-  color: #9ca3a2;
-  margin-top: 0;
-  font-weight: 200; }
+  font-family: "IBM Plex Mono", monospace;
+  color: #969d9c;
+  margin-top: 0; }
 
 h4, h5, h6 {
-  color: #815794; }
+  color: #287EFB; }
 
 h1 {
   margin-bottom: 3rem;
@@ -62,11 +61,10 @@ a {
   color: blue; }
 
 /* header and footer areas */
-header .bg-dark .flex-between p, a {
+header .bg-dark .flex-between p {
   margin: 1rem 0;
-  line-height: 0;
-  font-family: helvetica neue,Helvetica,Arial,sans-serif;
-  color: #FFF; }
+  line-height: 1.5em;
+  font-family: helvetica neue,Helvetica,Arial,sans-serif; }
 
 .menu {
   padding: 0;
@@ -100,7 +98,7 @@ nav.main-nav {
     text-align: center; }
     nav.main-nav .menu a {
       text-decoration: none;
-      color: #815794; }
+      color: #287EFB; }
       nav.main-nav .menu a.btn:last-child {
         color: white; }
 
@@ -119,17 +117,16 @@ footer.bg-primary small {
   color: #BFBFBF; }
 
 hr {
-  border: 0.5px solid white;
-  margin: 40px 0; }
+  border: 0.5px solid white; }
 
 /* code */
 pre {
-  border: 1px solid #573b64;
+  border: 1px solid #0458d3;
   border-radius: 5px;
   padding: 2em;
   overflow-x: auto;
-  background-color: #FFF;
-  background: #734e84; }
+  background-color: #F3F3F3;
+  background: #0f6ffb; }
 
 code {
   color: #384745; }
@@ -138,7 +135,7 @@ pre code {
   display: block;
   overflow-x: auto;
   background: none;
-  color: #FFF;
+  color: #F3F3F3;
   font-size: 1.5em; }
 
 /* elements */
@@ -178,9 +175,9 @@ ul.underlined {
     padding: 10px 0; }
 
 a.btn {
-  font-family: "Poppins", sans-serif;
+  font-family: "IBM Plex Mono", monospace;
   text-transform: uppercase;
-  background: #CDE35C;
+  background: #2ADFC3;
   color: white;
   padding: .75rem 35px;
   text-decoration: none;
@@ -203,7 +200,7 @@ section {
 
 .wrap {
   box-sizing: border-box;
-  width: 80%;
+  width: 75%;
   max-width: 1200px;
   margin: 0 auto; }
 
@@ -216,6 +213,16 @@ section {
   position: relative; }
   .intro .grid-two {
     align-items: center; }
+  .intro :after {
+    content: "";
+    background-image: url(../img/cables.svg);
+    background-repeat: no-repeat;
+    height: 250px;
+    width: 100%;
+    position: absolute;
+    bottom: -15px;
+    opacity: .05;
+    z-index: -1; }
 
 .half {
   flex-basis: 50%;
@@ -244,32 +251,22 @@ section {
   text-align: center; }
 
 .bg-primary {
-  background-color: #815794; }
+  background-color: #287EFB; }
   .bg-primary h1, .bg-primary h2, .bg-primary h3, .bg-primary h4, .bg-primary h5, .bg-primary h6, .bg-primary p, .bg-primary a {
-    color: #FFF; }
+    color: #F3F3F3; }
 
 .bg-secondary {
-  background-color: #CDE35C; }
+  background-color: #2ADFC3; }
   .bg-secondary h1, .bg-secondary h2, .bg-secondary h3, .bg-secondary h4, .bg-secondary h5, .bg-secondary h6, .bg-secondary p, .bg-secondary a {
-    color: #FFF; }
+    color: #F3F3F3; }
 
 .bg-dark {
-  background-color: #384745;
-  position: relative; }
-  .bg-dark > h1, .bg-dark > h2, .bg-dark > h3, .bg-dark > h4, .bg-dark > h5, .bg-dark > h6, .bg-dark > p, .bg-dark > a {
-    color: #FFF; }
-  .bg-dark .angle {
-    position: absolute;
-    width: 100%;
-    height: 100px; }
-    .bg-dark .angle:first-child {
-      top: 0;
-      transform: rotate(180deg); }
-    .bg-dark .angle:last-child {
-      bottom: 0; }
+  background-color: #384745; }
+  .bg-dark h1, .bg-dark h2, .bg-dark h3, .bg-dark h4, .bg-dark h5, .bg-dark h6, .bg-dark p, .bg-dark a {
+    color: #F3F3F3; }
 
 .bg-light {
-  background-color: #FFF; }
+  background-color: #F3F3F3; }
   .bg-light h1, .bg-light h2, .bg-light h3, .bg-light h4, .bg-light h5, .bg-light h6, .bg-light p, .bg-light a {
     color: #384745; }
 
@@ -277,8 +274,8 @@ section {
   display: inline-block;
   margin: 0;
   padding: 10px 20px;
-  background-color: #CDE35C;
-  color: #FFF;
+  background-color: #2ADFC3;
+  color: #F3F3F3;
   position: relative; }
   .folder h4:after {
     content: "";
@@ -287,16 +284,12 @@ section {
     right: -60px;
     border-top: solid 30px transparent;
     border-right: solid 30px transparent;
-    border-bottom: solid 30px #CDE35C;
-    border-left: solid 30px #CDE35C;
-    opacity: 1;
-    width: 0;
-    height: 0;
-    z-index: 1; }
+    border-bottom: solid 30px #2ADFC3;
+    border-left: solid 30px #2ADFC3; }
 .folder .bg-light {
   background-color: white;
   padding: 40px;
-  border-top: solid #CDE35C 15px;
+  border-top: solid #2ADFC3 15px;
   box-shadow: rgba(56, 71, 69, 0.5) 0 0 20px; }
 .folder .grid-three h5 {
   margin: 0;
@@ -337,7 +330,7 @@ section {
         font-size: 14px;
         font-weight: bold;
         text-decoration: none;
-        color: #815794; }
+        color: #287EFB; }
       .docs .tree-nav ul li ul {
         margin-left: 10px; }
 .docs main {
@@ -373,28 +366,33 @@ section {
   .intro .bg-primary {
     grid-row: 2 / span 4;
     grid-column: 1 / span 6;
-    color: white;
-    position: relative; }
-    .intro .bg-primary .angle {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 100px; }
+    color: white; }
 
-.call-to-action {
+.get-started {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   padding: 0;
   position: relative; }
-  .call-to-action .white {
+  .get-started:before {
+    content: "";
+    background-image: url(../img/cables.svg);
+    background-repeat: no-repeat;
+    height: 250px;
+    width: 100%;
+    position: absolute;
+    top: -15px;
+    opacity: .25;
+    transform: rotate(180deg); }
+  .get-started .white {
     background: white;
     grid-row: 2 / span 4;
     grid-column: 2 / span 4;
     z-index: 2;
     box-shadow: rgba(56, 71, 69, 0.5) 0 0 20px;
     padding: 5rem; }
-  .call-to-action .bg-primary, .call-to-action .bg-dark {
-    grid-row: 4 / span 3;
+  .get-started .bg-primary {
+    background: #287EFB;
+    grid-row: 5 / span 3;
     grid-column: 1 / span 6;
     color: white;
     padding: 20rem 0 5rem 0; }
@@ -454,12 +452,12 @@ section {
   .intro .folder {
     grid-row: 5/span 4; }
 
-  .call-to-action {
+  .get-started {
     grid-template-columns: repeat(8, 1fr); }
-    .call-to-action .white {
+    .get-started .white {
       grid-row: 3/span 4;
       grid-column: 2/span 6; }
-    .call-to-action .bg-primary {
+    .get-started .bg-primary {
       grid-column: 1/span 8; } }
 
 /*# sourceMappingURL=main.css.map */

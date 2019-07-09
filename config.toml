@@ -1,7 +1,7 @@
 baseURL = ""
 languageCode = "en-us"
-title = "Longhorn"
-theme = "xmin"
+title = "longhorn"
+theme = "longhorn-theme"
 pluralizeListTitles = false
 enableRobotsTXT = true
 pygmentsCodeFences = true
@@ -22,6 +22,9 @@ notAlternative = true
 vars = ["title", "summary", "date", "publishdate", "expirydate", "permalink"]
 params = ["categories", "tags"]
 
+[params]
+  github = "https://github.com/longhorn/longhorn/"
+
 [outputs]
 home = ["HTML", "RSS", "Algolia"]
 
@@ -37,5 +40,5 @@ home = ["HTML", "RSS", "Algolia"]
   [[menu.main]]
     identifier = "docs"
     name = "Docs"
-    url = "/docs"
+    url = "https://github.com/longhorn/longhorn/tree/master/docs"
     weight = -110

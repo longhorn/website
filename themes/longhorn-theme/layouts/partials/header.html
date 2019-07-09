@@ -1,0 +1,28 @@
+<header>
+  <div class="rancher-header">
+    <a href="https://rancher.com/" target="blank">
+      <img src="../images/rancher-logo-horiz-white.svg" height="20" width="136">
+    </a>
+    <a href="https://www.cncf.io/" target="blank">
+      <img src="../images/cncf-white.png" height="20" width="125">
+    </a>
+  </div>
+	<div class="sub-header">
+    <a href="{{ .Site.BaseURL }}">
+      <img src="/images/logo-{{ .Site.Title }}.svg" alt="{{ .Site.Title }}">
+    </a>
+    
+    <!-- nav -->
+    {{ with .Site.Menus.main }}
+    <nav>
+      <ul class="menu">
+        {{ range . }}
+        <li><a href="{{ .URL | relURL }}" class="btn no-bg">{{ .Name }}</a></li>
+        {{ end }}
+        <!-- github  -->
+        <li><a href="{{ $.Site.Params.github }}" class="btn"><img src="../images/icon-github.svg"><span>Github</span></a></li>
+      </ul>  
+    </nav>
+    {{ end }}
+  </div>
+</header>

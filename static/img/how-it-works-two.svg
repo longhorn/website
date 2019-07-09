@@ -25,8 +25,8 @@
 <text transform="matrix(1 0 0 1 586.3376 51.7202)"><tspan x="0" y="0" class="st2 st3 st4">Longhorn </tspan><tspan x="37" y="24" class="st2 st3 st4">UI</tspan></text>
 <path class="st0" d="M1050.9,173c0,14.8-12.1,26.9-26.9,26.9H922.5c-14.8,0-26.9-12.1-26.9-26.9v-32.5c0-14.8,12.1-26.9,26.9-26.9
 	H1024c14.8,0,26.9,12.1,26.9,26.9V173z"/>
-<rect x="922.5" y="137.1" class="st1" width="101.5" height="39.4"/>
-<text transform="matrix(1 0 0 1 926.2166 151.8867)"><tspan x="0" y="0" class="st2 st3 st4">Kuberne</tspan><tspan x="82.3" y="0" class="st2 st3 st4">-</tspan><tspan x="14" y="24" class="st2 st3 st4">tes API </tspan></text>
+<rect x="916.5" y="137.1" class="st1" width="113.5" height="39.4"/>
+<text transform="matrix(1 0 0 1 917.1667 151.8857)"><tspan x="0" y="0" class="st2 st3 st4">Kubernetes </tspan><tspan x="6.9" y="24" class="st2 st3 st4">API Server</tspan></text>
 <g>
 	<g>
 		<line class="st5" x1="321.7" y1="100" x2="321.7" y2="133.8"/>
