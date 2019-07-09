@@ -1,5 +1,5 @@
-$body-font       : 'Roboto', sans-serif;;
-$header-font     : 'IBM Plex Mono', monospace;
+$body-font       : 'Roboto', sans-serif;
+$header-font     : 'Poppins', sans-serif;
 $primary-color   : #B036AF;
 $secondary-color : #CDE35C;
 $dark            : #384745;
@@ -25,6 +25,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: $header-font;
   color: mix($light, $dark, 50%);
   margin-top: 0;
+  font-weight: 200;
 }
 
 h4, h5, h6 {
@@ -172,6 +173,7 @@ footer.bg-primary {
 
 hr {
   border: .5px solid lighten($primary-color, 80%);
+  margin: 40px 0;
 }
 
 /* code */
@@ -292,15 +294,15 @@ section {
     align-items: center;
   }
 
-  :after {
+  &:after {
     content: "";
     background-image: url(../img/cables.svg);
     background-repeat: no-repeat;
-    height: 250px;
+    height: 683px;
     width: 100%;
     position: absolute;
     bottom: -15px;
-    opacity: .05;
+    opacity: .5;
     z-index: -1;
   }
 }
@@ -402,6 +404,10 @@ section {
       border-right: solid 30px transparent;
       border-bottom: solid 30px $secondary-color;
       border-left: solid 30px $secondary-color;
+      opacity: 1;
+      width: 0;
+      height: 0;
+      z-index: 1;
     }
   }
 
@@ -564,11 +570,11 @@ section {
     content: "";
     background-image: url(../img/cables.svg);
     background-repeat: no-repeat;
-    height: 250px;
+    height: 683px;
     width: 100%;
     position: absolute;
     top: -15px;
-    opacity: .25;
+    opacity: .75;
     transform: rotate(180deg);
   }
 

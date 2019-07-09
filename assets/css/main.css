@@ -7,15 +7,14 @@ body {
 
 body {
   font-family: "Roboto", sans-serif;
-  font-weight: 400;
   margin: 0;
   background-color: #F3F3F3; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Fira Sans', sans-serif;
-  font-weight: 300;
+  font-family: "Poppins", sans-serif;
   color: #969d9c;
-  margin-top: 0; }
+  margin-top: 0;
+  font-weight: 200; }
 
 h4, h5, h6 {
   color: #B036AF; }
@@ -119,16 +118,17 @@ footer.bg-primary small {
   color: #BFBFBF; }
 
 hr {
-  border: 0.5px solid white; }
+  border: 0.5px solid white;
+  margin: 40px 0; }
 
 /* code */
 pre {
-  border: 1px solid #0458d3;
+  border: 1px solid #752475;
   border-radius: 5px;
   padding: 2em;
   overflow-x: auto;
   background-color: #F3F3F3;
-  background: #0f6ffb; }
+  background: #9c309c; }
 
 code {
   color: #384745; }
@@ -177,7 +177,7 @@ ul.underlined {
     padding: 10px 0; }
 
 a.btn {
-  font-family: 'Fira Sans', sans-serif;
+  font-family: "Poppins", sans-serif;
   text-transform: uppercase;
   background: #CDE35C;
   color: white;
@@ -215,15 +215,15 @@ section {
   position: relative; }
   .intro .grid-two {
     align-items: center; }
-  .intro :after {
+  .intro:after {
     content: "";
     background-image: url(../img/cables.svg);
     background-repeat: no-repeat;
-    height: 250px;
+    height: 683px;
     width: 100%;
     position: absolute;
     bottom: -15px;
-    opacity: .05;
+    opacity: .5;
     z-index: -1; }
 
 .half {
@@ -287,7 +287,11 @@ section {
     border-top: solid 30px transparent;
     border-right: solid 30px transparent;
     border-bottom: solid 30px #CDE35C;
-    border-left: solid 30px #CDE35C; }
+    border-left: solid 30px #CDE35C;
+    opacity: 1;
+    width: 0;
+    height: 0;
+    z-index: 1; }
 .folder .bg-light {
   background-color: white;
   padding: 40px;
@@ -379,11 +383,11 @@ section {
     content: "";
     background-image: url(../img/cables.svg);
     background-repeat: no-repeat;
-    height: 250px;
+    height: 683px;
     width: 100%;
     position: absolute;
     top: -15px;
-    opacity: .25;
+    opacity: .75;
     transform: rotate(180deg); }
   .get-started .white {
     background: white;

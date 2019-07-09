@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.4, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1050.9 396.8" style="enable-background:new 0 0 1050.9 396.8;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#88E4FB;}
+	.st1{fill:none;}
+	.st2{fill:#FFFFFF;}
+	.st3{font-family:'Poppins-Regular';}
+	.st4{font-size:20px;}
+	.st5{fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;}
+	.st6{fill:#CDE165;}
+	.st7{fill:#AE3CAD;}
+	.st8{fill:#2A3534;}
+</style>
+<path class="st0" d="M399.4,72.8c0,14.8-12.1,26.9-26.9,26.9H271c-14.8,0-26.9-12.1-26.9-26.9V40.4c0-14.8,12.1-26.9,26.9-26.9
+	h101.5c14.8,0,26.9,12.1,26.9,26.9V72.8z"/>
+<rect x="271" y="35.9" class="st1" width="101.5" height="41.4"/>
+<text transform="matrix(1 0 0 1 275.5994 50.7202)"><tspan x="0" y="0" class="st2 st3 st4">Longhorn </tspan><tspan x="-2.8" y="24" class="st2 st3 st4">CSI Plugin</tspan></text>
+<rect x="1" y="2.5" class="st1" width="233.4" height="41.4"/>
+<text transform="matrix(1 0 0 1 26.6945 17.2792)"><tspan x="0" y="0" class="st2 st3 st4">Container Storage  </tspan><tspan x="28.8" y="24" class="st2 st3 st4">Interface API</tspan></text>
+<path class="st0" d="M710.2,72.8c0,14.8-12.1,26.9-26.9,26.9H581.7c-14.8,0-26.9-12.1-26.9-26.9V40.4c0-14.8,12.1-26.9,26.9-26.9
+	h101.5c14.8,0,26.9,12.1,26.9,26.9V72.8z"/>
+<rect x="581.7" y="36.9" class="st1" width="101.5" height="39.4"/>
+<text transform="matrix(1 0 0 1 586.3376 51.7202)"><tspan x="0" y="0" class="st2 st3 st4">Longhorn </tspan><tspan x="37" y="24" class="st2 st3 st4">UI</tspan></text>
+<path class="st0" d="M1050.9,173c0,14.8-12.1,26.9-26.9,26.9H922.5c-14.8,0-26.9-12.1-26.9-26.9v-32.5c0-14.8,12.1-26.9,26.9-26.9
+	H1024c14.8,0,26.9,12.1,26.9,26.9V173z"/>
+<rect x="922.5" y="137.1" class="st1" width="101.5" height="39.4"/>
+<text transform="matrix(1 0 0 1 926.2166 151.8867)"><tspan x="0" y="0" class="st2 st3 st4">Kuberne</tspan><tspan x="82.3" y="0" class="st2 st3 st4">-</tspan><tspan x="14" y="24" class="st2 st3 st4">tes API </tspan></text>
+<g>
+	<g>
+		<line class="st5" x1="321.7" y1="100" x2="321.7" y2="133.8"/>
+		<g>
+			<polygon class="st2" points="313.6,127.1 315,125.8 321.7,133 328.5,125.8 329.9,127.1 321.7,135.9 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<line class="st5" x1="632.5" y1="100" x2="632.5" y2="133.8"/>
+		<g>
+			<polygon class="st2" points="624.3,127.1 625.8,125.8 632.5,133 639.2,125.8 640.7,127.1 632.5,135.9 			"/>
+		</g>
+	</g>
+</g>
+<path class="st6" d="M450.2,291.8c9.3,0,16.9,7.6,16.9,16.9s-7.6,16.9-16.9,16.9H348.7c-9.3,0-16.9-7.6-16.9-16.9
+	s7.6-16.9,16.9-16.9H450.2z"/>
+<g>
+	<rect x="331.7" y="301.3" class="st1" width="135.4" height="17.6"/>
+	<text transform="matrix(1 0 0 1 362.9337 316.101)" class="st2 st3 st4">Replica</text>
+</g>
+<path class="st6" d="M605.6,291.8c9.3,0,16.9,7.6,16.9,16.9s-7.6,16.9-16.9,16.9H504c-9.3,0-16.9-7.6-16.9-16.9s7.6-16.9,16.9-16.9
+	H605.6z"/>
+<g>
+	<rect x="487.1" y="301.3" class="st1" width="135.4" height="17.6"/>
+	<text transform="matrix(1 0 0 1 518.3031 316.101)" class="st2 st3 st4">Replica</text>
+</g>
+<path class="st6" d="M760.9,291.8c9.3,0,16.9,7.6,16.9,16.9s-7.6,16.9-16.9,16.9H659.4c-9.3,0-16.9-7.6-16.9-16.9
+	s7.6-16.9,16.9-16.9H760.9z"/>
+<g>
+	<rect x="642.5" y="301.3" class="st1" width="135.4" height="17.6"/>
+	<text transform="matrix(1 0 0 1 673.6724 316.101)" class="st2 st3 st4">Replica</text>
+</g>
+<path class="st6" d="M916.3,291.8c9.3,0,16.9,7.6,16.9,16.9s-7.6,16.9-16.9,16.9H814.8c-9.3,0-16.9-7.6-16.9-16.9
+	s7.6-16.9,16.9-16.9H916.3z"/>
+<g>
+	<rect x="797.9" y="301.3" class="st1" width="135.4" height="17.6"/>
+	<text transform="matrix(1 0 0 1 829.0417 316.101)" class="st2 st3 st4">Replica</text>
+</g>
+<path class="st6" d="M295.2,291.8c9.3,0,16.9,7.6,16.9,16.9s-7.6,16.9-16.9,16.9H193.7c-9.3,0-16.9-7.6-16.9-16.9
+	s7.6-16.9,16.9-16.9H295.2z"/>
+<g>
+	<rect x="176.8" y="301.3" class="st1" width="135.4" height="17.6"/>
+	<text transform="matrix(1 0 0 1 207.9467 316.101)" class="st2 st3 st4">Replica</text>
+</g>
+<path class="st6" d="M139.8,291.8c9.3,0,16.9,7.6,16.9,16.9s-7.6,16.9-16.9,16.9H38.3c-9.3,0-16.9-7.6-16.9-16.9s7.6-16.9,16.9-16.9
+	H139.8z"/>
+<g>
+	<rect x="21.4" y="301.3" class="st1" width="135.4" height="17.6"/>
+	<text transform="matrix(1 0 0 1 52.5773 316.101)" class="st2 st3 st4">Replica</text>
+</g>
+<path class="st7" d="M217.5,207.3c9.3,0,16.9,7.6,16.9,16.9s-7.6,16.9-16.9,16.9H116c-9.3,0-16.9-7.6-16.9-16.9s7.6-16.9,16.9-16.9
+	H217.5z"/>
+<g>
+	<rect x="99.1" y="216.8" class="st1" width="135.4" height="17.6"/>
+	<text transform="matrix(1 0 0 1 133.9319 231.5563)" class="st2 st3 st4">Engine</text>
+</g>
+<path class="st7" d="M527.9,207.3c9.3,0,16.9,7.6,16.9,16.9s-7.6,16.9-16.9,16.9H426.4c-9.3,0-16.9-7.6-16.9-16.9
+	s7.6-16.9,16.9-16.9H527.9z"/>
+<g>
+	<rect x="409.4" y="216.8" class="st1" width="135.4" height="17.6"/>
+	<text transform="matrix(1 0 0 1 444.2883 231.5563)" class="st2 st3 st4">Engine</text>
+</g>
+<path class="st7" d="M838.6,207.3c9.3,0,16.9,7.6,16.9,16.9s-7.6,16.9-16.9,16.9H737.1c-9.3,0-16.9-7.6-16.9-16.9
+	s7.6-16.9,16.9-16.9H838.6z"/>
+<g>
+	<rect x="720.2" y="216.8" class="st1" width="135.4" height="17.6"/>
+	<text transform="matrix(1 0 0 1 755.0269 231.5563)" class="st2 st3 st4">Engine</text>
+</g>
+<path class="st8" d="M838.6,139.9c9.3,0,16.9,7.6,16.9,16.9c0,9.3-7.6,16.9-16.9,16.9H116c-9.3,0-16.9-7.6-16.9-16.9
+	c0-9.3,7.6-16.9,16.9-16.9H838.6z"/>
+<g>
+	<rect x="99.1" y="149.7" class="st1" width="739.5" height="22"/>
+	<text transform="matrix(1 0 0 1 218.1324 164.5072)" class="st2 st3 st4">Longhorn Manager (Orchestrates all the volumes)</text>
+</g>
+<path class="st8" d="M838.6,362.9c9.3,0,16.9,7.6,16.9,16.9s-7.6,16.9-16.9,16.9H116c-9.3,0-16.9-7.6-16.9-16.9s7.6-16.9,16.9-16.9
+	H838.6z"/>
+<g>
+	<rect x="99.1" y="372.8" class="st1" width="739.5" height="22"/>
+	<text transform="matrix(1 0 0 1 374.7301 387.5758)" class="st2 st3 st4">Kubernetes Cluster</text>
+</g>
+<g>
+	<g>
+		<polyline class="st5" points="89.1,289.7 89.1,269.1 244.4,269.1 244.4,289.7 		"/>
+		<g>
+			<polygon class="st2" points="97.3,283 95.8,281.7 89.1,288.9 82.4,281.7 80.9,283 89.1,291.8 			"/>
+		</g>
+		<g>
+			<polygon class="st2" points="236.3,283 237.7,281.7 244.4,288.9 251.2,281.7 252.6,283 244.4,291.8 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<polyline class="st5" points="98.8,379 1,379 1,56.6 241.9,56.6 		"/>
+		<g>
+			<polygon class="st2" points="235.3,64.8 233.9,63.3 241.1,56.6 233.9,49.9 235.3,48.4 244.1,56.6 			"/>
+		</g>
+	</g>
+</g>
+<line class="st5" x1="166.8" y1="269.1" x2="166.8" y2="241.1"/>
+<g>
+	<g>
+		<polyline class="st5" points="399.4,289.7 399.4,269.1 554.8,269.1 554.8,289.7 		"/>
+		<g>
+			<polygon class="st2" points="407.6,283 406.1,281.7 399.4,288.9 392.7,281.7 391.3,283 399.4,291.8 			"/>
+		</g>
+		<g>
+			<polygon class="st2" points="546.6,283 548.1,281.7 554.8,288.9 561.5,281.7 563,283 554.8,291.8 			"/>
+		</g>
+	</g>
+</g>
+<line class="st5" x1="477.1" y1="269.1" x2="477.1" y2="241.1"/>
+<g>
+	<g>
+		<polyline class="st5" points="710.2,289.7 710.2,269.1 865.5,269.1 865.5,289.7 		"/>
+		<g>
+			<polygon class="st2" points="718.4,283 716.9,281.7 710.2,288.9 703.5,281.7 702,283 710.2,291.8 			"/>
+		</g>
+		<g>
+			<polygon class="st2" points="857.4,283 858.8,281.7 865.5,288.9 872.3,281.7 873.7,283 865.5,291.8 			"/>
+		</g>
+	</g>
+</g>
+<line class="st5" x1="787.9" y1="269.1" x2="787.9" y2="241.1"/>
+<g>
+	<g>
+		<line class="st5" x1="477.1" y1="173.7" x2="477.1" y2="207.8"/>
+		<g>
+			<polygon class="st2" points="468.9,201.2 470.4,199.8 477.1,207.1 483.8,199.8 485.3,201.2 477.1,210 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<line class="st5" x1="787.9" y1="173.7" x2="787.9" y2="207.8"/>
+		<g>
+			<polygon class="st2" points="779.7,201.2 781.1,199.8 787.9,207.1 794.6,199.8 796,201.2 787.9,210 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<line class="st5" x1="855.5" y1="156.8" x2="891.7" y2="156.8"/>
+		<g>
+			<polygon class="st2" points="885,165 883.7,163.5 890.9,156.8 883.7,150.1 885,148.6 893.8,156.8 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<line class="st5" x1="166.8" y1="173.7" x2="166.8" y2="207.8"/>
+		<g>
+			<polygon class="st2" points="158.6,201.2 160,199.8 166.8,207.1 173.5,199.8 174.9,201.2 166.8,210 			"/>
+		</g>
+	</g>
+</g>
+</svg>
