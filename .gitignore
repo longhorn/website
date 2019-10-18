@@ -1,0 +1,7 @@
+/public
+/node_modules
+/resources
+package-lock.json
+*.tern-port
+*/**/.tern-port
+.DS_Store

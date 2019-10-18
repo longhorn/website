@@ -1,0 +1,44 @@
+baseURL = ""
+languageCode = "en-us"
+title = "longhorn"
+theme = "longhorn-theme"
+pluralizeListTitles = false
+enableRobotsTXT = true
+pygmentsCodeFences = true
+pygmentsCodeFencesGuessSyntax = true
+enableGitInfo = true
+
+[blackfriday]
+fractions = false
+#hrefTargetBlank = true
+
+[outputFormats.Algolia]
+baseName = "algolia"
+isPlaintext = true
+mediaType = "application/json"
+notAlternative = true
+
+[params.algolia]
+vars = ["title", "summary", "date", "publishdate", "expirydate", "permalink"]
+params = ["categories", "tags"]
+
+[params]
+  github = "https://github.com/longhorn/longhorn/"
+
+[outputs]
+home = ["HTML", "RSS", "Algolia"]
+
+
+[privacy]
+  [privacy.twitter]
+    disable = false
+    enableDNT = false
+    simple = true
+
+[menu]
+
+  [[menu.main]]
+    identifier = "docs"
+    name = "Docs"
+    url = "https://github.com/longhorn/longhorn/tree/master/docs"
+    weight = -110
