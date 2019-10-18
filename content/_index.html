@@ -10,7 +10,7 @@ description: "Cloud-native Distributed Block Storage for Kubernetes
       <div>
         <h1>Cloud-native Distributed Block Storage for Kubernetes
         </h1>
-        <h4>Easy to install, 100% open source, run anywhere
+        <h4>Easy to use, 100% open source, run anywhere
         </h4>
         <a href="https://github.com/longhorn/longhorn" class="btn" target="_blank" rel="noopener">Learn More</a>
       </div>
@@ -20,7 +20,7 @@ description: "Cloud-native Distributed Block Storage for Kubernetes
   <div class="folder">
     <h4>Great For</h4>
     <div class="bg-light grid-dynamic text-center">
-      <h5>Running your own S3 end-point reliably</h5> 
+      <h5>Add persistent storage to Kubernetes in one-click</h5>
       <h5>Fast failover for stateful services</h5> 
       <h5>Improving fault tolerance of your applications</h5> 
 
@@ -40,18 +40,18 @@ description: "Cloud-native Distributed Block Storage for Kubernetes
       
     <div>
       <h5>Easy incremental snapshots and backups</h5>
-      <p>Longhorn’s scheduled snap and clone features make it possible for developers to work with the currently-active datastore from their production environments.</p>
-      <p>Performing regular backups of persistent storage volumes in Kubernetes clusters is simplified with Longhorn’s intuitive, free management UI.</p>
+      <p>Longhorn’s built-in incremental snapshot and backup features keep the volume data safe in or out of the Kubernetes cluster.</p>
+      <p>Scheduled backups of persistent storage volumes in Kubernetes clusters is simplified with Longhorn’s intuitive, free management UI.</p>
 
     </div>
 
     <div>
-      <h5>Reliable multi-cluster replication</h5>
+      <h5>Cross cluster disaster recovery</h5>
       <p>External replication solutions will recover from a disk failure by re-replicating the entire data store. This can take days, during which time the cluster performs poorly and has a higher risk of failure.</p>
 
-      <p>Using Longhorn, you can easily create a read-only remote replica volume in another Kubernetes cluster and fail over to it in the event of an emergency.</p>
+      <p>Using Longhorn, you can control the granularity to the maximum, easily create a disaster recovery volume in another Kubernetes cluster and fail over to it in the event of an emergency.</p>
 
-      <p>If your main cluster fails, Longhorn  can set the replica to RW and bring up the app in the DR cluster quickly.</p>
+      <p>If your main cluster fails, you can bring up the app in the DR cluster quickly with a defined RPO and RTO.</p>
     </div>
     
   </div>
