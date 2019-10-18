@@ -304,29 +304,12 @@ section {
   .grid-two {
     align-items: center;
   }
-
-  // :after {
-  //   content: "";
-  //   background-image: url(../img/cables.svg);
-  //   background-repeat: no-repeat;
-  //   height: 250px;
-  //   width: 100%;
-  //   position: absolute;
-  //   bottom: -15px;
-  //   opacity: .05;
-  //   z-index: -1;
-  //   left: 0;
-  // }
 }
 
 .half {
   flex-basis: 50%;
   max-width: 50%;
   padding: 2rem;
-
-  // &:last-child {
-  //   padding: 0;
-  // }
 }
 
 .grid-two {
@@ -345,19 +328,6 @@ section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 2rem;
-
-  // &::before {
-  //   content: '';
-  //   width: 0;
-  //   padding-bottom: 100%;
-  //   grid-row: 1 / 1;
-  //   grid-column: 1 / 1;
-  // }
-
-  // > *:first-child {
-  //   grid-row: 1 / 1;
-  //   grid-column: 1 / 1;
-  // }
 }
 
 .grid-dynamic {
