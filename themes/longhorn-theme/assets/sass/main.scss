@@ -176,9 +176,8 @@ footer {
 }
 
 hr {
-  border: 0;
-  height: 1px;
-  background-image: linear-gradient(left, var(--light), var(--dark), var(--light));
+  border: solid thin rgba(0,0,0,.125);
+  margin: 20px 0;
 }
 
 pre {
@@ -638,6 +637,15 @@ section {
     }
     .bg-primary {
       grid-column: 1/span 8;
+    }
+  }
+  .grid-dynamic {
+    display: block;
+    
+    h5 {
+      text-align: left;
+      border-bottom: solid thin var(--light);
+      padding: 10px 0;
     }
   }
 }
