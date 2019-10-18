@@ -36,7 +36,6 @@ home = ["HTML", "RSS", "Algolia"]
     simple = true
 
 [menu]
-
   [[menu.main]]
     identifier = "docs"
     name = "Docs"

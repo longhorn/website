@@ -1,18 +1,12 @@
 Longhorn Website
 ------------
-[![Build Status](https://drone-publish.rancher.io/api/badges/rancherlabs/k3s-website/status.svg)](https://drone-publish.rancher.io/rancherlabs/k3s-website)
-
 
 ## Running for development/editing
 
-The `rancherlabs/longhorn-website:dev` docker image runs a live-updating server.  To run on your workstation, run:
+To run on your locally, run:
 
 ```bash
-  ./scripts/dev
+  hugo server
 ```
 
-and then navigate to http://localhost:9003/.  You can customize the port by passing it as an argument:
-
-```bash
-  ./scripts/dev 8080
-```
+and then navigate to http://localhost:1313.  
