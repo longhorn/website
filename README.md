@@ -1,18 +1,19 @@
-Longhorn Website
-------------
-[![Build Status](https://drone-publish.rancher.io/api/badges/rancherlabs/k3s-website/status.svg)](https://drone-publish.rancher.io/rancherlabs/k3s-website)
+# Longhorn Website
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a7c1b4ef-e90e-477c-b9c4-f515d0dd7c7f/deploy-status)](https://app.netlify.com/sites/longhornio/deploys)
 
-## Running for development/editing
+This repo houses the assets used to build the website for Longhorn, available at https://longhorn.io.
 
-The `rancherlabs/longhorn-website:dev` docker image runs a live-updating server.  To run on your workstation, run:
+## Running the site locally
 
-```bash
-  ./scripts/dev
-```
-
-and then navigate to http://localhost:9003/.  You can customize the port by passing it as an argument:
+To run the website locally, you need to have the [Hugo](https://gohugo.io) static site generator installed (installation instructions [here](https://gohugo.io/getting-started/installing/)). Once Hugo is installed:
 
 ```bash
-  ./scripts/dev 8080
+hugo server --buildDrafts --buildFuture
 ```
+
+This starts Hugo in local mode. You can see access the site at http://localhost:1313.
+
+## Publishing the site
+
+The Longhorn site is automatically built and published by [Netlify](https://netlify.com) when changes are pushed to the `master` branch.
