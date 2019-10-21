@@ -15,7 +15,7 @@
   {{- $cache :=  now.Unix -}}
   {{- $opt := (dict "outputStyle" "compressed" "enableSourceMap" "true") -}}
   {{- $style := resources.Get "sass/main.scss" | toCSS $opt | minify -}}
-  <link rel="stylesheet" type="text/css" href="{{ $style.Permalink }}?{{ $cache }}"/>
+  <link rel="stylesheet" type="text/css" href="{{ $style.RelPermalink }}?{{ $cache }}"/>
 
   {{ with .OutputFormats.Get "RSS" -}}
     {{ printf `<link rel="%s" type="%s" href="%s" title="%s">` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
