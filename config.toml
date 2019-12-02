@@ -7,10 +7,6 @@ pygmentsCodeFences = true
 pygmentsCodeFencesGuessSyntax = true
 enableGitInfo = true
 
-[blackfriday]
-fractions = false
-#hrefTargetBlank = true
-
 [outputFormats.Algolia]
 baseName = "algolia"
 isPlaintext = true
@@ -22,21 +18,23 @@ vars = ["title", "summary", "date", "publishdate", "expirydate", "permalink"]
 params = ["categories", "tags"]
 
 [params]
-  github = "https://github.com/longhorn/longhorn/"
+github = "https://github.com/longhorn/longhorn/"
 
 [outputs]
 home = ["HTML", "RSS", "Algolia"]
 
 
-[privacy]
-  [privacy.twitter]
-    disable = false
-    enableDNT = false
-    simple = true
+[privacy.twitter]
+disable = false
+enableDNT = false
+simple = true
 
-[menu]
-  [[menu.main]]
-    identifier = "docs"
-    name = "Docs"
-    url = "https://github.com/longhorn/longhorn/tree/master/docs"
-    weight = -110
+[[params.fonts]]
+name = "Poppins"
+sizes = [300, 400, 600, 700]
+type = "sans_serif"
+
+[[params.fonts]]
+name = "Roboto Mono"
+sizes = [300, 400, 600, 700]
+type = "monospace"
