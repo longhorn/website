@@ -1,7 +1,6 @@
-baseURL = ""
+baseURL = "https://longhorn.io"
 languageCode = "en-us"
-title = "longhorn"
-theme = "longhorn-theme"
+title = "Longhorn"
 pluralizeListTitles = false
 enableRobotsTXT = true
 pygmentsCodeFences = true

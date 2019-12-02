@@ -1,0 +1,14 @@
+{{ $desc := site.Params.description }}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+{{ with $desc }}
+<meta name="description" content="{{ . }}">
+{{ end }}
+{{ with .Site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
+
+{{ with .OutputFormats.Get "RSS" }}
+{{ printf `<link rel="%s" type="%s" href="%s" title="%s">` .Rel .MediaType.Type .RelPermalink site.Title | safeHTML }}
+{{ end }}
+<link rel="manifest" href="/site.webmanifest">
