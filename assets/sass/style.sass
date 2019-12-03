@@ -24,6 +24,13 @@ $family-monospace: "{{ $monospaceFont }}", monospace
 
 @import "bulma/sass/utilities/derived-variables"
 
+// Expanded Bulma color map
 $colors: mergeColorMaps(("twitter-blue": ($twitter-blue, $white), "orange": ($orange, $white)), $colors)
 
 @import "bulma/bulma"
+
+.hero-logo
+  +desktop
+    width: 65%
+  +mobile
+    width: 25%

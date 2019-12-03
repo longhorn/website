@@ -9,10 +9,16 @@ enableGitInfo = true
 disableKinds = ["taxonomy", "taxonomyTerm"]
 
 [params]
-github = "https://github.com/longhorn/longhorn/"
+description = "Cloud native distributed block storage for Kubernetes"
+tagline = "Easy to use, 100% open source, run anywhere"
+
+[params.social]
+github = "https://github.com/longhorn/longhorn"
+twitter = "longhorn"
 
 [params.logos]
 navbar = "longhorn-horizontal-color.png"
+hero = "longhorn-icon-white.png"
 
 [outputs]
 home = ["HTML", "RSS"]

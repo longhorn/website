@@ -8,5 +8,13 @@
         <img src="{{ $logo }}" alt="{{ $title }} navbar logo">
       </a>
     </div>
+
+    <div class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          {{ partial "social-buttons.html" (dict "full" true) }}
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
