@@ -1,5 +1,5 @@
 {{ $here := .RelPermalink }}
-{{ $docs := where site.RegularPages "Section" "docs" }}
+{{ $docs := where site.Pages "Section" "docs" }}
 <aside class="nav">
   <ul>
     {{ range $docs }}
