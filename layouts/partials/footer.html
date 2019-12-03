@@ -18,7 +18,7 @@
             {{ $isExternal := hasPrefix .URL "http" }}
             {{ $name       := .Name | upper }}
             <li>
-              <a href="{{ .URL }}"{{ if $isExternal }} target="_blank"{{ end }}>
+              <a class="has-text-weight-bold" href="{{ .URL }}"{{ if $isExternal }} target="_blank"{{ end }}>
                 {{ $name }}
               </a>
             </li>

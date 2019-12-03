@@ -1,4 +1,5 @@
-{{ $lang := site.LanguageCode | default "en-us" }}
+{{ $lang   := site.LanguageCode | default "en-us" }}
+{{ $isHome := .IsHome }}
 <!DOCTYPE html>
 <html lang="{{ $lang }}">
   <head>
@@ -13,12 +14,9 @@
     {{ partial "css.html" . }}
     {{ partial "favicon.html" . }}
   </head>
-  <body class="has-navbar-fixed-top">
-    {{ partial "navbar.html" . }}
-
+  <body{{ if $isHome }} class="has-navbar-fixed-top"{{ end }}>
     {{ block "main" . }}{{ end }}
 
-    {{ partial "footer" . }}
     {{ partial "javascript.html" . }}
   </body>
 </html>

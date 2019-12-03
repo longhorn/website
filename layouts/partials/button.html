@@ -3,15 +3,18 @@
 {{ $icon       := .icon }}
 {{ $size       := .size | default "normal" }}
 {{ $color      := .color | default "white" }}
+{{ $lean       := .lean | default false }}
 <a class="button is-{{ $color }} has-text-weight-bold" href="{{ .url }}"{{ if $isExternal }} target="_blank"{{ end }}>
   {{ with $icon }}
   <span class="icon">
     <ion-icon name="{{ . }}"></ion-icon>
   </span>
   {{ end }}
+  {{ if not $lean }}
   {{ with .text }}
   <span>
     {{ . }}
   </span>
+  {{ end }}
   {{ end }}
 </a>
