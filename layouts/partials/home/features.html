@@ -1,0 +1,39 @@
+{{ $why      := site.Params.why }}
+{{ $features := site.Params.features }}
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-variable is-8">
+      <div class="column">
+        <p class="title">
+          Features
+        </p>
+
+
+        {{ range $features }}
+
+        <p class="title is-size-4 is-size-5-mobile">
+          {{ .title }}
+        </p>
+
+        <div class="content">
+          {{ .text | markdownify }}
+        </div>
+
+
+        {{ end }}
+      </div>
+
+      <div class="column">
+        <p class="title">
+          How Longhorn works
+        </p>
+
+        <figure class="image">
+          <img src="/img/how-it-works-longhorn.svg">
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>

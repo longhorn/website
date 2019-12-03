@@ -4,7 +4,7 @@
 {{ $currentYear := now.Year }}
 {{ $yearString  := cond (eq $firstYear $currentYear) $firstYear (printf "%s-%s" $firstYear $currentYear) }}
 {{ $menu        := site.Menus.main }}
-<section class="hero">
+<section class="hero is-medium">
   <div class="hero-body">
     <div class="container">
       <div class="columns is-vcentered">
