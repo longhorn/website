@@ -13,14 +13,14 @@
         <img src="{{ $logo }}" alt="{{ $title }} navbar logo">
       </a>
 
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <a role="button" class="navbar-burger" data-target="menu" aria-label="menu" aria-expanded="false">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
     </div>
 
-    <div class="navbar-menu">
+    <div class="navbar-menu" id="menu">
       <div class="navbar-end">
         {{ range $menu }}
         {{ $isExternal := hasPrefix .URL "http" }}
