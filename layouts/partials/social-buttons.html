@@ -1,4 +1,3 @@
-{{ $full   := .full | default false }}
 {{ $social := site.Params.social }}
 <div class="buttons">
   {{ partial "button.html" (dict "text" "GitHub" "color" "black" "icon" "logo-github" "url" $social.github) }}

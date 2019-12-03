@@ -1,12 +1,47 @@
+{{ $title       := site.Title }}
+{{ $logo        := printf "img/logos/%s" site.Params.logos.footer | relURL }}
 {{ $firstYear   := "2019" | int }}
 {{ $currentYear := now.Year }}
 {{ $yearString  := cond (eq $firstYear $currentYear) $firstYear (printf "%s-%s" $firstYear $currentYear) }}
-<footer>
-  <p>
-    &copy; {{ $yearString }} Longhorn Authors | Documentation Distributed under CC-BY-4.0
-  </p>
+{{ $menu        := site.Menus.main }}
+<section class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-vcentered">
+        <div class="column is-one-third">
+          <img class="footer-logo" src="{{ $logo }}" alt="{{ $title }} footer logo">
+        </div>
 
-  <p>
-    &copy; {{ $currentYear }} The Linux Foundation. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage/" target="_blank">Trademark Usage</a> page.
-  </p>
-</footer>
+        <div class="column is-one-third">
+          <ul>
+            {{ range $menu }}
+            {{ $isExternal := hasPrefix .URL "http" }}
+            {{ $name       := .Name | upper }}
+            <li>
+              <a href="{{ .URL }}"{{ if $isExternal }} target="_blank"{{ end }}>
+                {{ $name }}
+              </a>
+            </li>
+            {{ end }}
+          </ul>
+        </div>
+
+        <div class="column is-one-third">
+          {{ partial "social-buttons.html" (dict "full" false) }}
+        </div>
+      </div>
+
+      <hr />
+
+      <p class="has-text-weight-light">
+        &copy; {{ $yearString }} Longhorn Authors | Documentation Distributed under CC-BY-4.0
+      </p>
+
+      <br />
+
+      <p class="has-text-weight-light">
+        &copy; {{ $currentYear }} The Linux Foundation. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage/" target="_blank">Trademark Usage</a> page.
+      </p>
+    </div>
+  </div>
+</section>
