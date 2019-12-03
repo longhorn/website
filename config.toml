@@ -19,6 +19,7 @@ twitter = "longhorn"
 [params.logos]
 navbar = "longhorn-horizontal-color.png"
 hero = "longhorn-icon-white.png"
+footer = "longhorn-horizontal-black.png"
 
 [outputs]
 home = ["HTML", "RSS"]
@@ -37,3 +38,8 @@ type = "sans_serif"
 name = "Roboto Mono"
 sizes = [300, 400, 600, 700]
 type = "monospace"
+
+[[menu.main]]
+name = "Docs"
+url = "/docs"
+weight = 1

@@ -12,6 +12,7 @@
 
 // Site-specific variables
 $longhorn-maroon: #5F224A
+$longhorn-red: #EA3A3A
 $twitter-blue: rgb(29, 161, 242)
 
 @import "bulma/sass/utilities/initial-variables"
@@ -19,18 +20,26 @@ $twitter-blue: rgb(29, 161, 242)
 
 // Bulma variable overrides
 $primary: $longhorn-maroon
+$secondary: $longhorn-red
+$link: $primary
 $family-sans-serif: "{{ $sansSerifFont }}", BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif
 $family-monospace: "{{ $monospaceFont }}", monospace
 
 @import "bulma/sass/utilities/derived-variables"
 
 // Expanded Bulma color map
-$colors: mergeColorMaps(("twitter-blue": ($twitter-blue, $white), "orange": ($orange, $white)), $colors)
+$colors: mergeColorMaps(("twitter-blue": ($twitter-blue, $white), "orange": ($orange, $white), "secondary": ($secondary, $white)), $colors)
 
 @import "bulma/bulma"
 
-.hero-logo
+=logo($d, $m)
   +desktop
-    width: 65%
+    width: $d
   +mobile
-    width: 25%
+    width: $m
+
+.hero-logo
+  +logo(65%, 25%)
+
+.footer-logo
+  +logo(50%, 40%)
