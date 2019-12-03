@@ -6,23 +6,16 @@ enableRobotsTXT = true
 pygmentsCodeFences = true
 pygmentsCodeFencesGuessSyntax = true
 enableGitInfo = true
-
-[outputFormats.Algolia]
-baseName = "algolia"
-isPlaintext = true
-mediaType = "application/json"
-notAlternative = true
-
-[params.algolia]
-vars = ["title", "summary", "date", "publishdate", "expirydate", "permalink"]
-params = ["categories", "tags"]
+disableKinds = ["taxonomy", "taxonomyTerm"]
 
 [params]
 github = "https://github.com/longhorn/longhorn/"
 
-[outputs]
-home = ["HTML", "RSS", "Algolia"]
+[params.logos]
+navbar = "longhorn-horizontal-color.png"
 
+[outputs]
+home = ["HTML", "RSS"]
 
 [privacy.twitter]
 disable = false
