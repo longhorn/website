@@ -13,11 +13,12 @@ title: Longhorn CSI on RancherOS/CoreOS + RKE or K3S
   The following step is not needed for Kubernetes v1.12+.
 
   Add extra_binds for kubelet in RKE `cluster.yml`:
-  ```
-   services:
-     kubelet:
-       extra_binds:
-       - "/opt/rke/var/lib/kubelet/plugins:/var/lib/kubelet/plugins" 
+
+  ```yaml
+  services:
+    kubelet:
+      extra_binds:
+      - "/opt/rke/var/lib/kubelet/plugins:/var/lib/kubelet/plugins" 
    ```
    
 ### For each node:
