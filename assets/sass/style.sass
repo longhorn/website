@@ -55,3 +55,31 @@ $colors: mergeColorMaps(("twitter-blue": ($twitter-blue, $white), "orange": ($or
 
 .rancher-logo, .cncf-logo
   +logo(70%, 80%)
+
+=panel-width($w)
+  flex: 0 0 $w
+
+.dashboard
+  display: flex
+  flex-direction: column
+  height: 100vh
+  overflow-y: hidden
+
+  &-main
+    display: flex
+    flex-direction: row
+    height: 100%
+    padding-top: $navbar-height
+
+    &-panel
+      &.left
+        +panel-width(20%)
+      &.center
+        flex: 1
+
+        .content
+          +desktop
+            width: 80%
+
+      &.is-scrollable
+        overflow-y: auto

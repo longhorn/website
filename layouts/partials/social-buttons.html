@@ -1,5 +1,5 @@
 {{ $social := site.Params.social }}
 <div class="buttons">
-  {{ partial "button.html" (dict "text" "GitHub" "color" "black" "icon" "logo-github" "url" $social.github) }}
-  {{ partial "button.html" (dict "text" "Twitter" "color" "twitter-blue" "icon" "logo-twitter" "url" $social.twitter) }}
+  {{ partial "button.html" (dict "lean" .lean "text" "GitHub" "color" "black" "icon" "logo-github" "url" $social.github) }}
+  {{ partial "button.html" (dict "lean" .lean "text" "Twitter" "color" "twitter-blue" "icon" "logo-twitter" "url" $social.twitter) }}
 </div>
