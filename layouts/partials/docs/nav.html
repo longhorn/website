@@ -1,15 +1,11 @@
+{{ $here := .RelPermalink }}
 {{ $docs := where site.RegularPages "Section" "docs" }}
 <aside class="nav">
   <ul>
-    <li>
-      <a href="/docs">
-        Docs home
-      </a>
-    </li>
-
     {{ range $docs }}
+    {{ $isHere := eq .RelPermalink $here }}
     <li>
-      <a href="{{ .RelPermalink }}">
+      <a{{ if $isHere }} class="is-active"{{ end }} href="{{ .RelPermalink }}">
         {{ .Title }}
       </a>
     </li>

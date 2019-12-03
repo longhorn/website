@@ -27,21 +27,20 @@ $family-monospace: "{{ $monospaceFont }}", monospace
 $box-padding: 1.5rem
 $navbar-height: 5rem
 $navbar-item-img-max-height: $navbar-height * 0.5
-$code: $secondary
-$code-background: $white
 
 @import "bulma/sass/utilities/derived-variables"
 
 // Expanded Bulma color map
 $colors: mergeColorMaps(("twitter-blue": ($twitter-blue, $white), "orange": ($orange, $white), "secondary": ($secondary, $white)), $colors)
 
+$code: $primary
+$code-background: $light
+
 @import "bulma/bulma"
 
-=logo($d, $m)
-  +desktop
-    width: $d
-  +mobile
-    width: $m
+@import "helpers"
+@import "dashboard"
+@import "nav"
 
 .hero-logo
   +logo(65%, 25%)
@@ -58,41 +57,7 @@ $colors: mergeColorMaps(("twitter-blue": ($twitter-blue, $white), "orange": ($or
 .rancher-logo, .cncf-logo
   +logo(70%, 80%)
 
-=panel-width($w)
-  flex: 0 0 $w
-
-.dashboard
-  display: flex
-  flex-direction: column
-  height: 100vh
-  overflow-y: hidden
-
-  &-main
-    display: flex
-    flex-direction: row
-    height: 100%
-    padding-top: $navbar-height
-
-    &-panel
-      &.left
-        +panel-width(25rem)
-        background-color: $white-bis
-      &.center
-        flex: 1
-
-        .content
-          +desktop
-            width: 80%
-
-      &.is-scrollable
-        overflow-y: auto
-
-aside.nav
-  padding: 1.5rem
-
-  ul
-    li
-      font-weight: 600
-
-      & + li
-        margin-top: .25rem
+.content
+  ul, ol
+    li .highlight
+      margin-bottom: 1rem

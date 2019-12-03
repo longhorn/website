@@ -1,0 +1,24 @@
+.dashboard
+  display: flex
+  flex-direction: column
+  height: 100vh
+  overflow-y: hidden
+
+  &-main
+    display: flex
+    flex-direction: row
+    height: 100%
+    padding-top: $navbar-height
+
+    &-panel
+      overflow-x: scroll
+
+      &.left
+        +panel-width(25rem)
+        background-color: $white-bis
+
+      &.center
+        flex: 1
+
+      &.is-scrollable
+        overflow-y: auto
