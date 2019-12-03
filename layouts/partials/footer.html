@@ -7,12 +7,12 @@
 <section class="hero is-medium">
   <div class="hero-body">
     <div class="container">
-      <div class="columns is-vcentered">
+      <div class="columns is-vcentered is-variable">
         <div class="column is-one-third">
           <img class="footer-logo" src="{{ $logo }}" alt="{{ $title }} footer logo">
         </div>
 
-        <div class="column is-one-third has-text-centered">
+        <div class="column is-one-third">
           <ul>
             {{ range $menu }}
             {{ $isExternal := hasPrefix .URL "http" }}
@@ -27,7 +27,7 @@
         </div>
 
         <div class="column is-one-third">
-          {{ partial "social-buttons.html" (dict "full" false "align" "right") }}
+          {{ partial "social-buttons.html" (dict "lean" true) }}
         </div>
       </div>
 

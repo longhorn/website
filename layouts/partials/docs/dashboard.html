@@ -1,5 +1,6 @@
 {{ $title := .Title }}
 {{ $desc  := .Params.description }}
+{{ $path  := .File.Path }}
 <div class="dashboard">
   {{ partial "navbar.html" . }}
 
@@ -9,7 +10,7 @@
     </div>
 
     <div class="dashboard-main-panel center is-scrollable">
-      {{ partial "docs/hero.html" (dict "title" $title "description" $desc) }}
+      {{ partial "docs/hero.html" (dict "title" $title "description" $desc "path" $path) }}
       {{ partial "docs/content.html" (dict "content" .Content "toc" .TableOfContents) }}
       {{ partial "footer.html" . }}
     </div>
