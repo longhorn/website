@@ -12,7 +12,7 @@
           <img class="footer-logo" src="{{ $logo }}" alt="{{ $title }} footer logo">
         </div>
 
-        <div class="column is-one-third">
+        <div class="column is-one-third has-text-centered">
           <ul>
             {{ range $menu }}
             {{ $isExternal := hasPrefix .URL "http" }}
@@ -27,7 +27,7 @@
         </div>
 
         <div class="column is-one-third">
-          {{ partial "social-buttons.html" (dict "full" false) }}
+          {{ partial "social-buttons.html" (dict "full" false "align" "right") }}
         </div>
       </div>
 
