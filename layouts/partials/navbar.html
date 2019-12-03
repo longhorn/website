@@ -17,16 +17,15 @@
     </div>
 
     <div class="navbar-menu">
-      <div class="navbar-start">
+      <div class="navbar-end">
         {{ range $menu }}
         {{ $isExternal := hasPrefix .URL "http" }}
-        <a class="navbar-item" href="{{ .URL }}"{{ if $isExternal }} target="_blank"{{ end }}>
-          {{ .Name }}
+        {{ $name       := .Name | upper }}
+        <a class="navbar-item has-text-weight-bold" href="{{ .URL }}"{{ if $isExternal }} target="_blank"{{ end }}>
+          {{ $name }}
         </a>
         {{ end }}
-      </div>
 
-      <div class="navbar-end">
         <div class="navbar-item">
           {{ partial "social-buttons.html" (dict "full" true) }}
         </div>
