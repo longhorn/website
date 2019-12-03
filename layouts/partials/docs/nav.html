@@ -1,0 +1,18 @@
+{{ $docs := where site.RegularPages "Section" "docs" }}
+<aside class="nav">
+  <ul>
+    <li>
+      <a href="/docs">
+        Docs home
+      </a>
+    </li>
+
+    {{ range $docs }}
+    <li>
+      <a href="{{ .RelPermalink }}">
+        {{ .Title }}
+      </a>
+    </li>
+    {{ end }}
+  </ul>
+</aside>
