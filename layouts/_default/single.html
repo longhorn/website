@@ -1,23 +1,14 @@
+{{ define "title" }}
+{{ site.Title }} | {{ .Title }}
+{{ end }}
+
 {{ define "main" }}
-  <main>
-  <h2>single</h2>
-    <article>
-      <h1>{{ .Title }}</h1>
-      <time>{{ .Date.Format "02.01.2006 15:04" }}</time>
-      <div>
-        {{ .Content }}
-      </div>
-      <div>
-        <ul id="tags">
-          {{ range .Params.tags }}
-          <li><a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">{{ . }}</a></li>
-          {{ end }}
-        </ul>
-      </div>
-      <div>
-        {{ template "_internal/disqus.html" . }}
-      </div>
-    </article>
-  </main>
-{{ partial "sidebar.html" . }}
+{{ $title := .Title }}
+{{ $desc  := .Params.description }}
+{{ $path  := .File.Path }}
+
+{{ partial "navbar.html" . }}
+{{ partial "hero.html" (dict "title" $title "description" $desc "path" $path) }}
+{{ partial "content.html" (dict "content" .Content) }}
+{{ partial "footer.html" . }}
 {{ end }}
