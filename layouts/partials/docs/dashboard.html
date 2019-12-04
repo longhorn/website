@@ -1,7 +1,7 @@
 {{ $title := .Title }}
 {{ $desc  := .Params.description }}
 {{ $path  := .File.Path }}
-<div class="dashboard">
+<div class="dashboard" id="canvas">
   {{ partial "navbar.html" . }}
   {{ partial "docs/under-nav.html" . }}
 
