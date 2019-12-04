@@ -1,9 +1,10 @@
 {{ $docs := where site.Pages "Section" "docs" }}
+{{ $here := .RelPermalink }}
 <nav class="navbar is-hidden-desktop under-nav">
   <div class="navbar-brand">
     <div class="navbar-item">
-      <div class="dropdown is-hoverable">
-        <div class="dropdown-trigger">
+      <div class="dropdown is-left" id="dropdown">
+        <div class="dropdown-trigger" id="dropdown-trigger">
           <button class="button is-dark is-inverted is-small" aria-haspopup="true" aria-controls="dropdown-menu">
             <span class="icon is-size-5">
               <ion-icon name="list"></ion-icon>
@@ -15,13 +16,17 @@
         </div>
 
         <div class="dropdown-menu" id="dropdown-menu" role="menu">
-          <div class="dropdown-content" id="dropdown-menu">
+          <div class="dropdown-content">
             {{ range $docs }}
-            <a class="dropdown-item" href="{{ .RelPermalink }}">
+            {{ $isHere     := eq $here .RelPermalink }}
+            {{ $isDocsHome := eq .Title .CurrentSection.Title }}
+            <a class="dropdown-item{{ if $isHere }} is-active{{ end }}" href="{{ .RelPermalink }}">
               {{ .Title }}
             </a>
+            {{ if $isDocsHome }}
+            <div class="dropdown-divider"></div>
             {{ end }}
-          </div>
+            {{ end }}
         </div>
       </div>
     </div>
