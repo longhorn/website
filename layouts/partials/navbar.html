@@ -4,7 +4,7 @@
 {{ $menu   := site.Menus.main }}
 {{ $isHome := .IsHome }}
 {{ $isDoc  := eq .Section "docs" }}
-<nav class="navbar">
+<nav class="navbar{{ if $isHome }} is-fixed-top{{ end }}">
   {{ if $isHome }}
   <div class="container">
   {{ end }}

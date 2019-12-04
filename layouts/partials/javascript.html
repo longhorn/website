@@ -1,21 +1,12 @@
-<script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-
-    if ($navbarBurgers.length > 0) {
-
-      $navbarBurgers.forEach( el => {
-        el.addEventListener('click', () => {
-          const target = el.dataset.target;
-          const $target = document.getElementById(target);
-
-          el.classList.toggle('is-active');
-          $target.classList.toggle('is-active');
-        });
-      });
-    }
-
-  });
-</script>
+<script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"></script>
+{{ $js     := "js/app.js"}}
+{{ $app    := resources.Get $js | resources.ExecuteAsTemplate $js . }}
+{{ $server := site.IsServer }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+{{ if $server }}
+<script src="{{ $app.RelPermalink }}"></script>
+{{ else }}
+{{ $prodApp := $app | fingerprint }}
+<script src="{{ $prodApp.RelPermalink }}" integrity="{{ $prodApp.Data.Integrity }}"></script>
+{{ end }}

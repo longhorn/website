@@ -1,15 +1,28 @@
+{{ $docs := where site.Pages "Section" "docs" }}
 <nav class="navbar is-hidden-desktop under-nav">
   <div class="navbar-brand">
     <div class="navbar-item">
-      <div class="buttons">
-        <a class="button is-dark is-inverted is-small" id="drawer-trigger">
-          <span class="icon is-size-5">
-            <ion-icon name="list"></ion-icon>
-          </span>
-          <span>
-            Table of contents
-          </span>
-        </a>
+      <div class="dropdown is-hoverable">
+        <div class="dropdown-trigger">
+          <button class="button is-dark is-inverted is-small" aria-haspopup="true" aria-controls="dropdown-menu">
+            <span class="icon is-size-5">
+              <ion-icon name="list"></ion-icon>
+            </span>
+            <span>
+              Table of contents
+            </span>
+          </button>
+        </div>
+
+        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+          <div class="dropdown-content" id="dropdown-menu">
+            {{ range $docs }}
+            <a class="dropdown-item" href="{{ .RelPermalink }}">
+              {{ .Title }}
+            </a>
+            {{ end }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
