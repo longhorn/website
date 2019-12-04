@@ -84,3 +84,8 @@ type = "monospace"
 name = "Docs"
 url = "/docs"
 weight = 1
+
+[[menu.main]]
+name = "Project"
+url = "/project"
+weight = 2

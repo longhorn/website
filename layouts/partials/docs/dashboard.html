@@ -11,8 +11,8 @@
     </div>
 
     <div class="dashboard-main-panel center is-scrollable">
-      {{ partial "docs/hero.html" (dict "title" $title "description" $desc "path" $path) }}
-      {{ partial "docs/content.html" (dict "content" .Content "toc" .TableOfContents) }}
+      {{ partial "hero.html" (dict "title" $title "description" $desc "path" $path) }}
+      {{ partial "content.html" (dict "content" .Content) }}
       {{ partial "footer.html" . }}
     </div>
   </div>

@@ -1,16 +1,7 @@
 ---
-title: Rancher Longhorn Chart
+title: The Rancher Longhorn Chart
+description: Run Longorn on Rancher 2.0 using Helm
 ---
-
-The following document pertains to running Longhorn from the Rancher 2.0 chart.
-
-## Source Code
-
-Longhorn is 100% open source software. Project source code is spread across a number of repos:
-
-1. Longhorn Engine -- Core controller/replica logic https://github.com/rancher/longhorn-engine
-2. Longhorn Manager -- Longhorn orchestration, includes Flexvolume driver for Kubernetes https://github.com/rancher/longhorn-manager
-3. Longhorn UI -- Dashboard https://github.com/rancher/longhorn-ui
 
 ## Prerequisites
 
@@ -36,7 +27,7 @@ Redeploy the (same version) Longhorn App. Follow the uninstallation procedure ab
 
 If your CRD instances or the CRDs themselves can't be deleted for whatever reason, run the commands below to clean up. Caution: this will wipe all Longhorn state!
 
-```
+```shell
 # Delete CRD finalizers, instances and definitions
 for crd in $(kubectl get crd -o jsonpath={.items[*].metadata.name} | tr ' ' '\n' | grep longhorn.rancher.io); do
   kubectl -n ${NAMESPACE} get $crd -o yaml | sed "s/\- longhorn.rancher.io//g" | kubectl apply -f -
@@ -56,4 +47,4 @@ Some vendors choose to change the directory for various reasons. For example, GK
 User can find the correct directory by running `ps aux|grep kubelet` on the host and check the `--volume-plugin-dir` parameter. If there is none, the default `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/` will be used.
 
 ---
-Please see [link](https://github.com/rancher/longhorn) for more information.
+Please see [link](https://github.com/longhorn/longhorn) for more information.
