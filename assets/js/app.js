@@ -1,5 +1,7 @@
 const burger = $('.navbar-burger'),
-  navbarMenu = $('.navbar-menu');
+  navbarMenu = $('.navbar-menu'),
+  dropdownTrigger = $('#dropdown-trigger'),
+  dropdown = $('#dropdown');
 
 const navbarBurgerExpand = () => {
   burger.click((e) => {
@@ -9,6 +11,13 @@ const navbarBurgerExpand = () => {
   });
 }
 
+const dropdownMenuExpand = () => {
+  dropdownTrigger.click(() => {
+    dropdown.toggleClass('is-active');
+  });
+}
+
 $(() => {
   navbarBurgerExpand();
+  dropdownMenuExpand();
 });

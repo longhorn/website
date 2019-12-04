@@ -1,4 +1,6 @@
-# Snapshot
+---
+title: Snapshots
+---
 
 A snapshot in Longhorn represents a volume state at a given time, stored in the same location of volume data on physical disk of the host. Snapshot creation is instant in Longhorn.
 
