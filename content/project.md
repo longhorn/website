@@ -14,7 +14,7 @@ Longhorn UI | The Longhorn dashboard | [longhorn/longhorn-ui](https://github.com
 
 ## Contributing to Longhorn
 
-You can find contributing guidelines for the Longorn project in the [main GitHub repo](https://github.com/longhorn/longhorn/blob/master/CONTRIBUTING.md).
+You can find contributing guidelines for the Longhorn project in the [main GitHub repo](https://github.com/longhorn/longhorn/blob/master/CONTRIBUTING.md).
 
 ## Code of Conduct
 

@@ -2,7 +2,7 @@
 title: Disaster Recovery Volumes
 ---
 
-A **disaster recovery volumes** (DRV) is a volume that stores data in a backup cluster in case the whole main cluster goes down. DRVs are used to increase the resiliency of Longorn volumes.
+A **disaster recovery volumes** (DRV) is a volume that stores data in a backup cluster in case the whole main cluster goes down. DRVs are used to increase the resiliency of Longhorn volumes.
 
 DRVs are in standby mode by default. You need to [activate](#activating) them before using them as normal volumes.
 
