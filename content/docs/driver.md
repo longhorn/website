@@ -2,47 +2,60 @@
 title: Kubernetes driver
 ---
 
-## Background
+If you're using [Kubernetes](https://kubernetes.io), you can use Longhorn to provide persistent storage using either:
 
-Longhorn can be used in Kubernetes to provide persistent storage through either Longhorn Container Storage Interface (CSI) driver or Longhorn FlexVolume driver. Longhorn will automatically deploy one of the drivers, depending on the Kubernetes cluster configuration. User can also specify the driver in the deployment yaml file. CSI is preferred.
+* The Longhorn Container Storage Interface (CSI) driver or
+* The Longhorn FlexVolume driver
 
-Noted that the volume created and used through one driver won't be recongized by Kubernetes using the other driver. So please don't switch driver (e.g. during upgrade) if you have existing volumes created using the old driver. If you really want to switch driver, see [here](upgrade.md#migrating-between-flexvolume-and-csi-driver) for instructions.
+Longhorn will automatically deploy one of these two drivers, depending on your Kubernetes cluster configuration. You can also specify the driver in the deployment YAML configuration.
 
-## CSI
+{{< info title="Preferred driver" >}}
+The CSI driver is generally preferred to the FlexVolume driver.
+{{< /info >}}
 
-### Requirement for the CSI driver
+Noted that the volume created and used through one driver won't be recongized by Kubernetes using the other driver. So please don't switch driver (e.g. during upgrade) if you have existing volumes created using the old driver. If you really want to switch driver, see [here](../upgrade#migrating-between-flexvolume-and-csi-driver) for instructions.
 
+## The CSI driver {#csi}
+
+{{< requirement title="Requirements for the CSI driver" >}}
 1. Kubernetes v1.10+
    1. CSI is in beta release for this version of Kubernetes, and enabled by default.
 2. Mount propagation feature gate enabled.
    1. It's enabled by default in Kubernetes v1.10. But some early versions of RKE may not enable it.
    2. You can check it by using [environment check script](#environment-check-script).
 3. If above conditions cannot be met, Longhorn will fall back to the FlexVolume driver.
+{{< /requirement >}}
 
 ### Check if your setup satisfied CSI requirement
+
 1. Use the following command to check your Kubernetes server version
-```
-kubectl version
-```
-Result:
-```
-Client Version: version.Info{Major:"1", Minor:"10", GitVersion:"v1.10.3", GitCommit:"2bba0127d85d5a46ab4b778548be28623b32d0b0", GitTreeState:"clean", BuildDate:"2018-05-21T09:17:39Z", GoVersion:"go1.9.3", Compiler:"gc", Platform:"linux/amd64"}
-Server Version: version.Info{Major:"1", Minor:"10", GitVersion:"v1.10.1", GitCommit:"d4ab47518836c750f9949b9e0d387f20fb92260b", GitTreeState:"clean", BuildDate:"2018-04-12T14:14:26Z", GoVersion:"go1.9.3", Compiler:"gc", Platform:"linux/amd64"}
-```
-The `Server Version` should be `v1.10` or above.
+
+    ```shell
+    kubectl version
+    ```
+
+    Result:
+
+    ```shell
+    Client Version: version.Info{Major:"1", Minor:"10", GitVersion:"v1.10.3", GitCommit:"2bba0127d85d5a46ab4b778548be28623b32d0b0", GitTreeState:"clean", BuildDate:"2018-05-21T09:17:39Z", GoVersion:"go1.9.3", Compiler:"gc", Platform:"linux/amd64"}
+    Server Version: version.Info{Major:"1", Minor:"10", GitVersion:"v1.10.1", GitCommit:"d4ab47518836c750f9949b9e0d387f20fb92260b", GitTreeState:"clean", BuildDate:"2018-04-12T14:14:26Z", GoVersion:"go1.9.3", Compiler:"gc", Platform:"linux/amd64"}
+    ```
+
+    The `Server Version` should be `v1.10` or above.
 
 2. The result of [environment check script](#environment-check-script) should contain `MountPropagation is enabled!`.
 
 ### Environment check script
 
-We've wrote a script to help user to gather enough information about the factors
+We've written a script to help you gather enough information about the factors. Before installing, run:
 
-Before installing, run:
-```
+```shell
 curl -sSfL https://raw.githubusercontent.com/rancher/longhorn/master/scripts/environment_check.sh | bash
 ```
+
 Example result:
-```
+
+```shell
 daemonset.apps/longhorn-environment-check created
 waiting for pods to become ready (0/3)
 all pods ready (3/3)
@@ -55,7 +68,8 @@ clean up complete
 ```
 
 ### Successful CSI deployment example
-```
+
+```shell
 $ kubectl -n longhorn-system get pod
 NAME                                        READY     STATUS    RESTARTS   AGE
 csi-attacher-6fdc77c485-8wlpg               1/1       Running   0          9d
@@ -77,10 +91,10 @@ longhorn-manager-snb9t                      1/1       Running   0          9d
 longhorn-ui-67b9b6887f-n7x9q                1/1       Running   0          9d
 ```
 
-For more information on CSI configuration, see [here](csi-config.md).
+For more information on CSI configuration, see [here](../csi-config).
 
+## The FlexVolume driver {#flexvolume}
 
-## Flexvolume
 ### Requirement for the FlexVolume driver
 
 1.  Kubernetes v1.8+
@@ -100,8 +114,9 @@ directory, as e.g. `/var/lib/kubelet/volumeplugins:/var/lib/kubelet/volumeplugin
     1. Longhorn doesn't support heterogeneous setup at the moment.
 
 ### Successful Flexvolume deployment example
-```
-# kubectl -n longhorn-system get pod
+
+```shell
+$ kubectl -n longhorn-system get pod
 NAME                                        READY     STATUS    RESTARTS   AGE
 engine-image-ei-57b85e25-8v65d              1/1       Running   0          7d
 engine-image-ei-57b85e25-gjjs6              1/1       Running   0          7d

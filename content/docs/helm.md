@@ -1,6 +1,6 @@
 ---
-title: The Rancher Longhorn Chart
-description: Run Longorn on Rancher 2.0 using Helm
+title: Helm
+description: Run Longhorn on Rancher 2.0 using Helm
 ---
 
 ## Prerequisites

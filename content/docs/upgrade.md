@@ -8,7 +8,8 @@ There are normally two steps in the upgrade process: first upgrade Longhorn mana
 
 ## Upgrade Longhorn manager from v0.3.0 or newer
 
-### From Longhorn App (Rancher Catalog App) 
+### From Longhorn App (Rancher Catalog App)
+
 On Rancher UI, navigate to the `Catalog Apps` screen and click the
 `Upgrade available` button. Do not change any of the settings. *Do not change
 any of the settings right now.* Click `Upgrade`.
@@ -29,13 +30,12 @@ Otherwise you will need to download the yaml file from [the official Longhorn De
 **ALWAYS MAKE BACKUPS BEFORE UPGRADE THE ENGINE IMAGES.**
 
 ### Offline upgrade
-If live upgrade is not available (e.g. before v0.3.3 or from v0.5.0 to v0.6.0), or the volume stuck in degraded state:
-1. Follow [the detach procedure for relevant workloads](upgrade.md#detach-volumes).
-2.  Select all the volumes using batch selection. Click batch operation button
-`Upgrade Engine`, choose the engine image available in the list. It's
-the default engine shipped with the manager for this release.
-3. Resume all workloads by reversing the [detach volumes procedure](upgrade.md#detach-volumes).
-Any volume not part of a Kubernetes workload must be attached from Longhorn UI.
+
+If live upgrade is not available (e.g. before v0.3.3 or from v0.5.0 to v0.6.0), or the volume is stuck in a degraded state:
+
+1. Follow [the detach procedure for relevant workloads](#detach-volumes).
+2.  Select all the volumes using batch selection. Click batch operation button **Upgrade Engine**, choose the engine image available in the list. It's the default engine shipped with the manager for this release.
+3. Resume all workloads by reversing the [detach volumes procedure](#detach-volumes). Any volume not part of a Kubernetes workload must be attached from Longhorn UI.
 
 ### Live upgrade
 
@@ -54,6 +54,7 @@ During the live upgrade, the user will see double number of the replicas tempora
 Notice after the live upgrade, Rancher or Kubernetes would still show the old version of image for the engine, and new version for the replicas. It's expected. The upgrade is success if you see the new version of image listed as the volume image in the Volume Detail page.
 
 ### Clean up the old image
+
 After you've done upgrade for all the images, select `Settings/Engine Image` from Longhorn UI. Now you should able to remove the non-default image.
 
 ## Migrating Between Flexvolume and CSI Driver
@@ -71,12 +72,9 @@ Consider deleting unimportant workloads using the old driver to reduce effort.
 CSI is the newest out-of-tree Kubernetes storage interface.
 
 1. [Backup existing volumes](upgrade.md#backup-existing-volumes).
-2. On Rancher UI, navigate to the `Catalog Apps` screen, locate the `Longhorn`
-app and click the `Up to date` button. Under `Kubernetes Driver`, select
+2. On Rancher UI, navigate to the `Catalog Apps` screen, locate the `Longhorn` app and click the `Up to date` button. Under `Kubernetes Driver`, select
 `flexvolume`. We recommend leaving `Flexvolume Path` empty. Click `Upgrade`.
-3. Restore each volume by following the [CSI restore procedure](restore_statefulset.md#csi-instructions).
-This procedure is tailored to the StatefulSet workload, but the process is
-approximately the same for all workloads.
+3. Restore each volume by following the [CSI restore procedure](restore_statefulset.md#csi-instructions). This procedure is tailored to the StatefulSet workload, but the process is approximately the same for all workloads.
 
 ### CSI to Flexvolume
 
@@ -85,12 +83,8 @@ to hear from you. CSI is the newest out-of-tree storage interface and we
 expect it to replace Flexvolume's exec-based model.
 
 1. [Backup existing volumes](upgrade.md#backup-existing-volumes).
-2. On Rancher UI, navigate to the `Catalog Apps` screen, locate the `Longhorn`
-app and click the `Up to date` button. Under `Kubernetes Driver`, select
-`flexvolume`. We recommend leaving `Flexvolume Path` empty. Click `Upgrade`.
-3. Restore each volume by following the [Flexvolume restore procedure](restore_statefulset.md#flexvolume-instructions).
-This procedure is tailored to the StatefulSet workload, but the process is
-approximately the same for all workloads.
+2. On Rancher UI, navigate to the `Catalog Apps` screen, locate the `Longhorn` app and click the `Up to date` button. Under `Kubernetes Driver`, select `flexvolume`. We recommend leaving `Flexvolume Path` empty. Click `Upgrade`.
+3. Restore each volume by following the [Flexvolume restore procedure](restore_statefulset.md#flexvolume-instructions). This procedure is tailored to the StatefulSet workload, but the process is approximately the same for all workloads.
 
 ## Upgrade Longhorn manager from v0.2 and older
 
@@ -104,11 +98,12 @@ before upgrade. If you don't have a on-cluster backupstore already, create one.
 We'll use NFS backupstore for this example.
 
 1. Execute following command to create the backupstore
-```
-kubectl apply -f https://raw.githubusercontent.com/rancher/longhorn/master/deploy/backupstores/nfs-backupstore.yaml
-```
-2. On Longhorn UI Settings page, set Backup Target to
-`nfs://longhorn-test-nfs-svc.default:/opt/backupstore` and click `Save`.
+
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/rancher/longhorn/master/deploy/backupstores/nfs-backupstore.yaml
+    ```
+
+2. On Longhorn UI Settings page, set Backup Target to `nfs://longhorn-test-nfs-svc.default:/opt/backupstore` and click `Save`.
 
 Navigate to each volume detail page and click `Take Snapshot` (it's recommended to run `sync` in the host command line before `Take Snapshot`). Click the new
 snapshot and click `Backup`. Wait for the new backup to show up in the volume's backup list before continuing.
@@ -172,19 +167,22 @@ set `BackupTarget` after upgrading from either v0.1 or v0.2.
 Delete Longhorn components.
 
 For Longhorn `v0.1` (most likely installed using Longhorn App in Rancher 2.0):
-```
+
+```shell
 kubectl delete -f https://raw.githubusercontent.com/llparse/longhorn/v0.1/deploy/uninstall-for-upgrade.yaml
 ```
 
 For Longhorn `v0.2`:
-```
+
+```shell
 kubectl delete -f https://raw.githubusercontent.com/rancher/longhorn/v0.2/deploy/uninstall-for-upgrade.yaml
 ```
 
 If both commands returned `Not found` for all components, Longhorn is probably
 deployed in a different namespace. Determine which namespace is in use and
 adjust `NAMESPACE` here accordingly:
-```
+
+```shell
 NAMESPACE=<some_longhorn_namespace>
 curl -sSfL https://raw.githubusercontent.com/rancher/longhorn/v0.1/deploy/uninstall-for-upgrade.yaml|sed "s#^\( *\)namespace: longhorn#\1namespace: ${NAMESPACE}#g" > longhorn.yaml
 kubectl delete -f longhorn.yaml
@@ -195,21 +193,25 @@ kubectl delete -f longhorn.yaml
 We're going to backup Longhorn CRD yaml to local directory, so we can restore or inspect them later.
 
 #### Upgrade from v0.1
+
 User must backup the CRDs for v0.1 because we will change the default deploying namespace for Longhorn.
 Check your backups to make sure Longhorn was running in namespace `longhorn`, otherwise change the value of `NAMESPACE` below.
-```
+
+```shell
 NAMESPACE=longhorn
 kubectl -n ${NAMESPACE} get volumes.longhorn.rancher.io -o yaml > longhorn-v0.1-backup-volumes.yaml
 kubectl -n ${NAMESPACE} get engines.longhorn.rancher.io -o yaml > longhorn-v0.1-backup-engines.yaml
 kubectl -n ${NAMESPACE} get replicas.longhorn.rancher.io -o yaml > longhorn-v0.1-backup-replicas.yaml
 kubectl -n ${NAMESPACE} get settings.longhorn.rancher.io -o yaml > longhorn-v0.1-backup-settings.yaml
 ```
+
 After it's done, check those files, make sure they're not empty (unless you have no existing volumes).
 
 #### Upgrade from v0.2
-Check your backups to make sure Longhorn was running in namespace
-`longhorn-system`, otherwise change the value of `NAMESPACE` below.
-```
+
+Check your backups to make sure Longhorn is running in namespace `longhorn-system`, otherwise change the value of `NAMESPACE` below.
+
+```shell
 NAMESPACE=longhorn-system
 kubectl -n ${NAMESPACE} get volumes.longhorn.rancher.io -o yaml > longhorn-v0.2-backup-volumes.yaml
 kubectl -n ${NAMESPACE} get engines.longhorn.rancher.io -o yaml > longhorn-v0.2-backup-engines.yaml

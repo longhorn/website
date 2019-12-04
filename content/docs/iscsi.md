@@ -12,7 +12,7 @@ To start volume with iSCSI target frontend mode, select `iSCSI` as the frontend
 when creating the volume. After volume has been attached, the user will see
 something like following in the `endpoint` field:
 
-```
+```text
 iscsi://10.42.0.21:3260/iqn.2014-09.com.rancher:testvolume/1
 ```
 
