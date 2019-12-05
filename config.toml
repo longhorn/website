@@ -56,7 +56,7 @@ If your main cluster fails, you can bring up the app in the DR cluster quickly w
 
 [params.social]
 github = "https://github.com/longhorn/longhorn"
-twitter = "longhorn"
+#twitter = "longhorn"
 
 [params.logos]
 navbar = "longhorn-horizontal-color.png"
