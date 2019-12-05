@@ -5,9 +5,18 @@
     {{ range $docs }}
     {{ $isHere := eq .RelPermalink $here }}
     <li>
+      {{ if $isHere }}
+      <span class="icon">
+        <ion-icon size="medium" name="arrow-forward"></ion-icon>
+      </span>
+      <a class="is-active" href="{{ .RelPermalink }}">
+        {{ .Title }}
+      </a>
+      {{ else }}
       <a{{ if $isHere }} class="is-active"{{ end }} href="{{ .RelPermalink }}">
         {{ .Title }}
       </a>
+      {{ end }}
     </li>
     {{ end }}
   </ul>

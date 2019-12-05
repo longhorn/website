@@ -1,5 +1,5 @@
 {{ $editUrl := printf "https://github.com/longhorn/website/edit/master/content/%s" .path }}
-<section class="hero is-primary is-medium">
+<section class="hero is-medium">
   <div class="hero-body">
     <div class="container">
       <p class="title is-size-2 is-size-3-mobile has-text-weight-light{{ if .description }} is-spaced{{ end }}">
@@ -15,7 +15,7 @@
       <br />
 
       <div class="buttons">
-        <a class="button is-black is-inverted" href="{{ $editUrl }}" target="_blank">
+        <a class="button is-black" href="{{ $editUrl }}" target="_blank">
           <span class="icon">
             <ion-icon name="logo-github"></ion-icon>
           </span>

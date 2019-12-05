@@ -15,11 +15,3 @@ indent_size = 2
 [*.{css,html,js,sass}]
 indent_style = space
 indent_size = 2
-
-[*.hbs]
-insert_final_newline = false
-indent_style = space
-indent_size = 2
-
-[*.{diff,md}]
-trim_trailing_whitespace = false
