@@ -1,22 +1,20 @@
 {{ $title := .Title }}
 {{ $desc  := .Params.description }}
-<div class="dashboard" id="canvas">
-  {{ partial "navbar.html" . }}
-  {{ partial "docs/under-nav.html" . }}
 
-  <div class="dashboard-main">
-    <div class="dashboard-main-panel left is-hidden-touch">
-      {{ partial "docs/nav.html" . }}
+<div class="canvas" id="canvas">
+  {{ partial "navbar.html" . }}
+  <div class="dashboard">
+    <div class="dashboard-panel sidebar is-hidden-touch">
+      {{ partial "docs/nav.html" (dict "drawer" false "here" .RelPermalink) }}
     </div>
 
-    <div class="dashboard-main-panel center is-scrollable">
+    <div class="dashboard-panel main">
       {{ partial "hero.html" . }}
-
       {{ partial "content.html" (dict "content" .Content) }}
       {{ partial "docs/pagination.html" . }}
-
-
       {{ partial "footer.html" . }}
     </div>
   </div>
 </div>
+
+{{ partial "docs/drawer.html" . }}

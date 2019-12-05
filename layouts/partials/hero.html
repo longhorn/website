@@ -2,7 +2,7 @@
 {{ $title   := .Title }}
 {{ $desc    := .Params.description }}
 {{ $editUrl := printf "https://github.com/longhorn/website/edit/master/content/%s" $path }}
-<section class="hero">
+<section class="hero is-primary is-medium is-bold">
   <div class="hero-body">
     <div class="container">
       <p class="title is-size-2 is-size-3-mobile has-text-weight-bold{{ if $desc }} is-spaced{{ end }}">
@@ -16,7 +16,7 @@
       {{ end }}
 
       <div class="buttons">
-        <a class="button is-dark is-outlined" href="{{ $editUrl }}" target="_blank">
+        <a class="button is-small is-black is-inverted" href="{{ $editUrl }}" target="_blank">
           <span class="icon">
             <ion-icon name="logo-github"></ion-icon>
           </span>

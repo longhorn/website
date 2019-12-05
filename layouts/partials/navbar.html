@@ -4,7 +4,7 @@
 {{ $menu    := site.Menus.main }}
 {{ $isDoc   := eq .Section "docs" }}
 {{ $version := site.Params.version }}
-<nav class="navbar{{ if not $isDoc }} is-fixed-top{{ end }}{{ if $isDoc }} has-shadow{{ end }}">
+<nav class="navbar is-fixed-top{{ if $isDoc }} has-shadow{{ end }}">
   {{ if not $isDoc }}
   <div class="container">
   {{ end }}
@@ -12,6 +12,14 @@
       <a class="navbar-item" href="{{ $home }}">
         <img src="{{ $logo }}" alt="{{ $title }} navbar logo">
       </a>
+
+      <div class="navbar-item is-hidden-desktop">
+        <a class="button is-borderless" id="drawer-toggle">
+          <span class="icon">
+            <ion-icon name="list"></ion-icon>
+          </span>
+        </a>
+      </div>
 
       <span class="navbar-item has-text-weight-bold has-text-grey">
         {{ $version }}
