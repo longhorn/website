@@ -17,7 +17,25 @@ const dropdownMenuExpand = () => {
   });
 }
 
+const drawerToggle = () => {
+  const toggle = $('#drawer-toggle'),
+    drawer = $('#drawer'),
+    canvas = $('#canvas'),
+    close = $('#drawer-close');
+
+  toggle.click(() => {
+    canvas.addClass('is-dark');
+    drawer.toggleClass('is-visible');
+
+    close.click(() => {
+      drawer.removeClass('is-visible');
+      canvas.removeClass('is-dark');
+    });
+  });
+}
+
 $(() => {
   navbarBurgerExpand();
   dropdownMenuExpand();
+  drawerToggle();
 });

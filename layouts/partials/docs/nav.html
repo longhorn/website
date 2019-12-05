@@ -1,6 +1,16 @@
-{{ $here := .RelPermalink }}
+{{ $here := .here }}
 {{ $docs := where site.Pages "Section" "docs" }}
 <aside class="nav">
+  {{ if .drawer }}
+  <div class="buttons is-right">
+    <a class="button is-borderless" id="drawer-close">
+      <span class="icon">
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </span>
+    </a>
+  </div>
+  {{ end }}
+
   <ul>
     {{ range $docs }}
     {{ $isHere := eq .RelPermalink $here }}
