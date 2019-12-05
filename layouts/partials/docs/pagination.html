@@ -4,13 +4,26 @@
     <nav class="pagination" role="navigation" aria-label="pagination">
       {{ with .Next }}
       <a class="pagination-previous has-text-white has-background-primary" href="{{ .RelPermalink }}">
-        Previous:&nbsp;<strong>{{ .Title }}</strong>
+        <span class="icon">
+          <ion-icon name="arrow-round-back"></ion-icon>
+        </span>
+        <span>
+          {{ .Title }}
+        </span>
       </a>
       {{ end }}
 
+
+
       {{ with .Prev }}
       <a class="pagination-previous has-text-white has-background-primary" href="{{ .RelPermalink }}">
-        Next:&nbsp;<strong>{{ .Title }}</strong>
+        <span>
+          {{ .Title }}
+        </span>
+
+        <span class="icon">
+          <ion-icon name="arrow-round-forward"></ion-icon>
+        </span>
       </a>
       {{ end }}
     </nav>
