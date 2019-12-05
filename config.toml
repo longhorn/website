@@ -9,7 +9,7 @@ enableGitInfo = true
 disableKinds = ["taxonomy", "taxonomyTerm"]
 
 [markup.highlight]
-style = "paradiso-dark"
+style = "paraiso-dark"
 
 [params]
 description = "Cloud native distributed block storage for Kubernetes"

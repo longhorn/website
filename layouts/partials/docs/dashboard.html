@@ -11,8 +11,11 @@
 
     <div class="dashboard-main-panel center is-scrollable">
       {{ partial "hero.html" . }}
+
       {{ partial "content.html" (dict "content" .Content) }}
       {{ partial "docs/pagination.html" . }}
+
+
       {{ partial "footer.html" . }}
     </div>
   </div>
