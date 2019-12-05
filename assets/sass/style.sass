@@ -58,11 +58,15 @@ $code-background: $light
 .under-nav
   z-index: 1
 
-.docs-content, .pagination
-  padding-bottom: 5rem
-
+=desktop-shrink
   +desktop
     width: 70%
+
+.docs-content, .pagination
+  +desktop-shrink
+
+.docs-content
+  padding-bottom: 5rem
 
 .hero-logo
   +logo(65%, 25%)

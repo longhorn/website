@@ -1,12 +1,15 @@
-{{ $editUrl := printf "https://github.com/longhorn/website/edit/master/content/%s" .path }}
-<section class="hero is-medium">
+{{ $path    := .File.Path }}
+{{ $title   := .Title }}
+{{ $desc    := .Params.description }}
+{{ $editUrl := printf "https://github.com/longhorn/website/edit/master/content/%s" $path }}
+<section class="hero">
   <div class="hero-body">
     <div class="container">
-      <p class="title is-size-2 is-size-3-mobile has-text-weight-light{{ if .description }} is-spaced{{ end }}">
-        {{ .title }}
+      <p class="title is-size-2 is-size-3-mobile has-text-weight-light{{ if $desc }} is-spaced{{ end }}">
+        {{ $title }}
       </p>
 
-      {{ with .description }}
+      {{ with $desc }}
       <p class="subtitle is-size-3 is-size-4-mobile has-text-weight-light">
         {{ . | markdownify }}
       </p>
