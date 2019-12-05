@@ -1,6 +1,12 @@
 {{ $social := site.Params.social }}
 {{ $align  := .align | default "left" }}
+{{ $lean   := .lean }}
 <div class="buttons is-{{ $align }}">
-  {{ partial "button.html" (dict "lean" .lean "text" "GitHub" "color" "black" "icon" "logo-github" "url" $social.github) }}
-  {{ partial "button.html" (dict "lean" .lean "text" "Twitter" "color" "twitter-blue" "icon" "logo-twitter" "url" $social.twitter) }}
+  {{ with $social.github }}
+  {{ partial "button.html" (dict "lean" $lean "text" "GitHub" "color" "black" "icon" "logo-github" "url" .) }}
+  {{ end }}
+
+  {{ with $social.twitter }}
+  {{ partial "button.html" (dict "lean" $lean "text" "Twitter" "color" "twitter-blue" "icon" "logo-twitter" "url" .) }}
+  {{ end }}
 </div>
