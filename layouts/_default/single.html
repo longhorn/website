@@ -8,7 +8,7 @@
 {{ $path  := .File.Path }}
 
 {{ partial "navbar.html" . }}
-{{ partial "hero.html" (dict "title" $title "description" $desc "path" $path) }}
-{{ partial "content.html" (dict "content" .Content) }}
+{{ partial "hero.html" . }}
+{{ partial "content.html" . }}
 {{ partial "footer.html" . }}
 {{ end }}
