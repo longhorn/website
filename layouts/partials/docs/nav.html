@@ -6,11 +6,13 @@
     {{ $isHere := eq .RelPermalink $here }}
     <li>
       {{ if $isHere }}
-      <span class="icon">
-        <ion-icon size="medium" name="arrow-forward"></ion-icon>
-      </span>
       <a class="is-active" href="{{ .RelPermalink }}">
-        {{ .Title }}
+        <span class="icon">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </span>
+        <span>
+          {{ .Title }}
+        </span>
       </a>
       {{ else }}
       <a{{ if $isHere }} class="is-active"{{ end }} href="{{ .RelPermalink }}">
