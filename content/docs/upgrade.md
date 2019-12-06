@@ -21,9 +21,9 @@ bottom right corner of the screen turn solid green. Navigate to
 
 ### From Longhorn deployment yaml
 
-If you didn't change any configuration during Longhorn installation, follow [the official Longhorn Deployment instructions](../README.md#deployment) to upgrade.
+If you didn't change any configuration during Longhorn installation, follow [the official Longhorn Deployment instructions](../getting-started) to upgrade.
 
-Otherwise you will need to download the yaml file from [the official Longhorn Deployment instructions](../README.md#deployment), modify it to your need, then use `kubectl apply -f` to upgrade.
+Otherwise you will need to download the yaml file from [the official Longhorn Deployment instructions](../getting-started), modify it to your need, then use `kubectl apply -f` to upgrade.
 
 ## Upgrade Longhorn engine
 
@@ -71,10 +71,10 @@ Consider deleting unimportant workloads using the old driver to reduce effort.
 
 CSI is the newest out-of-tree Kubernetes storage interface.
 
-1. [Backup existing volumes](upgrade.md#backup-existing-volumes).
+1. [Backup existing volumes](../upgrade#backup-existing-volumes).
 2. On Rancher UI, navigate to the `Catalog Apps` screen, locate the `Longhorn` app and click the `Up to date` button. Under `Kubernetes Driver`, select
 `flexvolume`. We recommend leaving `Flexvolume Path` empty. Click `Upgrade`.
-3. Restore each volume by following the [CSI restore procedure](restore_statefulset.md#csi-instructions). This procedure is tailored to the StatefulSet workload, but the process is approximately the same for all workloads.
+3. Restore each volume by following the [CSI restore procedure](../restore-statefulset#csi-instructions). This procedure is tailored to the StatefulSet workload, but the process is approximately the same for all workloads.
 
 ### CSI to Flexvolume
 
@@ -82,9 +82,9 @@ If you would like to migrate from CSI to Flexvolume driver, we are interested
 to hear from you. CSI is the newest out-of-tree storage interface and we
 expect it to replace Flexvolume's exec-based model.
 
-1. [Backup existing volumes](upgrade.md#backup-existing-volumes).
+1. [Backup existing volumes](../upgrade#backup-existing-volumes).
 2. On Rancher UI, navigate to the `Catalog Apps` screen, locate the `Longhorn` app and click the `Up to date` button. Under `Kubernetes Driver`, select `flexvolume`. We recommend leaving `Flexvolume Path` empty. Click `Upgrade`.
-3. Restore each volume by following the [Flexvolume restore procedure](restore_statefulset.md#flexvolume-instructions). This procedure is tailored to the StatefulSet workload, but the process is approximately the same for all workloads.
+3. Restore each volume by following the [Flexvolume restore procedure](../restore-statefulset#flexvolume-instructions). This procedure is tailored to the StatefulSet workload, but the process is approximately the same for all workloads.
 
 ## Upgrade Longhorn manager from v0.2 and older
 
@@ -257,7 +257,7 @@ sed "s#^\( *\)namespace: .*#\1namespace: ${NAMESPACE}#g" longhorn-v0.1-backup-vo
 ### Upgrade from v0.2
 
 For Longhorn v0.2 users who are not using Rancher, follow
-[the official Longhorn Deployment instructions](../README.md#deployment).
+[the official Longhorn Deployment instructions](../getting-started).
 
 ### Access UI and Set BackupTarget
 
@@ -266,7 +266,7 @@ Wait until the longhorn-ui and longhorn-manager pods are `Running`:
 kubectl -n longhorn-system get pod -w
 ```
 
-[Access the UI](../README.md#access-the-ui).
+[Access the UI](../getting-started#access-the-ui).
 
 On `Setting > General`, set `Backup Target` to the backup target used in
 the previous version. In our example, this is
