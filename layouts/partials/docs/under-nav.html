@@ -1,34 +1,16 @@
 {{ $docs := where site.Pages "Section" "docs" }}
 {{ $here := .RelPermalink }}
-<nav class="navbar is-hidden-desktop under-nav">
+<nav class="navbar is-black is-hidden-desktop under-nav">
   <div class="navbar-brand">
-    <div class="navbar-item">
-      <div class="dropdown is-left" id="dropdown">
-        <div class="dropdown-trigger" id="dropdown-trigger">
-          <button class="button is-dark is-inverted is-small" aria-haspopup="true" aria-controls="dropdown-menu">
-            <span class="icon is-size-5">
-              <ion-icon name="list"></ion-icon>
-            </span>
-            <span>
-              Table of contents
-            </span>
-          </button>
-        </div>
-
-        <div class="dropdown-menu" id="dropdown-menu" role="menu">
-          <div class="dropdown-content">
-            {{ range $docs }}
-            {{ $isHere     := eq $here .RelPermalink }}
-            {{ $isDocsHome := eq .Title .CurrentSection.Title }}
-            <a class="dropdown-item{{ if $isHere }} is-active{{ end }}" href="{{ .RelPermalink }}">
-              {{ .Title }}
-            </a>
-            {{ if $isDocsHome }}
-            <div class="dropdown-divider"></div>
-            {{ end }}
-            {{ end }}
-        </div>
-      </div>
+    <div class="navbar-item is-hidden-desktop">
+      <a class="button is-black is-borderless has-text-weight-light" id="drawer-toggle">
+        <span class="icon">
+          <ion-icon name="list"></ion-icon>
+        </span>
+        <span>
+          Docs
+        </span>
+      </a>
     </div>
   </div>
 </nav>

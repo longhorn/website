@@ -14,7 +14,7 @@
     {{ partial "css.html" . }}
     {{ partial "favicon.html" . }}
   </head>
-  <body{{ if not $isDoc }} class="has-navbar-fixed-top"{{ end }}>
+  <body class="has-navbar-fixed-top">
     {{ block "main" . }}{{ end }}
 
     {{ partial "javascript.html" . }}
