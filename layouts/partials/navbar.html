@@ -13,14 +13,6 @@
         <img src="{{ $logo }}" alt="{{ $title }} navbar logo">
       </a>
 
-      <div class="navbar-item is-hidden-desktop">
-        <a class="button is-borderless" id="drawer-toggle">
-          <span class="icon">
-            <ion-icon name="list"></ion-icon>
-          </span>
-        </a>
-      </div>
-
       <span class="navbar-item has-text-weight-bold has-text-grey">
         {{ $version }}
       </span>
@@ -43,7 +35,7 @@
         {{ end }}
 
         <div class="navbar-item">
-          {{ partial "social-buttons.html" (dict "lean" (not $isDoc)) }}
+          {{ partial "social-buttons.html" (dict "lean" false) }}
         </div>
       </div>
     </div>

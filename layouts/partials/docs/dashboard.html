@@ -3,6 +3,8 @@
 
 <div class="canvas" id="canvas">
   {{ partial "navbar.html" . }}
+  {{ partial "docs/under-nav.html" . }}
+
   <div class="dashboard">
     <div class="dashboard-panel sidebar is-hidden-touch">
       {{ partial "docs/nav.html" (dict "drawer" false "here" .RelPermalink) }}
