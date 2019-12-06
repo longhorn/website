@@ -4,6 +4,7 @@
 {{ $menu    := site.Menus.main }}
 {{ $isDoc   := eq .Section "docs" }}
 {{ $version := site.Params.version }}
+{{ $here    := .RelPermalink }}
 <nav class="navbar is-fixed-top{{ if $isDoc }} has-shadow{{ end }}">
   {{ if not $isDoc }}
   <div class="container">
@@ -26,12 +27,8 @@
 
     <div class="navbar-menu" id="menu">
       <div class="navbar-end">
-        {{ range $menu }}
-        {{ $isExternal := hasPrefix .URL "http" }}
-        {{ $name       := .Name | upper }}
-        <a class="navbar-item has-text-weight-bold" href="{{ .URL }}"{{ if $isExternal }} target="_blank"{{ end }}>
-          {{ $name }}
-        </a>
+        {{ with $menu }}
+        {{ partial "navbar-menu.html" (dict "menu" . "here" $here) }}
         {{ end }}
 
         <div class="navbar-item">
