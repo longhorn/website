@@ -1,8 +1,7 @@
 ---
 title: Getting started
 description: Run Longhorn on Kubernetes using [kubectl](#kubectl) or [Helm](#helm)
-weight: 2
-draft: true
+weight: 1
 ---
 
 ## Using `kubectl` {#kubectl}

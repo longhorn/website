@@ -1,6 +1,7 @@
 ---
 title: Helm
 description: Run Longhorn on Rancher 2.0 using Helm
+weight: 1
 ---
 
 ## Prerequisites

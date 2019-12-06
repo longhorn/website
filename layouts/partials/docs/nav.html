@@ -1,5 +1,5 @@
-{{ $here := .here }}
-{{ $docs := where site.Pages "Section" "docs" }}
+{{ $sections := where site.Sections "Section" "docs" }}
+{{ $here     := .here }}
 <aside class="nav{{ if .drawer }} is-drawer{{ else }} is-sidebar{{ end }}">
   {{ if .drawer }}
   <div class="button-container">
@@ -11,25 +11,39 @@
   </div>
   {{ end }}
 
-  <ul class="nav-list">
-    {{ range $docs }}
-    {{ $isHere := eq .RelPermalink $here }}
-    <li>
-      {{ if $isHere }}
-      <a class="is-active" href="{{ .RelPermalink }}">
-        <span class="icon">
-          <ion-icon name="arrow-forward"></ion-icon>
-        </span>
-        <span>
-          {{ .Title }}
-        </span>
-      </a>
-      {{ else }}
+  {{ with $sections }}
+  <div class="nav-sections">
+    {{ template "section" (dict "sections" $sections "here" $here) }}
+  </div>
+  {{ end }}
+</aside>
+
+{{ define "section" }}
+{{ $here := .here }}
+
+{{ range .sections }}
+{{ $isHere := eq $here .RelPermalink }}
+<div class="nav-section">
+  <a class="nav-section-title{{ if $isHere }} is-active{{ end }}" href="{{ .RelPermalink }}">
+    {{ .Title }}
+  </a>
+
+  {{ with .RegularPages }}
+  <ul class="nav-section-pages">
+    {{ range . }}
+    {{ $isHere := eq $here .RelPermalink }}
+    <li class="nav-section-pages-link">
       <a{{ if $isHere }} class="is-active"{{ end }} href="{{ .RelPermalink }}">
         {{ .Title }}
       </a>
-      {{ end }}
     </li>
     {{ end }}
   </ul>
-</aside>
+  {{ end }}
+</div>
+
+{{ with .Sections }}
+{{ template "section" (dict "sections" .) }}
+{{ end }}
+{{ end }}
+{{ end }}

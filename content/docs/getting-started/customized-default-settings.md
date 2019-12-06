@@ -1,5 +1,6 @@
 ---
 title: Customized Default Settings
+weight: 2
 ---
 
 You can customize Longhorn's default settings when deploying it. You can specify, for example, `Create Default Disk With Node Labeled` and `Default Data Path` before starting Longhorn.
