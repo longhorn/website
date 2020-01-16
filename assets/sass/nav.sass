@@ -1,54 +1,38 @@
+=x
+  border: 2px solid red
+
 .nav
-  &.is-sidebar
-    padding: 2rem
+  margin: 2rem
 
-  &.is-drawer
-    padding: 0.5rem
+  li
+    line-height: 125%
 
-    .nav-sections
-      padding: 0 1rem
-      margin-top: 1rem
+  a
+    &.is-active
+      color: $secondary
+      font-weight: 700
 
-  .button-container
-    margin: .5rem .5rem 0 0
-    display: flex
-    flex-direction: row
-    justify-content: flex-end
-
-    .button
-      background-color: $white-bis
-
-  .nav-section-title, .nav-section-pages-link
-    line-height: 130%
-
-  a.is-active
-    color: $secondary
-    font-weight: 700
-
-  &-sections
+    &:hover
+      color: $secondary
 
   &-section
+    &-title
+      font-size: 1.25rem
+
+    &-pages
+      margin: 0.5rem 0 0 1rem
+
+      &-link
+        font-size: 1.1rem
+
+        & + &
+          margin-top: 0.25rem
+
     & + &
       margin-top: 1rem
 
-    &-title
-      font-size: 1.5rem
-      font-weight: 500
-
-      & + .nav-section-pages
-        margin-top: 0.75rem
+  &-sub-section
+    margin: 0.25rem 0 0 1rem
 
     &-pages
-      margin-left: 1.5rem
-
-      &-link
-        a
-          color: $dark
-          font-size: 1.1rem
-
-          &:hover
-            color: $secondary
-
-        & + &
-          margin-top: .75rem
-
+      margin: 0.25rem 0 0 1rem
