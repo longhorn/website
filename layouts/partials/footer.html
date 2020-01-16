@@ -1,8 +1,8 @@
 {{ $title       := site.Title }}
 {{ $logo        := printf "img/logos/%s" site.Params.logos.footer | relURL }}
 {{ $firstYear   := "2019" | int }}
-{{ $currentYear := now.Year }}
-{{ $yearString  := cond (eq $firstYear $currentYear) $firstYear (printf "%s-%s" $firstYear $currentYear) }}
+{{ $currentYear := now.Year | int }}
+{{ $yearString  := cond (eq $firstYear $currentYear) $firstYear (printf "%d-%d" $firstYear $currentYear) }}
 {{ $menu        := site.Menus.main }}
 <section class="hero is-medium footer-hero">
   <div class="hero-body">
