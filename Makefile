@@ -1,8 +1,10 @@
 serve:
-	hugo server \
+	hugo server -D \
 		--buildDrafts \
 		--buildFuture \
-		--disableFastRender
+		--disableFastRender \
+		--bind 0.0.0.0 \
+		--port 8085
 
 production-build:
 	hugo --minify
