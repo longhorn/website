@@ -2,7 +2,9 @@ serve:
 	hugo server \
 		--buildDrafts \
 		--buildFuture \
-		--disableFastRender
+		--disableFastRender \
+		--bind 0.0.0.0 \
+		--port 8080
 
 production-build:
 	hugo --minify
