@@ -20,7 +20,7 @@ volume entry and restore it. Name the volume something that can easily be
 referenced later for the `Persistent Volumes`.
   - Repeat this step for each volume you need restored.
   - For example, if restoring a Stateful Set with two replicas that had
-  volumes named `pvc-01a` and `pvc-02b`, the restore could look like this:  
+  volumes named `pvc-01a` and `pvc-02b`, the restore could look like this:
 
 | Backup Name | Restored Volume   |
 |-------------|-------------------|
@@ -137,7 +137,7 @@ spec:
       fromBackup: <backup URL> # must be set to Longhorn backup URL
 ```
 
-3. Go to [General Instructions](#general_instructions).
+3. Go to [General Instructions](#general-instructions).
 
 ### General Instructions
 **Make sure you have followed either the [CSI](#csi-instructions) or

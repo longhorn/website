@@ -42,7 +42,7 @@ Typically incremental restoration is triggered by the periodic backup store upda
 interval in `Setting - General - Backupstore Poll Interval`. Notice that this interval can potentially impact
 Recovery Time Objective(RTO). If it is too long, there may be a large amount of data for the disaster recovery volume to
 restore, which will take a long time. As for Recovery Point Objective(RPO), it is determined by recurring backup
-scheduling of the backup volume. You can check [here](../snapshot-backup) to see how to set recurring backup in Longhorn.
+scheduling of the backup volume. You can check [here](../snapshots#backup) to see how to set recurring backup in Longhorn.
 
 e.g.:
 

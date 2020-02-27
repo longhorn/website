@@ -11,8 +11,8 @@ weight: 1
 * Enterprise-grade distributed block storage with no single point of failure
 * Incremental snapshot of block storage
 * Backup to secondary storage ([NFS](https://www.extrahop.com/resources/protocols/nfs/) or [S3](https://aws.amazon.com/s3/)-compatible object storage) built on efficient change block detection
-* Recurring [snapshot and backup](../snapshots)
-* Automated, non-disruptive [upgrades](../upgrades). You can upgrade the entire Longhorn software stack without disrupting running storage volumes.]
+* Recurring [snapshot and backup](snapshots)
+* Automated, non-disruptive [upgrades](upgrade). You can upgrade the entire Longhorn software stack without disrupting running storage volumes.]
 * An intuitive GUI dashboard
 
 
