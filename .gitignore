@@ -5,3 +5,7 @@ package-lock.json
 *.tern-port
 */**/.tern-port
 .DS_Store
+
+# Link checker artifacts
+bin/
+tmp/

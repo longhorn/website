@@ -11,4 +11,5 @@
 {{ with .OutputFormats.Get "RSS" }}
 {{ printf `<link rel="%s" type="%s" href="%s" title="%s">` .Rel .MediaType.Type .RelPermalink site.Title | safeHTML }}
 {{ end }}
-<link rel="manifest" href="/site.webmanifest">
+
+<!-- <link rel="manifest" href="/site.webmanifest"> -->
