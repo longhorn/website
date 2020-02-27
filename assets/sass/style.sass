@@ -8,7 +8,7 @@
 {{ $monospaceFont := (index (where site.Params.fonts ".type" "monospace") 0).name }}
 
 @charset "utf-8"
-@import url({{ $fontsUrl }})
+@import url("{{ $fontsUrl }}")
 
 // Site-specific variables
 $longhorn-maroon: #5F224A

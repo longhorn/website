@@ -4,9 +4,10 @@ title: Settings
 
 ## Customized Default Setting
 
-To setup setting before installing Longhorn, see [Customized Default Setting](../customized-default-settings) for details.
+To setup setting before installing Longhorn, see [Customized Default Setting](#customized-default-setting) for details.
 
 ## General
+
 #### Backup Target
 * Example: `s3://backupbucket@us-east-1/backupstore`
 * Description: The target used for backup. Support NFS or S3. See [Snapshot and Backup](../snapshots) for details.
