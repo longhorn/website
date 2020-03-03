@@ -1,0 +1,29 @@
+---
+title: Uninstall Longhorn
+weight: 4
+---
+
+## Uninstallation
+
+1. To prevent damage to the Kubernetes cluster, we recommend deleting all Kubernetes workloads using Longhorn volumes (PersistentVolume, PersistentVolumeClaim, StorageClass, Deployment, StatefulSet, DaemonSet, etc).
+
+2. From Rancher UI, navigate to `Catalog Apps` tab and delete Longhorn app.
+
+## Troubleshooting
+
+### I deleted the Longhorn App from Rancher UI instead of following the uninstallation procedure
+
+Redeploy the (same version) Longhorn App. Follow the uninstallation procedure above.
+
+### Problems with CRDs
+
+If your CRD instances or the CRDs themselves can't be deleted for whatever reason, run the commands below to clean up. Caution: this will wipe all Longhorn state!
+
+```shell
+# Delete CRD finalizers, instances and definitions
+for crd in $(kubectl get crd -o jsonpath={.items[*].metadata.name} | tr ' ' '\n' | grep longhorn.rancher.io); do
+  kubectl -n ${NAMESPACE} get $crd -o yaml | sed "s/\- longhorn.rancher.io//g" | kubectl apply -f -
+  kubectl -n ${NAMESPACE} delete $crd --all
+  kubectl delete crd/$crd
+done
+```
