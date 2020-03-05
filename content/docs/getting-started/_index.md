@@ -33,13 +33,19 @@ To install Longhorn using Helm, you first need to [install Helm](https://helm.sh
 Once you have Helm installed, clone the Longhorn repository:
 
 ```shell
-git clone https://github.com/longhorn/longhorn && cd longorn
+git clone https://github.com/longhorn/longhorn
+```
+
+Create the longhorn-system namespace:
+
+```shell
+kubectl create namespace longhorn-system
 ```
 
 Use this `helm` command to install Longhorn:
 
 ```shell
-helm install ./longhorn/chart --name longhorn --namespace longhorn-system
+helm install longhorn ./longhorn/chart --namespace longhorn-system
 ```
 
 This installs Longorn in the `longhorn-system` namespace. One of two available [drivers](../driver)---CSI or FlexVolume---is chosen automatically based on the version of Kubernetes that you're using.
