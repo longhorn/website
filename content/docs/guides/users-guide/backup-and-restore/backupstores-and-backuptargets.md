@@ -1,24 +1,7 @@
 ---
-title: Snapshots
+  title: BackupStores and BackupTargets
+  weight: 41
 ---
-
-A **snapshot** in Longhorn is the state of a volume at a given time that is stored in the same location as the volume data on the host's physical disk. Snapshots are created instantly in Longhorn.
-
-Users can revert to any previous snapshot using the Longhorn UI. Since Longhorn is a distributed block storage system, make sure that the Longhorn volume is umounted from the host when reverting to any previous snapshot. Otherwise, Longhorn will confuse the node filesystem and cause filesystem corruption.
-
-#### Note about the block level snapshot
-
-Longhorn is a `crash-consistent` block storage solution.
-
-It's normal for the OS to keep content in the cache before writing into the block layer. However, it also means if the all the replicas are down, then Longhorn may not contain the immediate change before the shutdown, since the content was kept in the OS level cache and hadn't transfered to Longhorn system yet. It's similar to if your desktop was down due to a power outage, after resuming the power, you may find some weird files in the hard drive.
-
-To force the data being written to the block layer at any given moment, the user can run `sync` command on the node manually, or umount the disk. OS would write the content from the cache to the block layer in either situation.
-
-# Backup
-
-A backup in Longhorn represents a volume state at a given time, stored in the secondary storage (backupstore in Longhorn word) which is outside of the Longhorn system. Backup creation will involving copying the data through the network, so it will take time.
-
-A corresponding snapshot is needed for creating a backup. And user can choose to backup any snapshot previous created.
 
 A backupstore is a NFS server or S3 compatible server.
 
@@ -135,45 +118,3 @@ nfs://longhorn-test-nfs-svc.default:/opt/backupstore
 ```
 
 You can find an example NFS backupstore for testing purpose [here](https://github.com/rancher/longhorn/blob/master/deploy/backupstores/nfs-backupstore.yaml).
-
-
-# Setup recurring snapshot/backup
-
-Longhorn supports recurring snapshot and backup for volumes. User only need to set when he/she wish to take the snapshot and/or backup, and how many snapshots/backups needs to be retains, then Longhorn will automatically create snapshot/backup for the user at that time, as long as the volume is attached to a node.
-
-Users can setup recurring snapshot/backup via Longhorn UI, or Kubernetes StorageClass.
-
-## Set up recurring jobs using Longhorn UI
-
-User can find the setting for the recurring snapshot and backup in the `Volume Detail` page.
-
-## Set up recurring jobs using StorageClass
-
-Users can set field `recurringJobs` in StorageClass as parameters. Any future volumes created using this StorageClass will have those recurring jobs automatically set up.
-
-Field `recurringJobs` should follow JSON format. e.g.
-
-```
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: longhorn
-provisioner: rancher.io/longhorn
-parameters:
-  numberOfReplicas: "3"
-  staleReplicaTimeout: "30"
-  fromBackup: ""
-  recurringJobs: '[{"name":"snap", "task":"snapshot", "cron":"*/1 * * * *", "retain":1},
-                   {"name":"backup", "task":"backup", "cron":"*/2 * * * *", "retain":1}]'
-
-```
-
-Explanation:
-
-1. `name`: Name of one job. Do not use duplicate name in one `recurringJobs`. And the length of `name` should be no more than 8 characters.
-
-2. `task`: Type of one job. It supports `snapshot` (periodically create snapshot) or `backup` (periodically create snapshot then do backup) only.
-
-3. `cron`: Cron expression. It tells execution time of one job.
-
-4. `retain`: How many snapshots/backups Longhorn will retain for one job. It should be no less than 1.

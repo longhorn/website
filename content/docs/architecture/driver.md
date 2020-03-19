@@ -1,5 +1,6 @@
 ---
 title: Kubernetes driver
+weight: 21
 ---
 
 If you're using [Kubernetes](https://kubernetes.io), you can use Longhorn to provide persistent storage using either:

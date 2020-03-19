@@ -23,5 +23,3 @@ kubectl get pods \
 {{< info title="Running Longhorn on Google Kubernetes Engine" >}}
 [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/) (GKE) requires some additional setup for Longorn to function properly. If you're a GKE user, read [this doc](../../guides/users-guide/cloud-provider-notes/google-kubernetes-engine) before proceeding.
 {{< /info >}}
-
-<!-- [TODO] Link "this doc" to Guides > Users Guide > Cloud Provider Notes > Google Kubernetes Engine !--> 

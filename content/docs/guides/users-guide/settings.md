@@ -1,6 +1,6 @@
 ---
 title: Settings
-weight: 1
+weight: 34
 ---
 
 ## Customized Default Setting

@@ -1,5 +1,6 @@
 ---
-title: Node Failure Handling with Longhorn
+   title: Node Failure Handling with Longhorn
+   weight: 56
 ---
 
 ## What to expect when a Kubernetes Node fails

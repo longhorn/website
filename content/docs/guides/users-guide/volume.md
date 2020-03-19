@@ -1,5 +1,6 @@
 ---
 title: Volume operations
+weight: 51
 ---
 
 ### Changing replica count of the volumes

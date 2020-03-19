@@ -1,5 +1,6 @@
 ---
 title: Storage Tags
+weight: 53
 ---
 
 ## Overview

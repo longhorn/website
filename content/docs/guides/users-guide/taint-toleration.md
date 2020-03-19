@@ -1,5 +1,6 @@
 ---
-title: Taint Toleration
+title: Taints and Tolerations
+weight: 54
 ---
 
 ## Overview

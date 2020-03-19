@@ -1,5 +1,6 @@
 ---
-title: Workload identification for volume
+title: Workload Identification for a Volume
+weight: 55
 ---
 
 Now users can identify current workloads or workload history for existing Longhorn volumes.

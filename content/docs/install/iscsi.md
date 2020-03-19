@@ -1,6 +1,6 @@
 ---
 title: iSCSI support
-weight: 2
+weight: 12
 ---
 
 Longhorn supports iSCSI target frontend mode. The user can connect to it

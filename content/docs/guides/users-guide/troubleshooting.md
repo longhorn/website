@@ -1,5 +1,6 @@
 ---
 title: Troubleshooting
+weight: 58
 ---
 
 ## Common issues

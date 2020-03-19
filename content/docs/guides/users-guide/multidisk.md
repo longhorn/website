@@ -1,5 +1,6 @@
 ---
-title: Multiple disks support
+title: Multiple Disk Support
+weight: 52
 ---
 
 Longhorn supports to use more than one disk on the nodes to store the volume data.

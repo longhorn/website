@@ -1,5 +1,6 @@
 ---
 title: Restoring Volumes for Kubernetes Stateful Sets
+weight: 46
 ---
 
 Longhorn supports restoring backups, and one of the use cases for this feature

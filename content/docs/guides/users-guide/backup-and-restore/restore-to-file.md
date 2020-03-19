@@ -1,5 +1,6 @@
 ---
 title: Use command restore-to-file
+weight: 46
 ---
 
 This command gives users the ability to restore a backup to a `raw` image or a `qcow2` image. If the backup is based on a backing file, users should provide the backing file as a `qcow2` image with `--backing file` parameter.
