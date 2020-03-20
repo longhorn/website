@@ -1,6 +1,6 @@
 ---
 title: Uninstall Longhorn
-weight: 4
+weight: 11
 ---
 
 ## Uninstallation

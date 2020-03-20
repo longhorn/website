@@ -3,6 +3,8 @@ title: Manager
 weight: 20
 ---
 
+Longorn implements distributed block storage using containers and microservices. It creates a dedicated storage controller for each block device volume and synchronously replicates the volume across multiple replicas stored on multiple nodes. The storage controller and replicas are themselves orchestrated using [Kubernetes](https://kubernetes.io).
+
 The Longhorn manager is repsonsible for creating and managing volumes in the Kubernetes cluster.
 
 When the Longhorn manager is asked to create a volume, it creates a controller container on the host the volume is attached to as well as the hosts where the replicas will be placed. Replicas should be placed on separate hosts to ensure maximum availability.

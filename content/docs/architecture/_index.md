@@ -1,5 +1,5 @@
 ---
 title: Architecture
 description: Longhorn Architecture
-weight: 5
+weight: 19
 ---
