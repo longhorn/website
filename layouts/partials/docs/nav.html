@@ -37,15 +37,9 @@
   {{ range . }}
   {{ $isHere := eq $here .RelPermalink }}
   <div class="nav-section">
-<<<<<<< HEAD
-    <div class="nav-section-title{{ if $isHere }} is-active{{ end }}" href="{{ .RelPermalink }}">
-      {{ .Title }}
-    </div>
-=======
     <a class="nav-section-title{{ if $isHere }} is-active{{ end }}" href="{{ .RelPermalink }}">
       {{ .Title }}
     </a>
->>>>>>> origin/master
 
     {{ with .RegularPages }}
     <ul class="nav-section-pages">
@@ -79,13 +73,8 @@
         </li>
         {{ end }}
       </ul>
-<<<<<<< HEAD
       {{ end }}
       {{ end }}
-=======
-      {{ end }}
-      {{ end }}
->>>>>>> origin/master
     </div>
     {{ end }}
   </div>
