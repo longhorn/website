@@ -120,7 +120,7 @@ The target URL would looks like:
 nfs://longhorn-test-nfs-svc.default:/opt/backupstore
 ```
 
-You can find an example NFS backupstore for testing purpose [here](https://github.com/rancher/longhorn/blob/master/deploy/backupstores/nfs-backupstore.yaml). 
+You can find an example NFS backupstore for testing purpose [here](https://github.com/rancher/longhorn/blob/master/deploy/backupstores/nfs-backupstore.yaml).
 
 
 # Setup recurring snapshot/backup
@@ -137,7 +137,7 @@ User can find the setting for the recurring snapshot and backup in the `Volume D
 
 Users can set field `recurringJobs` in StorageClass as parameters. Any future volumes created using this StorageClass will have those recurring jobs automatically set up.
 
-Field `recurringJobs` should follow JSON format. e.g. 
+Field `recurringJobs` should follow JSON format. e.g.
 
 ```
 kind: StorageClass

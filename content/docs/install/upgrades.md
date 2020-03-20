@@ -257,8 +257,12 @@ sed "s#^\( *\)namespace: .*#\1namespace: ${NAMESPACE}#g" longhorn-v0.1-backup-vo
 
 ### Upgrade from v0.2
 
+<<<<<<< HEAD:content/docs/install/upgrades.md
 For Longhorn v0.2 users who are not using Rancher, follow
 [the official Longhorn Deployment instructions](../getting-started).
+=======
+For Longhorn v0.2 users who are not using Rancher, follow the [official Longhorn Deployment instructions](../getting-started).
+>>>>>>> origin/master:content/docs/upgrade.md
 
 ### Access UI and Set BackupTarget
 
@@ -267,7 +271,11 @@ Wait until the longhorn-ui and longhorn-manager pods are `Running`:
 kubectl -n longhorn-system get pod -w
 ```
 
+<<<<<<< HEAD:content/docs/install/upgrades.md
 [Access the UI](../getting-started#access-the-ui).
+=======
+[Access the UI](../getting-started#accessing-the-ui).
+>>>>>>> origin/master:content/docs/upgrade.md
 
 On `Setting > General`, set `Backup Target` to the backup target used in
 the previous version. In our example, this is
