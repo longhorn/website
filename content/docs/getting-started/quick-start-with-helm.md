@@ -17,7 +17,7 @@ To install Longhorn using Helm, you first need to [install Helm](https://helm.sh
 Once you have Helm installed, clone the Longhorn repository:
 
 ```shell
-git clone https://github.com/longhorn/longhorn && cd longorn
+git clone https://github.com/longhorn/longhorn && cd longhorn
 ```
 
 Use this `helm` command to install Longhorn:
