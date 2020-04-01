@@ -4,6 +4,16 @@ description: Run Longhorn on Kubernetes using Helm
 weight: 5
 ---
 
+## Source Code
+
+Longhorn is 100% open source software. Project source code is spread across a number of repos:
+
+1. Longhorn Engine -- Core controller/replica logic https://github.com/rancher/longhorn-engine
+2. Longhorn Manager -- Longhorn orchestration, includes Flexvolume driver for Kubernetes https://github.com/rancher/longhorn-manager
+3. Longhorn UI -- Dashboard https://github.com/rancher/longhorn-ui
+
+## Quick Start
+
 1. Helm 3.0+
 2. Docker v1.13+
 3. Kubernetes v1.8+ cluster with 1 or more nodes and Mount Propagation feature enabled. If your Kubernetes cluster was provisioned by Rancher v2.0.7+ or later, MountPropagation feature is enabled by default. [Check your Kubernetes environment now](https://github.com/rancher/longhorn#environment-check-script). If MountPropagation is disabled, the Kubernetes Flexvolume driver will be deployed instead of the default CSI driver. Base Image feature will also be disabled if MountPropagation is disabled.

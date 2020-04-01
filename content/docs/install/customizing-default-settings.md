@@ -39,7 +39,7 @@ You should modify the settings for any existing Longhorn system via the Longhorn
         backup-target: s3://backupbucket@us-east-1/backupstore
         backup-target-credential-secret: minio-secret
         create-default-disk-labeled-nodes: true
-        default-data-path: /var/lib/rancher/longhorn-example/
+        default-data-path: /var/lib/longhorn-example/
         replica-soft-anti-affinity: false
         storage-over-provisioning-percentage: 600
         storage-minimal-available-percentage: 15
@@ -60,7 +60,7 @@ You should modify the settings for any existing Longhorn system via the Longhorn
     git clone https://github.com/longhorn/longhorn.git
     ```
 
-1. Use helm command with `--set` flag to modify the default settings. For example:
+2.1 Use helm command with `--set` flag to modify the default settings. For example:
 
     ```shell
     helm install ./longhorn/chart \
@@ -69,7 +69,7 @@ You should modify the settings for any existing Longhorn system via the Longhorn
     --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
     ```
 
-1. Or directly modifying the default settings in the yaml file `longhorn/chart/values.yaml` then using helm command without `--set` to deploy Longhorn. For example:
+2.2. Or directly modifying the default settings in the yaml file `longhorn/chart/values.yaml` then using helm command without `--set` to deploy Longhorn. For example:
 
     In `longhorn/chart/values.yaml`:
 
@@ -78,7 +78,7 @@ You should modify the settings for any existing Longhorn system via the Longhorn
       backupTarget: s3://backupbucket@us-east-1/backupstore
       backupTargetCredentialSecret: minio-secret
       createDefaultDiskLabeledNodes: true
-      defaultDataPath: /var/lib/rancher/longhorn-example/
+      defaultDataPath: /var/lib/longhorn-example/
       replicaSoftAntiAffinity: false
       storageOverProvisioningPercentage: 600
       storageMinimalAvailablePercentage: 15
@@ -95,3 +95,11 @@ You should modify the settings for any existing Longhorn system via the Longhorn
     ```shell
     helm install ./longhorn/chart --name longhorn --namespace longhorn-system
     ```
+
+For more info about using helm, see: 
+[Install-Longhorn-with-helm](../install-with-helm)
+
+## History
+[Original feature request](https://github.com/longhorn/longhorn/issues/623)
+
+Available since v0.6.0
