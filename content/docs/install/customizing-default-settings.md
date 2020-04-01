@@ -61,7 +61,6 @@ You should modify the settings for any existing Longhorn system via the Longhorn
     ```
 
 2.1 Use helm command with `--set` flag to modify the default settings. For example:
-
     ```shell
     helm install ./longhorn/chart \
     --name longhorn \

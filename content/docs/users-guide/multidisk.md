@@ -27,6 +27,7 @@ If the users don't want to use the original mount path of a disk on the node, th
 
 Longhorn will identify the disk using the path, so the users need to make sure the alternative path are correctly mounted when the node reboots, e.g. by adding it to `fstab`.
 
+
 ## Remove a disk
 Nodes and disks can be excluded from future scheduling. Notice any scheduled storage space won't be released automatically if the scheduling was disabled for the node.
 

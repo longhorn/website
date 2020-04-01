@@ -20,7 +20,7 @@
   ##### 2. For Longhorn before v0.7.0
   Longhorn versions before v0.7.0 support k3s below v0.10.0 only by default. 
   
-  If you want to deploy these older Longhorn versions on k3s v0.10.0 and above, you need to set `--kubelet-root-dir` to `/var/lib/kubelet` for the Deployment `longhorn-driver-deployer` in `longhorn/deploy/longhorn.yaml`
+  If you want to deploy these older Longhorn versions on k3s v0.10.0 and above, you need to set `--kubelet-root-dir` to
 
 ## Troubleshooting
 
