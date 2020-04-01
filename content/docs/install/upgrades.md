@@ -7,6 +7,12 @@ Here we cover how to upgrade to latest Longhorn from all previous releases.
 
 There are normally two steps in the upgrade process: first upgrade Longhorn manager to the latest version, then upgrade Longhorn engine to the latest version using latest Longhorn manager.
 
+## Upgrade from v0.6.2 to v0.7.0
+
+See [here](../upgrade-from-v0.6.2-to-v0.7.0)
+
+## Upgrade from older versions to v0.6.2
+
 ## Upgrade Longhorn manager from v0.3.0 or newer
 
 ### From Longhorn App (Rancher Catalog App)
@@ -23,7 +29,6 @@ bottom right corner of the screen turn solid green. Navigate to
 ### From Longhorn deployment yaml
 
 If you didn't change any configuration during Longhorn installation, follow the instructions below to upgrade.
-
 Otherwise you will need to download the yaml file from, [install with kubectl](../install-with-kubectl) modify it to your need, then use `kubectl apply -f` to upgrade.
 
 ## Upgrade Longhorn engine
@@ -32,7 +37,7 @@ Otherwise you will need to download the yaml file from, [install with kubectl](.
 
 ### Offline upgrade
 
-If live upgrade is not available (e.g. before v0.3.3 or from v0.5.0 to v0.6.0), or the volume is stuck in a degraded state:
+If live upgrade is not available (e.g. before v0.3.3, from v0.5.0 to v0.6.0, v0.7.0 to v0.8.0), or the volume stuck in degraded state:
 
 1. Follow [the detach procedure for relevant workloads](#detach-volumes).
 2.  Select all the volumes using batch selection. Click batch operation button **Upgrade Engine**, choose the engine image available in the list. It's the default engine shipped with the manager for this release.
@@ -40,7 +45,7 @@ If live upgrade is not available (e.g. before v0.3.3 or from v0.5.0 to v0.6.0), 
 
 ### Live upgrade
 
-Live upgrade is available since v0.3.3, with the exception of upgrade from v0.5.0 to v0.6.0.
+Live upgrade is available since v0.3.3, with the exception of upgrade from v0.5.0 to v0.6.0 and v0.7.0 to v0.8.0.
 
 Live upgrade should only be done with healthy volumes.
 
