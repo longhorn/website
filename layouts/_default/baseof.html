@@ -12,7 +12,7 @@
     </title>
 
     {{ partial "css.html" . }}
-    <!-- {{ partial "favicon.html" . }} -->
+    {{ partial "favicon.html" . }}
   </head>
   <body{{ if not $isDoc }} class="has-navbar-fixed-top"{{ end }}>
     {{ block "main" . }}{{ end }}
