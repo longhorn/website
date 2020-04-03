@@ -1,7 +1,7 @@
 {{ $title := .Title }}
 {{ $desc  := .Params.description }}
 
-<div class="canvas" id="canvas">
+<div class="canvas" id="canvas" x-data="{ drawer: false }">
   {{ partial "navbar.html" . }}
   {{ partial "docs/under-nav.html" . }}
 
@@ -17,6 +17,6 @@
       {{ partial "footer.html" . }}
     </div>
   </div>
-</div>
 
-{{ partial "docs/drawer.html" . }}
+  {{ partial "docs/drawer.html" . }}
+</div>
