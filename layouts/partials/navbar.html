@@ -5,7 +5,7 @@
 {{ $isDoc   := eq .Section "docs" }}
 {{ $version := site.Params.version }}
 {{ $here    := .RelPermalink }}
-<nav class="navbar is-fixed-top{{ if $isDoc }} has-shadow{{ end }}">
+<nav class="navbar is-fixed-top{{ if $isDoc }} has-shadow{{ end }}" x-data="{ open: false }">
   {{ if not $isDoc }}
   <div class="container">
   {{ end }}
@@ -18,14 +18,14 @@
         {{ $version }}
       </span>
 
-      <a role="button" class="navbar-burger" data-target="menu" aria-label="menu" aria-expanded="false">
+      <a role="button" class="navbar-burger" data-target="menu" aria-label="menu" aria-expanded="false" :class="{ 'is-active': open }" @click="open = !open" @click.away="open = false">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
     </div>
 
-    <div class="navbar-menu" id="menu">
+    <div class="navbar-menu" id="menu" :class="{ 'is-active': open }">
       <div class="navbar-end">
         {{ with $menu }}
         {{ partial "navbar-menu.html" (dict "menu" . "here" $here) }}

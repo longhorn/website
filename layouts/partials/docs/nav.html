@@ -2,13 +2,9 @@
 {{ $here     := .here }}
 <aside class="nav{{ if .drawer }} is-drawer{{ else }} is-sidebar{{ end }}">
   {{ if .drawer }}
-  <div class="button-container">
-    <a class="button is-borderless" id="drawer-close">
-      <span class="icon">
-        <ion-icon size="large" name="close-circle-outline"></ion-icon>
-      </span>
-    </a>
-  </div>
+  <span class="icon is-hoverable" @click="drawer = !drawer">
+    <ion-icon size="large" name="close-circle-outline"></ion-icon>
+  </span>
   {{ end }}
 
   {{ with $sections }}
