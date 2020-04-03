@@ -16,6 +16,7 @@ description = "Cloud native distributed block storage for Kubernetes"
 tagline = "Easy to use, 100% open source, run anywhere"
 version = "0.8.0"
 alpine_js_version = "2.2.5"
+locale = "en_US"
 
 [[params.why]]
 text = "Add persistent storage to [Kubernetes](https://kubernetes.io) in one click"
