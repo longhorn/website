@@ -4,19 +4,12 @@ description: Run Longhorn on Kubernetes using Helm
 weight: 5
 ---
 
-## Source Code
-
-Longhorn is 100% open source software. Project source code is spread across a number of repos:
-
-1. Longhorn Engine -- Core controller/replica logic https://github.com/rancher/longhorn-engine
-2. Longhorn Manager -- Longhorn orchestration, includes Flexvolume driver for Kubernetes https://github.com/rancher/longhorn-manager
-3. Longhorn UI -- Dashboard https://github.com/rancher/longhorn-ui
 
 ## Quick Start
 
 1. Helm 3.0+
 2. Docker v1.13+
-3. Kubernetes v1.14+ cluster with 1 or more nodes and Mount Propagation feature enabled. If your Kubernetes cluster was provisioned by Rancher v2.0.7+ or later, MountPropagation feature is enabled by default. [Check your Kubernetes environment now](https://github.com/rancher/longhorn#environment-check-script). If MountPropagation is disabled, the Kubernetes Flexvolume driver will be deployed instead of the default CSI driver. Base Image feature will also be disabled if MountPropagation is disabled.
+3. Kubernetes v1.14+ cluster with 1 or more nodes and Mount Propagation feature enabled. If your Kubernetes cluster was provisioned by Rancher v2.0.7+ or later, MountPropagation feature is enabled by default. [Check your Kubernetes environment now](https://github.com/rancher/longhorn#environment-check-script). If MountPropagation is disabled, Base Image feature will be disabled.
 4. Make sure `curl`, `findmnt`, `grep`, `awk` and `blkid` has been installed in all nodes of the Kubernetes cluster.
 5.  `open-iscsi` has been installed on all the nodes of the Kubernetes cluster, and `iscsid` daemon is running on all the nodes.
     1. For GKE, recommended Ubuntu as guest OS image since it contains open-iscsi already.
@@ -44,9 +37,9 @@ Use this `helm` command to install Longhorn:
 helm install ./longhorn/chart --name longhorn --namespace longhorn-system
 ```
 
-This installs Longorn in the `longhorn-system` namespace. One of two available [drivers](../../architecture/driver)---CSI or FlexVolume---is chosen automatically based on the version of Kubernetes that you're using.
+This installs Longorn in the `longhorn-system` namespace.
 
-A successful CSI-based deployment, for example, looks like this:
+A successful CSI-based deployment looks like this:
 
 ```shell
 kubectl -n longhorn-system get pod
@@ -93,13 +86,3 @@ If you installed Longhorn using the [kubectl instructions](../../install/install
 The Longhorn UI looks like this:
 
 {{< figure src="/img/screenshots/getting-started/longhorn-ui.png" >}}
-
-### Volume can be attached/detached from UI, but Kubernetes Pod/StatefulSet etc cannot use it
-
-Check if volume plugin directory has been set correctly. This is automatically detected unless user explicitly set it.
-
-By default, Kubernetes uses `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/`, as stated in the [official document](https://github.com/kubernetes/community/blob/master/contributors/devel/flexvolume.md#prerequisites).
-
-Some vendors choose to change the directory for various reasons. For example, GKE uses `/home/kubernetes/flexvolume` instead.
-
-User can find the correct directory by running `ps aux|grep kubelet` on the host and check the `--volume-plugin-dir` parameter. If there is none, the default `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/` will be used.

@@ -1,6 +1,5 @@
 ---
 title: What is Longhorn?
-description: What is Longhorn?
 weight: 2
 ---
 

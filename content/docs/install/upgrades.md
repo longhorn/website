@@ -7,6 +7,26 @@ Here we cover how to upgrade to latest Longhorn from all previous releases.
 
 There are normally two steps in the upgrade process: first upgrade Longhorn manager to the latest version, then upgrade Longhorn engine to the latest version using latest Longhorn manager.
 
+## 1. Upgrade Longhorn manager
+
+##### On Kubernetes clusters Managed by Rancher 2.1 or newer
+
+The steps to upgrade Longhorn manager are the same as the installation steps. Install Longhorn manager using [kubectl,](../install-with-kubectl) [Helm,](../install-with-helm) or the [Rancher catalog app.](../install-with-rancher)
+
+##### Using kubectl
+```
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml
+```
+
+##### Using Helm
+```
+helm upgrade longhorn ./longhorn/chart
+```
+
+## 2. Upgrade Longhorn Engine
+
+After Longhorn Manager is upgraded, Longhorn Engine also needs to be upgraded [using the Longhorn UI.](#upgrade-longhorn-engine)
+
 ## Upgrade from v0.6.2 to v0.7.0
 
 See [here](../upgrade-from-v0.6.2-to-v0.7.0)
@@ -31,7 +51,7 @@ bottom right corner of the screen turn solid green. Navigate to
 If you didn't change any configuration during Longhorn installation, follow the instructions below to upgrade.
 Otherwise you will need to download the yaml file from, [install with kubectl](../install-with-kubectl) modify it to your need, then use `kubectl apply -f` to upgrade.
 
-## Upgrade Longhorn engine
+## Upgrade Longhorn Engine
 
 **ALWAYS MAKE BACKUPS BEFORE UPGRADE THE ENGINE IMAGES.**
 
@@ -63,34 +83,21 @@ Notice after the live upgrade, Rancher or Kubernetes would still show the old ve
 
 After you've done upgrade for all the images, select `Settings/Engine Image` from Longhorn UI. Now you should able to remove the non-default image.
 
-## Migrating Between Flexvolume and CSI Driver
+### Migrating from the Flexvolume Driver to CSI
 
-Ensure your Longhorn App is up to date. Follow the relevant upgrade procedure
-above before proceeding.
+Ensure your Longhorn App is up to date. Follow the relevant upgrade procedure before proceeding.
 
 The migration path between drivers requires backing up and restoring each
 volume and will incur both API and workload downtime. This can be a tedious
 process; consider what benefit switching drivers will bring before proceeding.
 Consider deleting unimportant workloads using the old driver to reduce effort.
 
-### Flexvolume to CSI
-
 CSI is the newest out-of-tree Kubernetes storage interface.
 
 1. [Backup existing volumes](#backup-existing-volumes).
 2. On Rancher UI, navigate to the `Catalog Apps` screen, locate the `Longhorn` app and click the `Up to date` button. Under `Kubernetes Driver`, select
 `flexvolume`. We recommend leaving `Flexvolume Path` empty. Click `Upgrade`.
-3. Restore each volume by following the [CSI restore procedure](../../users-guide/backup-and-restore/restore-statefulset#csi-instructions). This procedure is tailored to the StatefulSet workload, but the process is approximately the same for all workloads.
-
-### CSI to Flexvolume
-
-If you would like to migrate from CSI to Flexvolume driver, we are interested
-to hear from you. CSI is the newest out-of-tree storage interface and we
-expect it to replace Flexvolume's exec-based model.
-
-1. [Backup existing volumes](#backup-existing-volumes).
-2. On Rancher UI, navigate to the `Catalog Apps` screen, locate the `Longhorn` app and click the `Up to date` button. Under `Kubernetes Driver`, select `flexvolume`. We recommend leaving `Flexvolume Path` empty. Click `Upgrade`.
-3. Restore each volume by following the [Flexvolume restore procedure](../../users-guide/backup-and-restore/restore-statefulset#flexvolume-instructions). This procedure is tailored to the StatefulSet workload, but the process is approximately the same for all workloads.
+3. Restore each volume by following the [restore procedure](../../users-guide/backup-and-restore/restore-statefulset). This procedure is tailored to the StatefulSet workload, but the process is approximately the same for all workloads.
 
 ## Upgrade Longhorn manager from v0.2 and older
 

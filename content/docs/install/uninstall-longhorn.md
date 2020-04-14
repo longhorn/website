@@ -3,11 +3,50 @@ title: Uninstall Longhorn
 weight: 11
 ---
 
-## Uninstallation
+To prevent damage to the Kubernetes cluster, we recommend deleting all Kubernetes workloads using Longhorn volumes (PersistentVolume, PersistentVolumeClaim, StorageClass, Deployment, StatefulSet, DaemonSet, etc).
 
-1. To prevent damage to the Kubernetes cluster, we recommend deleting all Kubernetes workloads using Longhorn volumes (PersistentVolume, PersistentVolumeClaim, StorageClass, Deployment, StatefulSet, DaemonSet, etc).
+### Uninstalling Longhorn using kubectl
 
-2. From Rancher UI, navigate to `Catalog Apps` tab and delete Longhorn app.
+1. Create the uninstallation job to clean up CRDs from the system and wait for success:
+  ```
+  kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/uninstall/uninstall.yaml
+  kubectl get job/longhorn-uninstall -w
+  ```
+
+Example output:
+```
+$ kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/uninstall/uninstall.yaml
+serviceaccount/longhorn-uninstall-service-account created
+clusterrole.rbac.authorization.k8s.io/longhorn-uninstall-role created
+clusterrolebinding.rbac.authorization.k8s.io/longhorn-uninstall-bind created
+job.batch/longhorn-uninstall created
+
+$ kubectl get job/longhorn-uninstall -w
+NAME                 COMPLETIONS   DURATION   AGE
+longhorn-uninstall   0/1           3s         3s
+longhorn-uninstall   1/1           20s        20s
+^C
+```
+
+2. Remove remaining components:
+  ```
+  kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml
+  kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/master/uninstall/uninstall.yaml
+  ```
+ 
+Tip: If you try `kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml` first and get stuck there, 
+pressing `Ctrl C` then running `kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/uninstall/uninstall.yaml` can also help you remove Longhorn. Finally, don't forget to cleanup remaining components.
+
+
+### Uninstalling Longhorn from the Rancher UI
+
+From Rancher UI, navigate to `Catalog Apps` tab and delete Longhorn app.
+
+### Uninstalling Longhorn using Helm
+
+```
+helm delete longhorn --purge
+```
 
 ## Troubleshooting
 
@@ -30,7 +69,7 @@ done
 
 ### Volume can be attached/detached from UI, but Kubernetes Pod/StatefulSet etc cannot use it
 
-Check if volume plugin directory has been set correctly. This is automatically detected unless user explicitly set it.
+Check if volume plugin directory has been set correctly. This is automatically detected unless user explicitly set it. Note: The FlexVolume plugin is deprecated as of Longhorn v0.8.0 and should no longer be used.
 
 By default, Kubernetes uses `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/`, as stated in the [official document](https://github.com/kubernetes/community/blob/master/contributors/devel/flexvolume.md#prerequisites).
 

@@ -11,10 +11,7 @@ To restore, follow the below instructions based on which plugin you have
 deployed. The example below uses a Stateful Set with one volume attached to
 each Pod and two replicas.
 
-- [CSI Instructions](#csi-instructions)
-- [Flexvolume Instructions](#flexvolume-instructions)
 
-### CSI Instructions
 1. Connect to the `Longhorn UI` page in your web browser. Under the `Backup` tab,
 select the name of the Stateful Set volume. Click the dropdown menu of the
 volume entry and restore it. Name the volume something that can easily be
@@ -77,75 +74,11 @@ spec:
   storageClassName: longhorn # must be same name that we will use later
 ```
 
-3. Go to [General Instructions](#general-instructions).
+Next, you will create persistent volume claims.
 
-### Flexvolume Instructions
-Because of the implementation of `Flexvolume`, creating the Longhorn volumes
-from the `Longhorn UI` manually can be skipped. Instead, follow these
-instructions:
-1. Connect to the `Longhorn UI` page in your web browser. Under the `Backup` tab,
-select the name of the `Stateful Set` volume. Click the dropdown menu of the
-volume entry and select `Get URL`.
-  - Repeat this step for each volume you need restored. Save these URLs for the
-  next step.
-  - If using NFS backups, the URL will appear similar to:
-    - `nfs://longhorn-nfs-svc.default:/opt/backupstore?backup=backup-c57844b68923408f&volume=pvc-59b20247-99bf-11e8-8a92-be8835d7412a`.
-  - If using S3 backups, the URL will appear similar to:
-    - `s3://backupbucket@us-east-1/backupstore?backup=backup-1713a64cd2774c43&volume=longhorn-testvol-g1n1de`
+### Create Persistent Volume Claims
 
-2. Similar to `Step 2` for CSI, create a `Persistent Volume` for each volume you
-want to restore. `storage` capacity, `storageClassName`, and the Flexvolume
-`options` must be replaced. This example uses `longhorn` as the
-`storageClassName`.
-
-```yaml
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: statefulset-vol-0
-spec:
-  capacity:
-    storage: <size> # must match "size" parameter below
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn # must be same name that we will use later
-  flexVolume:
-    driver: "rancher.io/longhorn" # driver must match this
-    fsType: "ext4"
-    options:
-      size: <size> # must match "storage" parameter above
-      numberOfReplicas: <replicas>
-      staleReplicaTimeout: <timeout>
-      fromBackup: <backup URL> # must be set to Longhorn backup URL
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: statefulset-vol-1
-spec:
-  capacity:
-    storage: <size> # must match "size" parameter below
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn # must be same name that we will use later
-  flexVolume:
-    driver: "rancher.io/longhorn" # driver must match this
-    fsType: "ext4"
-    options:
-      size: <size> # must match "storage" parameter above
-      numberOfReplicas: <replicas>
-      staleReplicaTimeout: <timeout>
-      fromBackup: <backup URL> # must be set to Longhorn backup URL
-```
-
-3. Go to [General Instructions](#general-instructions).
-
-### General Instructions
-**Make sure you have followed either the [CSI](#csi-instructions) or
-[Flexvolume](#flexvolume-instructions) instructions before following the steps
-in this section.**
-
-1. In the `namespace` the `Stateful Set` will be deployed in, create Persistent
+In the `namespace` the `Stateful Set` will be deployed in, create Persistent
 Volume Claims **for each** `Persistent Volume`.
   - The name of the `Persistent Volume Claim` must follow this naming scheme:
   `<name of Volume Claim Template>-<name of Stateful Set>-<index>`. Stateful
@@ -181,7 +114,9 @@ metadata:
   volumeName: statefulset-vol-1 # must reference Persistent Volume
 ```
 
-2. Create the `Stateful Set`:
+Next, deploy a StatefulSet.
+
+### Create the StatefulSet
 
 ```yaml
 apiVersion: apps/v1beta2
