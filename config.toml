@@ -66,7 +66,7 @@ hero = "longhorn-icon-white.png"
 footer = "longhorn-horizontal-black.png"
 
 [outputs]
-home = ["HTML", "RSS"]
+home = ["HTML", "REDIRECTS", "RSS"]
 
 [privacy.twitter]
 disable = false
@@ -106,3 +106,10 @@ name = "Source code"
 parent = "project"
 url = "/project#source-code"
 weight = 3
+
+[mediaTypes."text/netlify"]
+delimiter = ""
+
+[outputFormats.REDIRECTS]
+mediaType = "text/netlify"
+baseName = "_redirects"
