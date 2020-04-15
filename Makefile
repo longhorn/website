@@ -30,7 +30,7 @@ link-checker-setup:
 run-link-checker:
 	bin/htmltest
 
-check-internal-links: clean build link-checker-setup run-link-checker
+check-internal-links: link-checker-setup run-link-checker
 
 check-all-links: clean build link-checker-setup
 	bin/htmltest --conf .htmltest.external.yml
