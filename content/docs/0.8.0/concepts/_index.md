@@ -1,5 +1,5 @@
 ---
 title: Concepts
 description: Longhorn Concepts
-weight: 12
+weight: 3
 ---
