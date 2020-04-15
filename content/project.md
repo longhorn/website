@@ -13,7 +13,7 @@ Longhorn is 100% open source software under the auspices of the [Cloud Native Co
 Component | What it does | GitHub repo
 :---------|:-------------|:-----------
 Longhorn Engine | Core controller/replica logic | [longhorn/longhorn-engine](https://github.com/longhorn/longhorn-engine)
-Longhorn Manager | Longhorn orchestration, including the Flexvolume driver for Kubernetes | [longhorn/longhorn-manager](https://github.com/longhorn/longhorn-manager)
+Longhorn Manager | Longhorn orchestration | [longhorn/longhorn-manager](https://github.com/longhorn/longhorn-manager)
 Longhorn UI | The Longhorn dashboard | [longhorn/longhorn-ui](https://github.com/longhorn/longhorn-ui)
 
 ## Contributing to Longhorn

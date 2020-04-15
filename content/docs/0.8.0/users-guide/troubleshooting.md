@@ -3,6 +3,8 @@ title: Troubleshooting
 weight: 58
 ---
 
+You can click `Generate Support Bundle` link at the bottom of the UI to download a zip file contains Longhorn related configuration and logs.
+
 ## Common issues
 ### Volume can be attached/detached from UI, but Kubernetes Pod/StatefulSet etc cannot use it
 
@@ -43,7 +45,9 @@ For CSI driver, check the logs for `csi-attacher-0` and `csi-provisioner-0`, as 
 
 ### Flexvolume driver
 
-For Flexvolume driver, first check where the driver has been installed on the node. Check the log of `longhorn-driver-deployer-xxxx` for that information.
+The FlexVolume driver is deprecated as of Longhorn v0.8.0 and should no longer be used.
+
+First check where the driver has been installed on the node. Check the log of `longhorn-driver-deployer-xxxx` for that information.
 
 Then check the kubelet logs. Flexvolume driver itself doesn't run inside the container. It would run along with the kubelet process.
 

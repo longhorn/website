@@ -7,7 +7,7 @@ Longhorn supports iSCSI target frontend mode. The user can connect to it
 through any iSCSI client, including open-iscsi, and virtual machine
 hypervisor like KVM, as long as it's in the same network with the Longhorn system.
 
-Longhorn Driver (CSI/Flexvolume) doesn't support iSCSI mode.
+The Longhorn CSI driver doesn't support iSCSI mode.
 
 To start volume with iSCSI target frontend mode, select `iSCSI` as the frontend
 when creating the volume. After volume has been attached, the user will see

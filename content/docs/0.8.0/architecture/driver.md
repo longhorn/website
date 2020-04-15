@@ -3,18 +3,13 @@ title: Kubernetes driver
 weight: 21
 ---
 
-If you're using [Kubernetes](https://kubernetes.io), you can use Longhorn to provide persistent storage using either:
-
-* The Longhorn Container Storage Interface (CSI) driver or
-* The Longhorn FlexVolume driver
-
-Longhorn will automatically deploy one of these two drivers, depending on your Kubernetes cluster configuration. You can also specify the driver in the deployment YAML configuration.
+If you're using [Kubernetes](https://kubernetes.io), you can use Longhorn to provide persistent storage using the Longhorn Container Storage Interface (CSI) driver.
 
 {{< info title="Preferred driver" >}}
-The CSI driver is generally preferred to the FlexVolume driver.
+The CSI driver is preferred to the FlexVolume driver, which is deprecated as of Longhorn v0.8.0 and should no longer be used.
 {{< /info >}}
 
-Noted that the volume created and used through one driver won't be recongized by Kubernetes using the other driver. So please don't switch driver (e.g. during upgrade) if you have existing volumes created using the old driver. If you really want to switch driver, see [here](../../install/upgrades#migrating-between-flexvolume-and-csi-driver) for instructions.
+Noted that the volume created and used through one driver won't be recognized by Kubernetes using the other driver. So please don't switch driver (e.g. during upgrade) if you have existing volumes created using the old driver. To switch from the FlexVolume driver to the CSI driver, see [here](../../install/upgrades/#migrating-from-the-flexvolume-driver-to-csi) for instructions.
 
 ## The CSI driver {#csi}
 
@@ -24,7 +19,6 @@ Noted that the volume created and used through one driver won't be recongized by
 2. Mount propagation feature gate enabled.
    1. It's enabled by default in Kubernetes v1.10. But some early versions of RKE may not enable it.
    2. You can check it by using [environment check script](#environment-check-script).
-3. If above conditions cannot be met, Longhorn will fall back to the FlexVolume driver.
 {{< /requirement >}}
 
 ### Check if your setup satisfied CSI requirement
@@ -90,42 +84,4 @@ longhorn-manager-nr5rs                      1/1       Running   0          9d
 longhorn-manager-rd4k5                      1/1       Running   0          9d
 longhorn-manager-snb9t                      1/1       Running   0          9d
 longhorn-ui-67b9b6887f-n7x9q                1/1       Running   0          9d
-```
-
-## The FlexVolume driver {#flexvolume}
-
-### Requirement for the FlexVolume driver
-
-1.  Kubernetes v1.8+
-2.  Make sure `curl`, `findmnt`, `grep`, `awk` and `blkid` has been installed in the every node of the Kubernetes cluster.
-
-### Flexvolume driver directory
-
-Longhorn now has ability to auto detect the location of Flexvolume directory.
-
-If the Flexvolume driver wasn't installed correctly, there can be a few reasons:
-1. If `kubelet` is running inside a container rather than running on the host OS, the host bind-mount path for the Flexvolume driver directory (`--volume-plugin-dir`) must be the same as the path used by the kubelet process.
-    1. For example, if the kubelet is using `/var/lib/kubelet/volumeplugins` as
-the Flexvolume driver directory, then the host bind-mount must exist for that
-directory, as e.g. `/var/lib/kubelet/volumeplugins:/var/lib/kubelet/volumeplugins` or any idential bind-mount for the parent directory.
-    2. It's because Longhorn would detect the directory used by the `kubelet` command line to decide where to install the driver on the host.
-2. The kubelet setting for the Flexvolume driver directory must be the same across all the nodes.
-    1. Longhorn doesn't support heterogeneous setup at the moment.
-
-### Successful Flexvolume deployment example
-
-```shell
-$ kubectl -n longhorn-system get pod
-NAME                                        READY     STATUS    RESTARTS   AGE
-engine-image-ei-57b85e25-8v65d              1/1       Running   0          7d
-engine-image-ei-57b85e25-gjjs6              1/1       Running   0          7d
-engine-image-ei-57b85e25-t2787              1/1       Running   0          7d
-longhorn-driver-deployer-5469b87b9c-b9gm7   1/1       Running   0          2h
-longhorn-flexvolume-driver-lth5g            1/1       Running   0          2h
-longhorn-flexvolume-driver-tpqf7            1/1       Running   0          2h
-longhorn-flexvolume-driver-v9mrj            1/1       Running   0          2h
-longhorn-manager-7x8x8                      1/1       Running   0          9h
-longhorn-manager-8kqf4                      1/1       Running   0          9h
-longhorn-manager-kln4h                      1/1       Running   0          9h
-longhorn-ui-f849dcd85-cgkgg                 1/1       Running   0          5d
 ```
