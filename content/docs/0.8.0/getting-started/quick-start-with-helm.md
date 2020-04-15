@@ -9,7 +9,7 @@ weight: 5
 
 1. Helm 3.0+
 2. Docker v1.13+
-3. Kubernetes v1.14+ cluster with 1 or more nodes and Mount Propagation feature enabled. If your Kubernetes cluster was provisioned by Rancher v2.0.7+ or later, MountPropagation feature is enabled by default. [Check your Kubernetes environment now](https://github.com/rancher/longhorn#environment-check-script). If MountPropagation is disabled, Base Image feature will be disabled.
+3. Kubernetes v1.14+ cluster with 1 or more nodes and Mount Propagation feature enabled. If your Kubernetes cluster was provisioned by Rancher v2.0.7+ or later, MountPropagation feature is enabled by default. [Check your Kubernetes environment now](https://github.com/longhorn/longhorn/#environment-check-script). If MountPropagation is disabled, Base Image feature will be disabled.
 4. Make sure `curl`, `findmnt`, `grep`, `awk` and `blkid` has been installed in all nodes of the Kubernetes cluster.
 5.  `open-iscsi` has been installed on all the nodes of the Kubernetes cluster, and `iscsid` daemon is running on all the nodes.
     1. For GKE, recommended Ubuntu as guest OS image since it contains open-iscsi already.

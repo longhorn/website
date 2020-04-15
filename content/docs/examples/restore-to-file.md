@@ -22,7 +22,7 @@ spec:
       --output-file '/tmp/restore/<OUTPUT_FILE>'
       --output-format <OUTPUT_FORMAT>
     # the version of longhorn engine should be v0.4.1 or higher
-    image: rancher/longhorn-engine:v0.4.1
+    image: longhorn/longhorn-engine:v0.4.1
     imagePullPolicy: IfNotPresent
     securityContext:
       privileged: true
