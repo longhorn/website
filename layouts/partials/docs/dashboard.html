@@ -1,5 +1,6 @@
-{{ $title := .Title }}
-{{ $desc  := .Params.description }}
+{{ $title   := .Title }}
+{{ $desc    := .Params.description }}
+{{ $version := index (split .File.Path "/") 1 }}
 
 <div class="canvas" id="canvas" x-data="{ drawer: false }">
   {{ partial "navbar.html" . }}
@@ -7,7 +8,7 @@
 
   <div class="dashboard">
     <div class="dashboard-panel sidebar is-hidden-touch">
-      {{ partial "docs/nav.html" (dict "drawer" false "here" .RelPermalink) }}
+      {{ partial "docs/nav.html" (dict "drawer" false "here" .RelPermalink "version" $version) }}
     </div>
 
     <div class="dashboard-panel main">

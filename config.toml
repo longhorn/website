@@ -14,7 +14,7 @@ style = "paraiso-dark"
 [params]
 description = "Cloud native distributed block storage for Kubernetes"
 tagline = "Easy to use, 100% open source, run anywhere"
-version = "0.8.0"
+versions = ["0.8.0"]
 alpine_js_version = "2.2.5"
 locale = "en_US"
 
@@ -66,7 +66,7 @@ hero = "longhorn-icon-white.png"
 footer = "longhorn-horizontal-black.png"
 
 [outputs]
-home = ["HTML", "RSS"]
+home = ["HTML", "REDIRECTS", "RSS"]
 
 [privacy.twitter]
 disable = false
@@ -84,15 +84,10 @@ sizes = [300, 400, 600, 700]
 type = "monospace"
 
 [[menu.main]]
-name = "Docs"
-url = "/docs"
-weight = 1
-
-[[menu.main]]
 name = "Project"
 identifier = "project"
 url = "/project"
-weight = 2
+weight = 1
 
 [[menu.main]]
 name = "Code of conduct"
@@ -111,3 +106,10 @@ name = "Source code"
 parent = "project"
 url = "/project#source-code"
 weight = 3
+
+[mediaTypes."text/netlify"]
+delimiter = ""
+
+[outputFormats.REDIRECTS]
+mediaType = "text/netlify"
+baseName = "_redirects"
