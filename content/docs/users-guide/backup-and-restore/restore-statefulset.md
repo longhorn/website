@@ -1,24 +1,23 @@
 ---
-title: Restoring Volumes for Kubernetes Stateful Sets
+title: Restoring Volumes for Kubernetes StatefulSets
 weight: 46
 ---
-
 Longhorn supports restoring backups, and one of the use cases for this feature
-is to restore data for use in a Kubernetes `Stateful Set`, which requires
+is to restore data for use in a Kubernetes `StatefulSet`, which requires
 restoring a volume for each replica that was backed up.
 
-To restore, follow the below instructions based on which plugin you have
-deployed. The example below uses a Stateful Set with one volume attached to
+To restore, follow the below instructions.
+The example below uses a StatefulSet with one volume attached to
 each Pod and two replicas.
 
 
 1. Connect to the `Longhorn UI` page in your web browser. Under the `Backup` tab,
-select the name of the Stateful Set volume. Click the dropdown menu of the
+select the name of the StatefulSet volume. Click the dropdown menu of the
 volume entry and restore it. Name the volume something that can easily be
 referenced later for the `Persistent Volumes`.
   - Repeat this step for each volume you need restored.
-  - For example, if restoring a Stateful Set with two replicas that had
-  volumes named `pvc-01a` and `pvc-02b`, the restore could look like this:
+  - For example, if restoring a StatefulSet with two replicas that had
+  volumes named `pvc-01a` and `pvc-02b`, the restore could look like this:  
 
 | Backup Name | Restored Volume   |
 |-------------|-------------------|
@@ -45,7 +44,7 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Delete
   csi:
-    driver: io.rancher.longhorn # driver must match this
+    driver: driver.longhorn.io # driver must match this
     fsType: ext4
     volumeAttributes:
       numberOfReplicas: <replicas> # must match Longhorn volume value
@@ -65,7 +64,7 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Delete
   csi:
-    driver: io.rancher.longhorn # driver must match this
+    driver: driver.longhorn.io # driver must match this
     fsType: ext4
     volumeAttributes:
       numberOfReplicas: <replicas> # must match Longhorn volume value
@@ -74,16 +73,13 @@ spec:
   storageClassName: longhorn # must be same name that we will use later
 ```
 
-Next, you will create persistent volume claims.
 
-### Create Persistent Volume Claims
-
-In the `namespace` the `Stateful Set` will be deployed in, create Persistent
+3. In the `namespace` the `StatefulSet` will be deployed in, create Persistent
 Volume Claims **for each** `Persistent Volume`.
   - The name of the `Persistent Volume Claim` must follow this naming scheme:
-  `<name of Volume Claim Template>-<name of Stateful Set>-<index>`. Stateful
+  `<name of Volume Claim Template>-<name of StatefulSet>-<index>`. Stateful
   Set Pods are zero-indexed. In this example, the name of the `Volume Claim
-  Template` is `data`, the name of the `Stateful Set` is `webapp`, and there
+  Template` is `data`, the name of the `StatefulSet` is `webapp`, and there
   are two replicas, which are indexes `0` and `1`.
 
 ```yaml
@@ -114,9 +110,7 @@ metadata:
   volumeName: statefulset-vol-1 # must reference Persistent Volume
 ```
 
-Next, deploy a StatefulSet.
-
-### Create the StatefulSet
+4. Create the `StatefulSet`:
 
 ```yaml
 apiVersion: apps/v1beta2
@@ -155,5 +149,5 @@ spec:
           storage: 2Gi # must match size from earlier
 ```
 
-The restored data should now be accessible from inside the `Stateful Set`
+The restored data should now be accessible from inside the `StatefulSet`
 `Pods`.

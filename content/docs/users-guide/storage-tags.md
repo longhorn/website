@@ -36,7 +36,7 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: longhorn-fast
-provisioner: rancher.io/longhorn
+provisioner: driver.longhorn.io
 parameters:
   numberOfReplicas: "3"
   staleReplicaTimeout: "480" # 8 hours in minutes

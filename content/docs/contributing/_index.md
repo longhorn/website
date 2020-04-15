@@ -11,9 +11,9 @@ Contributing code is not the only way of contributing. We value feedbacks very m
 
 Longhorn is 100% open source software. Project source code is spread across a number of repos:
 
-1. Longhorn Engine -- Core controller/replica logic https://github.com/rancher/longhorn-engine
-2. Longhorn Manager -- Longhorn orchestration https://github.com/rancher/longhorn-manager
-3. Longhorn UI -- Dashboard https://github.com/rancher/longhorn-ui
+1. Longhorn Engine -- Core controller/replica logic https://github.com/longhorn/longhorn-engine
+2. Longhorn Manager -- Longhorn orchestration https://github.com/longhorn/longhorn-manager
+3. Longhorn UI -- Dashboard https://github.com/longhorn/longhorn-ui
 
 
 ## License

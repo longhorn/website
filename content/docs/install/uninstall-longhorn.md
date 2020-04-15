@@ -78,4 +78,4 @@ Some vendors choose to change the directory for various reasons. For example, GK
 User can find the correct directory by running `ps aux|grep kubelet` on the host and check the `--volume-plugin-dir` parameter. If there is none, the default `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/` will be used.
 
 ---
-Please see [link](https://github.com/rancher/longhorn) for more information.
+Please see [link](https://github.com/longhorn/longhorn) for more information.
