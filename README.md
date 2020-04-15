@@ -17,3 +17,15 @@ This starts Hugo in local mode. You can see access the site at http://localhost:
 ## Publishing the site
 
 The Longhorn site is automatically built and published by [Netlify](https://netlify.com) when changes are pushed to the `master` branch.
+
+## New versions of the docs
+
+To create a new version of the documentation:
+
+1. Copy the most recent version of the documentation to create a new version. If the most recent version is 1.2.4 and you'd like to create 1.2.5:
+
+    ```sh
+    cp -rf content/docs/1.2.4 content/docs/1.2.5
+    ```
+
+1. Add the version to the `params.versions` list in [`config.toml`](./config.toml). Make sure that the list has the latest versions first.
