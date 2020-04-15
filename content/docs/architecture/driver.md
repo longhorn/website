@@ -45,7 +45,7 @@ Noted that the volume created and used through one driver won't be recognized by
 We've written a script to help you gather enough information about the factors. Before installing, run:
 
 ```shell
-curl -sSfL https://raw.githubusercontent.com/rancher/longhorn/master/scripts/environment_check.sh | bash
+curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/master/scripts/environment_check.sh | bash
 ```
 
 Example result:
