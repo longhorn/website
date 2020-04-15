@@ -4,6 +4,7 @@
 {{ $currentYear := now.Year | int }}
 {{ $yearString  := cond (eq $firstYear $currentYear) $firstYear (printf "%d-%d" $firstYear $currentYear) }}
 {{ $menu        := site.Menus.main }}
+{{ $latest      := index site.Params.versions 0 }}
 <section class="hero is-medium footer-hero">
   <div class="hero-body">
     <div class="container">
@@ -14,6 +15,12 @@
 
         <div class="column is-one-third">
           <ul>
+            <li>
+              <a class="has-text-weight-bold" href="/docs/{{ $latest }}">
+                {{ "Docs" | upper }}
+              </a>
+            </li>
+
             {{ range $menu }}
             {{ $isExternal := hasPrefix .URL "http" }}
             {{ $name       := .Name | upper }}
