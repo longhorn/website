@@ -29,3 +29,21 @@ To create a new version of the documentation:
     ```
 
 1. Add the version to the `params.versions` list in [`config.toml`](./config.toml). Make sure that the list has the latest versions first.
+
+## Contributing to docs
+
+The documentation is split into multiple versions, with a directory for docs corresponding to each Longhorn version. For example, Longhorn 0.8.0 docs are in `content/docs/0.8.0`.
+
+To make changes to the docs that are specific to an upcoming release, the `staging` branch is used.
+
+The `staging` and `master` branches will both be continuously updated. To keep `staging` ready to merge into `master`, it will be rebased on `master`.
+
+To allow docs for an upcoming release to be rebased on the most recently published docs, all changes in `staging` will be applied in the directory for the latest released version of Longhorn.
+
+For example, changes related to Longhorn v0.8.1 will be made in the 0.8.0 until it is time to merge `staging` into `master`. Right before merging into `master`, the 0.8.0 directory would be renamed to v0.8.1 and the 0.8.0 directory would be copied from `master`.
+
+To summarize, the process for documenting upcoming releases is as follows:
+
+1. Make changes to the `staging` branch, in the content directory for the most recently released version of Longhorn. Don't create a new directory for the upcoming version yet.
+2. If `master` changes the same files as `staging`, rebase the staging branch on master.
+3. When it is time to merge `staging` into master, put the changes into a directory for the upcoming release version (`mv 0.8.0 0.8.1`), then add the latest v0.8.0 directory from `master`.
