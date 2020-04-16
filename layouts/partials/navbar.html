@@ -24,6 +24,8 @@
 
     <div class="navbar-menu" id="menu" :class="{ 'is-active': open }">
       <div class="navbar-end">
+        {{ partial "search-bar.html" . }}
+
         {{ partial "version-dropdown.html" . }}
 
         {{ with $menu }}
