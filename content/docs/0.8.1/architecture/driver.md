@@ -21,6 +21,13 @@ Noted that the volume created and used through one driver won't be recognized by
    2. You can check it by using [environment check script](#environment-check-script).
 {{< /requirement >}}
 
+### Kubernetes CSI Driver Images
+
+* CSI Attacher:  `quay.io/k8scsi/csi-attacher:v2.0.0`
+* CSI Provisioner:  `quay.io/k8scsi/csi-provisioner:v1.4.0`
+* CSI Node Driver Registrar:  `quay.io/k8scsi/csi-node-driver-registrar:v1.2.0`
+* CSI Resizer:  `quay.io/k8scsi/csi-resizer:v0.3.0`
+
 ### Check if your setup satisfied CSI requirement
 
 1. Use the following command to check your Kubernetes server version
