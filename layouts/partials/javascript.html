@@ -26,3 +26,14 @@
   window.addEventListener("pageshow", shiftWindow);
   function load() { if (window.location.hash) shiftWindow(); }
 </script>
+
+{{/* Algolia search */}}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script type="text/javascript">
+  docsearch({
+    apiKey: '3c4082e162be342fa20a794144b4a479',
+    indexName: 'longhorn',
+    inputSelector: '#search-input',
+    debug: false
+  });
+</script>
