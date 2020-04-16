@@ -1,6 +1,6 @@
 ---
 title: Accessing the UI
-weight: 10
+weight: 11
 ---
 
 > For Longhorn v0.8.0+, UI service type has been changed from `LoadBalancer` to `ClusterIP`
