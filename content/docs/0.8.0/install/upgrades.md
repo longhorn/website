@@ -31,38 +31,58 @@ After Longhorn Manager is upgraded, Longhorn Engine also needs to be upgraded [u
 
 ### Upgrade from v0.6.2 or older version to v0.8.1
 
-#### Migrate PVs and PVCs for the volumes launched in v0.6.2 or older version
+#### Migrate PVs and PVCs for the Volumes Launched in v0.6.2 or Older
 
-If a volume is launched and used since v0.6.2 or older, the related PV and PVC are still managed by the old CSI plugin, which will be deprecated in later version.
-Hence it's better to recreate/migrate the PVC and PV with the new CSI plugin for the volume in this version.
+If a volume is launched and used in Longhorn v0.6.2 or older, the related PVs and PVCs are still managed by the old CSI plugin, which will be deprecated in a later Longhorn version.
 
-**Prerequisites of the migration**
-1. Longhorn is already upgraded to v0.8.1.
-2. The related PV and PVC is created in v0.6.2 or older.
-3. The volume is detached and the workload is down.
+Therefore, the PVCs and PVs should be migrated to use the new CSI plugin for the volume in Longhorn v0.8.1.
 
-**Migration steps**
-1. Find out the volumes, then shutdown the related workloads and detached the volumes. 
-    - If users don't know when the volumes' PV/PVC are created, they can use the following command to find out the volumes:
-```
-kubectl get pv --output=jsonpath="{.items[?(@.spec.csi.driver==\"io.rancher.longhorn\")].spec.csi.volumeHandle}"
-```
-2. Run the script for each volume:
-```
-curl -s https://raw.githubusercontent.com/shuo-wu/longhorn-manager/master/deploy/scripts/migrate-for-pre-070-volumes.sh |bash -s -- <volume name>
-```
-Or directly run the script for all volumes:
-```
-curl -s https://raw.githubusercontent.com/shuo-wu/longhorn-manager/master/deploy/scripts/migrate-for-pre-070-volumes.sh |bash -s -- --all
-```
+##### Prerequisites
 
-**Migration failure handling**
-1. If the prerequisite of the migration is not satisfied and there is no error log `failed to delete then recreate PV/PVC, users need to manually check the current PVC/PV then recreate them if needed`, 
-the script will do nothing for the PV and PVC. Users can check the migration prerequisites and steps and retry it. 
-2. If the migration fails and the error log mentioned above is printed out, users need to manually handle the migration for the failed volume:
-    1. Update `spec.persistentVolumeReclaimPolicy` to `Retain` for the PV via `kubectl edit pv <The PV name>`
-    2. Delete the PVC and PV via `kubectl delete pvc <The PVC name> && kubectl delete pv <The PV name>`
-    3. Use Longhorn UI to recreate the PV and PVC.
+- Longhorn is already upgraded to v0.8.1.
+- The related PVs and PVCs were created in v0.6.2 or older.
+- Each volume is detached and the workloads are down.
+
+##### Migration Steps
+
+1. If you don't know when the volumes were created, find out which volumes need to be migrated by running the following command:
+    
+    ```
+    kubectl get pv --output=jsonpath="{.items[?(@.spec.csi.driver==\"io.rancher.longhorn\")].spec.csi.volumeHandle}"
+    ```
+    
+2. Shut down the related workloads and detach the volumes. 
+3. Run this script for each volume:
+
+    ```
+    curl -s https://raw.githubusercontent.com/shuo-wu/longhorn-manager/master/deploy/scripts/migrate-for-pre-070-volumes.sh |bash -s -- <volume name>
+    ```
+    
+    Or run the script for all volumes:
+    ```
+    curl -s https://raw.githubusercontent.com/shuo-wu/longhorn-manager/master/deploy/scripts/migrate-for-pre-070-volumes.sh |bash -s -- --all
+    ```
+**Result:** The volumes have been migrated to use the new CSI driver.
+
+##### Migration Failure handling
+
+If the prerequisite of the migration is not satisfied and there is no error log `failed to delete then recreate PV/PVC, users need to manually check the current PVC/PV then recreate them if needed`, the script will do nothing for the PV and PVC. Users can check the migration prerequisites and steps and retry it. 
+
+If the migration fails and the error log mentioned above is printed out, users need to manually handle the migration for the failed volume:
+
+1. Update `spec.persistentVolumeReclaimPolicy` to `Retain` for the PV with this command:
+   
+   ```
+   kubectl edit pv <The PV name>
+   ```
+   
+2. Delete the PVC and PV with this command:
+
+    ```
+    kubectl delete pvc <The PVC name> && kubectl delete pv <The PV name>
+    ```
+    
+3. Use the Longhorn UI to recreate the PV and PVC.
 
 ## Upgrade from v0.6.2 to v0.7.0
 
