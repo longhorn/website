@@ -1,6 +1,6 @@
 ---
 title: What is Longhorn?
-weight: 1
+weight: 2
 ---
 
 Longhorn is an open source project for microservices-based distributed block storage.
