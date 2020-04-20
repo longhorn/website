@@ -1,5 +1,4 @@
 ---
-title: Users Guide
-description: Longhorn Users Guide
+title: User Guides
 weight: 5
 ---

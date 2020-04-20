@@ -1,0 +1,102 @@
+---
+title: Installation
+description: Install Longhorn on Kubernetes
+weight: 1
+---
+
+Longhorn can be installed on a Kubernetes cluster in several ways:
+
+- [kubectl](./install-with-kubectl/)
+- [Helm](./install-with-helm/)
+- [Rancher catalog app](./install-with-rancher)
+
+To install Longhorn in an air gapped environment, refer to [this section.](../../advanced-resources/deploy/airgap)
+
+# Installation Requirements
+
+Each node in the Kubernetes cluster where Longhorn is installed must fulfill the following requirements:
+
+-  Docker v1.13+
+-  Kubernetes v1.14+.
+-  `open-iscsi` is installed, and the `iscsid` daemon is running on all the nodes. For help installing `open-iscsi`, refer to [this section.](#installing-open-iscsi)
+- The host filesystem supports the `file extents` feature to store the data. Currently we support:
+    - ext4
+    - XFS
+- `curl`, `findmnt`, `grep`, `awk` and `blkid` must be installed.
+- [Mount propagation](https://kubernetes-csi.github.io/docs/deploying.html#enabling-mount-propagation) must be enabled.
+
+[This script](#using-the-environment-check-script) can be used to check the Longhorn environment for potential issues.
+
+### OS/Distro Specific Configuration
+
+- **Google Kubernetes Engine (GKE)** requires some additional setup for Longhorn to function properly. If you're a GKE user, refer to [this section](../../advanced-resources/os-distro-specific/csi-on-gke) for details.
+- **K3s clusters** require some extra setup. Refer to [this section](../../advanced-resources/os-distro-specific/csi-on-k3s)
+- **RKE clusters with CoreOS** need [this configuration.](../../advanced-resources/os-distro-specific/csi-on-k3s)
+
+### Using the Environment Check Script
+
+We've written a script to help you gather enough information about the factors. Before installing, run:
+
+```shell
+curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/master/scripts/environment_check.sh | bash
+```
+
+Example result:
+
+```shell
+daemonset.apps/longhorn-environment-check created
+waiting for pods to become ready (0/3)
+all pods ready (3/3)
+
+  MountPropagation is enabled!
+
+cleaning up...
+daemonset.apps "longhorn-environment-check" deleted
+clean up complete
+```
+
+### Notes on Mount Propagation
+
+If your Kubernetes cluster was provisioned by Rancher v2.0.7+ or later, the MountPropagation feature is enabled by default.
+
+If MountPropagation is disabled, Base Image feature will be disabled.
+
+### Installing open-iscsi
+
+The command used to install `open-iscsi` differs depending on the Linux distribution.
+
+For GKE, we recommend using Ubuntu as the guest OS image since it contains`open-iscsi` already.
+
+You may need to edit the cluster security group to allow SSH access.
+
+For Debian and Ubuntu, use this command:
+
+```
+apt-get install open-iscsi
+```
+
+For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`, use this command:
+
+```
+yum install iscsi-initiator-utils
+```
+
+
+### Checking the Kubernetes Version
+
+Use the following command to check your Kubernetes server version
+
+```shell
+kubectl version
+```
+
+Result:
+
+```shell
+Client Version: version.Info{Major:"1", Minor:"10", GitVersion:"v1.10.3", GitCommit:"2bba0127d85d5a46ab4b778548be28623b32d0b0", GitTreeState:"clean", BuildDate:"2018-05-21T09:17:39Z", GoVersion:"go1.9.3", Compiler:"gc", Platform:"linux/amd64"}
+Server Version: version.Info{Major:"1", Minor:"10", GitVersion:"v1.10.1", GitCommit:"d4ab47518836c750f9949b9e0d387f20fb92260b", GitTreeState:"clean", BuildDate:"2018-04-12T14:14:26Z", GoVersion:"go1.9.3", Compiler:"gc", Platform:"linux/amd64"}
+```
+
+The `Server Version` should be `v1.10` or above.
+
+
