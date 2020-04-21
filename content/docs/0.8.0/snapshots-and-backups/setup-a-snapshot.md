@@ -3,7 +3,7 @@
   weight: 1
 ---
 
-A Snapshot is the state of a Kubernetes Volume at any given point in time.  To create a snapshot of an existing cluster, from the Dashboard
+A [snapshot](../../concepts/#the-latest-snapshot) is the state of a Kubernetes Volume at any given point in time.  To create a snapshot of an existing cluster, from the Dashboard
 
 - Click on the Volume menu
 - Select a Volume of which you desire a snapshot
