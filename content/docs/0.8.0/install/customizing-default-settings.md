@@ -62,39 +62,39 @@ You should modify the settings for any existing Longhorn system via the Longhorn
 
 2.1 Use helm command with `--set` flag to modify the default settings. For example:
 
-    ```shell
-    helm install ./longhorn/chart \
-    --name longhorn \
-    --namespace longhorn-system \
-    --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
-    ```
+   ```shell
+   helm install ./longhorn/chart \
+   --name longhorn \
+   --namespace longhorn-system \
+   --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
+   ```
 
 2.2. Or directly modifying the default settings in the yaml file `longhorn/chart/values.yaml` then using helm command without `--set` to deploy Longhorn. For example:
 
-    In `longhorn/chart/values.yaml`:
+In `longhorn/chart/values.yaml`:
 
-    ```yaml
-    defaultSettings:
-      backupTarget: s3://backupbucket@us-east-1/backupstore
-      backupTargetCredentialSecret: minio-secret
-      createDefaultDiskLabeledNodes: true
-      defaultDataPath: /var/lib/longhorn-example/
-      replicaSoftAntiAffinity: false
-      storageOverProvisioningPercentage: 600
-      storageMinimalAvailablePercentage: 15
-      upgradeChecker: false
-      defaultReplicaCount: 2
-      guaranteedEngineCPU:
-      defaultLonghornStaticStorageClass: longhorn-static-example
-      backupstorePollInterval: 500
-      taintToleration: key1=value1:NoSchedule; key2:NoExecute
-    ```
+   ```yaml
+   defaultSettings:
+     backupTarget: s3://backupbucket@us-east-1/backupstore
+     backupTargetCredentialSecret: minio-secret
+     createDefaultDiskLabeledNodes: true
+     defaultDataPath: /var/lib/longhorn-example/
+     replicaSoftAntiAffinity: false
+     storageOverProvisioningPercentage: 600
+     storageMinimalAvailablePercentage: 15
+     upgradeChecker: false
+     defaultReplicaCount: 2
+     guaranteedEngineCPU:
+     defaultLonghornStaticStorageClass: longhorn-static-example
+     backupstorePollInterval: 500
+     taintToleration: key1=value1:NoSchedule; key2:NoExecute
+   ```
 
-    Then use the `helm` command:
+Then use the `helm` command:
 
-    ```shell
-    helm install ./longhorn/chart --name longhorn --namespace longhorn-system
-    ```
+   ```shell
+   helm install ./longhorn/chart --name longhorn --namespace longhorn-system
+   ```
 
 For more info about using helm, see: 
 [Install-Longhorn-with-helm](../install-with-helm)
