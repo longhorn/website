@@ -18,12 +18,12 @@ git clone https://github.com/longhorn/longhorn && cd longorn
 Now using following command to install Longhorn:
 * Helm2
 ```
-helm install ./longhorn/chart --name longhorn --namespace longhorn-system
+helm install ./chart --name longhorn --namespace longhorn-system
 ```
 * Helm3
 ```
 kubectl create namespace longhorn-system
-helm install longhorn ./longhorn/chart/ --namespace longhorn-system
+helm install longhorn ./chart/ --namespace longhorn-system
 ```
 ---
 
