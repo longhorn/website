@@ -16,4 +16,4 @@ longhorn-frontend   ClusterIP      10.20.245.110   <none>           80/TCP      
 
 To access Longhorn UI when installed from YAML manifest, you need to create an ingress controller.
 
-See more about how to create an Nginx ingress controller with basic authentication [here](https://github.com/longhorn/longhorn/blob/master/docs/longhorn-ingress.md)
+See more about how to create an Nginx ingress controller with basic authentication [here](../../users-guide/longhorn-ingress)
