@@ -1,25 +1,18 @@
 ---
 title: Contributing
-weight: 5
 ---
 
-Longhorn is open source software, so contributions are greatly welcome. Please read the [Cloud Native Computing Foundation Code of Conduct](https://github.com/cncf/foundation/blob/master/code-of-conduct.md) and [Contributing Guidelines](https://github.com/longhorn/longhorn/blob/master/CONTRIBUTING.md) before contributing.
+Longhorn is an open source software, so contribution are greatly welcome. Please read [Code of Conduct](https://github.com/cncf/foundation/blob/master/code-of-conduct.md) and [Contributing Guidelines](https://github.com/longhorn/longhorn/blob/master/CONTRIBUTING.md) before contributing.
 
-Contributing code is not the only way of contributing. We value feedback very much and many of the Longhorn features are originated from users' feedback. If you have any feedbacks, feel free to [file an issue](https://github.com/longhorn/longhorn/issues/new?title=*Summarize%20your%20issue%20here*&body=*Describe%20your%20issue%20here*%0A%0A---%0AVersion%3A%20``) and talk to the developers at the [CNCF](https://slack.cncf.io/) [#longhorn](https://cloud-native.slack.com/messages/longhorn) slack channel.
-
-Longhorn is a [CNCF Sandbox Project.](https://www.cncf.io/sandbox-projects/)
-
-![Longhorn is a CNCF Sandbox Project](https://github.com/cncf/artwork/blob/master/other/cncf/horizontal/color/cncf-color.png)
-
+Contributing code is not the only way of contributing. We value feedbacks very much and many of the Longhorn features are originated from users' feedback. If you have any feedbacks, feel free to [file an issue](https://github.com/longhorn/longhorn/issues/new?title=*Summarize%20your%20issue%20here*&body=*Describe%20your%20issue%20here*%0A%0A---%0AVersion%3A%20``) and talk to the developers at the [CNCF](https://slack.cncf.io/) [#longhorn](https://cloud-native.slack.com/messages/longhorn) slack channel.
 
 ## Source Code
 
 Longhorn is 100% open source software. Project source code is spread across a number of repos:
 
-- **Longhorn Engine:** Core controller/replica logic https://github.com/longhorn/longhorn-engine
-- **Longhorn Instance Manager:** Controller/replica instance lifecycle management https://github.com/longhorn/longhorn-instance-manager
-- **Longhorn Manager:** Longhorn orchestration https://github.com/longhorn/longhorn-manager
-- **Longhorn UI:** Dashboard https://github.com/longhorn/longhorn-ui
+1. Longhorn Engine -- Core controller/replica logic https://github.com/longhorn/longhorn-engine
+2. Longhorn Manager -- Longhorn orchestration https://github.com/longhorn/longhorn-manager
+3. Longhorn UI -- Dashboard https://github.com/longhorn/longhorn-ui
 
 
 ## License
@@ -31,3 +24,7 @@ Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+### Longhorn is a [CNCF Sandbox Project](https://www.cncf.io/sandbox-projects/)
+
+![Longhorn is a CNCF Sandbox Project](https://github.com/cncf/artwork/blob/master/other/cncf/horizontal/color/cncf-color.png)
