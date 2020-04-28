@@ -62,12 +62,12 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
 
 2. Use helm command with `--set` flag to modify the default settings. For example:
 
-   ```shell
-   helm install ./longhorn/chart \
-   --name longhorn \
-   --namespace longhorn-system \
-   --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
-   ```
+    ```shell
+    helm install ./longhorn/chart \
+    --name longhorn \
+    --namespace longhorn-system \
+    --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
+    ```
 
     Or directly modify the default settings in the YAML file `longhorn/chart/values.yaml`, then use the Helm command without `--set` to deploy Longhorn. The following is an example `longhorn/chart/values.yaml`:
 

@@ -1,43 +1,48 @@
 ---
-title: Workload Identification for a Volume
+title: Viewing Workloads that Use a Volume
 weight: 2
 ---
 
-Now users can identify current workloads or workload history for existing Longhorn volumes.
+Now users can identify current workloads or workload history for existing Longhorn persistent volumes (PVs) and their history of being bound to persistent volume claims (PVCs).
+
+From the Longhorn UI, go to the **Volume** tab. Each Longhorn volume is listed on the page. The **Attached To** column displays the name of the workload using the volume. If you click the workload name, you will be able to see more details, including the workload type, pod name, and status.
+
+Workload information is also available on the Longhorn volume detail page. To see the details, click the volume name:
+
 ```
-PV Name: test1-pv
-PV Status: Bound
+State: attached
+...
+Namespace:default
+PVC Name:longhorn-volv-pvc
+PV Name:pvc-0edf00f3-1d67-4783-bbce-27d4458f6db7
+PV Status:Bound
+Pod Name:teststatefulset-0
+Pod Status:Running
+Workload Name:teststatefulset
+Workload Type:StatefulSet
+```
 
-Namespace: default
-PVC Name: test1-pvc
+## History
 
-Last Pod Name: volume-test-1
-Last Pod Status: Running
-Last Workload Name: volume-test
-Last Workload Type: Statefulset
+After the a workload is no longer using the Longhorn volume, the volume detail page shows the historical status of the most recent workload that used the volume:
+
+```
 Last time used by Pod: a few seconds ago
+...
+Last Pod Name: teststatefulset-0
+Last Workload Name: teststatefulset
+Last Workload Type: Statefulset
+``` 
+
+If these fields are set, they indicate that currently no workload is using this volume.
+
+When a PVC is no longer bound to the volume, the following status is shown:
+
+```
+Last time bound with PVC:a few seconds ago
+Last time used by Pod:32 minutes ago
+Last Namespace:default
+Last Bounded PVC Name:longhorn-volv-pvc
 ```
 
-## About historical status
-There are a few fields can contain the historical status instead of the current status. 
-Those fields can be used to help users figuring out which workload has used the volume in the past:
-
-1. `Last time bound with PVC`: If this field is set, it indicates currently there is no bounded PVC for this volume. 
-The related fields will show the most recent bounded PVC. 
-2. `Last time used by Pod`: If these fields are set, they indicates currently there is no workload using this volume. 
-The related fields will show the most recent workload using this volume.
-
-# PV/PVC creation for existing Longhorn volume
-Now users can create PV/PVC via our Longhorn UI for the existing Longhorn volumes. 
-Only detached volume can be used by newly created pod.
-
-## About special fields of PV/PVC
-Since the Longhorn volume already exists while creating PV/PVC, StorageClass is not needed for dynamically provisioning 
-Longhorn volume. However, the field `storageClassName` would be set in PVC/PV, to be used for PVC bounding purpose. And
-it's unnecessary for users create the related StorageClass object. 
-
-By default the StorageClass for Longhorn created PV/PVC is `longhorn-static`. Users can modified it in 
-`Setting - General - Default Longhorn Static StorageClass Name` as they need.
-
-Users need to manually delete PVC and PV created by Longhorn.
-
+If the `Last time bound with PVC` field is set, it indicates currently there is no bound PVC for this volume. The related fields will show the most recent workload using this volume.
