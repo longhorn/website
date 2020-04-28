@@ -53,12 +53,12 @@ Therefore, the PVCs and PVs should be migrated to use the new CSI plugin for the
 3. Run this script for each volume:
 
     ```
-    curl -s https://raw.githubusercontent.com/shuo-wu/longhorn-manager/master/deploy/scripts/migrate-for-pre-070-volumes.sh |bash -s -- <volume name>
+    curl -s https://raw.githubusercontent.com/longhorn/longhorn/v0.8.1/scripts/migrate-for-pre-070-volumes.sh |bash -s -- <volume name>
     ```
 
     Or run the script for all volumes:
     ```
-    curl -s https://raw.githubusercontent.com/shuo-wu/longhorn-manager/master/deploy/scripts/migrate-for-pre-070-volumes.sh |bash -s -- --all
+    curl -s https://raw.githubusercontent.com/longhorn/longhorn/v0.8.1/scripts/migrate-for-pre-070-volumes.sh |bash -s -- --all
     ```
 **Result:** The volumes have been migrated to use the new CSI driver.
 
