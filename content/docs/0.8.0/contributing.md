@@ -17,6 +17,7 @@ Longhorn is a [CNCF Sandbox Project.](https://www.cncf.io/sandbox-projects/)
 Longhorn is 100% open source software. Project source code is spread across a number of repos:
 
 - **Longhorn Engine:** Core controller/replica logic https://github.com/longhorn/longhorn-engine
+- **Longhorn Instance Manager:** Controller/replica instance lifecycle management https://github.com/longhorn/longhorn-instance-manager
 - **Longhorn Manager:** Longhorn orchestration https://github.com/longhorn/longhorn-manager
 - **Longhorn UI:** Dashboard https://github.com/longhorn/longhorn-ui
 
