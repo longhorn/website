@@ -21,4 +21,4 @@ Longhorn implements distributed block storage using containers and microservices
 
 Longhorn is beta-quality software. We appreciate your willingness to deploy Longhorn and provide feedback.
 
-The latest release of Longhorn is **v0.8.0**.
+The latest release of Longhorn is **v0.8.1**.
