@@ -3,6 +3,8 @@
   weight: 1
 ---
 
+In this section, you'll learn how to install Longhorn on a K3s Kubernetes cluster. [K3s](https://rancher.com/docs/k3s/latest/en/) is a fully compliant Kubernetes distribution that is easy to install, using half the memory, all in a binary of less than 50mb.
+
 ## Requirements
 
   -  Kubernetes v1.11 or higher.

@@ -25,7 +25,7 @@ If you're using a Helm version prior to version 3.0, you need to [install Tiller
 1. Clone the Longhorn repository:
 
     ```shell
-    git clone https://github.com/longhorn/longhorn && cd longorn
+    git clone https://github.com/longhorn/longhorn && cd longhorn
     ```
 
 2. Install Longhorn in the `longhorn-system` namespace.

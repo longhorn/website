@@ -1,38 +1,62 @@
 ---
-title: Recurring Snapshots
+title: Recurring Snapshots and Backups
 weight: 3
 ---
 
-Longhorn supports recurring snapshot and backup for volumes. User only need to set when he/she wish to take the snapshot and/or backup, and how many snapshots/backups needs to be retains, then Longhorn will automatically create snapshot/backup for the user at that time, as long as the volume is attached to a node.
+From the Longhorn UI, recurring snapshots and backups can be scheduled.
 
-Users can setup recurring snapshot/backup via Longhorn UI, or Kubernetes StorageClass.
+To set up a schedule, you will go to the volume detail view in Longhorn. Then you will set:
 
-## Set up recurring jobs using Longhorn UI
+- The type of schedule, either backup or snapshot
+- The time that the backup or snapshot will be created, in the form of a [CRON expression](https://en.wikipedia.org/wiki/Cron#CRON_expression)
+- The number of backups or snapshots to retain
+- Any labels that should be applied to the backup or snapshot
 
-User can find the setting for the recurring snapshot and backup in the `Volume Detail` page.
+Then Longhorn will automatically create snapshots or backups for the user at that time, as long as the volume is attached to a node.
 
-## Set up recurring jobs using StorageClass
+Recurring snapshots can be configured using the Longhorn UI, or by using a Kubernetes [StorageClass.](https://kubernetes.io/docs/concepts/storage/storage-classes/)
 
-Users can set field `recurringJobs` in StorageClass as parameters. Any future volumes created using this StorageClass will have those recurring jobs automatically set up.
+For more information on how snapshots and backups work, refer to the [concepts](../../concepts) section.
 
-Field `recurringJobs` should follow JSON format. e.g.
+## Set up Recurring Jobs using the Longhorn UI
 
-```
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: longhorn
-provisioner: driver.longhorn.io
-parameters:
-  numberOfReplicas: "3"
-  staleReplicaTimeout: "30"
-  fromBackup: ""
-  recurringJobs: '[{"name":"snap", "task":"snapshot", "cron":"*/1 * * * *", "retain":1},
-                   {"name":"backup", "task":"backup", "cron":"*/2 * * * *", "retain":1}]'
+Recurring snapshots and backups can be configured from the volume detail page. To navigate to this page, click **Volume,** then click the name of the volume.
 
-```
+## Set up Recurring Jobs using a StorageClass
 
-Explanation:
+Scheduled backups and snapshots can be configured in the `recurringJobs` parameters in a StorageClass.
+
+Any future volumes created using this StorageClass will have those recurring jobs automatically set up.
+
+The `recurringJobs` field should follow JSON format:
+
+    kind: StorageClass
+    apiVersion: storage.k8s.io/v1
+    metadata:
+      name: longhorn
+    provisioner: driver.longhorn.io
+    parameters:
+      numberOfReplicas: "3"
+      staleReplicaTimeout: "30"
+      fromBackup: ""
+      recurringJobs: '[
+        { 
+          "name":"snap", 
+          "task":"snapshot", 
+          "cron":"*/1 * * * *", 
+          "retain":1
+        },
+        {
+          "name":"backup", 
+          "task":"backup", 
+          "cron":"*/2 * * * *", 
+          "retain":1
+        }
+      ]'
+
+
+
+The following parameters should be specified for each recurring job:
 
 1. `name`: Name of one job. Do not use duplicate name in one `recurringJobs`. And the length of `name` should be no more than 8 characters.
 

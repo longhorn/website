@@ -66,8 +66,22 @@ If the label or annotation fails validation, the whole annotation is ignored.
 
     ```
     node.longhorn.io/default-disks-config: 
-    '[{"path":"/mnt/disk1","allowScheduling":true},
-    {"name":"fast-ssd-disk", "path":"/mnt/disk2","allowScheduling":false,"storageReserved":10485760,"tags":["ssd","fast"]}]'
+    '[
+        { 
+            "path":"/mnt/disk1",
+            "allowScheduling":true
+        },
+        {   
+            "name":"fast-ssd-disk", 
+            "path":"/mnt/disk2",
+            "allowScheduling":false,
+            "storageReserved":10485760,
+            "tags":[
+                "ssd",
+                "fast"
+            ]
+        }
+    ]'
     ```
 
     > **Note:** If the same name is specified for different disks, the configuration will be treated as invalid.

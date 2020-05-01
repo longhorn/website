@@ -101,7 +101,7 @@ To restore, follow the below instructions. The example below uses a StatefulSet 
     apiVersion: apps/v1beta2
     kind: StatefulSet
     metadata:
-      name: webapp # match this with the pvc naming scheme
+      name: webapp # match this with the PersistentVolumeClaim naming scheme
     spec:
       selector:
         matchLabels:
@@ -125,7 +125,7 @@ To restore, follow the below instructions. The example below uses a StatefulSet 
               mountPath: /usr/share/nginx/html
       volumeClaimTemplates:
       - metadata:
-          name: data # match this with the pvc naming scheme
+          name: data # match this with the PersistentVolumeClaim naming scheme
         spec:
           accessModes: [ "ReadWriteOnce" ]
           storageClassName: longhorn # must match name from earlier
