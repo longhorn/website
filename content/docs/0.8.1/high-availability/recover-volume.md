@@ -5,7 +5,7 @@
 
 ## Overview
 1. Now Longhorn can automatically reattach then remount volumes if unexpected detachment happens. e.g., [Kubernetes upgrade](https://github.com/longhorn/longhorn/issues/703), [Docker reboot](https://github.com/longhorn/longhorn/issues/686).
-2. After **reattachment** and **remount** complete, users may need to **manually restart the related workload containers** for the volume restoration **if the following recommended setup is not applied**.
+2. After **reattachment** and **remount** complete, users may need to **manually restart the related workload containers** for the volume restore **if the following recommended setup is not applied**.
 
 #### Reattachment
 Longhorn will reattach the volume if the volume engine deads unexpectedly.
