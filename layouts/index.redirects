@@ -3,8 +3,7 @@
 /docs     /docs/{{ $latest }}     200!
 /docs/latest     /docs/{{ $latest }}
 /docs/latest/*     /docs/{{ $latest }}/:splat
-https://docs.longhorn.io/    https://longhorn.io/docs/{{ $latest }}
-https://docs.longhorn.io/*    https://longhorn.io/docs/{{ $latest }}/:splat 200
+
 {{- range $docs -}}
 {{- $version := index (split .File.Path "/") 1 }}
 {{ .RelPermalink | replaceRE (printf "/%s" $version) "" }}     {{ .RelPermalink }}
