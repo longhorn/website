@@ -5,6 +5,34 @@ weight: 2
 
 CSI driver components images names and tags can be found [here.](../../../architecture/#kubernetes-csi-driver-images)
 
+
+## Note:
+
+Using long registry URL may cause Longhorn installation error
+
+e.g Longhorn manager log 
+```
+"instance-manager-e-xxxxxxxx" is invalid: metadata.labels: Invalid value: "<PRIVATE_REGISTRY_URL>-longhornio-longhorn-instance-manager-v1_20200301": must be no more than 63 characters
+```
+
+Longhorn instance manager pods have labels with key `longhorn.io/instance-manager-image` and value `REGISTRY_URL-USER-IMAGE_NAME-TAG`
+
+e.g  
+```
+metadata:
+  labels:
+    longhorn.io/component: instance-manager
+    longhorn.io/instance-manager-image: <PRIVATE_REGISTRY_URL>-longhornio-longhorn-instance-manager-v1_20200301
+    longhorn.io/instance-manager-type: engine
+    longhorn.io/node: <NODE_NAME>
+  name: instance-manager-e-XXXXXXXX
+```
+
+it's known Kubernetes limitaion that label value should be no more than 63 characters [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set)
+
+### Recommendation:
+it's highly recommended **not** to maniplute image tags, specially instance manager image tag e.g `v1_20200301`, since we intentionally used date so it is not assoctiated with Longhorn version.
+
 ## Using manifest file.
 
 1. Get Longhorn Deployment manifest file
