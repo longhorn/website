@@ -1,6 +1,6 @@
 ---
 title: Restoring Volumes for Kubernetes StatefulSets
-weight: 3
+weight: 4
 ---
 Longhorn supports restoring backups, and one of the use cases for this feature is to restore data for use in a Kubernetes StatefulSet, which requires restoring a volume for each replica that was backed up.
 
