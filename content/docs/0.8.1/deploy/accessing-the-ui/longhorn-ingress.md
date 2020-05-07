@@ -40,7 +40,7 @@ Authentication is not enabled by default for kubectl and Helm installations. In 
     ```
 4. Create the ingress controller:
     ```
-    $ kubectl -n longhorn-system apply longhorn-ingress.yml
+    $ kubectl -n longhorn-system apply -f longhorn-ingress.yml
     ```
 
 ## Additional Steps for AWS EKS Kubernetes Clusters
