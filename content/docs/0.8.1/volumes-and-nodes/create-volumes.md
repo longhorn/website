@@ -86,7 +86,7 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
         persistentVolumeClaim:
           claimName: longhorn-volv-pvc
     ```
-More examples are available [here.](../../users-guide/examples)
+More examples are available [here.](../../references/examples)
 
 ### Binding Workloads to PVs without a Kubernetes StorageClass
 

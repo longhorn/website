@@ -24,7 +24,7 @@ weight: 1
 
 ### Customizing Default Settings
 
-To configure Longhorn before installing it, see [this section](../deploy/customizing-default-settings) for details.
+To configure Longhorn before installing it, see [this section](../../advanced-resources/deploy/customizing-default-settings) for details.
 
 ### General
 
@@ -110,7 +110,7 @@ Before modifying toleration setting, all Longhorn volumes should be detached the
 
 Multiple tolerations can be set here, and these tolerations are separated by semicolon. For example, `key1=value1:NoSchedule; key2:NoExecute`
 
-See [Taint Toleration](../deploy/taint-toleration) for details.
+See [Taint Toleration](../../advanced-resources/deploy/taint-toleration) for details.
 
 ### Scheduling
 #### Replica Soft Anti-Affinity

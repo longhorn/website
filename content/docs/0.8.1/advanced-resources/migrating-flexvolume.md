@@ -14,4 +14,4 @@ The migration path between drivers requires backing up and restoring each volume
 1. [Back up existing volumes](../../snapshots-and-backups/backup-and-restore/create-a-backup).
 2. On Rancher UI, navigate to the `Catalog Apps` screen, locate the `Longhorn` app and click the `Up to date` button. Under `Kubernetes Driver`, select
 `flexvolume`. We recommend leaving `Flexvolume Path` empty. Click `Upgrade`.
-3. Restore each volume. This [procedure](../../users-guide/restore-statefulset) is tailored to the StatefulSet workload, but the process is approximately the same for all workloads.
+3. Restore each volume. This [procedure](../../snapshots-and-backups/backup-and-restore/restore-statefulset) is tailored to the StatefulSet workload, but the process is approximately the same for all workloads.
