@@ -45,7 +45,7 @@ Authentication is not enabled by default for kubectl and Helm installations. In 
 
 ## Additional Steps for AWS EKS Kubernetes Clusters
 
-You will need to create an ELB (Elastic Load Balancer) to expose the NGINX Ingress controller to the Internet. Additional costs may apply.
+You will need to create an ELB (Elastic Load Balancer) to expose the NGINX Ingress controller to the Internet - additional costs may apply.
 
 1. Create pre-requisite resources according to the [NGINX Ingress Controller documentation.](https://kubernetes.github.io/ingress-nginx/deploy/#prerequisite-generic-deployment-command)
 
