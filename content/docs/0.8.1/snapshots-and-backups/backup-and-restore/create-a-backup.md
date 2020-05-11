@@ -16,4 +16,4 @@ To create a backup,
 
 **Result:** The backup is created. To see it, click **Backup** in the top navigation bar.
 
-For information on how to restore a volume from a snapshot, refer to [this page.](../restore-from-a-backup)
+For information on how to restore a volume from a backup, refer to [this page.](../restore-from-a-backup)

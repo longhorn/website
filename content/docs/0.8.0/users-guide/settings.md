@@ -48,7 +48,7 @@ To setup setting before installing Longhorn, see [Customized Default Setting](#c
 #### Default Replica Count
 * Example: `3`
 * Description: The default number of replicas when creating the volume from Longhorn UI. For Kubernetes, update the `numberOfReplicas` in the StorageClass
-* Note: The recommended way of choosing the default replica count is: if you have more than three nodes for storage, use 3; otherwise use 2. Using a single replica on a single node cluster is also OK, but the HA functionality wouldn't be available. You can still take snapshots/backups of the volume.
+* Note: The recommended way of choosing the default replica count is: if you have more than three nodes for storage, use three; otherwise use two. Using a single replica on a single node cluster is also OK, but the HA functionality wouldn't be available. You can still take snapshots/backups of the volume.
 
 #### Guaranteed Engine CPU
 * Example: `0.2`

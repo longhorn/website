@@ -1,31 +1,33 @@
 ---
-title: Detaching Volumes
+title: Detaching Volumes and Suspending Pods
 weight: 8
 ---
 
-Shutdown all Kubernetes Pods using Longhorn volumes in order to detach the volumes. The easiest way to achieve this is by deleting all workloads and recreate them later after upgrade. If this is not desirable, some workloads may be suspended.
+To detach Longhorn volumes, you will need to first shut down all Kubernetes Pods using the volumes.
+
+The easiest way to achieve this is by deleting all workloads and recreating them later after upgrading. If this is not desirable, some workloads may be suspended.
 
 In this section, you'll learn how each workload can be modified to shut down its pods.
 
 #### Deployment
-Edit the deployment with `kubectl edit deploy/<name>`.
+Edit the Deployment with `kubectl edit deploy/<name>`.
 
 Set `.spec.replicas` to `0`.
 
 #### StatefulSet
-Edit the statefulset with `kubectl edit statefulset/<name>`.
+Edit the StatefulSet with `kubectl edit statefulset/<name>`.
 
 Set `.spec.replicas` to `0`.
 
 #### DaemonSet
 There is no way to suspend this workload.
 
-Delete the daemonset with `kubectl delete ds/<name>`.
+Delete the DaemonSet with `kubectl delete ds/<name>`.
 
 #### Pod
-Delete the pod with `kubectl delete pod/<name>`.
+Delete the Pod with `kubectl delete pod/<name>`.
 
-There is no way to suspend a pod not managed by a workload controller.
+There is no way to suspend a Pod not managed by a workload controller.
 
 #### CronJob
 Edit the cronjob with `kubectl edit cronjob/<name>`.
@@ -40,15 +42,15 @@ Consider allowing the single-run job to complete.
 Otherwise, delete the job with `kubectl delete job/<name>`.
 
 #### ReplicaSet
-Edit the replicaset with `kubectl edit replicaset/<name>`.
+Edit the ReplicaSet with `kubectl edit replicaset/<name>`.
 
 Set `.spec.replicas` to `0`.
 
 #### ReplicationController
-Edit the replicationcontroller with `kubectl edit rc/<name>`.
+Edit the ReplicationController with `kubectl edit rc/<name>`.
 
 Set `.spec.replicas` to `0`.
 
-Wait for the volumes using by the Kubernetes to complete detaching.
+Wait for the volumes used by Kubernetes to complete detachment.
 
 Then detach all remaining volumes from Longhorn UI. These volumes were most likely created and attached outside of Kubernetes via Longhorn UI or REST API.

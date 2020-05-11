@@ -88,4 +88,4 @@ If the label or annotation fails validation, the whole annotation is ignored.
     
 4. Wait for Longhorn to create the customized default disks automatically.
 
-> **Result:** The disks will be updated according to the annotation.
+**Result:** The disks will be updated according to the annotation.

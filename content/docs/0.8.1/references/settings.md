@@ -28,6 +28,8 @@ To configure Longhorn before installing it, see [this section](../../advanced-re
 
 ### General
 
+To configure Longhorn after installing it, go to the Longhorn UI and click **Setting > General.**
+
 #### Backup Target
 > Example: `s3://backupbucket@us-east-1/backupstore`
 
@@ -64,7 +66,7 @@ Can be used with `Create Default Disk on Labeled Nodes` option, to make Longhorn
 #### Default Engine Image
 > Example: `longhornio/longhorn-engine:v0.6.0`
 
-The default engine image used by the manager. Can be changed on the manager starting command line only.
+The default engine image used by the manager. Can be changed by using the manager starting command line only.
 
 Every Longhorn release will ship with a new Longhorn engine image. If the current Longhorn volumes are not using the default engine, a green arrow will show up, indicate this volume needs to be upgraded to use the default engine.
 
@@ -85,7 +87,9 @@ Only available if `Upgrade Checker` is enabled.
 
 The default number of replicas when creating the volume from Longhorn UI. For Kubernetes, update the `numberOfReplicas` in the StorageClass
 
-The recommended way of choosing the default replica count is: if you have more than three nodes for storage, use 3; otherwise use 2. Using a single replica on a single node cluster is also OK, but the high availability functionality wouldn't be available. You can still take snapshots/backups of the volume.
+The recommended way of choosing the default replica count is: if you have more than three nodes for storage, use three; otherwise use two.
+
+Using a single replica on a single node cluster is also OK, but the high availability functionality wouldn't be available. You can still take snapshots and backups of the volume.
 
 #### Guaranteed Engine CPU (Experimental)
 > Example: `0.2`
@@ -97,16 +101,18 @@ Allow Longhorn Engine to have guaranteed CPU allocation. The value is how many C
 Please set to **no more than a quarter** of what the node's available CPU resources, since the option would be applied to the two instance managers on the node (engine and replica), and the future upgraded instance managers (another two for engine and replica).
 
 #### Default Longhorn Static StorageClass Name
->Example: `longhorn-static`
+> Default: `longhorn-static`
 
-The `storageClassName` is for persistent volumes (PVs) and persistent volume claims (PVCs) when creating PV/PVC for an existing Longhorn volume. Notice that it's unnecessary for users to create the related StorageClass object in Kubernetes since the StorageClass would only be used as matching labels for PVC bounding purpose. By default 'longhorn-static'.
+The `storageClassName` is for persistent volumes (PVs) and persistent volume claims (PVCs) when creating PV/PVC for an existing Longhorn volume.
+
+It is possible to use a Longhorn StorageClass to bind a workload to a PV without creating a StorageClass object in Kubernetes. For more information, see [this section.](../../volumes-and-nodes/create-volumes/#binding-workloads-to-pvs-without-a-kubernetes-storageclass)
 
 #### Kubernetes Taint Toleration
 > Example: `nodetype=storage:NoSchedule`
 
 By setting tolerations for Longhorn then adding taints for the nodes, the nodes with large storage can be dedicated to Longhorn only (to store replica data) and reject other general workloads.
 
-Before modifying toleration setting, all Longhorn volumes should be detached then Longhorn components will be restarted to apply new tolerations. And toleration update will take a while. Users cannot operate Longhorn system during update. Hence it's recommended to set toleration during Longhorn deployment.
+Before modifying toleration setting, all Longhorn volumes should be detached then Longhorn components will be restarted to apply new tolerations. And toleration updates will take a while. Users cannot operate Longhorn system during update. Hence it's recommended to set tolerations during Longhorn deployment.
 
 Multiple tolerations can be set here, and these tolerations are separated by semicolon. For example, `key1=value1:NoSchedule; key2:NoExecute`
 
@@ -118,18 +124,20 @@ See [Taint Toleration](../../advanced-resources/deploy/taint-toleration) for det
 
 Allow scheduling on nodes with existing healthy replicas of the same volume.
 
-If the users want to avoid temporarily node down caused replica rebuild, they can set this option to `false`. The volume may be kept in `Degraded` state until another node that doesn't already have a replica scheduled comes online.
+To avoid replica rebuilds caused by a node temporarily going down, set this option to `false`. The volume may be kept in `Degraded` state until another node that doesn't already have a replica scheduled comes online.
 
 #### Storage Over Provisioning Percentage
 > Example: `500`
 
 The over-provisioning percentage defines how much storage can be allocated relative to the hard drive's capacity.
 
-The users can set this to a lower value if they don't want overprovisioning storage. See [Multiple Disks Support](../../volumes-and-nodes/multidisk/#configuration) for details. Also, a replica of volume may take more space than the volume's size since the snapshots would need space to store as well. The users can delete snapshots to reclaim spaces.
+This value can be lowered if you don't want to over-provision storage. See [Multiple Disks Support](../../volumes-and-nodes/multidisk/#configuring-volume-scheduling) for details.
+
+A replica of volume may take more space than the volume's size since the snapshots would need space to store as well. Snapshots can be deleted to reclaim space.
 
 #### Storage Minimal Available Percentage
 > Example: `10`
 
-If one disk's available capacity to it's maximum capacity in % is less than the minimal available percentage, the disk would become unschedulable until more space freed up.
+If the minimum available disk capacity exceeds the actual percentage of available disk capacity, the disk becomes unschedulable until more space is freed up.
 
-See [Multiple Disks Support](../../volumes-and-nodes/multidisk/#configuration) for details.
+See [Multiple Disks Support](../../volumes-and-nodes/multidisk/#configuring-volume-scheduling) for details.

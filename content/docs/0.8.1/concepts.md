@@ -70,7 +70,9 @@ A corresponding snapshot is needed for creating a backup. And user can choose to
 
 After v0.6.0, when the user attaching the volume from Longhorn UI, there is a checkbox for `Maintenance mode`. The option will result in attaching the volume without enabling the frontend (block device or iSCSI), to make sure no one can access the volume data when the volume is attached.
 
-It's mainly used to perform `Snapshot Revert`. After v0.6.0, Snapshot Reverting operation required volume to be in `Maintenance mode` since we cannot modify the block device's content with the volume mounted or being used, otherwise it will cause filesystem corruptions. 
+It's mainly used to perform a snapshot revert and to expand volumes.
+
+After v0.6.0, Snapshot Reverting operation required volumes to be in `Maintenance mode` since we cannot modify the block device's content with the volume mounted or being used, because it would cause filesystem corruption. 
 
 It's also useful to inspect the volume state without worry that the data can be accessed by accident.
 
@@ -93,7 +95,7 @@ Stale Replica Timeout (`staleReplicaTimeout`) determines when would Longhorn cle
 
 ### Disaster Recovery Volumes
 
-A disaster recovery (DR) volume is a special volume that stores data in a backup cluster in case the whole main cluster goes down. DR volumes are used to increase the resiliency of Longhorn volumes.
+A disaster recovery (DR) volume is a special volume that stores data in a backup cluster in case the whole main cluster goes down. To increase the resiliency of Longhorn volumes, DR volumes are created in a secondary Kubernetes cluster, and they are incrementally updated from the latest backup of a Longhorn volume from a primary Kubernetes cluster.
 
 Because the main purpose of a DR volume is to restore data from backup, this type of volume doesn't support the following actions before it is activated: 
 
@@ -102,17 +104,15 @@ Because the main purpose of a DR volume is to restore data from backup, this typ
 - Creating persistent volumes
 - Creating persistent volume claims
 
-A DR volume can be created from a volume's backup in the backup store. After the DR volume is created, Longhorn will monitor its original backup volume and incrementally restore from the latest backup. 
+A DR volume can be created from a volume's backup in the backupstore. After the DR volume is created, Longhorn will monitor its original backup volume and incrementally restore it from the latest backup. 
 
 If the original volume in the main cluster goes down, the DR volume can be immediately activated in the backup cluster, so it can greatly reduce the time needed to restore the data from the backup store to the volume in the backup cluster.
 
-When a DR volume is activated, Longhorn will check the last backup of the original volume. If the backup hasn't been restored, the restoration will be started, and the activate action will fail. Users need to wait for the restoration to complete before retrying.
-
-The `Backup Target` in Settings cannot be updated if any DR volumes exist.
+After a DR volume is activated, it becomes the same as a normal Longhorn volume, and it cannot be deactivated.
 
 ### Backupstore Update Intervals, RTO, and RPO
 
-Typically incremental restoration is triggered by the periodic backup store update. Users can set backup store update interval in `Setting - General - Backupstore Poll Interval`.
+Typically incremental restore is triggered by the periodic backup store update. Users can set backup store update interval in `Setting - General - Backupstore Poll Interval`.
 
 Notice that this interval can potentially impact Recovery Time Objective (RTO). If it is too long, there may be a large amount of data for the disaster recovery volume to restore, which will take a long time.
 

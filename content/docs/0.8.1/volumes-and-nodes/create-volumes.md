@@ -1,5 +1,5 @@
 ---
-title: Create Longhorn Volumes
+title: Creating Longhorn Volumes
 weight: 1
 ---
 
@@ -90,7 +90,7 @@ More examples are available [here.](../../references/examples)
 
 ### Binding Workloads to PVs without a Kubernetes StorageClass
 
-It is possible to use a Longhorn StorageClass to bind a workload to a PV without creating a StorageClass object in Kubernetes.
+The StorageClass name can also be used as a label, so it is possible to use a Longhorn StorageClass to bind a workload to an existing PV without creating a StorageClass object in Kubernetes.
 
 Since the Storage Class is also a field used to match a PVC with a PV, which doesn't have to be created by a Provisioner, you can create a PV manually with a custom StorageClass name, then create a PVC asking for the same StorageClass name.
 
@@ -98,18 +98,26 @@ When a PVC requests a StorageClass that does not exist as a Kubernetes resource,
 
 If the PVC names a StorageClass, Kubernetes will:
 
-1. Look for an existing PV that has the label matching the StorageClass
+1. Look for an existing PV that has the label matching the StorageClass.
 2. Look for an existing StorageClass Kubernetes resource. If the StorageClass exists, it will be used to create a PV.
 
 ### Creating Longhorn Volumes with the Longhorn UI
 
-Since the Longhorn volume already exists while creating PV/PVC, a StorageClass is not needed for dynamically provisioning Longhorn volume. However, the field `storageClassName` should be set in PVC/PV, to be used for PVC bounding purpose. And it's unnecessary for users create the related StorageClass object. 
+Since the Longhorn volume already exists while creating PV/PVC from it in the Longhorn UI, a StorageClass is not needed for dynamically provisioning Longhorn volumes. However, the field `storageClassName` should be set in the PVC/PV, to be used for the purpose of binding PVCs. And it's unnecessary for the related StorageClass object to be created.
 
-By default the StorageClass for Longhorn created PV/PVC is `longhorn-static`. Users can modified it in `Setting - General - Default Longhorn Static StorageClass Name` as they need.
+By default the StorageClass for Longhorn-created PVs and PVCs is `longhorn-static`. To change the default StorageClass name, click the **Settings** tab in Longhorn and edit the ***Default Longhorn Static StorageClass Name** field.
 
-Users need to manually delete PVC and PV created by Longhorn.
-
+PVCs and PVs created by Longhorn need to be manually deleted.
 
 # PV/PVC creation for existing Longhorn volume
-Now users can create PV/PVC via our Longhorn UI for the existing Longhorn volumes. 
-Only detached volume can be used by newly created pod.
+Now PV/PVC pairs can be created via our Longhorn UI for the existing Longhorn volumes.
+
+Only detached volumes can be used by newly created pods.
+
+1. In the Longhorn UI, go to the **Volume** tab.
+2. Check the box to the left of the volume that needs a corresponding PV and PVC. You will see that more buttons at the top of the list of volumes are now available.
+3. Click the three-line menu dropdown and click **Create PV/PVC.**
+4. Enter a namespace where the PV and PVC will be created.
+5. Click **OK.**
+
+**Result:** A PV and PVC corresponding to the volume are created in the Kubernetes cluster.

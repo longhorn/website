@@ -11,6 +11,8 @@ If you don't have access to AWS S3 or want to give the backupstore a try first, 
 
 Longhorn also supports setting up recurring snapshot/backup jobs for volumes, via Longhorn UI or Kubernetes Storage Class. See [here](../../scheduling-backups-and-snapshots) for details.
 
+> The `Backup Target` in cannot be updated if any DR volumes exist.
+
 This page covers the following topics:
 
 - [Set up AWS S3 Backupstore](#set-up-aws-s3-backupstore)
@@ -62,12 +64,14 @@ This page covers the following topics:
 
    Also make sure you've set **`<your-aws-region>` in the URL**. For example, for Google Cloud Storage, you can find the region code [here.](https://cloud.google.com/storage/docs/locations)
 
-5.  Set `Settings/General/BackupTargetSecret` to
+5.  In the **Backup Target Credential Secret** field, enter:
 
     ```
     aws-secret
     ```
     This is the secret name with AWS keys from the third step.
+
+6. Click **Save.**
 
 **Result:** Longhorn can store backups in S3. To create a backup, see [this section.](../create-a-backup)
 

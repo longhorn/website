@@ -123,8 +123,7 @@ snapshot and click `Backup`. Wait for the new backup to show up in the volume's 
 
 ### Check For Issues
 
-Make sure no volume is in degraded or faulted state. Wait for degraded
-volumes to heal and delete/salvage faulted volumes before proceeding.
+Make sure no volume is in degraded or faulted state. Wait for degraded volumes to heal and delete/salvage faulted volumes before proceeding.
 
 ### Detach Volumes
 

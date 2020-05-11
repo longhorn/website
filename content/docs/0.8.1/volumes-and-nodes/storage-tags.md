@@ -1,34 +1,31 @@
 ---
-title: Storage Tags
+title: Tagging Nodes, Volumes and Disks
 weight: 3
 ---
 
-## Overview
-
-The storage tag feature enables the user to only use certain nodes or disks for storing Longhorn volume data. For example, performance-sensitive data can use only the high-performance disks which can be tagged as `fast`, `ssd` or `nvme`, or only the high-performance node tagged as `baremetal`.
+The storage tag feature enables the user to only use certain nodes or disks for storing Longhorn volume data. For example, performance-sensitive data can use only the high-performance disks which can be tagged as `fast`, `ssd` or `nvme`, or only the high-performance node could be tagged as `baremetal`.
 
 This feature supports both disks and nodes. 
 
-## Setup
+> When multiple tags are specified for a volume, the disk and the node (that the disk belongs to) must have all the specified tags to become usable.
+
+### Tagging Nodes with Longhorn
 
 The tag setup can be found at Longhorn UI:
 
-1. *Node -> Select one node -> Edit Node and Disks*
-2. Click `+New Node Tag` or `+New Disk Tag` to add new tags.
+1. Click the **Node** tab. Each node is listed in the table on this page.
+2. Go to the node where the tags need to be added or edited. In the **Operation** column of the table, click the three-line menu dropdown and click **Edit node and disks.**
+3. Click **+New Node Tag** or **+New Disk Tag** to add new tags.
 
-All the existing scheduled replica on the node or disk won't be affected by the new tags
+All the existing scheduled replicas on the node or disk won't be affected by the new tags.
 
-## Usage
-
-When multiple tags are specified for a volume, the disk and the node (the disk belong to) must have all the specified tags to become usable.
-
-### UI
+### Tagging Volumes with Longhorn
 
 When creating a volume, specify the disk tag and node tag in the UI.
 
-### Kubernetes
+### Tagging Nodes and Disks with Kubernetes
 
-Use Kubernetes StorageClass setting to specify tags.
+Tags can be specified using the Kubernetes StorageClass settings.
 
 For example:
 ```

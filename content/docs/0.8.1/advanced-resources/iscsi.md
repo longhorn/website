@@ -13,9 +13,7 @@ To start a volume with the iSCSI target frontend mode, select `iSCSI` as the fro
 
 After the volume has been attached, you will see something like the following in the `endpoint` field:
 
-```text
-iscsi://10.42.0.21:3260/iqn.2014-09.com.rancher:testvolume/1
-```
+    iscsi://10.42.0.21:3260/iqn.2014-09.com.rancher:testvolume/1
 
 In this example,
 
