@@ -1,6 +1,6 @@
 ---
 title: Contributing
-weight: 5
+weight: 6
 ---
 
 Longhorn is open source software, so contributions are greatly welcome. Please read the [Cloud Native Computing Foundation Code of Conduct](https://github.com/cncf/foundation/blob/master/code-of-conduct.md) and [Contributing Guidelines](https://github.com/longhorn/longhorn/blob/master/CONTRIBUTING.md) before contributing.
