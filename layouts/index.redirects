@@ -1,4 +1,5 @@
-https://docs.longhorn.io/*     https://longhorn.io/docs/:splat     301!
+http://docs.longhorn.io/*     https://www.longhorn.io/docs/:splat     301!
+https://docs.longhorn.io/*     https://www.longhorn.io/docs/:splat     301!
 
 {{- $latest := index site.Params.versions 0 -}}
 {{- $docs   := where site.RegularPages "Section" "docs" -}}
