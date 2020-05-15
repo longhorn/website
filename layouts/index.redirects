@@ -1,3 +1,5 @@
+http://docs.longhorn.io/     https://www.longhorn.io/docs/     301!
+https://docs.longhorn.io/     https://www.longhorn.io/docs/     301!
 http://docs.longhorn.io/*     https://www.longhorn.io/docs/:splat     301!
 https://docs.longhorn.io/*     https://www.longhorn.io/docs/:splat     301!
 
