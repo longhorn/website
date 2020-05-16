@@ -7,7 +7,7 @@ weight: 2
 
 Longhorn implements distributed block storage using containers and microservices. It creates a dedicated storage controller for each block device volume and synchronously replicates the volume across multiple replicas stored on multiple nodes. The storage controller and replicas are themselves orchestrated using [Kubernetes](https://kubernetes.io).
 
-The Longhorn manager is repsonsible for creating and managing volumes in the Kubernetes cluster.
+The Longhorn manager is responsible for creating and managing volumes in the Kubernetes cluster.
 
 When the Longhorn manager is asked to create a volume, it creates a controller container on the host the volume is attached to as well as the hosts where the replicas will be placed. Replicas should be placed on separate hosts to ensure maximum availability.
 
@@ -43,7 +43,7 @@ When the controller detects failures in one of its replicas, it marks the replic
 
 ## Backup and Restore
 
-Snapshot and backup operations are performed separately. The backup are incremental,  detecting and transmitting the changed blocks between snapshots. This is a relatively easy task since each snapshot is a differencing file and only stores the changes from the last snapshot. To avoid storing a very large number of small blocks, Longhorn performs backup operations using 2MB blocks. That means that, if any 4K block in a 2MB boundary is changed, it will have to backup the entire 2MB block. This offers the right balance between manageability and efficiency.
+Snapshot and backup operations are performed separately. The backups are incremental,  detecting and transmitting the changed blocks between snapshots. This is a relatively easy task since each snapshot is a differencing file and only stores the changes from the last snapshot. To avoid storing a very large number of small blocks, Longhorn performs backup operations using 2MB blocks. That means that, if any 4K block in a 2MB boundary is changed, it will have to backup the entire 2MB block. This offers the right balance between manageability and efficiency.
 
 In the following figure, Longhorn has backed up both snap2 and snap3. Each backup maintains its own set of 2MB blocks, and the two backups share one green block and one blue block. Each 2MB block is backed up only once. When the user deletes a backup from secondary storage, Lonhgorn does not delete all the blocks it uses. Instead, it performs garbage collection periodically to clean up unused blocks from secondary storage.
 
@@ -61,7 +61,7 @@ Volume-level metadata is stored in volume.cfg. The metadata files for each backu
 
 Longhorn is managed in Kubernetes via a [CSI Plugin](https://kubernetes-csi.github.io/docs/).  This allows for easy installation of the Longhorn plugin.
 
-Longhron does leverage iscsi, so extra configuration of the node may be required.  This may include the installation of `open-iscsi` or `iscsiadm`. Depending on the distribution.
+Longhorn does leverage iSCSI, so extra configuration of the node may be required.  This may include the installation of `open-iscsi` or `iscsiadm`. Depending on the distribution.
 
 ## Kubernetes CSI Driver Images
 

@@ -12,19 +12,22 @@ To install Longhorn using Helm, you first need to [install Helm](https://helm.sh
 Once you have Helm installed, clone the Longhorn repository:
 
 ```shell
-git clone https://github.com/longhorn/longhorn && cd longorn
+git clone https://github.com/longhorn/longhorn
 ```
 
-Now using following command to install Longhorn:
-* Helm2
-```
-helm install ./longhorn/chart --name longhorn --namespace longhorn-system
-```
-* Helm3
-```
-kubectl create namespace longhorn-system
-helm install longhorn ./longhorn/chart/ --namespace longhorn-system
-```
+Now use the following command(s) to install Longhorn in the `longhorn-system` namespace:
+
+* Helm 2:
+
+    ```
+    helm install ./longhorn/chart --name longhorn --namespace longhorn-system
+    ```
+* Helm 3: When installing Longhorn with Helm 3, the namespace is created separately.
+
+    ```
+    kubectl create namespace longhorn-system
+    helm install longhorn ./longhorn/chart/ --namespace longhorn-system
+    ```
 ---
 
 This installs Longhorn in the `longhorn-system` namespace.

@@ -19,5 +19,3 @@ If the icon representing the disaster volume is gray, it means the volume is res
 1. In the cluster A, make sure the original volume X has a backup created or has recurring backups scheduled.
 2. In backup page of cluster B, choose the backup volume X, then create disaster recovery volume Y. It's highly recommended to use the backup volume name as the disaster volume name.
 3. Longhorn will automatically attach the DR volume Y to a random node. Then Longhorn will start polling for the last backup of volume X, and incrementally restore it to the volume Y.
-
-> **Note:** Only DR volumes can be deactivated. Deactivating a normal volume is not allowed.
