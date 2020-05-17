@@ -47,7 +47,7 @@ When the controller detects failures in one of its replicas, it marks the replic
 
 Snapshot and backup operations are performed separately. The backups are incremental,  detecting and transmitting the changed blocks between snapshots. This is a relatively easy task since each snapshot is a differencing file and only stores the changes from the last snapshot. To avoid storing a very large number of small blocks, Longhorn performs backup operations using 2MB blocks. That means that, if any 4K block in a 2MB boundary is changed, it will have to backup the entire 2MB block. This offers the right balance between manageability and efficiency.
 
-In the following figure, Longhorn has backed up both snap2 and snap3. Each backup maintains its own set of 2MB blocks, and the two backups share one green block and one blue block. Each 2MB block is backed up only once. When the user deletes a backup from secondary storage, Lonhgorn does not delete all the blocks it uses. Instead, it performs garbage collection periodically to clean up unused blocks from secondary storage.
+In the following figure, Longhorn has backed up both snap2 and snap3. Each backup maintains its own set of 2MB blocks, and the two backups share one green block and one blue block. Each 2MB block is backed up only once. When the user deletes a backup from secondary storage, Longhorn does not delete all the blocks it uses. Instead, it performs garbage collection periodically to clean up unused blocks from secondary storage.
 
 {{< figure src="/img/diagrams/architecture/snapshot-backups.png" >}}
 
