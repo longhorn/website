@@ -12,6 +12,10 @@ Longhorn can be installed on a Kubernetes cluster in several ways:
 
 To install Longhorn in an air gapped environment, refer to [this section.](../../advanced-resources/deploy/airgap)
 
+For information on customizing Longhorn's default settings, refer to [this section.](../../advanced-resources/deploy/customizing-default-settings)
+
+For information on deploying Longhorn on specific nodes and rejecting general workloads for those nodes, refer to the section on [taints and tolerations.](../../advanced-resources/deploy/taint-toleration)
+
 # Installation Requirements
 
 Each node in the Kubernetes cluster where Longhorn is installed must fulfill the following requirements:
@@ -30,7 +34,7 @@ Each node in the Kubernetes cluster where Longhorn is installed must fulfill the
 ### OS/Distro Specific Configuration
 
 - **Google Kubernetes Engine (GKE)** requires some additional setup for Longhorn to function properly. If you're a GKE user, refer to [this section](../../advanced-resources/os-distro-specific/csi-on-gke) for details.
-- **K3s clusters** require some extra setup. Refer to [this section.](../../advanced-resources/os-distro-specific/csi-on-k3s)
+- **K3s clusters** require some extra setup. Refer to [this section](../../advanced-resources/os-distro-specific/csi-on-k3s)
 - **RKE clusters with CoreOS** need [this configuration.](../../advanced-resources/os-distro-specific/csi-on-k3s)
 
 ### Using the Environment Check Script

@@ -13,13 +13,11 @@ When the Longhorn manager is asked to create a volume, it creates a controller c
 
 In the figure below, there are three containers with Longhorn volumes. Each Docker volume has a dedicated controller, which runs as a container. Each controller has two replicas and each replica is a container. The arrows in the figure indicate the read/write data flow between the Docker volume, controller container, replica containers, and disks. By creating a separate controller for each volume, if one controller fails, the function of other volumes is not impacted.
 
-read/write data flow between the Docker volume, controller container, replica containers, and disks
+{{< figure alt="read/write data flow between the Docker volume, controller container, replica containers, and disks" src="/img/diagrams/architecture/longhorn-controllers.png" >}}
 
 For example, in a large-scale deployment with 100,000 Docker volumes each with two replicas, there will be 100,000 controller containers and 200,000 replica containers. In order to schedule, monitor, coordinate, and repair all these controllers and replicas a storage orchestration system is needed.
 
 ## Replica Operations
-
-Replica Operations
 
 Longhorn replicas are built using Linux sparse files, which support thin provisioning. We currently do not maintain additional metadata to indicate which blocks are used. The block size is 4K. When you take a snapshot, you create a differencing disk. As the number of snapshots grows, the differencing disk chain could get quite long. To improve read performance, Longhorn therefore maintains a read index that records which differencing disk holds valid data for each 4K block.
 

@@ -31,7 +31,7 @@ Next, [upgrade Longhorn engine.](../upgrade-engine)
 
 #### Migrate PVs and PVCs for the Volumes Launched in v0.6.2 or Older
 
-If a volume is launched and used in Longhorn v0.6.2 or older, the related PVs and PVCs are still managed by the old CSI plugin, which will be deprecated in a later Longhorn version.
+If a volume is launched and used in Longhorn v0.6.2 or older, the related persistent volumes (PVs) and persistent volume claims (PVCs) are still managed by the old CSI plugin, which will be deprecated in a later Longhorn version.
 
 Therefore, the PVCs and PVs should be migrated to use the new CSI plugin for the volume in Longhorn v0.8.1.
 

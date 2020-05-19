@@ -24,7 +24,7 @@ weight: 1
 
 ### Customizing Default Settings
 
-To configure Longhorn before installing it, see [this section](../deploy/customizing-default-settings) for details.
+To configure Longhorn before installing it, see [this section](../../advanced-resources/deploy/customizing-default-settings) for details.
 
 ### General
 
@@ -42,6 +42,8 @@ The Kubernetes secret associated with the backup target. See [Setting a Backup T
 > Example: `300`
 
 The interval in seconds to poll the backup store for updating volumes' **Last Backup** field. Set to 0 to disable the polling. See [Setting up Disaster Recovery Volumes](../../snapshots-and-backups/setup-disaster-recovery-volumes) for details.
+
+For more information on how the backupstore poll interval affects the recovery time objective and recovery point objective, refer to the [concepts section.](../../concepts/#backupstore-update-intervals-rto-and-rpo)
 
 #### Create Default Disk on Labeled Nodes
 > Example: `false`
@@ -83,7 +85,7 @@ Only available if `Upgrade Checker` is enabled.
 
 The default number of replicas when creating the volume from Longhorn UI. For Kubernetes, update the `numberOfReplicas` in the StorageClass
 
-The recommended way of choosing the default replica count is: if you have more than three nodes for storage, use 3; otherwise use 2. Using a single replica on a single node cluster is also OK, but the HA functionality wouldn't be available. You can still take snapshots/backups of the volume.
+The recommended way of choosing the default replica count is: if you have more than three nodes for storage, use 3; otherwise use 2. Using a single replica on a single node cluster is also OK, but the high availability functionality wouldn't be available. You can still take snapshots/backups of the volume.
 
 #### Guaranteed Engine CPU (Experimental)
 > Example: `0.2`
@@ -97,7 +99,7 @@ Please set to **no more than a quarter** of what the node's available CPU resour
 #### Default Longhorn Static StorageClass Name
 >Example: `longhorn-static`
 
-The `storageClassName` is for PV/PVC when creating PV/PVC for an existing Longhorn volume. Notice that it's unnecessary for users to create the related StorageClass object in Kubernetes since the StorageClass would only be used as matching labels for PVC bounding purpose. By default 'longhorn-static'.
+The `storageClassName` is for persistent volumes (PVs) and persistent volume claims (PVCs) when creating PV/PVC for an existing Longhorn volume. Notice that it's unnecessary for users to create the related StorageClass object in Kubernetes since the StorageClass would only be used as matching labels for PVC bounding purpose. By default 'longhorn-static'.
 
 #### Kubernetes Taint Toleration
 > Example: `nodetype=storage:NoSchedule`
@@ -108,7 +110,7 @@ Before modifying toleration setting, all Longhorn volumes should be detached the
 
 Multiple tolerations can be set here, and these tolerations are separated by semicolon. For example, `key1=value1:NoSchedule; key2:NoExecute`
 
-See [Taint Toleration](../deploy/taint-toleration) for details.
+See [Taint Toleration](../../advanced-resources/deploy/taint-toleration) for details.
 
 ### Scheduling
 #### Replica Soft Anti-Affinity

@@ -8,7 +8,7 @@
 2. After **reattachment** and **remount** complete, users may need to **manually restart the related workload containers** for the volume restoration **if the following recommended setup is not applied**.
 
 #### Reattachment
-Longhorn will reattach the volume if the volume engine deads unexpectedly.
+Longhorn will reattach the volume if the volume engine fails unexpectedly.
 
 #### Remount
 - Longhorn will detect and remount filesystem for the volume after the reattachment. 

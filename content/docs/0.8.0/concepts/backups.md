@@ -4,7 +4,7 @@ description: Backup Concepts in Longhorn
 weight: 15
 ---
 
-A backup in Longhorn represents a volume state (a Snapshot) at a given time, stored in the secondary storage (backupstore in Longhorn word) which is outside of the Longhorn system. Backup creation will involving copying the data through the network, so it will take time.
+A backup in Longhorn represents a volume state (a Snapshot) at a given time, stored in the secondary storage (backupstore in the Longhorn world) which is outside of the Longhorn system. Backup creation will involve copying the data through the network, so it will take time.
 
 These operations happen automatically, but can also be done as needed.
 
@@ -117,18 +117,18 @@ The target URL would looks like:
 nfs://longhorn-test-nfs-svc.default:/opt/backupstore
 ```
 
-You can find an example NFS backupstore for testing purpose [here](https://github.com/longhorn/longhorn/blob/master/deploy/backupstores/nfs-backupstore.yaml). 
+You can find an example containerized NFS server for testing purposes [here](https://github.com/longhorn/longhorn/blob/master/deploy/backupstores/nfs-backupstore.yaml). 
 
 
 # Setup recurring snapshot/backup
 
-Longhorn supports recurring snapshot and backup for volumes. User only need to set when he/she wish to take the snapshot and/or backup, and how many snapshots/backups needs to be retains, then Longhorn will automatically create snapshot/backup for the user at that time, as long as the volume is attached to a node.
+Longhorn supports recurring snapshot and backup for volumes. User only need to set when they wish to take the snapshot and/or backup, and how many snapshots/backups needs to be retains, then Longhorn will automatically create snapshot/backup for the user at that time, as long as the volume is attached to a node.
 
 Users can setup recurring snapshot/backup via Longhorn UI, or Kubernetes StorageClass.
 
 ## Set up recurring jobs using Longhorn UI
 
-User can find the setting for the recurring snapshot and backup in the `Volume Detail` page.
+User can find the settings for recurring snapshots and backup in the `Volume Detail` page.
 
 ## Set up recurring jobs using StorageClass
 
