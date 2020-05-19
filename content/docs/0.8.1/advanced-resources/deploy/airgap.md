@@ -329,7 +329,7 @@ metadata:
 it's known Kubernetes limitaion that label value should be no more than 63 characters [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set)
 
 ##### Recommendation:
-it's highly recommended **not** to maniplute image tags, specially instance manager image tag e.g `v1_20200301`, since we intentionally used date so it is not assoctiated with Longhorn version.
+It's highly recommended not to manipulate image tags, especially instance manager image tags such as v1_20200301, because we intentionally use the date to avoid associating it with a Longhorn version.
 
 e.g
 - Longhorn components images
