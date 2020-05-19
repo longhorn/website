@@ -9,7 +9,7 @@ You can click `Generate Support Bundle` link at the bottom of the UI to download
 ### Volume can be attached/detached from UI, but Kubernetes Pod/StatefulSet etc cannot use it
 
 #### Using with Flexvolume Plugin
-Check if volume plugin directory has been set correctly. This is automatically detected unless user explicitly set it.
+Check if volume plugin directory has been set correctly. This is automatically detected unless user explicitly set it. *NOTE* The Flexvoume driver is deprecated as of 0.8.0 and the CSI driver should be used instead (see below)
 
 By default, Kubernetes uses `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/`, as stated in the [official document](https://github.com/kubernetes/community/blob/master/contributors/devel/flexvolume.md#prerequisites).
 
@@ -26,18 +26,26 @@ Most of the logs are included in the Support Bundle. You can click Generate Supp
 One exception is the `dmesg`, which need to retrieve by the user on each node.
 
 ### UI
-Make use of the Longhorn UI is a good start for the troubleshooting. For example, if Kubernetes cannot mount one volume correctly, after stop the workload, try to attach and mount that volume manually on one node and access the content to check if volume is intact.
+Making use of the Longhorn UI is a good place to start troubleshooting. For example, if Kubernetes cannot mount one volume correctly, after stop the workload, try to attach and mount that volume manually on one node and access the content to check if volume is intact.
 
 Also, the event logs in the UI dashboard provides some information of probably issues. Check for the event logs in `Warning` level.
 
+### Rancher UI
+Longhorn is made up of a series of microservices, deployed as Kubernetes workloads. If you used the Rancher UI to deploy, you can use the Rancher UI to verify that all the containers for Longhorn are currently deployed. If Kubernetes is having difficulty starting or scheduling these containers, Longhorn may not function properly. You can see the status of all the containers by going to the "Apps" page in the project where you deployed Longorn, and clicking on the "longhorn-system" app. Scroll down to the workloads section to see their status.
+
+If you used another deployment method, you can use `kubectl` to get the status of all the deployed pods.
+
 ### Manager and engines
-You can get the log from Longhorn Manager and Engines to help with the troubleshooting. The most useful logs are from `longhorn-manager-xxx`, and the log inside Longhorn instance managers, e.g. `instance-manager-e-xxxx` and `instance-manager-r-xxxx`.
+You can get the logs from Longhorn Manager and Engines to help with the troubleshooting. The most useful logs are from `longhorn-manager-xxx`, and the log inside Longhorn instance managers, e.g. `instance-manager-e-xxxx` and `instance-manager-r-xxxx`.
 
 Since normally there are multiple Longhorn Manager running at the same time, we recommend using [kubetail](https://github.com/johanhaleby/kubetail) which is a great tool to keep track of the logs of multiple pods. You can use:
 ```
 kubetail longhorn-manager -n longhorn-system
 ```
 To track the manager logs in real time.
+
+### Linux System Level
+Check to make sure the expected storage is available at the longhorn data path (e.g /data/longhorn). If an additional (non-root) volume is used at this location, make sure it is still mounted. Volumes that aren't in `/etc/fstab` will need to be re-mounted after system restart
 
 ### CSI driver
 
