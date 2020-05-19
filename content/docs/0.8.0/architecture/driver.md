@@ -9,7 +9,7 @@ If you're using [Kubernetes](https://kubernetes.io), you can use Longhorn to pro
 The CSI driver is preferred to the FlexVolume driver, which is deprecated as of Longhorn v0.8.0 and should no longer be used.
 {{< /info >}}
 
-Noted that the volume created and used through one driver won't be recognized by Kubernetes using the other driver. So please don't switch driver (e.g. during upgrade) if you have existing volumes created using the old driver. To switch from the FlexVolume driver to the CSI driver, see [here](../../install/upgrades/#migrating-from-the-flexvolume-driver-to-csi) for instructions.
+Note that the volume created and used through one driver won't be recognized by Kubernetes using the other driver. So please don't switch driver (e.g. during upgrade) if you have existing volumes created using the old driver. To switch from the FlexVolume driver to the CSI driver, see [here](../../install/upgrades/#migrating-from-the-flexvolume-driver-to-csi) for instructions.
 
 ## The CSI driver {#csi}
 
