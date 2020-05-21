@@ -44,7 +44,7 @@ User can also delete unwanted snapshot manually through UI. Any system generated
 
 #### The Latest Snapshot
 
-In Longhorn, the latest snapshot cannot be deleted. It because whenever a snapshot is deleted, Longhorn will coalesce it content with the next snapshot, makes sure the next and later snapshot will still have the correct content. But Longhorn cannot do that for the latest snapshot since there is no next snapshot to it. The next "snapshot" of the latest snapshot is the live volume(`volume-head`), which is being read/written by the user at the moment, so the coalescing process cannot happen. Instead, the latest snapshot will be marked as `removed`, and it will be cleaned up next time when possible.
+In Longhorn, the latest snapshot cannot be deleted. It because whenever a snapshot is deleted, Longhorn will coalesce it content with the next snapshot, makes sure the next and later snapshot will still have the correct content. But Longhorn cannot do that for the last snapshot since there is no next snapshot to it. The next "snapshot" of the last snapshot is the live volume(`volume-head`), which is being read/written by the user at the moment, so the coalescing process cannot happen. Instead, the latest snapshot will be marked as `removed`, and it will be cleaned up next time when possible.
 
 If the users want to clean up the latest snapshot, they can create a new snapshot, then remove the previous "latest" snapshot. 
 
