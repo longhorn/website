@@ -16,6 +16,7 @@ weight: 1
   - [Default Replica Count](#default-replica-count)
   - [Guaranteed Engine CPU (Experimental)](#guaranteed-engine-cpu-experimental)
   - [Default Longhorn Static StorageClass Name](#default-longhorn-static-storageclass-name)
+  - [Custom mkfs.ext4 parameters](#custom-mkfsext4-parameters)
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
 - [Scheduling](#scheduling)
   - [Replica Soft Anti-Affinity](#replica-soft-anti-affinity)
@@ -112,6 +113,11 @@ Taking other Kubernetes system components' CPU reservation request into consider
 >Example: `longhorn-static`
 
 The `storageClassName` is for persistent volumes (PVs) and persistent volume claims (PVCs) when creating PV/PVC for an existing Longhorn volume. Notice that it's unnecessary for users to create the related StorageClass object in Kubernetes since the StorageClass would only be used as matching labels for PVC bounding purpose. By default 'longhorn-static'.
+
+#### Custom mkfs.ext4 parameters
+>Example: `-O ^64bit,^metadata_csum`
+
+This can be used to pass additional parameters for ext4 filesystem creation. For older Linux Distributions like [SLES12SP3](https://www.suse.com/releasenotes/x86_64/SUSE-SLES/12-SP3/#fate-325367) that don't support the ext4 optional metadata_csum or 64bit feature it is necessary to disable it by specifying: `-O ^64bit,^metadata_csum`
 
 #### Kubernetes Taint Toleration
 > Example: `nodetype=storage:NoSchedule`
