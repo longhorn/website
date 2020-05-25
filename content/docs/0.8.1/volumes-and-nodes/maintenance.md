@@ -16,15 +16,13 @@ Currently, it's recommended to shut down the workloads with Longhorn volume befo
 
 If shutting down the workloads is not possible, follow the steps below to minimize the impact for node maintenance:
 
-1. Set **Replica Concurrent Rebuild Limit** to 0 in the settings to stop any new replicas from rebuilding.
-
 1. Cordon the node. Longhorn will automatically disable the node scheduling when a Kubernetes node is cordoned.
 
 1. Drain the node to move the workload to somewhere else.
 
     You will need to use `--ignore-daemonsets` and `--force` options to drain the node.
 
-    The replica processes on the node will be stopped at this stage. Since the rebuild is not allowed, new replicas will not be created or rebuilt.
+    The replica processes on the node will be stopped at this stage. 
         
     > **Upcoming feature:** After adding the support of `Replica eviction`, you will be able to evict the replicas on the node gracefully.
     
@@ -33,11 +31,10 @@ If shutting down the workloads is not possible, follow the steps below to minimi
     After the `drain` is completed, there should be no engine or replica process running on the node. Two instance managers will still be running on the node, but they're stateless and won't cause interruption to the existing workload.
 1. Perform the necessary maintenance, including shutting down or rebooting the node.
 1. Uncordon the node. Longhorn will automatically re-enable the node scheduling.
-1. Set `Replica Concurrent Rebuild Limit` back to the desired number, e.g. `10`.
     
     > **Upcoming feature:** After adding the support of the **Reuse existing replica data for rebuild** feature, the replica rebuild will be faster and take less space.
-
-If the maintenance are performed on multiple nodes, we suggest keeping `Replica Concurrent Rebuild Limit` at 0 until all the maintenance work was done.
+    
+    > **Upcoming feature:** After adding the support of the **Disable replica rebuild** feature, there will not be unnecessary replica rebuild caused by the node maintenance.
 
 ## Updating Kubernetes
 
@@ -45,7 +42,9 @@ If Longhorn is installed as a Rancher catalog app, follow [Rancher's Kubernetes 
 
 Otherwise, follow the official [Kubernetes upgrade documentation.](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/)
 
-We recommend not to `drain` the node if possible.
+### Node `drain`
+
+We do not recommend to drain the node for Kubernetes upgrade. It will cause unnecessary burden to the Longhorn since it will result in replica failure and rebuild in the most cases.
 
 ## Removing a Disk
 To remove a disk:
@@ -55,7 +54,10 @@ To remove a disk:
     It's recommended to do it one by one since this step will trigger the replicas to rebuild.
 
     > **Upcoming feature:** The replica eviction feature can also help here.
-1. Once all the replicas are deleted, delete the disk.
+1. Delete the disk.
+
+### Reuse the Node name
+These steps also applies if you've replace a node using the same node name. Longhorn will recongize that the disks are different once the new node is up. The user need to remove the original disks first and add them back for the new node if it's using the same name as the previous node.
 
 ## Removing a Node
 To remove a node:
@@ -65,7 +67,10 @@ To remove a node:
     It's recommended to do it one by one since this step will trigger the replicas to rebuild.
 
     > **Upcoming feature:** The replica eviction feature can also help here.
-1. Once all the replicas are deleted, remove the node from Kubernetes, using:
+1. Detach all the volumes on the node.
+    1. All the workload should be migrated to the other node already if you've `drain` the node.
+    1. If there are any other volumes remaining attached, detach them first before continuing.
+1. Remove the node from Kubernetes, using:
 
         kubectl delete node <node-name>
-1. Once the node removed from Kubernetes, delete the node in Longhorn.
+1. Delete the node in Longhorn.
