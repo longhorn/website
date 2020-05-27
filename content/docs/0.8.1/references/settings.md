@@ -88,13 +88,25 @@ The default number of replicas when creating the volume from Longhorn UI. For Ku
 The recommended way of choosing the default replica count is: if you have more than three nodes for storage, use 3; otherwise use 2. Using a single replica on a single node cluster is also OK, but the high availability functionality wouldn't be available. You can still take snapshots/backups of the volume.
 
 #### Guaranteed Engine CPU (Experimental)
-> Example: `0.2`
+> Default: `0.25`
 
-Allow Longhorn Engine to have guaranteed CPU allocation. The value is how many CPUs should be reserved for each Engine/Replica Manager Pod created by Longhorn. For example, 0.1 means one-tenth of a CPU. This will help maintain engine stability during high node workload. It only applies to the Instance Manager Pods created after the setting took effect.
+Longhorn uses CPU resources on the node to serve the Longhorn Volumes. The Guaranteed Engine CPU option will request Kubernetes to reserve a certain amount of CPU for Longhorn Instance Manager Pods, which contain the running processes. The value is how many CPUs should be reserved for each Engine/Replica Instance Manager Pod created by Longhorn. This will help maintain engine stability during high node workload.
 
-> **Warning:** The system may fail to start or become stuck while using this feature due to the resource constraint. Disabled (\"0\") by default.
+This number only applies to the Engine/Replica Manager Pods created after the setting takes effect.
 
-Please set to **no more than a quarter** of what the node's available CPU resources, since the option would be applied to the two instance managers on the node (engine and replica), and the future upgraded instance managers (another two for engine and replica).
+> **Warning:** This setting should be changed only when all the volumes on the nodes are detached. Changing the setting will result in all the Instance Manager Pods restarting, which will automatically detach all the attached volumes, and could cause a workload outage.
+
+##### Recommendations for the Guaranteed Engine CPU Allocation
+
+Since Longhorn exposes the Volume as a block device, it's critical to ensure the Longhorn Engine processes have enough CPU to satisfy the latency requirement of the Linux system.
+
+The Guaranteed Engine CPU should be set to **no more than a quarter** of what the node's available CPU resources, since the allocation is applied to the two Instance Managers on the node (engine and replica), and the future upgraded Instance Managers (another two for engine and replica).
+
+For example, if the setting value is 0.25 or 250m, that means you must have at least 0.25 * 8 = 2 vCPUs per node. Otherwise, the new Instance Manager Pods may fail to start.
+
+There are normally two Instance Manager Pods per node: one for the engine processes, and another one for the replica processes. But when Longhorn is upgrading from an old version of the Instance Manager to a new version, there can be at most four Pods requesting the reserved CPU on the node.
+
+Taking other Kubernetes system components' CPU reservation request into consideration, we recommend having at least eight times the amount of CPU as the Guaranteed Engine CPU.
 
 #### Default Longhorn Static StorageClass Name
 >Example: `longhorn-static`

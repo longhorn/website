@@ -11,6 +11,7 @@ We recommend the following setup for deploying Longhorn in production.
 - [Configuring Default Disks Before and After Installation](#configuring-default-disks-before-and-after-installation)
 - [Deploying Workloads](#deploying-workloads)
 - [Volume Maintenance](#volume-maintenance)
+- [Guaranteed Engine CPU](#guaranteed-engine-cpu)
 
 ## Minimum Recommended Hardware
 
@@ -68,3 +69,7 @@ We highly recommend using the built-in backup feature of Longhorn.
 For each volume, schedule at least one recurring backup. If you must run Longhorn in production without a backupstore, then schedule at least one recurring snapshot for each volume.
 
 Longhorn system will create snapshots automatically when rebuilding a replica. Recurring snapshots or backups can also automatically clean up the system-generated snapshot.
+
+## Guaranteed Engine CPU
+
+We recommend allowing Longhorn Engine to have guaranteed CPU allocation. The value is how many CPUs should be reserved for each Engine/Replica Instance Manager Pod created by Longhorn. By default, the value is 0.25 CPUs. For details, refer to the [settings reference.](../references/settings/#guaranteed-engine-cpu-experimental)
