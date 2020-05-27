@@ -32,9 +32,10 @@ If shutting down the workloads is not possible, follow the steps below to minimi
 1. Perform the necessary maintenance, including shutting down or rebooting the node.
 1. Uncordon the node. Longhorn will automatically re-enable the node scheduling.
     
-    > **Upcoming feature:** After adding the support of the **Reuse existing replica data for rebuild** feature, the replica rebuild will be faster and take less space.
-    
-    > **Upcoming feature:** After adding the support of the **Disable replica rebuild** feature, there will not be unnecessary replica rebuild caused by the node maintenance.
+    > **Upcoming features:**
+    >
+    > - After adding the support of the **Reuse existing replica data for rebuild** feature, the replica rebuild will be faster and take less space.
+    > - After adding the support of the **Disable replica rebuild** feature, there will not be an unnecessary replica rebuild caused by the node maintenance.
 
 ## Updating Kubernetes
 
@@ -42,9 +43,9 @@ If Longhorn is installed as a Rancher catalog app, follow [Rancher's Kubernetes 
 
 Otherwise, follow the official [Kubernetes upgrade documentation.](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/)
 
-### Node `drain`
+### Avoid Node `drain` During Upgrades
 
-We do not recommend to drain the node for Kubernetes upgrade. It will cause unnecessary burden to the Longhorn since it will result in replica failure and rebuild in the most cases.
+We do not recommend draining the node for Kubernetes upgrades. It will cause an unnecessary burden to Longhorn since it will result in replica failure and rebuild in most cases.
 
 ## Removing a Disk
 To remove a disk:
@@ -56,20 +57,23 @@ To remove a disk:
     > **Upcoming feature:** The replica eviction feature can also help here.
 1. Delete the disk.
 
-### Reuse the Node name
-These steps also applies if you've replace a node using the same node name. Longhorn will recongize that the disks are different once the new node is up. The user need to remove the original disks first and add them back for the new node if it's using the same name as the previous node.
+### Reusing the Node Name
+
+These steps also apply if you've replaced a node using the same node name. Longhorn will recognize that the disks are different once the new node is up. You will need to remove the original disks first and add them back for the new node if it uses the same name as the previous node.
 
 ## Removing a Node
 To remove a node:
 1. Disable the disk scheduling.
 1. Delete all the replicas on the node.
 
-    It's recommended to do it one by one since this step will trigger the replicas to rebuild.
+    It's recommended to delete replicas one by one since this step will trigger the replicas to rebuild.
 
     > **Upcoming feature:** The replica eviction feature can also help here.
 1. Detach all the volumes on the node.
-    1. All the workload should be migrated to the other node already if you've `drain` the node.
-    1. If there are any other volumes remaining attached, detach them first before continuing.
+    
+    If the node has been drained, all the workloads should be migrated to another node already.
+
+    If there are any other volumes remaining attached, detach them before continuing.
 1. Remove the node from Kubernetes, using:
 
         kubectl delete node <node-name>
