@@ -3,11 +3,46 @@ title: Upgrading Longhorn Manager
 weight: 1
 ---
 
-- [Upgrading Longhorn Manager from v0.7.0+](#upgrading-longhorn-manager-from-v070)
+- [Upgrading from v0.8.1 to v1.0.0](#upgrading-from-v081-to-v100)
+- [Upgrading from v0.7.0+](#upgrading-from-v070)
 - [Upgrading from v0.6.2 or older version to v0.8.1](#upgrading-from-v062-or-older-version-to-v081)
-- [Upgrading Longhorn Manager from v0.6.2 to v0.7.0](#upgrading-longhorn-manager-from-v062-to-v070)
+- [Upgrading from v0.6.2 to v0.7.0](#upgrading-from-v062-to-v070)
 
-### Upgrading Longhorn Manager from v0.7.0+
+### Upgrading from v0.8.1 to v1.0.0
+
+We only support upgrading to v1.0.0 from v0.8.1. For other versions, please upgrade to v0.8.1 first.
+
+We only support offline upgrades from v0.8.1 to v1.0.0 due to an Instance Manager change.
+
+#### Preparing for the Upgrade
+
+1. If Longhorn was installed using a Helm Chart, or if it was installed as Rancher catalog app, check to make sure the parameters in the default StorageClass weren't changed. Changing the default StorageClass's parameter might result in a chart upgrade failure. if you want to reconfigure the parameters in the StorageClass, you can copy the default StorageClass's configuration to create another StorageClass.
+
+    The current default StorageClass has the following parameters:
+
+        parameters:
+          numberOfReplicas: <user specified replica count, 3 by default>
+          staleReplicaTimeout: "30"
+          fromBackup: ""
+          baseImage: ""
+
+1. Shut down your workloads following the instructions [here.](../../../volumes-and-nodes/detaching-volumes/)
+1. If you still have any volumes using the pre-v0.7.0 CSI driver name io.rancher.longhorn, follow the instructions [here](#migrate-pvs-and-pvcs-for-the-volumes-launched-in-v062-or-older) to convert your old PVs.
+
+#### Upgrade
+
+1. Perform the manager upgrade according to [these instructions.](#upgrading-from-v070)
+1. Perform the engine upgrade according to the [offline engine upgrade instructions,](../upgrade-engine/#offline-upgrades) but don't scale back the workload just yet.
+1. We recommend updating the Guaranteed Engine CPU to 0.25. This step will restart all the Instance Managers on the node, so any attached volumes will be detached.
+    
+    > Please make sure you have at least 2 vCPUs per node before updating this setting to 0.25. See the [settings reference](../../../references/settings/#guaranteed-engine-cpu-experimental) for details.
+1. Scale back the workload. Check if everything works well.
+1. We also recommend updating the **Replica Node Soft Anti-affinity** setting to false. Refer to the [settings reference](../../../references/settings/#replica-soft-anti-affinity) for details.
+    
+    > Please make sure you have more nodes than the default replica count before updating this setting.
+
+
+### Upgrading from v0.7.0+
 
 > **Prerequisite:** Always back up volumes before upgrading. If anything goes wrong, you can restore the volume using the backup.
 
@@ -82,7 +117,7 @@ If the migration fails and the error log mentioned above is printed out, users n
 
 3. Use the Longhorn UI to recreate the PV and PVC.
 
-### Upgrading Longhorn Manager from v0.6.2 to v0.7.0
+### Upgrading from v0.6.2 to v0.7.0
 
 You will need to follow this guide to upgrade the Longhorn manager from v0.6.2 to v0.7.0.
 
