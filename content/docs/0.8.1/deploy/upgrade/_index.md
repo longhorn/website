@@ -11,9 +11,10 @@ There are normally two steps in the upgrade process: first upgrade Longhorn mana
 
 ### 1. Upgrade Longhorn manager
 
-- To upgrade from v0.7.0+, see [this section.](./longhorn-manager/#upgrading-longhorn-manager-from-v070)
+- To upgrade from v0.8.1, see [this section.](./longhorn-manager/#upgrading-from-v081-to-v100)
+- To upgrade from v0.7.0+, see [this section.](./longhorn-manager/#upgrading-from-v070) 
 - To upgrade from v0.6.2 or older to v0.8.1, see [this section.](./longhorn-manager/#upgrading-from-v062-or-older-version-to-v081)
-- To upgrade from v0.6.2 to v0.7.0, see [this section.](./longhorn-manager/#upgrading-longhorn-manager-from-v062-to-v070)
+- To upgrade from v0.6.2 to v0.7.0, see [this section.](./longhorn-manager/#upgrading-from-v062-to-v070)
 
 
 ### 2. Upgrade Longhorn Engine
