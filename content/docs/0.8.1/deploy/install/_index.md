@@ -31,6 +31,8 @@ Each node in the Kubernetes cluster where Longhorn is installed must fulfill the
 
 [This script](#using-the-environment-check-script) can be used to check the Longhorn environment for potential issues.
 
+For the minimum recommended hardware, refer to the [best practices guide.](../../best-practices/#minimum-recommended-hardware)
+
 ### OS/Distro Specific Configuration
 
 - **Google Kubernetes Engine (GKE)** requires some additional setup for Longhorn to function properly. If you're a GKE user, refer to [this section](../../advanced-resources/os-distro-specific/csi-on-gke) for details.
