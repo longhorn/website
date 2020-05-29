@@ -16,9 +16,3 @@ Longhorn implements distributed block storage using containers and microservices
 * Recurring snapshots and backups
 * Automated, non-disruptive upgrades. You can upgrade the entire Longhorn software stack without disrupting running storage volumes.
 * An intuitive GUI dashboard
-
-## Current status
-
-Longhorn is beta-quality software. We appreciate your willingness to deploy Longhorn and provide feedback.
-
-The latest release of Longhorn is **v0.8.1**.
