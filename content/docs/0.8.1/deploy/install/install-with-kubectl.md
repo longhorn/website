@@ -104,14 +104,6 @@ This role will have access to:
     - csidrivers
   - In coordination.k8s.io
     - leases
-  - In longhorn.rancher.io (All verbs, deprecated after v0.7.0)
-    - volumes
-    - engines
-    - replicas
-    - settings
-    - engineimages
-    - nodes
-    - instancemanagers
 
 #### ClusterRoleBinding: longhorn-bind
 
