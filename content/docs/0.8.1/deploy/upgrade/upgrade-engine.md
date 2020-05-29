@@ -23,6 +23,8 @@ Follow these steps if the live upgrade is not available (e.g. before v0.3.3, fro
 
 Live upgrade is available since v0.3.3, with the exception of upgrade from v0.5.0 to v0.6.0 and v0.7.0 to v0.8.0.
 
+The `iSCSI` frontend does not support live upgrades.
+
 Live upgrade should only be done with healthy volumes.
 
 1. Select the volume you want to upgrade.
