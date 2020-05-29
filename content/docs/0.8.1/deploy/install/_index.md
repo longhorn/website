@@ -37,7 +37,7 @@ For the minimum recommended hardware, refer to the [best practices guide.](../..
 
 - **Google Kubernetes Engine (GKE)** requires some additional setup for Longhorn to function properly. If you're a GKE user, refer to [this section](../../advanced-resources/os-distro-specific/csi-on-gke) for details.
 - **K3s clusters** require some extra setup. Refer to [this section](../../advanced-resources/os-distro-specific/csi-on-k3s)
-- **RKE clusters with CoreOS** need [this configuration.](../../advanced-resources/os-distro-specific/csi-on-k3s)
+- **RKE clusters with CoreOS** need [this configuration.](../../advanced-resources/os-distro-specific/csi-on-rke-and-coreos)
 
 ### Using the Environment Check Script
 
