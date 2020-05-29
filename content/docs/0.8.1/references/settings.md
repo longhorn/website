@@ -49,7 +49,7 @@ If no other disks exist, create the default disk automatically, only on nodes wi
 
 If disabled, the default disk will be created on all new nodes when the node is detected for the first time.
 
-This option is useful if you want to scale the cluster but don't want to use storage on the new nodes.
+This option is useful if you want to scale the cluster but don't want to use storage on the new nodes, or if you want to [customize disks for Longhorn nodes](../../advanced-resources/default-disk-and-node-config). 
 
 #### Default Data Path
 > Default: `/var/lib/longhorn/`
