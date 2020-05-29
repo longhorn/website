@@ -4,7 +4,6 @@ description: Longhorn Architecture
 weight: 2
 ---
 
-
 Longhorn implements distributed block storage using containers and microservices. It creates a dedicated storage controller for each block device volume and synchronously replicates the volume across multiple replicas stored on multiple nodes. The storage controller and replicas are themselves orchestrated using [Kubernetes](https://kubernetes.io).
 
 The Longhorn manager is responsible for creating and managing volumes in the Kubernetes cluster.
@@ -13,7 +12,7 @@ When the Longhorn manager is asked to create a volume, it creates engine process
 
 In the figure below, there are three Pods with Longhorn volumes. Each Volume has a dedicated engine, which runs as a process inside an Instance Manager Pod. Each engine has two replicas and each replica is a process inside an Instance Manager Pod. The arrows in the figure indicate the read/write data flow between the Kubernetes Volume, engine process, replica processes, and disks. By creating a separate engine for each volume, if one engine fails, the function of other volumes is not impacted.
 
-{{< figure alt="read/write data flow between the Docker volume, controller container, replica containers, and disks" src="/img/diagrams/architecture/longhorn-controllers.png" >}}
+{{< figure alt="read/write data flow between the Docker volume, controller container, replica containers, and disks" src="/img/diagrams/architecture/how-longhorn-works.svg" >}}
 
 For example, in a large-scale deployment with 100,000 Kubernetes Volumes, each with three replicas, there will be 100,000 engine processes and 300,000 replica processes. In order to schedule, monitor, coordinate, and repair all these engines and replicas, a storage orchestration system is needed.
 
