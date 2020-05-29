@@ -30,3 +30,4 @@ To recover the volume, we can identify the corrupted replica and remove it from 
 
 5. Compare the output of each replica. One of them should fail or have different results compared to the others. This will be the one replica we need to remove from the volume.
 6. Use the Longhorn UI to remove the identified replica from the volume.
+7. Scale up the workload to make sure the error is gone.
