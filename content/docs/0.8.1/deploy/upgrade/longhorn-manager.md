@@ -5,8 +5,6 @@ weight: 1
 
 - [Upgrading from v0.8.1 to v1.0.0](#upgrading-from-v081-to-v100)
 - [Upgrading from v0.7.0+](#upgrading-from-v070)
-- [Upgrading from v0.6.2 or older version to v0.8.1](#upgrading-from-v062-or-older-version-to-v081)
-- [Upgrading from v0.6.2 to v0.7.0](#upgrading-from-v062-to-v070)
 
 ### Upgrading from v0.8.1 to v1.0.0
 
@@ -27,7 +25,7 @@ We only support offline upgrades from v0.8.1 to v1.0.0 due to an Instance Manage
           baseImage: ""
 
 1. Shut down your workloads following the instructions [here.](../../../volumes-and-nodes/detaching-volumes/)
-1. If you still have any volumes using the pre-v0.7.0 CSI driver name io.rancher.longhorn, follow the instructions [here](#migrate-pvs-and-pvcs-for-the-volumes-launched-in-v062-or-older) to convert your old PVs.
+1. If you still have any volumes using the pre-v0.7.0 CSI driver name io.rancher.longhorn, follow the instructions [here](https://longhorn.io/docs/0.8.1/deploy/upgrade/longhorn-manager/#migrate-pvs-and-pvcs-for-the-volumes-launched-in-v062-or-older) to convert your old PVs.
 
 #### Upgrade
 
@@ -58,206 +56,51 @@ To upgrade with Helm, run this command:
 helm upgrade longhorn ./longhorn/chart
 ```
 
-On Kubernetes clusters managed by Rancher 2.1 or newer, the steps to upgrade Longhorn manager are the same as the installation steps. 
+On Kubernetes clusters managed by Rancher 2.1 or newer, the steps to upgrade the catalog app `longhorn-system` are the similar to the installation steps. 
 
-Next, [upgrade Longhorn engine.](../upgrade-engine)
-
-### Upgrading from v0.6.2 or older version to v0.8.1
-
-#### Migrate PVs and PVCs for the Volumes Launched in v0.6.2 or Older
-
-If a volume is launched and used in Longhorn v0.6.2 or older, the related persistent volumes (PVs) and persistent volume claims (PVCs) are still managed by the old CSI plugin, which will be deprecated in a later Longhorn version.
-
-Therefore, the PVCs and PVs should be migrated to use the new CSI plugin for the volume in Longhorn v0.8.1.
-
-##### Prerequisites
-
-- Longhorn is already upgraded to v0.8.1.
-- The related PVs and PVCs were created in v0.6.2 or older.
-- Each volume is detached and the workloads are down.
-
-##### Migration Steps
-
-1. If you don't know when the volumes were created, find out which volumes need to be migrated by running the following command:
-
-    ```
-    kubectl get pv --output=jsonpath="{.items[?(@.spec.csi.driver==\"io.rancher.longhorn\")].spec.csi.volumeHandle}"
-    ```
-
-2. Shut down the related workloads and detach the volumes. 
-3. Run this script for each volume:
-
-    ```
-    curl -s https://raw.githubusercontent.com/longhorn/longhorn/v0.8.1/scripts/migrate-for-pre-070-volumes.sh |bash -s -- <volume name>
-    ```
-
-    Or run the script for all volumes:
-    ```
-    curl -s https://raw.githubusercontent.com/longhorn/longhorn/v0.8.1/scripts/migrate-for-pre-070-volumes.sh |bash -s -- --all
-    ```
-**Result:** The volumes have been migrated to use the new CSI driver.
-
-##### Migration Failure handling
-
-If the prerequisite of the migration is not satisfied and there is no error log `failed to delete then recreate PV/PVC, users need to manually check the current PVC/PV then recreate them if needed`, the script will do nothing for the PV and PVC. Users can check the migration prerequisites and steps and retry it. 
-
-If the migration fails and the error log mentioned above is printed out, users need to manually handle the migration for the failed volume:
-
-1. Update `spec.persistentVolumeReclaimPolicy` to `Retain` for the PV with this command:
-
-   ```
-   kubectl edit pv <The PV name>
-   ```
-
-2. Delete the PVC and PV with this command:
-
-    ```
-    kubectl delete pvc <The PVC name> && kubectl delete pv <The PV name>
-    ```
-
-3. Use the Longhorn UI to recreate the PV and PVC.
-
-### Upgrading from v0.6.2 to v0.7.0
-
-You will need to follow this guide to upgrade the Longhorn manager from v0.6.2 to v0.7.0.
-
-Live upgrades are not supported from v0.6.2 to v0.7.0.
-
-- [Prerequisites](#prerequisites)
-- [Upgrade Longhorn Manager](#upgrade-longhorn-manager)
-  - [Using the Rancher Catalog App](#using-the-rancher-catalog-app)
-  - [Using kubectl](#using-kubectl)
-- [Troubleshooting](#troubleshooting)
-- [Clean up the v0.6.2 CRDs](#clean-up-the-v062-crds)
-- [Rollbacks](#rollbacks)
-
-### Prerequisites
-
-- Make sure Kubernetes version is v1.14.0+.
-- Make backups for all the volumes.
-- Stop the workloads from using the volumes.
-
-### Upgrade Longhorn Manager
-The Longhorn manager can be upgraded with kubectl or with the Rancher catalog app.
-#### Using the Rancher Catalog App
-1. Run the following command to avoid [this 'updates to provisioner are forbidden' error](#error-longhorn-is-invalid-provisioner-forbidden-updates-to-provisioner-are-forbidden):
-    ```
-    kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v0.7.0/examples/storageclass.yaml
-    ```
-2. Click the `Upgrade` button in the Rancher UI
-3. Wait for the app to complete the upgrade.
-
-Next, [upgrade Longhorn engine.](../upgrade-engine)
-
-#### Using kubectl
-Use `kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v0.7.0/deploy/longhorn.yaml`
-
-And wait for all the pods to become running and Longhorn UI working.
+Then wait for all the pods to become running and Longhorn UI working. e.g.:
 
 ```
 $ kubectl -n longhorn-system get pod
 NAME                                        READY   STATUS    RESTARTS   AGE
-compatible-csi-attacher-69857469fd-rj5vm    1/1     Running   4          3d12h
-csi-attacher-79b9bfc665-56sdb               1/1     Running   0          3d12h
-csi-attacher-79b9bfc665-hdj7t               1/1     Running   0          3d12h
-csi-attacher-79b9bfc665-tfggq               1/1     Running   3          3d12h
-csi-provisioner-68b7d975bb-5ggp8            1/1     Running   0          3d12h
-csi-provisioner-68b7d975bb-frggd            1/1     Running   2          3d12h
-csi-provisioner-68b7d975bb-zrr65            1/1     Running   0          3d12h
-engine-image-ei-605a0f3e-8gx4s              1/1     Running   0          3d14h
-engine-image-ei-605a0f3e-97gxx              1/1     Running   0          3d14h
-engine-image-ei-605a0f3e-r6wm4              1/1     Running   0          3d14h
-instance-manager-e-a90b0bab                 1/1     Running   0          3d14h
-instance-manager-e-d1458894                 1/1     Running   0          3d14h
-instance-manager-e-f2caa5e5                 1/1     Running   0          3d14h
-instance-manager-r-04417b70                 1/1     Running   0          3d14h
-instance-manager-r-36d9928a                 1/1     Running   0          3d14h
-instance-manager-r-f25172b1                 1/1     Running   0          3d14h
-longhorn-csi-plugin-72bsp                   4/4     Running   0          3d12h
-longhorn-csi-plugin-hlbg8                   4/4     Running   0          3d12h
-longhorn-csi-plugin-zrvhl                   4/4     Running   0          3d12h
-longhorn-driver-deployer-66b6d8b97c-snjrn   1/1     Running   0          3d12h
-longhorn-manager-pf5p5                      1/1     Running   0          3d14h
-longhorn-manager-r5npp                      1/1     Running   1          3d14h
-longhorn-manager-t59kt                      1/1     Running   0          3d14h
-longhorn-ui-b466b6d74-w7wzf                 1/1     Running   0          50m
+csi-attacher-78bf9b9898-mb7jt               1/1     Running   1          3m11s
+csi-attacher-78bf9b9898-n2224               1/1     Running   1          3m11s
+csi-attacher-78bf9b9898-rhv6m               1/1     Running   1          3m11s
+csi-provisioner-8599d5bf97-dr5n4            1/1     Running   1          2m58s
+csi-provisioner-8599d5bf97-drzn9            1/1     Running   1          2m58s
+csi-provisioner-8599d5bf97-rz5fj            1/1     Running   1          2m58s
+csi-resizer-586665f745-5bkcm                1/1     Running   0          2m49s
+csi-resizer-586665f745-vgqx8                1/1     Running   0          2m49s
+csi-resizer-586665f745-wdvdg                1/1     Running   0          2m49s
+engine-image-ei-62c02f63-bjfkp              1/1     Running   0          14m
+engine-image-ei-62c02f63-nk2jr              1/1     Running   0          14m
+engine-image-ei-62c02f63-pjtgg              1/1     Running   0          14m
+engine-image-ei-ac045a0d-9bbb8              1/1     Running   0          3m46s
+engine-image-ei-ac045a0d-cqvv2              1/1     Running   0          3m46s
+engine-image-ei-ac045a0d-wzmhv              1/1     Running   0          3m46s
+instance-manager-e-4deb2a16                 1/1     Running   0          3m23s
+instance-manager-e-5526b121                 1/1     Running   0          3m28s
+instance-manager-e-eff765b6                 1/1     Running   0          2m59s
+instance-manager-r-3b70b0db                 1/1     Running   0          3m27s
+instance-manager-r-4f7d629a                 1/1     Running   0          3m22s
+instance-manager-r-bbcf4f17                 1/1     Running   0          2m58s
+longhorn-csi-plugin-bkgjj                   2/2     Running   0          2m39s
+longhorn-csi-plugin-tjhhq                   2/2     Running   0          2m39s
+longhorn-csi-plugin-zslp6                   2/2     Running   0          2m39s
+longhorn-driver-deployer-75b6bf4d6d-d4hcv   1/1     Running   0          3m57s
+longhorn-manager-4j77v                      1/1     Running   0          3m53s
+longhorn-manager-cwm5z                      1/1     Running   0          3m50s
+longhorn-manager-w7scb                      1/1     Running   0          3m50s
+longhorn-ui-8fcd9fdd-qpknp                  1/1     Running   0          3m56s
 ```
 
 Next, [upgrade Longhorn engine.](../upgrade-engine)
 
 ### TroubleShooting
 #### Error: `"longhorn" is invalid: provisioner: Forbidden: updates to provisioner are forbidden.`
-- This means you need to clean up the old `longhorn` storageClass for Longhorn v0.7.0 upgrade, since we've changed the provisioner from `rancher.io/longhorn` to `driver.longhorn.io`.
+- This means there are some modifications applied to the default storageClass and you need to clean up the old one before upgrade.
 
-- Noticed the PVs created by the old storageClass will still use `rancher.io/longhorn` as provisioner. Longhorn v0.7.0 supports attach/detach/deleting of the PVs created by the previous version of Longhorn, but it doesn't support creating new PVs using the old provisioner name. Please use the new StorageClass for the new volumes.
-
-If you are using YAML file:
-1. Clean up the deprecated StorageClass:
+- To clean up the deprecated StorageClass, run this command:
     ```
-    kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v0.7.0/examples/storageclass.yaml
+    kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v1.0.0/examples/storageclass.yaml
     ```
-2. Run
-    ```
-    kubectl apply https://raw.githubusercontent.com/longhorn/longhorn/v0.7.0/deploy/longhorn.yaml
-    ```
-
-If you are using Rancher App:
-1. Clean up the default StorageClass:
-    ```
-    kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v0.7.0/examples/storageclass.yaml
-    ```
-2. Follow [these troubleshooting instructions.](#error-kind-customresourcedefinition-with-the-name-xxx-already-exists-in-the-cluster-and-wasnt-defined-in-the-previous-release) 
-
-#### Error: `kind CustomResourceDefinition with the name "xxx" already exists in the cluster and wasn't defined in the previous release...`
-
-This is [a Helm bug](https://github.com/helm/helm/issues/6031).
-
-Please make sure that you have not deleted the old Longhorn CRDs via the command `curl -s https://raw.githubusercontent.com/longhorn/longhorn-manager/master/hack/cleancrds.sh | bash -s v062` or executed Longhorn uninstaller before executing the following command. Otherwise you MAY LOSE all the data stored in the Longhorn system.
-
-Clean up:
-```
-kubectl -n longhorn-system delete ds longhorn-manager
-curl -s https://raw.githubusercontent.com/longhorn/longhorn-manager/master/hack/cleancrds.sh | bash -s v070
-```
-
-2. Re-click the `Upgrade` button in the Rancher UI.
-
-### Clean up the v0.6.2 CRDs
-
-> These steps should not be executed if you want to maintain the ability to [roll back](#rollbacks) from a v0.7.0 installation.
-
-1. Bring back the workload online.
-1. Make sure all the volumes are back online.
-1. Check all the existing manager pods are running v0.7.0. No v0.6.2 pods should be running. Run this command:
-    ```
-    kubectl -n longhorn-system get pod -o yaml|grep "longhorn-manager:v0.6.2"
-    ```
-    No results should appear.
-1. Run the following script to clean up the v0.6.2 CRDs.
-    > **Important:** You must make sure all the v0.6.2 pods have been deleted, otherwise the data will be lost.
-    ```
-    curl -s https://raw.githubusercontent.com/longhorn/longhorn-manager/master/hack/cleancrds.sh | bash -s v062
-    ```
-
-### Rollbacks
-
-Since we upgrade the CSI framework from v0.4.2 to v1.1.0 in this release, rolling back from Longhorn v0.7.0 to v0.6.2 or lower means downgrading the CSI plugin. But Kubernetes does not support the downgrading the CSI plugin. Therefore, restarting kubelet is unavoidable. Please be careful, and follow the instructions exactly.
-
-> **Prerequisite:** To rollback from v0.7.0 installation, you must not have [cleaned up the v0.6.2 CRDs.](#clean-up-the-v062-crds)
-
-Steps to roll back:
-
-1. Clean up the components introduced by Longhorn v0.7.0 upgrade
-    ```
-    kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v0.7.0/examples/storageclass.yaml
-    curl -s https://raw.githubusercontent.com/longhorn/longhorn-manager/master/hack/cleancrds.sh | bash -s v070
-    ```
-
-2. Restart the Kubelet container on all nodes or restart all the nodes. This step WILL DISRUPT all the workloads in the system.
-
-3. Connect to the node then run:
-    ```
-    docker restart kubelet
-    ```
-
-3. Rollback: Use `kubectl apply` or the Rancher catalog app to roll back Longhorn.

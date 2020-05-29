@@ -89,3 +89,19 @@ If the label or annotation fails validation, the whole annotation is ignored.
 4. Wait for Longhorn to create the customized default disks automatically.
 
 > **Result:** The disks will be updated according to the annotation.
+
+### Launch Longhorn with multiple disks
+1. Add the label to all nodes before launching Longhorn. 
+
+    ```
+    node.longhorn.io/create-default-disk: 'config'
+    ```
+
+2. Then add the disk config annotation to all nodes:
+
+    ```
+    node.longhorn.io/default-disks-config: '[ { "path":"/var/lib/longhorn", "allowScheduling":true
+      }, { "name":"fast-ssd-disk", "path":"/mnt/extra", "allowScheduling":false, "storageReserved":10485760,
+      "tags":[ "ssd", "fast" ] }]'
+    ```
+3. Deploy Longhorn with `create-default-disk-labeled-nodes: true`, check [here](../deploy/customizing-default-settings) for customizing the default settings of Longhorn.

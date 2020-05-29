@@ -45,10 +45,16 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
         storage-minimal-available-percentage: 15
         upgrade-checker: false
         default-replica-count: 2
-        guaranteed-engine-cpu:
+        guaranteed-engine-cpu: 0.25
         default-longhorn-static-storage-class: longhorn-static-example
         backupstore-poll-interval: 500
         taint-toleration: key1=value1:NoSchedule; key2:NoExecute
+        registry-secret: registry-secret
+        auto-salvage: false
+        disable-scheduling-on-cordoned-node: false
+        replica-zone-soft-anti-affinity: false
+        volume-attachment-recovery-policy: never
+        mkfs-ext4-parameters: -O ^64bit,^metadata_csum
     ---
     ```
 
@@ -82,10 +88,16 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
       storageMinimalAvailablePercentage: 15
       upgradeChecker: false
       defaultReplicaCount: 2
-      guaranteedEngineCPU:
+      guaranteedEngineCPU: 0.25
       defaultLonghornStaticStorageClass: longhorn-static-example
       backupstorePollInterval: 500
       taintToleration: key1=value1:NoSchedule; key2:NoExecute
+      registrySecret: registry-secret
+      autoSalvage: false
+      disableSchedulingOnCordonedNode: false
+      replicaZoneSoftAntiAffinity: false
+      volumeAttachmentRecoveryPolicy: never
+      mkfsExt4Parameters: -O ^64bit,^metadata_csum
     ```
 
     Then use the `helm` command:
