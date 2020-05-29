@@ -412,6 +412,7 @@ For more information about restoring to file, refer to [this section.](../../adv
       fromBackup: ""
     #  diskSelector: "ssd,fast"
     #  nodeSelector: "storage,fast"
+    #  fsType: "ext4"
     #  recurringJobs: '[
     #   {
     #     "name":"snap", 
@@ -429,3 +430,5 @@ For more information about restoring to file, refer to [this section.](../../adv
     #      }
     #   }
     #  ]'
+
+Note that only `ext4` filesystem supports automatically remount after a volume is detached unexpectedly. See [here](../../high-availability/recover-volume/) for details.
