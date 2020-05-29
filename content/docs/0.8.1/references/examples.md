@@ -236,7 +236,7 @@ For reference, this page provides examples of Kubernetes resources that use Long
 
 ### Restore to File
 
-For more information about restoring to file, refer to [this section.](../../high-availability/recover-without-system)
+For more information about restoring to file, refer to [this section.](../../advanced-resources/data-recovery/recover-without-system)
 
     apiVersion: v1
     kind: Pod
