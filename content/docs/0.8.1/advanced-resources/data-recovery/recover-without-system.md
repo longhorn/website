@@ -1,11 +1,11 @@
 ---
-title: Recover from a Longhorn Backup without System Installed
-weight: 4
+title: Recovering from a Longhorn Backup without System Installed
+weight: 5
 ---
+
 This command gives users the ability to restore a backup to a `raw` image or a `qcow2` image. If the backup is based on a backing file, users should provide the backing file as a `qcow2` image with `--backing file` parameter.
 
-## Instruction
-1. Copy the yaml template: Make a copy of `examples/restore_to_file.yaml.template` as e.g. `restore.yaml`.
+1. Copy the [yaml template](https://github.com/longhorn/longhorn/blob/master/examples/restore_to_file.yaml.template): Make a copy of `examples/restore_to_file.yaml.template` as e.g. `restore.yaml`.
     
 2. Set the node which the output file should be placed on by replacing `<NODE_NAME>`, e.g. `node1`.
 
@@ -15,12 +15,16 @@ This command gives users the ability to restore a backup to a `raw` image or a `
 
 5. Set argument `output-file` by replacing `<OUTPUT_FILE>`, e.g. `volume.raw` or `volume.qcow2`.
 
-6. Set argument `output-format` by replacing `<OUTPUT_FORMAT>`. Now support `raw` or `qcow2` only.
+6. Set argument `output-format` by replacing `<OUTPUT_FORMAT>`. The supported options are `raw` or `qcow2`.
 
-7. Set S3 Credential Secret by replacing `<S3_SECRET_NAME>`, e.g. `minio-secret`. 
+7. Set the S3 Credential Secret by replacing `<S3_SECRET_NAME>`, e.g. `minio-secret`. 
 
-8. Execute the yaml using e.g. `kubectl create -f restore.yaml`.
+8. Execute the yaml using e.g.:
 
-9. Watching the result using `kubectl -n longhorn-system get pod restore-to-file -w`
+        kubectl create -f restore.yaml
+
+9. Watch the result using:
+
+        kubectl -n longhorn-system get pod restore-to-file -w
 
 After the pod status changed to `Completed`, you should able to find `<OUTPUT_FILE>` at e.g. `/tmp/restore` on the `<NODE_NAME>`.

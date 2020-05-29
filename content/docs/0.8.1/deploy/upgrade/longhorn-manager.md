@@ -37,7 +37,7 @@ We only support offline upgrades from v0.8.1 to v1.0.0 due to an Instance Manage
     
     > Please make sure you have at least 2 vCPUs per node before updating this setting to 0.25. See the [settings reference](../../../references/settings/#guaranteed-engine-cpu-experimental) for details.
 1. Scale back the workload. Check if everything works well.
-1. We also recommend updating the **Replica Node Soft Anti-affinity** setting to false. Refer to the [settings reference](../../../references/settings/#replica-soft-anti-affinity) for details.
+1. We also recommend updating the **Replica Node Soft Anti-affinity** setting to false. Refer to the [settings reference](../../../references/settings/#replica-node-level-soft-anti-affinity) for details. 
     
     > Please make sure you have more nodes than the default replica count before updating this setting.
 
