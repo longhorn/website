@@ -7,22 +7,15 @@ In this section, you'll learn how to install Longhorn on a K3s Kubernetes cluste
 
 ## Requirements
 
-  -  Kubernetes v1.11 or higher.
-  -  Longhorn v0.4.1 or higher.
+  -  Longhorn v0.7.0 or higher.
   -  `open-iscsi` or `iscsiadm` installed on the node.
 
 ## Instruction
-#### K3S: 
-  ##### 1. For Longhorn v0.7.0 and above
+
   Longhorn v0.7.0 and above support k3s v0.10.0 and above only by default. 
   
   If you want to deploy these new Longhorn versions on versions before k3s v0.10.0, you need to set `--kubelet-root-dir` to `<data-dir>/agent/kubelet` for the Deployment `longhorn-driver-deployer` in `longhorn/deploy/longhorn.yaml`. 
   `data-dir` is a `k3s` arg and it can be set when you launch a k3s server. By default it is `/var/lib/rancher/k3s`.
-  
-  ##### 2. For Longhorn before v0.7.0
-  Longhorn versions before v0.7.0 support k3s below v0.10.0 only by default. 
-  
-  If you want to deploy these older Longhorn versions on k3s v0.10.0 and above, you need to set `--kubelet-root-dir` to `/var/lib/kubelet` for the Deployment `longhorn-driver-deployer` in `longhorn/deploy/longhorn.yaml`
 
 ## Troubleshooting
 
@@ -36,6 +29,8 @@ User can override the root-dir detection by manually setting argument `kubelet-r
 https://github.com/longhorn/longhorn/blob/master/deploy/longhorn.yaml#L329
 
 #### How to find `root-dir`?
+
+**For K3S prior to v0.10.0**
 
 Run `ps aux | grep k3s` and get argument `--data-dir` or `-d` on k3s node.
 
