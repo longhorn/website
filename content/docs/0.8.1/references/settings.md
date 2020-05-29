@@ -43,7 +43,7 @@ To configure Longhorn before installing it, see [this section](../../advanced-re
 ### General
 
 #### Create Default Disk on Labeled Nodes
-> Example: `false`
+> Default: `false`
 
 If no other disks exist, create the default disk automatically, only on nodes with the Kubernetes label `node.longhorn.io/create-default-disk=true` .
 
@@ -52,52 +52,55 @@ If disabled, the default disk will be created on all new nodes when the node is 
 This option is useful if you want to scale the cluster but don't want to use storage on the new nodes.
 
 #### Default Data Path
-> Example: `/var/lib/longhorn`
+> Default: `/var/lib/longhorn/`
 
 Default path to use for storing data on a host.
 
 Can be used with `Create Default Disk on Labeled Nodes` option, to make Longhorn only use the nodes with specific storage mounted at, for example, `/opt/longhorn` when scaling the cluster.
 
 #### Default Engine Image
-> Example: `longhornio/longhorn-engine:v0.6.0`
+> Default: `longhornio/longhorn-engine:v1.0.0` for Longhorn v1.0.0
 
 The default engine image used by the manager. Can be changed on the manager starting command line only.
 
 Every Longhorn release will ship with a new Longhorn engine image. If the current Longhorn volumes are not using the default engine, a green arrow will show up, indicate this volume needs to be upgraded to use the default engine.
 
 #### Default Instance Manager Image
+> Default: `longhornio/longhorn-instance-manager:v1_20200514` for Longhorn v1.0.0
 
 The default instance manager image used by the manager. Can be changed on the manager starting command line only.
 
 #### Enable Upgrade Checker
-> Example: `true`
+> Default: `true`
 
 Upgrade Checker will check for a new Longhorn version periodically. When there is a new version available, it will notify the user in the Longhorn UI.
 
 #### Latest Longhorn Version
-> Example: `v0.6.0`
+> Default: `v1.0.0` for Longhorn v1.0.0
 
 The latest version of Longhorn available. Automatically updated by the Upgrade Checker.
 
 Only available if `Upgrade Checker` is enabled.
 
 #### Default Replica Count
-> Example: `3`
+> Default: `3`
 
 The default number of replicas when creating the volume from Longhorn UI. For Kubernetes, update the `numberOfReplicas` in the StorageClass
 
 The recommended way of choosing the default replica count is: if you have more than three nodes for storage, use 3; otherwise use 2. Using a single replica on a single node cluster is also OK, but the high availability functionality wouldn't be available. You can still take snapshots/backups of the volume.
 
 #### Default Longhorn Static StorageClass Name
->Example: `longhorn-static`
+> Default: `longhorn-static`
 
 The `storageClassName` is for persistent volumes (PVs) and persistent volume claims (PVCs) when creating PV/PVC for an existing Longhorn volume. Notice that it's unnecessary for users to create the related StorageClass object in Kubernetes since the StorageClass would only be used as matching labels for PVC bounding purpose. By default 'longhorn-static'.
 
 #### Custom Resource API Version
+> Default: `longhorn.io/v1beta1`
 
 The current customer resource's API version, e.g. longhorn.io/v1beta1. Set by manager automatically.
 
 #### Automatic Salvage
+> Default: `true`
 
 If enabled, volumes will be automatically salvaged when all the replicas become faulty e.g. due to network disconnection. Longhorn will try to figure out which replica(s) are usable, then use them for the volume.
 
@@ -106,7 +109,6 @@ If enabled, volumes will be automatically salvaged when all the replicas become 
 The Kubernetes Secret name.
 
 #### Volume Attachment Recovery Policy
-
 > Default: `wait`
 
 Defines the Longhorn action when a Volume is stuck with a Deployment Pod on a failed node.
@@ -132,7 +134,7 @@ The target used for backup. NFS and S3 are supported. See [Setting a Backup Targ
 The Kubernetes secret associated with the backup target. See [Setting a Backup Target](../../snapshots-and-backups/backup-and-restore/set-backup-target) for details.
 
 #### Backupstore Poll Interval
-> Example: `300`
+> Default: `300`
 
 The interval in seconds to poll the backup store for updating volumes' **Last Backup** field. Set to 0 to disable the polling. See [Setting up Disaster Recovery Volumes](../../snapshots-and-backups/setup-disaster-recovery-volumes) for details.
 
@@ -142,7 +144,7 @@ For more information on how the backupstore poll interval affects the recovery t
 ### Scheduling
 
 #### Replica Node Level Soft Anti-Affinity
-> Default: Un-checked
+> Default: `false`
 
 When this setting is checked, the Longhorn Manager will allow scheduling on nodes with existing healthy replicas of the same volume.
 
@@ -165,14 +167,14 @@ With the default setting of 25, the Longhorn Manager will allow scheduling new r
 See [Multiple Disks Support](../../volumes-and-nodes/multidisk/#configuration) for details.
 
 #### Disable Scheduling On Cordoned Node
-> Default: Checked
+> Default: `true`
 
 When this setting is checked, the Longhorn Manager will not schedule replicas on Kubernetes cordoned nodes.
 
 When this setting is un-checked, the Longhorn Manager will schedule replicas on Kubernetes cordoned nodes.
 
 #### Replica Zone Level Soft Anti-Affinity
-> Default: Checked
+> Default: `true`
 
 When this setting is checked, the Longhorn Manager will allow scheduling new replicas of a volume to the nodes in the same zone as existing healthy replicas.
 
