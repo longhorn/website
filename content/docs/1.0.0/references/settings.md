@@ -34,7 +34,7 @@ weight: 1
 
 - [Danger Zone](#danger-zone)
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
-  - [Guaranteed Engine CPU (Experimental)](#guaranteed-engine-cpu-experimental)
+  - [Guaranteed Engine CPU](#guaranteed-engine-cpu)
 
 ### Customizing Default Settings
 
@@ -196,7 +196,7 @@ Multiple tolerations can be set here, and these tolerations are separated by sem
 See [Taint Toleration](../../advanced-resources/deploy/taint-toleration) for details.
 
 
-#### Guaranteed Engine CPU (Experimental)
+#### Guaranteed Engine CPU
 > Default: `0.25`
 
 Longhorn uses CPU resources on the node to serve the Longhorn Volumes. The Guaranteed Engine CPU option will request Kubernetes to reserve a certain amount of CPU for Longhorn Instance Manager Pods, which contain the running processes. The value is how many CPUs should be reserved for each Engine/Replica Instance Manager Pod created by Longhorn. This will help maintain engine stability during high node workload.
