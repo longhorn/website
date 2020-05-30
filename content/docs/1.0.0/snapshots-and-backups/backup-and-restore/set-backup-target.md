@@ -58,7 +58,11 @@ This page covers the following topics:
     s3://<your-bucket-name>@<your-aws-region>/
     ```
 
-    Make sure that you have `/` at the end, otherwise you will get an error.
+    Make sure that you have `/` at the end, otherwise you will get an error. A subdirectory (prefix) may be used:
+    
+    ```text
+    s3://<your-bucket-name>@<your-aws-region>/mypath/
+    ```
 
    Also make sure you've set **`<your-aws-region>` in the URL**. For example, for Google Cloud Storage, you can find the region code [here.](https://cloud.google.com/storage/docs/locations)
 
