@@ -33,7 +33,7 @@ We only support offline upgrades from v0.8.1 to v1.0.0 due to an Instance Manage
 1. Perform the engine upgrade according to the [offline engine upgrade instructions,](../upgrade-engine/#offline-upgrades) but don't scale back the workload just yet.
 1. We recommend updating the Guaranteed Engine CPU to 0.25. This step will restart all the Instance Managers on the node, so any attached volumes will be detached.
     
-    > Please make sure you have at least 2 vCPUs per node before updating this setting to 0.25. See the [settings reference](../../../references/settings/#guaranteed-engine-cpu-experimental) for details.
+    > Please make sure you have at least 2 vCPUs per node before updating this setting to 0.25. See the [settings reference](../../../references/settings/#guaranteed-engine-cpu) for details.
 1. Scale back the workload. Check if everything works well.
 1. We also recommend updating the **Replica Node Soft Anti-affinity** setting to false. Refer to the [settings reference](../../../references/settings/#replica-node-level-soft-anti-affinity) for details.
     

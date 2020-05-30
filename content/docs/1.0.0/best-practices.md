@@ -72,7 +72,7 @@ Longhorn system will create snapshots automatically when rebuilding a replica. R
 
 ## Guaranteed Engine CPU
 
-We recommend allowing Longhorn Engine to have guaranteed CPU allocation. The value is how many CPUs should be reserved for each Engine/Replica Instance Manager Pod created by Longhorn. By default, the value is 0.25 CPUs. For details, refer to the [settings reference.](../references/settings/#guaranteed-engine-cpu-experimental)
+We recommend allowing Longhorn Engine to have guaranteed CPU allocation. The value is how many CPUs should be reserved for each Engine/Replica Instance Manager Pod created by Longhorn. By default, the value is 0.25 CPUs. For details, refer to the [settings reference.](../references/settings/#guaranteed-engine-cpu)
 
 ## StorageClass
 
