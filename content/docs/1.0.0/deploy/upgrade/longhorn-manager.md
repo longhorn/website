@@ -39,18 +39,24 @@ We only support offline upgrades from v0.8.1 to v1.0.0 due to an Instance Manage
     
     > Please make sure you have more nodes than the default replica count before updating this setting.
 
-#### Clean up for compatible CSI plugin
-Due to removing the compatible csi deployment, but the compatible plugin registry socket is not removed, there will be the following error message in kubelet logs:
+#### Cleanup for Compatible CSI Plugin
+
+Due to removing the compatible CSI deployment, without removing the compatible plugin registry socket, the following error message will be in the kubelet logs:
+
 ```
 clientconn.go:1120] grpc: addrConn.createTransport failed to connect to {/var/lib/kubelet/plugins/io.rancher.longhorn-reg.sock 0  <nil>}. Err :connection error: desc = "transport: Error while dialing dial unix /var/lib/kubelet/plugins/io.rancher.longhorn-reg.sock: connect: connection refused". Reconnecting...
 ```
-And it can be fixed by removing the `io.rancher.longhorn-reg.sock` from the kubelet on the node with the following command:
+
+It can be fixed by removing the `io.rancher.longhorn-reg.sock` from the kubelet on the node with the following command:
 
 > **Note**: Please make sure there is no PV running with driver `io.rancher.longhorn`.
+
 ```
 rm /var/lib/kubelet/plugins_registry/io.rancher.longhorn-reg.sock
 ```
-Meanwhile kubelet will log the following message:
+
+Meanwhile the kubelet will log the following message:
+
 ```
 plugin_watcher.go:212] Removing socket path /var/lib/kubelet/plugins_registry/io.rancher.longhorn-reg.sock from desired state cache
 ```
