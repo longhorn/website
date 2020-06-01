@@ -104,14 +104,4 @@ Next, [upgrade Longhorn engine.](../upgrade-engine)
     ```
     kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v1.0.0/examples/storageclass.yaml
     ```
-<<<<<<< HEAD
-=======
 
-2. Restart the Kubelet container on all nodes or restart all the nodes. This step WILL DISRUPT all the workloads in the system.
-
-3. Connect to the node then run:
-    ```
-    docker restart kubelet
-    ```
-4. Rollback: Use `kubectl apply` or the Rancher catalog app to roll back Longhorn.
->>>>>>> master
