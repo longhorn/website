@@ -82,20 +82,6 @@ If the migration fails and the error log mentioned above is printed out, users n
 
 3. Use the Longhorn UI to recreate the PV and PVC.
 
-4. Due to removing the compatible csi deployment, there might be the following error message in kubelet logs:
-    ```
-    clientconn.go:1120] grpc: addrConn.createTransport failed to connect to {/var/lib/kubelet/plugins/io.rancher.longhorn-reg.sock 0  <nil>}. Err :connection error: desc = "transport: Error while dialing dial unix /var/lib/kubelet/plugins/io.rancher.longhorn-reg.sock: connect: connection refused". Reconnecting...
-    ```
-    And it can be fixed by removing the `io.rancher.longhorn-reg.sock` from the kubelet on the node with the following command:
-
-    > **Note**: Please make sure there is no PV running with driver `io.rancher.longhorn`.
-    ```
-    rm /var/lib/kubelet/plugins_registry/io.rancher.longhorn-reg.sock
-    ```
-    Meanwhile kubelet will log the following message:
-    ```
-    plugin_watcher.go:212] Removing socket path /var/lib/kubelet/plugins_registry/io.rancher.longhorn-reg.sock from desired state cache
-    ```
 
 ### Upgrading Longhorn Manager from v0.6.2 to v0.7.0
 
