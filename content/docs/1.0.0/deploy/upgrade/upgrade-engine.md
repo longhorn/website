@@ -21,7 +21,7 @@ Follow these steps if the live upgrade is not available (e.g. before v0.3.3, fro
 
 ### Live upgrade
 
-Live upgrade is available since v0.3.3, with the exception of upgrade from v0.5.0 to v0.6.0 and v0.7.0 to v0.8.0.
+Live upgrade is available since v0.3.3, with the exception of upgrade from v0.5.0 to v0.6.0, v0.7.0 to v0.8.0, and v0.8.1 to v1.0.0.
 
 The `iSCSI` frontend does not support live upgrades.
 
