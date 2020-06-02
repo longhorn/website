@@ -48,9 +48,12 @@ Therefore, the PVCs and PVs should be migrated to use the new CSI plugin for the
     ```
     kubectl get pv --output=jsonpath="{.items[?(@.spec.csi.driver==\"io.rancher.longhorn\")].spec.csi.volumeHandle}"
     ```
-
-2. Shut down the related workloads and detach the volumes. 
-3. Run this script for each volume:
+2. Remove finalizer `external-attacher/io-rancher-longhorn` for the related PV.
+    ```
+    kubectl edit pv <The corresponding PV of the volume found in step 1>
+    ``` 
+3. Shut down the related workloads and detach the volumes. 
+4. Run this script for each volume:
 
     ```
     curl -s https://raw.githubusercontent.com/longhorn/longhorn/v0.8.1/scripts/migrate-for-pre-070-volumes.sh |bash -s -- <volume name>
@@ -64,11 +67,13 @@ Therefore, the PVCs and PVs should be migrated to use the new CSI plugin for the
 
 ##### Migration Failure handling
 
-If the prerequisite of the migration is not satisfied and there is no error log `failed to delete then recreate PV/PVC, users need to manually check the current PVC/PV then recreate them if needed`, the script will do nothing for the PV and PVC. Users can check the migration prerequisites and steps and retry it. 
+###### The failure handling prerequisite
+If the migration prerequisites are not satisfied and there is no error log `failed to delete then recreate PV/PVC, users need to manually check the current PVC/PV then recreate them if needed: <error log>`, the script will do nothing for the PV and PVC. Users can check the migration prerequisites and steps and retry it. 
 
-If the migration fails and the error log mentioned above is printed out, users need to manually handle the migration for the failed volume:
+If the migration fails and the error log mentioned above is printed out, users need to manually handle the migration for the failed volume.
 
-1. Update `spec.persistentVolumeReclaimPolicy` to `Retain` for the PV with this command:
+###### The failure handling/manual migration steps
+1. Update `spec.persistentVolumeReclaimPolicy` to `Retain` and remove the all finalizers in `metadata.finalizers` for the PV with this command:
 
    ```
    kubectl edit pv <The PV name>
@@ -80,7 +85,15 @@ If the migration fails and the error log mentioned above is printed out, users n
     kubectl delete pvc <The PVC name> && kubectl delete pv <The PV name>
     ```
 
-3. Use the Longhorn UI to recreate the PV and PVC.
+3. Use the Longhorn UI to recreate the PV and PVC. Make sure the options `Create PVC` and `Use Previous PVC` are checked.
+
+###### Error: `failed to delete then recreate PV/PVC, users need to manually check the current PVC/PV then recreate them if needed: failed to wait for the old PV deletion complete`
+- This error is caused by missing migration step 2 in the old doc. Users can follow the above failure handling steps to complete the migration manually.
+
+- The related issues: 
+    1. https://github.com/longhorn/longhorn/issues/1448
+    2. https://forums.rancher.com/t/failed-upgrade-from-v0-8-1-to-v1-0-0-caused-by-pv-created-before-v0-6-2/17586/2
+  
 
 
 ### Upgrading Longhorn Manager from v0.6.2 to v0.7.0
