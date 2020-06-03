@@ -84,10 +84,15 @@ sizes = [300, 400, 600, 700]
 type = "monospace"
 
 [[menu.main]]
+name = "Blog"
+url = "/blog"
+weight = 1
+
+[[menu.main]]
 name = "Project"
 identifier = "project"
 url = "/project"
-weight = 1
+weight = 2
 
 [[menu.main]]
 name = "Code of conduct"
