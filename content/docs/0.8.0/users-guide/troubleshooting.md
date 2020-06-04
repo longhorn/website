@@ -17,6 +17,21 @@ Some vendors choose to change the directory for various reasons. For example, GK
 
 User can find the correct directory by running `ps aux|grep kubelet` on the host and check the `--volume-plugin-dir` parameter. If there is none, the default `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/` will be used.
 
+### Longhorn Disk on node is not ready: record diskUUID doesn't match the one on the disk
+
+After a reboot mounted disks are not not showing up as available storage and volumes are degraded.
+```
+kubectl -n longhorn-system get nodes.longhorn.io
+kubectl -n longhorn-system describe nodes.longhorn.io <node_name>
+          message: 'Disk spinningrust(/mnt/spinningrust/) on node <node_name>                                                                                                                                                                                                                                           
+            is not ready: record diskUUID doesn''t match the one on the disk '                                                                                                                                                                                                                                                
+          reason: DiskFilesystemChanged                                                                                                                                                                                                                                                                                       
+```
+Make sure to mount your file-systems using UUID in /etc/fstab, /dev/sdx can change during reboot.
+```
+UUID=56e098c5-00000000-000097af50375        /mnt/spinningrust       ext4    defaults        0       0  
+```
+
 ## Troubleshooting guide
 
 There are a few compontents in the Longhorn. Manager, Engine, Driver and UI. All of those components runnings as pods in the `longhorn-system` namespace by default inside the Kubernetes cluster.
