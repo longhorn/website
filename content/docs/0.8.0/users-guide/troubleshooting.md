@@ -32,9 +32,6 @@ Make sure to mount your file-systems using UUID in /etc/fstab, /dev/sdx can chan
 UUID=56e098c5-00000000-000097af50375        /mnt/spinningrust       ext4    defaults        0       0  
 ```
 
-
-
-
 ## Troubleshooting guide
 
 There are a few compontents in the Longhorn. Manager, Engine, Driver and UI. All of those components runnings as pods in the `longhorn-system` namespace by default inside the Kubernetes cluster.
