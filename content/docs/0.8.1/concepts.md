@@ -19,7 +19,7 @@ This section covers the following topics:
 - [Disaster Recovery Volumes](#disaster-recovery-volumes)
 - [Backupstore Update Intervals, RTO, and RPO](#backupstore-update-intervals-rto-and-rpo)
 
-The Longhorn Volume Manager container runs on each host in the Longhorn cluster. as a Kubernetes DaemonSet.  The Longhorn Volume Manager handles the API calls from the UI or the Flex Volume and CSI Kubernetes plugins.
+The Longhorn Manager container runs on each host in the Longhorn cluster. as a Kubernetes DaemonSet.  The Longhorn Manager handles the API calls from the UI or the Flex Volume and CSI Kubernetes plugins.
 
 When the Longhorn manager is asked to create a volume, it creates a controller container on the host the volume is attached to as well as the hosts where the replicas will be placed. Replicas should be placed on separate hosts to ensure maximum availability.
 

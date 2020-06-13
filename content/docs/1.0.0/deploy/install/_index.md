@@ -30,6 +30,8 @@ Each node in the Kubernetes cluster where Longhorn is installed must fulfill the
 - `curl`, `findmnt`, `grep`, `awk`, `blkid`, `lsblk` must be installed.
 - [Mount propagation](https://kubernetes-csi.github.io/docs/deploying.html#enabling-mount-propagation) must be enabled.
 
+CSI v1.1 is supported.
+
 [This script](#using-the-environment-check-script) can be used to check the Longhorn environment for potential issues.
 
 For the minimum recommended hardware, refer to the [best practices guide.](../../best-practices/#minimum-recommended-hardware)

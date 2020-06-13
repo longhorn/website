@@ -8,7 +8,7 @@ weight: 2
   - Deploy Kuberntes CSI driver components images to your own registry.
 
 #### Note:
-  - CSI driver components images names and tags can be found [here.](../../../architecture/#kubernetes-csi-driver-images)
+  - CSI driver component's images, names and tags can be found [here.](../../../concepts/#13-csi-driver)
   - We recommend using a short registry URL due to a Kubernetes limitation on the length of pod metadata labels. For more information, refer to [this section](./#longhorn-instance-manager-metadatalabels-must-be-no-more-than-63-characters)
 
 
