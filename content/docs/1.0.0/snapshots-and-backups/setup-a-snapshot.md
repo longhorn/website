@@ -3,7 +3,7 @@
   weight: 1
 ---
 
-A [snapshot](../../concepts/#snapshots) is the state of a Kubernetes Volume at any given point in time.
+A [snapshot](../../concepts/#24-snapshots) is the state of a Kubernetes Volume at any given point in time.
 
 To create a snapshot of an existing cluster,
 

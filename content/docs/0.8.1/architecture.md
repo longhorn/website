@@ -28,9 +28,9 @@ The read index is kept in memory and consumes one byte for each 4K block. The by
 
 ## Replica Rebuild
 
-When the controller detects failures in one of its replicas, it marks the replica as being in an error state. The Longhorn volume manager is responsible for initiating and coordinating the process of rebuilding the faulty replica as follows:
+When the controller detects failures in one of its replicas, it marks the replica as being in an error state. The Longhorn Manager is responsible for initiating and coordinating the process of rebuilding the faulty replica as follows:
 
-- The Longhorn volume manager creates a blank replica and calls the controller to add the blank replica into its replica set.
+- The Longhorn Manager creates a blank replica and calls the controller to add the blank replica into its replica set.
 - To add the blank replica, the controller performs the following operations:
   - Pauses all read and write operations.
   - Adds the blank replica in WO (write-only) mode.
@@ -38,7 +38,7 @@ When the controller detects failures in one of its replicas, it marks the replic
   - Unpauses all read the write operations. Only write operations will be dispatched to the newly added replica.
   - Starts a background process to sync all but the most recent differencing disk from a good replica to the blank replica.
   - After the sync completes, all replicas now have consistent data, and the volume manager sets the new replica to RW (read-write) mode.
-- The Longhorn volume manager calls the controller to remove the faulty replica from its replica set.
+- The Longhorn Manager calls the controller to remove the faulty replica from its replica set.
 
 ## Backup and Restore
 

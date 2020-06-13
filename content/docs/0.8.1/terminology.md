@@ -20,7 +20,7 @@ If you're using [Kubernetes](https://kubernetes.io), you can use Longhorn to pro
 
 ### Volumes
 
-Volumes in Longhorn are Kubernetes Volumes, they are created and managed as the Longhorn Volume Manager.
+Volumes in Longhorn are Kubernetes Volumes, they are created and managed as the Longhorn Manager.
 
 ### Disaster Recovery Volumes
 

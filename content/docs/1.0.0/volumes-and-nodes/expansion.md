@@ -5,7 +5,7 @@
 
 Volumes are expanded in two stages. First, Longhorn expands the frontend (the block device), then it expands the filesystem.
 
-To prevent the frontend expansion from being interfered by unexpected data R/W, Longhorn supports offline expansion only.  The `detached` volume will be automatically attached to a random node with [maintenance mode.](../../concepts/#maintenance-mode)
+To prevent the frontend expansion from being interfered by unexpected data R/W, Longhorn supports offline expansion only.  The `detached` volume will be automatically attached to a random node with [maintenance mode.](../../concepts/#22-reverting-volumes-in-maintenance-mode)
 
 Rebuilding and adding replicas is not allowed during the expansion, and expansion is not allowed while replicas are rebuilding or being added.
 
