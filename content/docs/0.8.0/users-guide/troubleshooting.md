@@ -11,7 +11,7 @@ You can click `Generate Support Bundle` link at the bottom of the UI to download
 #### Using with Flexvolume Plugin
 Check if volume plugin directory has been set correctly. This is automatically detected unless user explicitly set it. *NOTE* The Flexvoume driver is deprecated as of 0.8.0 and the CSI driver should be used instead (see below)
 
-By default, Kubernetes uses `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/`, as stated in the [official document](https://github.com/kubernetes/community/blob/master/contributors/devel/flexvolume.md#prerequisites).
+By default, Kubernetes uses `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/`, as stated in the [official document](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-storage/flexvolume.md/#prerequisites).
 
 Some vendors choose to change the directory for various reasons. For example, GKE uses `/home/kubernetes/flexvolume` instead.
 
