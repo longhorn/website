@@ -48,7 +48,7 @@ In the following figure, Longhorn has backed up both snap2 and snap3. Each backu
 
 {{< figure src="/img/diagrams/architecture/snapshot-backups.png" >}}
 
-Longhorn stores all backups for a given volume under a common directory. The following figure depicts a somewhat simplified view of how Longhorn stores backups for a volume. Volume-level metadata is stored in `volume.cfg`.
+Longhorn stores all backups for a given volume under a common directory. The following figure depicts a somewhat simplified view of how Longhorn stores backups for a volume.
 
 Volume-level metadata is stored in `volume.cfg`. The metadata files for each backup (e.g., `snap2.cfg`) are relatively small because they only contain the offsets and check sums of all the 2 MB blocks in the backup. The 2 MB blocks for all backups belonging to the same volume are stored under a common directory and can therefore be shared across multiple backups. The 2 MB blocks (`.blk` files) are compressed. Because check sums are used to address the 2MB blocks, we achieve some degree of deduplication for the 2 MB blocks in the same volume.
 
