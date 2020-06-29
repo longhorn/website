@@ -9,7 +9,6 @@ weight: 2
 
 #### Note:
   - CSI driver component's images, names and tags can be found [here.](../../../concepts/#13-csi-driver)
-  - We recommend using a short registry URL due to a Kubernetes limitation on the length of pod metadata labels. For more information, refer to [this section](./#longhorn-instance-manager-metadatalabels-must-be-no-more-than-63-characters)
 
 
 ## Using manifest file.
@@ -286,49 +285,7 @@ weight: 2
 
       `helm install longhorn ./chart --namespace longhorn-system`
 
-#### longhorn-driver-deployer error: Node is not support mount propagation
-If longhorn-instance-manager image name is more than 63 characters long, it will fail to deploy, and longhorn-driver-deployer pod will be in `CrashLoopBackOff`.
-
-Checking Longhorn driver deployer logs will report the following:
-
-```
-time="2020-03-13T22:49:22Z" level=warning msg="Got an error when checking MountPropagation with node status, Node XXX is not support mount propagation"
-time="2020-03-13T22:49:22Z" level=fatal msg="Error deploying driver: CSI cannot be deployed because MountPropagation is not set: Node <NODE_NAME> is not support mount propagation"
-```
-
-Issue can be conformed by checking Longhorn manager log, you should be able to see the following logs:
-
-> "Dropping Longhorn node longhorn-system/**NODE_NAME** out of the queue: fail to sync node for longhorn-system/**NODE_NAME**: 
-> InstanceManager.longhorn.io \"instance-manager-e-605e9473\" is invalid: metadata.labels: Invalid value:
-> \"**PRIVATE_REGISTRY_URL**-**PREFIX**-longhorn-instance-manager-v1_20200301\": **must be no more than 63 characters**"
-
-
-
-#### Longhorn instance manager: metadata.labels must be no more than 63 characters
-
-Using a long registry URL may cause Longhorn installation error
-
-Longhorn manager would report errors in the log when this happened:
-```
-"instance-manager-e-xxxxxxxx" is invalid: metadata.labels: Invalid value: "<PRIVATE_REGISTRY_URL>-longhornio-longhorn-instance-manager-v1_20200301": must be no more than 63 characters
-```
-
-Longhorn instance manager pods have labels with key `longhorn.io/instance-manager-image` and value `REGISTRY_URL-USER-IMAGE_NAME-TAG`
-
-e.g  
-```
-metadata:
-  labels:
-    longhorn.io/component: instance-manager
-    longhorn.io/instance-manager-image: <PRIVATE_REGISTRY_URL>-longhornio-longhorn-instance-manager-v1_20200301
-    longhorn.io/instance-manager-type: engine
-    longhorn.io/node: <NODE_NAME>
-  name: instance-manager-e-XXXXXXXX
-```
-
-it's known Kubernetes limitaion that label value should be no more than 63 characters [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set)
-
-##### Recommendation:
+## Recommendation:
 It's highly recommended not to manipulate image tags, especially instance manager image tags such as v1_20200301, because we intentionally use the date to avoid associating it with a Longhorn version.
 
 e.g
