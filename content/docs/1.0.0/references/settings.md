@@ -226,3 +226,5 @@ By default, Longhorn workloads run with the same priority as other pods in the c
 The Priority Class setting will specify a Priority Class for the Longhorn workloads to run as. This can be used to set the priority for Longhorn workloads higher so that they will not be the first to be evicted when a node is under pressure.
 
 > **Warning:** This setting should only be changed after detaching all Longhorn volumes, as the Longhorn components will be restarted to apply the setting. The Priority Class update will take a while, and users cannot operate Longhorn system during the update. Hence, it's recommended to set the Priority Class during Longhorn deployment.
+
+See [Priority Class](../../advanced-resources/deploy/priority-class) for details.
