@@ -35,6 +35,7 @@ weight: 1
 - [Danger Zone](#danger-zone)
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
   - [Guaranteed Engine CPU](#guaranteed-engine-cpu)
+  - [Priority Class](#priority-class)
 
 ### Customizing Default Settings
 
@@ -216,3 +217,12 @@ For example, if the setting value is 0.25 or 250m, that means you must have at l
 There are normally two Instance Manager Pods per node: one for the engine processes, and another one for the replica processes. But when Longhorn is upgrading from an old version of the Instance Manager to a new version, there can be at most four Pods requesting the reserved CPU on the node.
 
 Taking other Kubernetes system components' CPU reservation request into consideration, we recommend having at least eight times the amount of CPU as the Guaranteed Engine CPU.
+
+#### Priority Class
+> Example: `high-priority`
+
+By default, Longhorn workloads run with the same priority as other pods in the cluster, meaning in cases of node pressure, such as a node running out of memory, Longhorn workloads will be at the same priority as other Pods for eviction.
+
+The Priority Class setting will specify a Priority Class for the Longhorn workloads to run as. This can be used to set the priority for Longhorn workloads higher so that they will not be the first to be evicted when a node is under pressure.
+
+> **Warning:** This setting should only be changed after detaching all Longhorn volumes, as the Longhorn components will be restarted to apply the setting. The Priority Class update will take a while, and users cannot operate Longhorn system during the update. Hence, it's recommended to set the Priority Class during Longhorn deployment.
