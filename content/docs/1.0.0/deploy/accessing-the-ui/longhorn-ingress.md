@@ -1,13 +1,13 @@
 ---
-  title:  Create NGINX Ingress Controller with Basic Authentication
+  title:  Create an Ingress with Basic Authentication (nginx)
   weight: 1
 ---
 
-If you install Longhorn on a Kubernetes cluster with kubectl or Helm, you will need to create an Ingress controller to allow external traffic to reach the Longhorn UI.
+If you install Longhorn on a Kubernetes cluster with kubectl or Helm, you will need to create an Ingress to allow external traffic to reach the Longhorn UI.
 
-Authentication is not enabled by default for kubectl and Helm installations. In these steps, you'll learn how to create an Ingress controller with basic authentication.
+Authentication is not enabled by default for kubectl and Helm installations. In these steps, you'll learn how to create an Ingress with basic authentication using annotations for the nginx ingress controller.
 
-1. Create a basic auth file `auth`. It's important the file generated is named auth (actually - that the secret has a key `data.auth`), otherwise the ingress-controller returns a 503.
+1. Create a basic auth file `auth`. It's important the file generated is named auth (actually - that the secret has a key `data.auth`), otherwise the Ingress returns a 503.
     ```
     $ USER=<USERNAME_HERE>; PASSWORD=<PASSWORD_HERE>; echo "${USER}:$(openssl passwd -stdin -apr1 <<< ${PASSWORD})" >> auth
     ```
@@ -15,7 +15,7 @@ Authentication is not enabled by default for kubectl and Helm installations. In 
     ```
     $ kubectl -n longhorn-system create secret generic basic-auth --from-file=auth
     ```
-3. Create an NGINX Ingress controller manifest `longhorn-ingress.yml` :
+3. Create an Ingress manifest `longhorn-ingress.yml` :
     ```
     apiVersion: networking.k8s.io/v1beta1
     kind: Ingress
@@ -40,7 +40,7 @@ Authentication is not enabled by default for kubectl and Helm installations. In 
               serviceName: longhorn-frontend
               servicePort: 80
     ```
-4. Create the ingress controller:
+4. Create the Ingress:
     ```
     $ kubectl -n longhorn-system apply -f longhorn-ingress.yml
     ```
@@ -150,9 +150,9 @@ $ curl -v http://97.107.142.125/ -u foo:bar
 
 ## Additional Steps for AWS EKS Kubernetes Clusters
 
-You will need to create an ELB (Elastic Load Balancer) to expose the NGINX Ingress controller to the Internet. Additional costs may apply.
+You will need to create an ELB (Elastic Load Balancer) to expose the nginx Ingress controller to the Internet. Additional costs may apply.
 
-1. Create pre-requisite resources according to the [NGINX Ingress Controller documentation.](https://kubernetes.github.io/ingress-nginx/deploy/#prerequisite-generic-deployment-command)
+1. Create pre-requisite resources according to the [nginx ingress controller documentation.](https://kubernetes.github.io/ingress-nginx/deploy/#prerequisite-generic-deployment-command)
 
 2. Create an ELB by following [these steps.](https://kubernetes.github.io/ingress-nginx/deploy/#aws)
 
