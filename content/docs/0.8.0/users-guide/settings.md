@@ -11,15 +11,16 @@ To setup setting before installing Longhorn, see [Customized Default Setting](#c
 
 #### Backup Target
 * Example: `s3://backupbucket@us-east-1/backupstore`
-* Description: The target used for backup. Support NFS or S3. See [Snapshot and Backup](../../concepts/snapshots) for details.
+* Description: The target used for backup. Support NFS or S3. See [Snapshot and Backup](../../concepts/#24-snapshots) for details.
 
 #### Backup Target Credential Secret
 * Example: `s3-secret`
-* Description: The Kubernetes secret associated with the backup target. See [Snapshot and Backup](../../concepts/snapshots) for details.
+* Description: The Kubernetes secret associated with the backup target. See
+[Backups and Secondary Storage](../../concepts/#3-backups-and-secondary-storage) for details.
 
 #### Backupstore Poll Interval
 * Example: `300`
-* Description: In seconds. The interval to poll the backup store for updating volumes' Last Backup field. Set to 0 to disable the polling. See [Disaster Recovery Volume](../../concepts/disaster-recovery-volumes) for details.
+* Description: In seconds. The interval to poll the backup store for updating volumes' Last Backup field. Set to 0 to disable the polling. See [Disaster Recovery Volume](../../concepts/#33-disaster-recovery-volumes) for details.
 
 #### Create Default Disk on Labeled Nodes
 * Example: `false`

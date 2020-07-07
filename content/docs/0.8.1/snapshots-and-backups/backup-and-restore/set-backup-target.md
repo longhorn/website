@@ -5,7 +5,7 @@ weight: 1
 
 A backup target is the endpoint used to access a backupstore in Longhorn. A backupstore is a NFS server or S3 compatible server that stores the backups of Longhorn volumes. The backup target can be set at `Settings/General/BackupTarget`.
 
-For more information about how the backupstore works in Longhorn, see the [concepts section.](../../../concepts/#backups)
+For more information about how the backupstore works in Longhorn, see the [concepts section.](../../../concepts/#3-backups-and-secondary-storage)
 
 If you don't have access to AWS S3 or want to give the backupstore a try first, we've also provided a way to [setup a local S3 testing backupstore](#set-up-a-local-testing-backupstore) using [Minio](https://minio.io/).
 
