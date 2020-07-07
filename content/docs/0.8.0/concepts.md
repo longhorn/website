@@ -9,7 +9,7 @@ The storage controller and replicas are themselves orchestrated using Kubernetes
 
 For an overview of Longhorn features, refer to [this section.](../what-is-longhorn)
 
-For the installation requirements, go to [this section.](../deploy/install/#installation-requirements)
+For the installation requirements, go to [this section.](../install/requirements)
 
 > This section assumes familiarity with Kubernetes persistent storage concepts. For more information on these concepts, refer to the [appendix.](#appendix-how-persistent-storage-works-in-kubernetes) For help with the terminology used in this page, refer to [this section.](../terminology)
 
@@ -138,7 +138,7 @@ Each replica contains a chain of snapshots of a Longhorn volume. A snapshot is l
 
 For each Longhorn volume, multiple replicas of the volume should run in the Kubernetes cluster, each on a separate node. All replicas are treated the same, and the Longhorn Engine always runs on the same node as the pod, which is also the consumer of the volume. In that way, we make sure that even if the Pod is down, the Engine can be moved to another Pod and your service will continue undisrupted.
 
-The default replica count can be changed in the [settings.](../references/settings/#default-replica-count) When a volume is attached, the replica count for the volume can be changed in the UI.
+The default replica count can be changed in the settings. When a volume is attached, the replica count for the volume can be changed in the UI.
 
 If the current healthy replica count is less than specified replica count, Longhorn will start rebuilding new replicas.
 

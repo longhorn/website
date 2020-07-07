@@ -5,7 +5,7 @@ weight: 3
 
 Longhorn can easily restore backups to a volume. 
 
-For more information on how backups work, refer to the [concepts](../../../concepts/#backups) section.
+For more information on how backups work, refer to the [concepts](../../../concepts/#3-backups-and-secondary-storage) section.
 
 When you restore a backup, it creates a volume of the same name by default. If a volume with the same name as the backup already exists, the backup will not be restored.
 
