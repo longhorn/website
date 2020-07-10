@@ -60,24 +60,26 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
 
 ### Using Helm
 
-1. Download the chart in the Longhorn repo:
+Use the Helm command with the `--set` flag to modify the default settings. For example:
+
+```shell
+helm install longhorn/longhorn \
+--name longhorn \
+--namespace longhorn-system \
+--set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
+```
+
+You can also provide a copy of the `values.yaml` file with the default settings modified to the `--values` flag when running the Helm command:
+
+1. Obtain a copy of the `values.yaml` file from GitHub:
 
     ```shell
-    git clone https://github.com/longhorn/longhorn.git
+    curl -Lo values.yaml https://raw.githubusercontent.com/longhorn/charts/master/charts/longhorn/values.yaml
     ```
 
-2. Use helm command with `--set` flag to modify the default settings. For example:
+2. Modify the default settings in the YAML file. The following is an example snippet of `values.yaml`:
 
-    ```shell
-    helm install ./longhorn/chart \
-    --name longhorn \
-    --namespace longhorn-system \
-    --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
-    ```
-
-    Or directly modify the default settings in the YAML file `longhorn/chart/values.yaml`, then use the Helm command without `--set` to deploy Longhorn. The following is an example `longhorn/chart/values.yaml`:
-
-    ```
+    ```yaml
     defaultSettings:
       backupTarget: s3://backupbucket@us-east-1/backupstore
       backupTargetCredentialSecret: minio-secret
@@ -100,10 +102,10 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
       mkfsExt4Parameters: -O ^64bit,^metadata_csum
     ```
 
-    Then use the `helm` command:
+3. Run Helm with `values.yaml`:
 
-    ```
-    helm install ./longhorn/chart --name longhorn --namespace longhorn-system
+    ```shell
+    helm install longhorn/longhorn --name longhorn --namespace longhorn-system --values values.yaml
     ```
 
 For more info about using helm, see the section about
