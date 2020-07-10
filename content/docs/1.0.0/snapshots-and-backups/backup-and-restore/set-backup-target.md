@@ -59,7 +59,7 @@ This page covers the following topics:
     ```
 
     Make sure that you have `/` at the end, otherwise you will get an error. A subdirectory (prefix) may be used:
-    
+
     ```text
     s3://<your-bucket-name>@<your-aws-region>/mypath/
     ```
@@ -74,6 +74,22 @@ This page covers the following topics:
     This is the secret name with AWS keys from the third step.
 
 **Result:** Longhorn can store backups in S3. To create a backup, see [this section.](../create-a-backup)
+
+**Note:** If you operate Longhorn behind a proxy and you want to use AWS S3 as the backupstore, you must provide Longhorn information about your proxy in the `aws-secret` as below:
+```shell
+    AWS_ACCESS_KEY_ID: <your_aws_access_key_id>
+    AWS_SECRET_ACCESS_KEY: <your_aws_secret_access_key>
+    HTTP_PROXY: <your_proxy_ip_and_port>
+    HTTPS_PROXY: <your_proxy_ip_and_port>
+    NO_PROXY: <excluded-ip-list>
+```
+
+Make sure `NO_PROXY` contains the network addresses, network address ranges and domains that should be excluded from using the proxy. In order for Longhorn to operate, the minimum required values for `NO_PROXY` are:
+* localhost
+* 127.0.0.1
+* 0.0.0.0
+* 10.0.0.0/8 (K8s components' IPs)
+* 192.168.0.0/16 (internal IPs in the cluster)
 
 ### Set up a Local Testing Backupstore
 We provides two testing purpose backupstore based on NFS server and Minio S3 server for testing, in `./deploy/backupstores`.
