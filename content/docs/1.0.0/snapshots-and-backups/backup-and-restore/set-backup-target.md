@@ -138,6 +138,30 @@ If you want to use a self-signed SSL certificate, you can specify AWS_CERT in th
 It's important to note that the certificate needs to be in PEM format, and must be its own CA. Or one must include a certificate chain that contains the CA certificate.
 To include multiple certificates, one can just concatenate the different certificates (PEM files).
 
+### Enable virtual-hosted-style access for S3 compatible Backupstore
+**You may need to enable this new addressing approach for your S3 compatible Backupstore when**
+1. you want to switch to this new access style right now so that you won't need to worry about [Amazon S3 Path Deprecation Plan](https://aws.amazon.com/blogs/aws/amazon-s3-path-deprecation-plan-the-rest-of-the-story/);
+2. the backupstore you are using supports virtual-hosted-style access only, e.g., Alibaba Cloud(Aliyun) OSS;
+3. you have configurated `MINIO_DOMAIN` environment variable to [enable virtual-host-style requests for the MinIO server](https://docs.min.io/docs/minio-server-configuration-guide.html);
+4. the error `...... error: AWS Error: SecondLevelDomainForbidden Please use virtual hosted style to access. .....` is triggered.
+
+**The way to enable virtual-hosted-style access**
+1. Add a new field `VIRTUAL_HOSTED_STYLE` with value `true` to your backup target secret. e.g.:
+    ```
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: s3-compatible-backup-target-secret
+      namespace: longhorn-system
+    type: Opaque
+    data:
+      AWS_ACCESS_KEY_ID: bG9uZ2hvcm4tdGVzdC1hY2Nlc3Mta2V5
+      AWS_SECRET_ACCESS_KEY: bG9uZ2hvcm4tdGVzdC1zZWNyZXQta2V5
+      AWS_ENDPOINTS: aHR0cHM6Ly9taW5pby1zZXJ2aWNlLmRlZmF1bHQ6OTAwMA==
+      VIRTUAL_HOSTED_STYLE: dHJ1ZQ== # true
+    ```
+2. Deploy/update the secret and set it in `Settings/General/BackupTargetSecret`. 
+
 ### NFS Backupstore
 
 For using NFS server as backupstore, NFS server must support NFSv4.
