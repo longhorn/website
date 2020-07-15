@@ -8,7 +8,27 @@ weight: 2
   - Deploy Kuberntes CSI driver components images to your own registry.
 
 #### Note:
-  - CSI driver component's images, names and tags can be found [here.](../../../concepts/#13-csi-driver)
+  - A full list of all needed images is in [longhorn-images.txt](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/deploy/longhorn-images.txt). First, download the images list by running:
+    ```shell
+    wget https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/deploy/longhorn-images.txt
+    ```
+  - We provide a script to quickly pull and export the above `longhorn-images.txt` list to a `tar` file: [save-images.sh](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/save-images.sh). Example:
+    ```shell
+    wget https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/save-images.sh
+    chmod +x save-images.sh
+    ./save-images.sh --image-list longhorn-images.txt --images longhorn-images.tar.gz
+    ```
+  - We provide another script to load images from the `tar` file and push them to your private registry: [load-images.sh](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/load-images.sh). Example:
+    ```shell
+    wget https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/load-images.sh
+    chmod +x load-images.sh
+    ./load-images.sh --image-list longhorn-images.txt --images longhorn-images.tar.gz --registry <YOUR-PRIVATE-REGISTRY>
+    ```
+  - For more options with using the scripts, see flag `--help`:
+    ```shell
+    ./save-images.sh --help
+    ./load-images.sh --help
+    ```
 
 
 ## Using manifest file.
@@ -201,8 +221,8 @@ weight: 2
     ```
     defaultSettings:
       registrySecret: <SECRET_NAME>
-    
-    privateRegistry: 
+
+    privateRegistry:
         registryUrl: <REGISTRY_URL>
         registryUser: <REGISTRY_USER>
         registryPasswd: <REGISTRY_PASSWORD>
@@ -224,13 +244,13 @@ weight: 2
 
   * In `Longhorn Images Settings` section specify
     * Longhorn Manager Image Name     e.g. `<REGISTRY_URL>/longhorn-manager`
-    * Longhorn Manager Image Tag 
+    * Longhorn Manager Image Tag
     * Longhorn Engine Image Name    e.g. `<REGISTRY_URL>/longhorn-engine`
-    * Longhorn Engine Image Tag 
-    * Longhorn UI Image Name    e.g. `<REGISTRY_URL>/longhorn-ui` 
-    * Longhorn UI Image Tag 
+    * Longhorn Engine Image Tag
+    * Longhorn UI Image Name    e.g. `<REGISTRY_URL>/longhorn-ui`
+    * Longhorn UI Image Tag
     * Longhorn Instance Manager Image Name    e.g.  `<REGISTRY_URL>/longhorn-instance-manager`
-    * Longhorn Instance Manager Image Tag 
+    * Longhorn Instance Manager Image Tag
 
   * In `Longhorn CSI Driver Setting` section specify
     * Longhorn CSI Attacher Image    e.g.  `<REGISTRY_URL>/csi-attacher:<CSI_ATTACHER_IMAGE_TAG>`
@@ -239,12 +259,12 @@ weight: 2
     * Longhorn CSI Driver Resizer Image    e.g. `<REGISTRY_URL>/csi-resizer:<CSI_RESIZER_IMAGE_TAG>`
 
   * In `Longhorn Default Settings` secton specify
-    *  Private registry secret 
+    *  Private registry secret
 
   * In `Private Registry Settings` secton specify
-    *  Private registry URL 
-    *  Private registry user 
-    *  Private registry password 
+    *  Private registry URL
+    *  Private registry user
+    *  Private registry password
 
 
 ## Troubleshooting
