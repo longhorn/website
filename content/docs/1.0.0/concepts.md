@@ -108,6 +108,8 @@ Longhorn does leverage iSCSI, so extra configuration of the node may be required
 
 The Longhorn UI interacts with the Longhorn Manager through the Longhorn API, and acts as a complement of Kubernetes. Through the Longhorn UI, you can manage snapshots, backups, nodes and disks.
 
+Besides, the space usage of the cluster worker nodes is collected and illustrated by the Longhorn UI. See [here](../volumes-and-nodes/node-space-usage) for details.  
+
 # 2. Longhorn Volumes and Primary Storage
 
 When creating a volume, the Longhorn Manager creates the Longhorn Engine microservice and the replicas for each volume as microservices. Together, these microservices form a Longhorn volume. Each replica should be placed on a different node or on different disks.
