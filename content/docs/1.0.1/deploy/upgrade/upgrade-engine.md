@@ -11,17 +11,17 @@ Always make backups before upgrading the Longhorn engine images.
 
 Upgrade the Longhorn manager before upgrading the Longhorn engine.
 
-### Offline Upgrades
+### Offline Upgrade
 
-Follow these steps if the live upgrade is not available (e.g. before v0.3.3, from v0.5.0 to v0.6.0, v0.7.0 to v0.8.0), or if the volume is stuck in degraded state:
+Follow these steps if the live upgrade is not available, or if the volume is stuck in degraded state:
 
 1. Follow [the detach procedure for relevant workloads](../../../volumes-and-nodes/detaching-volumes).
-2.  Select all the volumes using batch selection. Click the batch operation button **Upgrade Engine**, and choose the engine image available in the list. It's the default engine shipped with the manager for this release.
+2. Select all the volumes using batch selection. Click the batch operation button **Upgrade Engine**, and choose the engine image available in the list. It's the default engine shipped with the manager for this release.
 3. Resume all workloads. Any volume not part of a Kubernetes workload must be attached from the Longhorn UI.
 
 ### Live upgrade
 
-Live upgrade is available since v0.3.3, with the exception of upgrade from v0.5.0 to v0.6.0, v0.7.0 to v0.8.0, and v0.8.1 to v1.0.0.
+Live upgrade is supported for upgrading from v1.0.0 to v1.0.1.
 
 The `iSCSI` frontend does not support live upgrades.
 
