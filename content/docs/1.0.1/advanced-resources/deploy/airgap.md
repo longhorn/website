@@ -8,8 +8,27 @@ weight: 2
   - Deploy Kuberntes CSI driver components images to your own registry.
 
 #### Note:
-  - CSI driver component's images, names and tags can be found [here.](../../../concepts/#13-csi-driver)
-  - We recommend using a short registry URL due to a Kubernetes limitation on the length of pod metadata labels. For more information, refer to [this section](./#longhorn-instance-manager-metadatalabels-must-be-no-more-than-63-characters)
+  - A full list of all needed images is in [longhorn-images.txt](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/deploy/longhorn-images.txt). First, download the images list by running:
+    ```shell
+    wget https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/deploy/longhorn-images.txt
+    ```
+  - We provide a script, [save-images.sh](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/save-images.sh), to quickly pull the above `longhorn-images.txt` list. If you specify a `tar.gz` file name for flag `--images`, the script will save all images to the provided filename. In the example below, the script pulls and saves Longhorn images to the file `longhorn-images.tar.gz`. You then can copy the file to your air-gap environment. On the other hand, if you don't specify the file name, the script just pulls the list of images to your computer.
+    ```shell
+    wget https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/save-images.sh
+    chmod +x save-images.sh
+    ./save-images.sh --image-list longhorn-images.txt --images longhorn-images.tar.gz
+    ```
+  - We provide another script, [load-images.sh](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/load-images.sh), to push Longhorn images to your private registry. If you specify a `tar.gz` file name for flag `--images`, the script loads images from the `tar` file and pushes them. Otherwise, it will find images in your local Docker and push them. In the example below, the script load images from the file `longhorn-images.tar.gz` and push them to `<YOUR-PRIVATE-REGISTRY>`
+    ```shell
+    wget https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/load-images.sh
+    chmod +x load-images.sh
+    ./load-images.sh --image-list longhorn-images.txt --images longhorn-images.tar.gz --registry <YOUR-PRIVATE-REGISTRY>
+    ```
+  - For more options with using the scripts, see flag `--help`:
+    ```shell
+    ./save-images.sh --help
+    ./load-images.sh --help
+    ```
 
 
 ## Using manifest file.
@@ -202,8 +221,8 @@ weight: 2
     ```
     defaultSettings:
       registrySecret: <SECRET_NAME>
-    
-    privateRegistry: 
+
+    privateRegistry:
         registryUrl: <REGISTRY_URL>
         registryUser: <REGISTRY_USER>
         registryPasswd: <REGISTRY_PASSWORD>
@@ -225,13 +244,13 @@ weight: 2
 
   * In `Longhorn Images Settings` section specify
     * Longhorn Manager Image Name     e.g. `<REGISTRY_URL>/longhorn-manager`
-    * Longhorn Manager Image Tag 
+    * Longhorn Manager Image Tag
     * Longhorn Engine Image Name    e.g. `<REGISTRY_URL>/longhorn-engine`
-    * Longhorn Engine Image Tag 
-    * Longhorn UI Image Name    e.g. `<REGISTRY_URL>/longhorn-ui` 
-    * Longhorn UI Image Tag 
+    * Longhorn Engine Image Tag
+    * Longhorn UI Image Name    e.g. `<REGISTRY_URL>/longhorn-ui`
+    * Longhorn UI Image Tag
     * Longhorn Instance Manager Image Name    e.g.  `<REGISTRY_URL>/longhorn-instance-manager`
-    * Longhorn Instance Manager Image Tag 
+    * Longhorn Instance Manager Image Tag
 
   * In `Longhorn CSI Driver Setting` section specify
     * Longhorn CSI Attacher Image    e.g.  `<REGISTRY_URL>/csi-attacher:<CSI_ATTACHER_IMAGE_TAG>`
@@ -240,12 +259,12 @@ weight: 2
     * Longhorn CSI Driver Resizer Image    e.g. `<REGISTRY_URL>/csi-resizer:<CSI_RESIZER_IMAGE_TAG>`
 
   * In `Longhorn Default Settings` secton specify
-    *  Private registry secret 
+    *  Private registry secret
 
   * In `Private Registry Settings` secton specify
-    *  Private registry URL 
-    *  Private registry user 
-    *  Private registry password 
+    *  Private registry URL
+    *  Private registry user
+    *  Private registry password
 
 
 ## Troubleshooting
@@ -286,49 +305,7 @@ weight: 2
 
       `helm install longhorn ./chart --namespace longhorn-system`
 
-#### longhorn-driver-deployer error: Node is not support mount propagation
-If longhorn-instance-manager image name is more than 63 characters long, it will fail to deploy, and longhorn-driver-deployer pod will be in `CrashLoopBackOff`.
-
-Checking Longhorn driver deployer logs will report the following:
-
-```
-time="2020-03-13T22:49:22Z" level=warning msg="Got an error when checking MountPropagation with node status, Node XXX is not support mount propagation"
-time="2020-03-13T22:49:22Z" level=fatal msg="Error deploying driver: CSI cannot be deployed because MountPropagation is not set: Node <NODE_NAME> is not support mount propagation"
-```
-
-Issue can be conformed by checking Longhorn manager log, you should be able to see the following logs:
-
-> "Dropping Longhorn node longhorn-system/**NODE_NAME** out of the queue: fail to sync node for longhorn-system/**NODE_NAME**: 
-> InstanceManager.longhorn.io \"instance-manager-e-605e9473\" is invalid: metadata.labels: Invalid value:
-> \"**PRIVATE_REGISTRY_URL**-**PREFIX**-longhorn-instance-manager-v1_20200301\": **must be no more than 63 characters**"
-
-
-
-#### Longhorn instance manager: metadata.labels must be no more than 63 characters
-
-Using a long registry URL may cause Longhorn installation error
-
-Longhorn manager would report errors in the log when this happened:
-```
-"instance-manager-e-xxxxxxxx" is invalid: metadata.labels: Invalid value: "<PRIVATE_REGISTRY_URL>-longhornio-longhorn-instance-manager-v1_20200301": must be no more than 63 characters
-```
-
-Longhorn instance manager pods have labels with key `longhorn.io/instance-manager-image` and value `REGISTRY_URL-USER-IMAGE_NAME-TAG`
-
-e.g  
-```
-metadata:
-  labels:
-    longhorn.io/component: instance-manager
-    longhorn.io/instance-manager-image: <PRIVATE_REGISTRY_URL>-longhornio-longhorn-instance-manager-v1_20200301
-    longhorn.io/instance-manager-type: engine
-    longhorn.io/node: <NODE_NAME>
-  name: instance-manager-e-XXXXXXXX
-```
-
-it's known Kubernetes limitaion that label value should be no more than 63 characters [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set)
-
-##### Recommendation:
+## Recommendation:
 It's highly recommended not to manipulate image tags, especially instance manager image tags such as v1_20200301, because we intentionally use the date to avoid associating it with a Longhorn version.
 
 e.g
