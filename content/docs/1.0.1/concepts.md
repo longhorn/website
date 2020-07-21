@@ -124,6 +124,8 @@ Longhorn is a thin-provisioned storage system. That means a Longhorn volume will
 
 A Longhorn volume itself cannot shrink in size if you’ve removed content from your volume. For example, if you create a volume of 20 GB, used 10 GB, then removed the content of 9 GB, the actual size on the disk would still be 10 GB instead of 1 GB. This happens because Longhorn operates on the block level, not the filesystem level, so Longhorn doesn’t know if the content has been removed by a user or not. That information is mostly kept at the filesystem level.
 
+For more introductions about the volume-size related concepts, see this [doc](../volumes-and-nodes/volume-size) for more details.
+
 ### 2.2. Reverting Volumes in Maintenance Mode
 
 When a volume is attached from the Longhorn UI, there is a checkbox for Maintenance mode. It’s mainly used to revert a volume from a snapshot.
