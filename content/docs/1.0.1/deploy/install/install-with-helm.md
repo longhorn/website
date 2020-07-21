@@ -22,27 +22,33 @@ If you're using a Helm version prior to version 3.0, you need to [install Tiller
 
 ### Installing Longhorn
 
-1. Clone the Longhorn repository:
+1. Add the Longhorn Helm repository:
 
     ```shell
-    git clone https://github.com/longhorn/longhorn && cd longhorn
+   helm repo add longhorn https://charts.longhorn.io
     ```
 
-2. Install Longhorn in the `longhorn-system` namespace.
+2. Fetch the latest charts from the repository:
+
+    ```shell
+   helm repo update
+    ```
+
+3. Install Longhorn in the `longhorn-system` namespace.
     To install Longhorn with Helm 2, use this command:
 
-    ```
-    helm install ./longhorn/chart --name longhorn --namespace longhorn-system
+    ```shell
+    helm install longhorn/longhorn --name longhorn --namespace longhorn-system
     ```
 
     To install Longhorn with Helm 3, use these commands:
 
-    ```
+    ```shell
     kubectl create namespace longhorn-system
-    helm install longhorn ./longhorn/chart/ --namespace longhorn-system
+    helm install longhorn longhorn/longhorn --namespace longhorn-system
     ```
 
-3. To confirm that the deployment succeeded, run:
+4. To confirm that the deployment succeeded, run:
 
     ```bash
     kubectl -n longhorn-system get pod
