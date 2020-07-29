@@ -12,7 +12,7 @@ kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/exa
 
 Now you can create a pod using Longhorn like this:
 ```
-kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/examples/pvc.yaml
+kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/examples/simple_pvc.yaml
 ```
 
 The above yaml file contains two parts:
