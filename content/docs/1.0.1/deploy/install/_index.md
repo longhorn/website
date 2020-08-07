@@ -66,6 +66,12 @@ daemonset.apps "longhorn-environment-check" deleted
 clean up complete
 ```
 
+### Pod Security Policy
+
+Starting with v1.0.2, Longhorn is shipped with a default Pod Security Policy that will give Longhorn the necessary privileges to be able to run properly.
+
+No special configuration is needed for Longhorn to work properly on clusters with Pod Security Policy enabled.
+
 ### Notes on Mount Propagation
 
 If your Kubernetes cluster was provisioned by Rancher v2.0.7+ or later, the MountPropagation feature is enabled by default.
