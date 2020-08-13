@@ -5,7 +5,7 @@ weight: 2
 
 ## Requirements:
   - Deploy Longhorn Components images to your own registry.
-  - Deploy Kuberntes CSI driver components images to your own registry.
+  - Deploy Kubernetes CSI driver components images to your own registry.
 
 #### Note:
   - A full list of all needed images is in [longhorn-images.txt](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/deploy/longhorn-images.txt). First, download the images list by running:
@@ -188,9 +188,9 @@ In v1.0.2, Longhorn automatically adds <REGISTRY_URL> prefix to images. You simp
 
 ### Use default image name
 
-If you keep the images' names as recommended [here](./#recommendation), you only need to do the flowing steps:
+If you keep the images' names as recommended [here](./#recommendation), you only need to do the following steps:
 
-1. Clone longhorn repo
+1. Clone the Longhorn repo:
 
     `git clone https://github.com/longhorn/longhorn.git`
 
@@ -275,18 +275,17 @@ If you want to use custom images' names, you can use the following steps:
 
 ### Use default image name
 
-If you keep the images' names as recommended [here](./#recommendation), you only need to do the flowing steps:
+If you keep the images' names as recommended [here](./#recommendation), you only need to do the following steps:
 
-- In the `Longhorn Default Settings` section specify
-   - Private registry secret
-- In the `Private Registry Settings` section specify
+- In the `Longhorn Default Settings` section, click **Customize Default Setting** and specify the Private registry secret.
+- In the `Private Registry Settings` section specify:
    - Private registry URL
    - Private registry user
    - Private registry password
 
   ![images](/img/screenshots/airgap-deploy/app-default-images.png)
 
-> Don't forget that we need to tell the user to specify a `Private registry secret` so that Longhorn can create a secret under the name. I know it is confusing. We will fix it soon but not in this v1.0.2 release. More detail is at this comment https://github.com/longhorn/longhorn/issues/1670#issuecomment-670723484
+> The `Private registry secret` must be specified in the default settings so that Longhorn can create a secret under the name. The process for setting up the private registry will be fixed to be less confusing, but not in the v1.0.2 release. More detail is at [this comment.](https://github.com/longhorn/longhorn/issues/1670#issuecomment-670723484)
 
 ### Use custom image name
 
@@ -300,7 +299,7 @@ If you keep the images' names as recommended [here](./#recommendation), you only
 
   ![images](/img/screenshots/airgap-deploy/app-custom-images-reg.png)
 
-> Don't forget that we need to tell the user to specify a `Private registry secret` so that Longhorn can create a secret under the name. I know it is confusing. We will fix it soon but not in this v1.0.2 release. More detail is at this comment https://github.com/longhorn/longhorn/issues/1670#issuecomment-670723484
+> The `Private registry secret` must be specified in the default settings so that Longhorn can create a secret under the name. The process for setting up the private registry will be fixed to be less confusing, but not in the v1.0.2 release. More detail is at [this comment.](https://github.com/longhorn/longhorn/issues/1670#issuecomment-670723484)
 
 ## Troubleshooting
 
