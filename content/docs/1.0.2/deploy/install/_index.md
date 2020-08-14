@@ -30,6 +30,8 @@ Each node in the Kubernetes cluster where Longhorn is installed must fulfill the
 - `curl`, `findmnt`, `grep`, `awk`, `blkid`, `lsblk` must be installed.
 - [Mount propagation](https://kubernetes-csi.github.io/docs/deploying.html#enabling-mount-propagation) must be enabled.
 
+The Longhorn workloads must be able to run as root in order for Longhorn to be deployed and operated properly.
+
 CSI v1.1 is supported.
 
 [This script](#using-the-environment-check-script) can be used to check the Longhorn environment for potential issues.
@@ -63,6 +65,12 @@ cleaning up...
 daemonset.apps "longhorn-environment-check" deleted
 clean up complete
 ```
+
+### Pod Security Policy
+
+Starting with v1.0.2, Longhorn is shipped with a default Pod Security Policy that will give Longhorn the necessary privileges to be able to run properly.
+
+No special configuration is needed for Longhorn to work properly on clusters with Pod Security Policy enabled.
 
 ### Notes on Mount Propagation
 
