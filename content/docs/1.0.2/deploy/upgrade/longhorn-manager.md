@@ -9,6 +9,10 @@ We only support upgrading to v1.0.2 from v1.0.0 or v1.0.1. For other versions, p
 
 Engine live upgrade is supported from v1.0.0/v1.0.1 to v1.0.2.
 
+For airgap upgrades using Rancher App, modify Image names and remove the registry URL part
+
+e.g `registry.example.com/longhorn/longhorn-manager:v1.0.1` to `longhorn/longhorn-manager:v1.0.2`  in Longhorn Images section, see airgap install steps for v1.0.2 [here](../../../advanced-resources/deploy/airgap/#using-rancher-app)
+
 #### Preparing for the Upgrade
 
 If Longhorn was installed using a Helm Chart, or if it was installed as Rancher catalog app, check to make sure the parameters in the default StorageClass weren't changed. Changing the default StorageClass's parameter might result in a chart upgrade failure. if you want to reconfigure the parameters in the StorageClass, you can copy the default StorageClass's configuration to create another StorageClass.
