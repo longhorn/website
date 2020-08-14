@@ -3,11 +3,11 @@ title: Upgrading Longhorn Manager
 weight: 1
 ---
 
-### Upgrading from v1.0.0 to v1.0.1
+### Upgrading from v1.0.0 or v1.0.1 to v1.0.2
 
-We only support upgrading to v1.0.1 from v1.0.0. For other versions, please upgrade to v1.0.0 first.
+We only support upgrading to v1.0.2 from v1.0.0 or v1.0.1. For other versions, please upgrade to v1.0.0 first.
 
-Engine live upgrade is supported from v1.0.0 to v1.0.1.
+Engine live upgrade is supported from v1.0.0/v1.0.1 to v1.0.2.
 
 #### Preparing for the Upgrade
 
@@ -37,7 +37,7 @@ To upgrade with Helm, run this command:
 helm upgrade longhorn ./longhorn/chart
 ```
 
-On Kubernetes clusters managed by Rancher 2.1 or newer, the steps to upgrade the catalog app `longhorn-system` are the similar to the installation steps. 
+On Kubernetes clusters managed by Rancher 2.1 or newer, the steps to upgrade the catalog app `longhorn-system` are the similar to the installation steps.
 
 Then wait for all the pods to become running and Longhorn UI working. e.g.:
 
