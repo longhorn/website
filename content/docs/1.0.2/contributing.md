@@ -9,7 +9,7 @@ Contributing code is not the only way of contributing. We value feedback very mu
 
 Longhorn is a [CNCF Sandbox Project.](https://www.cncf.io/sandbox-projects/)
 
-![Longhorn is a CNCF Sandbox Project](https://github.com/cncf/artwork/blob/master/other/cncf/horizontal/color/cncf-color.png)
+![Longhorn is a CNCF Sandbox Project](https://raw.githubusercontent.com/cncf/artwork/master/other/cncf/horizontal/color/cncf-color.png)
 
 
 ## Source Code
