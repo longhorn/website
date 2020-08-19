@@ -54,6 +54,7 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
         disable-scheduling-on-cordoned-node: false
         replica-zone-soft-anti-affinity: false
         volume-attachment-recovery-policy: never
+        node-down-pod-deletion-policy: do-nothing
         mkfs-ext4-parameters: -O ^64bit,^metadata_csum
     ---
     ```
@@ -99,6 +100,7 @@ You can also provide a copy of the `values.yaml` file with the default settings 
       disableSchedulingOnCordonedNode: false
       replicaZoneSoftAntiAffinity: false
       volumeAttachmentRecoveryPolicy: never
+      nodeDownPodDeletionPolicy: do-nothing
       mkfsExt4Parameters: -O ^64bit,^metadata_csum
     ```
 
