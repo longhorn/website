@@ -17,6 +17,7 @@ Currently, it's recommended to shut down the workloads with Longhorn volume befo
 If shutting down the workloads is not possible, follow the steps below to minimize the impact for node maintenance:
 
 1. Cordon the node. Longhorn will automatically disable the node scheduling when a Kubernetes node is cordoned.
+	Make sure the node has been disabled from scheduling, then evict all the replicas on the node.
 
 1. Drain the node to move the workload to somewhere else.
 
@@ -24,8 +25,6 @@ If shutting down the workloads is not possible, follow the steps below to minimi
 
     The replica processes on the node will be stopped at this stage. 
         
-    > **Upcoming feature:** After adding the support of `Replica eviction`, you will be able to evict the replicas on the node gracefully.
-    
     The engine processes on the node will be migrated with the Pod to other nodes.
 
     After the `drain` is completed, there should be no engine or replica process running on the node. Two instance managers will still be running on the node, but they're stateless and won't cause interruption to the existing workload.
@@ -50,11 +49,7 @@ We do not recommend draining the node for Kubernetes upgrades. It will cause an 
 ## Removing a Disk
 To remove a disk:
 1. Disable the disk scheduling.
-1. Delete all the replicas on the disk.
-
-    It's recommended to do it one by one since this step will trigger the replicas to rebuild.
-
-    > **Upcoming feature:** The replica eviction feature can also help here.
+1. Evict all the replicas on the disk.
 1. Delete the disk.
 
 ### Reusing the Node Name
@@ -64,11 +59,7 @@ These steps also apply if you've replaced a node using the same node name. Longh
 ## Removing a Node
 To remove a node:
 1. Disable the disk scheduling.
-1. Delete all the replicas on the node.
-
-    It's recommended to delete replicas one by one since this step will trigger the replicas to rebuild.
-
-    > **Upcoming feature:** The replica eviction feature can also help here.
+1. Evict all the replicas on the node.
 1. Detach all the volumes on the node.
     
     If the node has been drained, all the workloads should be migrated to another node already.
