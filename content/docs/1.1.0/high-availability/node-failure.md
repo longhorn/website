@@ -55,6 +55,15 @@ Which then allows the pending replacement pods to start correctly with the reque
 Longhorn will recover the Volume Attachment from a failed node as soon as there are pending replacement pods available.
 Which then allows the pending replacement pods to start correctly with the requested volumes being available.
 
+### Pod Deletion Policy When Node Downs
+
+Kubernetes never force deletes pods of StatefulSet or Deployment on a down node. Since the pod on the down node wasn't removed,
+the volume will be stuck on the down node with it as well. The replacement pods cannot be started because the Longhorn volume is
+RWO (see more about access modes [here](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes) ), which can
+only be attached to one node at a time. Longhorn provides an option for users to help automatically force delete terminating pods
+of StatefulSet/Deployment on the down node. After force deleting, Kubernetes will detach Longhorn volume and spin up replacement
+pods on a new node. You can find more detail about the setting options in the `Pod Deletion Policy When Node Downs` in setting tab in Longhorn UI or [Customizing Default Settings](../../advanced-resources/deploy/customizing-default-settings/)
+
 ## What to expect when recovering a failed Kubernetes Node
 
 If the node is back online within 5 - 6 minutes of the failure, Kubernetes will restart pods, unmount, and re-mount volumes without volume re-attaching and VolumeAttachment cleanup.
