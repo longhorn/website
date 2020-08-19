@@ -18,7 +18,7 @@ weight: 1
   - [Automatic Salvage](#automatic-salvage)
   - [Registry Secret](#registry-secret)
   - [Volume Attachment Recovery Policy](#volume-attachment-recovery-policy)
-  - [Pod Deletion Policy When Node Downs](#pod-deletion-policy-when-node-downs)
+  - [Pod Deletion Policy When Node is Down](#pod-deletion-policy-when-node-is-down)
   - [Custom mkfs.ext4 parameters](#custom-mkfsext4-parameters)
 
 - [Backups](#backups)
@@ -119,15 +119,15 @@ Defines the Longhorn action when a Volume is stuck with a Deployment Pod on a fa
 - `never`: The default Kubernetes behavior of never deleting volume attachments on terminating pods. Longhorn will not recover the Volume Attachment from a failed node.
 - `immediate`: Longhorn will recover the Volume Attachment from the failed node as soon as there are pending replacement pods available.
 
-#### Pod Deletion Policy When Node Downs
+#### Pod Deletion Policy When Node is Down
 > Default: `do-nothing`
 
-Defines the Longhorn action when a Volume is stuck with a StatefulSet/Deployment Pod on a down node.
+Defines the Longhorn action when a Volume is stuck with a StatefulSet/Deployment Pod on a node that is down.
 
-- `do-nothing` is the default Kubernetes behavior of never force delete StatefulSet/Deployment terminating pods.
-- `delete-statefulset-pod` Longhorn will force delete StatefulSet terminating pods on down node to release Longhorn volumes so that Kubernetes can spin up replacement pods.
-- `delete-deployment-pod` Longhorn will force delete Deployment terminating pods on down node to release Longhorn volumes so that Kubernetes can spin up replacement pods.
-- `delete-both-statefulset-and-deployment-pod` Longhorn will force delete StatefulSet/Deployment terminating pods on down node to release Longhorn volumes so that Kubernetes can spin up replacement pods.
+- `do-nothing` is the default Kubernetes behavior of never force deleting StatefulSet/Deployment terminating pods. Since the pod on the node that is down isn't removed, Longhorn volumes are stuck on nodes that are down.
+- `delete-statefulset-pod` Longhorn will force delete StatefulSet terminating pods on nodes that are down to release Longhorn volumes so that Kubernetes can spin up replacement pods.
+- `delete-deployment-pod` Longhorn will force delete Deployment terminating pods on nodes that are down to release Longhorn volumes so that Kubernetes can spin up replacement pods.
+- `delete-both-statefulset-and-deployment-pod` Longhorn will force delete StatefulSet/Deployment terminating pods on nodes that are down to release Longhorn volumes so that Kubernetes can spin up replacement pods.
 
 #### Custom mkfs.ext4 parameters
 
