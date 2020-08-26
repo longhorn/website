@@ -18,7 +18,7 @@ weight: 2
     chmod +x save-images.sh
     ./save-images.sh --image-list longhorn-images.txt --images longhorn-images.tar.gz
     ```
-  - We provide another script, [load-images.sh](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.2/scripts/load-images.sh), to push Longhorn images to your private registry. If you specify a `tar.gz` file name for flag `--images`, the script loads images from the `tar` file and pushes them. Otherwise, it will find images in your local Docker and push them. In the example below, the script loads images from the file `longhorn-images.tar.gz` and push them to `<YOUR-PRIVATE-REGISTRY>`
+  - We provide another script, [load-images.sh](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.2/scripts/load-images.sh), to push Longhorn images to your private registry. If you specify a `tar.gz` file name for flag `--images`, the script loads images from the `tar` file and pushes them. Otherwise, it will find images in your local Docker and push them. In the example below, the script loads images from the file `longhorn-images.tar.gz` and pushes them to `<YOUR-PRIVATE-REGISTRY>`
     ```shell
     wget https://raw.githubusercontent.com/longhorn/longhorn/v1.0.2/scripts/load-images.sh
     chmod +x load-images.sh
