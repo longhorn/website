@@ -13,6 +13,7 @@ weight: 1
   - [Enable Upgrade Checker](#enable-upgrade-checker)
   - [Latest Longhorn Version](#latest-longhorn-version)
   - [Default Replica Count](#default-replica-count)
+  - [Default Data Locality](#default-data-locality)
   - [Default Longhorn Static StorageClass Name](#default-longhorn-static-storageclass-name)
   - [Custom Resource API Version](#custom-resource-api-version)
   - [Automatic Salvage](#automatic-salvage)
@@ -90,6 +91,20 @@ Only available if `Upgrade Checker` is enabled.
 The default number of replicas when creating the volume from Longhorn UI. For Kubernetes, update the `numberOfReplicas` in the StorageClass
 
 The recommended way of choosing the default replica count is: if you have more than three nodes for storage, use 3; otherwise use 2. Using a single replica on a single node cluster is also OK, but the high availability functionality wouldn't be available. You can still take snapshots/backups of the volume.
+
+#### Default Data Locality
+> Default: `disabled`
+
+We say a Longhorn volume has data locality if there is a local replica of the volume on the same node as the pod which is using the volume.
+This setting specifies the default data locality when a volume is created from the Longhorn UI. For Kubernetes configuration, update the dataLocality in the StorageClass
+
+The available modes are:
+
+- `disabled`. This is the default option.
+   There may or may not be a replica on the same node as the attached volume (workload).
+
+- `best-effort`. This option instructs Longhorn to try to keep a replica on the same node as the attached volume (workload).
+   Longhorn will not stop the volume, even if it cannot keep a replica local to the attached volume (workload) due to environment limitation, e.g. not enough disk space, incompatible disk tags, etc.
 
 #### Default Longhorn Static StorageClass Name
 > Default: `longhorn-static`
