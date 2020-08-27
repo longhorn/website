@@ -45,6 +45,7 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
         storage-minimal-available-percentage: 15
         upgrade-checker: false
         default-replica-count: 2
+        default-data-locality: disabled
         guaranteed-engine-cpu: 0.25
         default-longhorn-static-storage-class: longhorn-static-example
         backupstore-poll-interval: 500
@@ -91,6 +92,7 @@ You can also provide a copy of the `values.yaml` file with the default settings 
       storageMinimalAvailablePercentage: 15
       upgradeChecker: false
       defaultReplicaCount: 2
+      defaultDataLocality: disabled
       guaranteedEngineCPU: 0.25
       defaultLonghornStaticStorageClass: longhorn-static-example
       backupstorePollInterval: 500
