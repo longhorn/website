@@ -3,13 +3,13 @@ title: Disks or Nodes Eviction Support
 weight: 5
 ---
 
-Longhorn supports auto eviction for evicting the replicas on the selected disabled disks or nodes to other suitable disks and nodes. Meanwhile keep the same level of high availability during this eviction period of time.
+Longhorn supports auto eviction for evicting the replicas on the selected disabled disks or nodes to other suitable disks and nodes. Meanwhile the same level of high availability is maintained during this eviction period of time.
 
-> **Note:** This eviction feature can only be enabled when the selected disks or nodes are scheduling disabled. And during the eviction time, the selected disks or nodes can not be re-enabled for scheduling.
+> **Note:** This eviction feature can only be enabled when the selected disks or nodes have scheduling disabled. And during the eviction time, the selected disks or nodes cannot be re-enabled for scheduling.
 
 > **Note:** This eviction feature works for volumes that are `Attached` and `Detached`. If the volume is 'Detached', Longhorn will automatically attach it before the eviction and automatically detach it once eviction is done.
 
-By default, `Eviction Requested` for disks or nodes are `false`. And to keep the same level of high availability during the eviction, Longhorn only evict a replica per volume after the replica rebuild on this volume is success.
+By default, `Eviction Requested` for disks or nodes is `false`. And to keep the same level of high availability during the eviction, Longhorn only evicts a replica per volume after the replica rebuild for this volume is a success.
 
 ## Select disks or nodes for eviction
 
