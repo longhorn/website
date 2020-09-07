@@ -31,10 +31,14 @@ Once you have Helm installed, clone the Longhorn repository:
 git clone https://github.com/longhorn/longhorn && cd longhorn
 ```
 
-Use this `helm` command to install Longhorn:
+Use this `helm` command to install Longhorn with helm2 and accompanying tiller on cluster:
 
 ```shell
-helm install ./longhorn/chart --name longhorn --namespace longhorn-system
+helm install ./chart --name longhorn --namespace longhorn-system
+```
+if you have helm3 then use below command.
+```shell
+helm install longhorn ./chart --namespace longhorn-system
 ```
 
 This installs Longorn in the `longhorn-system` namespace.
