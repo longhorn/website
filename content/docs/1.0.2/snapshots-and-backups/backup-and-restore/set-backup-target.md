@@ -66,7 +66,7 @@ This page covers the following topics:
 
    Also make sure you've set **`<your-aws-region>` in the URL**. For example, for Google Cloud Storage, you can find the region code [here.](https://cloud.google.com/storage/docs/locations)
 
-5.  Set `Settings/General/BackupTargetSecret` to
+5.  In the Backup section set **Backup Target Credential Secret** to:
 
     ```
     aws-secret
@@ -105,7 +105,7 @@ We provides two testing purpose backupstore based on NFS server and Minio S3 ser
     ```
     s3://backupbucket@us-east-1/
     ```
-    And set `Settings/General/BackupTargetSecret` to:
+    And set **Backup Target Credential Secret** to:
     ```
     minio-secret
     ```
