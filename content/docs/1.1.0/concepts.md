@@ -65,8 +65,8 @@ In the figure below,
 
 - There are three containers with Longhorn volumes.
 - Each volume has a dedicated controller, which is called the Longhorn Engine and runs as a container.
-- Each Longhorn volume has two replicas, and each replica is a container. 
-- The arrows in the figure indicate the read/write data flow between the volume, controller container, replica containers, and disks. 
+- Each Longhorn volume has two replicas, and each replica is a container.
+- The arrows in the figure indicate the read/write data flow between the volume, controller container, replica containers, and disks.
 - By creating a separate Longhorn Engine for each volume, if one controller fails, the function of other volumes is not impacted.
 
 **Figure 1. Read/write Data Flow between the Volume, Longhorn Engine, Replica Containers, and Disks**
@@ -87,12 +87,8 @@ Longhorn can create a long-running job to orchestrate the upgrade of all live vo
 
 The Longhorn CSI driver takes the block device, formats it, and mounts it on the node. Then the [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) bind-mounts the device inside a Kubernetes Pod. This allows the Pod to access the Longhorn volume.
 
-The Kubernetes CSI Driver images are:
-
-- CSI Attacher: quay.io/k8scsi/csi-attacher:v2.0.0
-- CSI Provisioner: quay.io/k8scsi/csi-provisioner:v1.4.0
-- CSI Node Driver Registrar: quay.io/k8scsi/csi-node-driver-registrar:v1.2.0
-- CSI Resizer: quay.io/k8scsi/csi-resizer:v0.3.0
+The required Kubernetes CSI Driver images will be deployed automatically by the longhorn driver deployer.
+To install Longhorn in an air gapped environment, refer to [this section](../advanced-resources/deploy/airgap).
 
 ## 1.4. CSI Plugin
 
@@ -108,7 +104,7 @@ Longhorn does leverage iSCSI, so extra configuration of the node may be required
 
 The Longhorn UI interacts with the Longhorn Manager through the Longhorn API, and acts as a complement of Kubernetes. Through the Longhorn UI, you can manage snapshots, backups, nodes and disks.
 
-Besides, the space usage of the cluster worker nodes is collected and illustrated by the Longhorn UI. See [here](../volumes-and-nodes/node-space-usage) for details.  
+Besides, the space usage of the cluster worker nodes is collected and illustrated by the Longhorn UI. See [here](../volumes-and-nodes/node-space-usage) for details.
 
 # 2. Longhorn Volumes and Primary Storage
 
@@ -165,7 +161,7 @@ Beyond the read index, we currently do not maintain additional metadata to indic
 **Figure 2. How the Read Index Keeps Track of Which Snapshot Holds the Most Recent Data**
 
 {{< figure alt="how the read index keeps track of which snapshot holds the most recent data" src="/img/diagrams/architecture/read-index.png" >}}
- 
+
 The figure above is color-coded to show which blocks contain the most recent data according to the read index, and the source of the latest data is also listed in the table below:
 
 | Read Index | Source of the latest data |
@@ -379,7 +375,7 @@ In other words, a typical workflow for setting up existing storage in Kubernetes
 1. Add a PVC that refers to the PV.
 1. Mount the PVC as a volume in your workload.
 
-When a PVC requests a piece of storage, the Kubernetes API server will try to match that PVC with a pre-allocated PV as matching volumes become available. If a match can be found, the PVC will be bound to the PV, and the user will start to use that pre-allocated piece of storage. 
+When a PVC requests a piece of storage, the Kubernetes API server will try to match that PVC with a pre-allocated PV as matching volumes become available. If a match can be found, the PVC will be bound to the PV, and the user will start to use that pre-allocated piece of storage.
 
 if a matching volume does not exist, PersistentVolumeClaims will remain unbound indefinitely. For example, a cluster provisioned with many 50 Gi PVs would not match a PVC requesting 100 Gi. The PVC could be bound after a 100 Gi PV is added to the cluster.
 
