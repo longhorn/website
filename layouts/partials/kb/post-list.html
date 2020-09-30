@@ -1,0 +1,29 @@
+{{ $posts := where site.RegularPages "Section" "kb" }}
+<section class="section">
+  <div class="container has-extra-bottom-padding">
+    <div class="columns is-multiline">
+      {{ range $posts }}
+      {{ $date := dateFormat "January 2, 2006" .Date }}
+      <div class="column is-one-third">
+        <a href="{{ .RelPermalink }}">
+          <div class="card">
+            <div class="card-content">
+              <p class="title is-size-3 is-size-4-mobile has-text-grey-dark is-spaced">
+                {{ .Title }}
+              </p>
+
+              <p class="subtitle is-size-5 is-size-6-mobile has-text-grey">
+                {{ $date }}
+              </p>
+
+              <div class="content">
+                {{ .Summary }}
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
