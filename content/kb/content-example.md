@@ -1,15 +1,17 @@
 ---
 title: Content Example
-author: Nate Waddington
+author: First Last
 draft: false
-date: 2020-09-29
+date: 2020-09-30
 catelogies:
   - "example"
 ---
 
-## Example Title
+# Title
 
-Content goes here.
+## Details
 
-{{< figure src="/img/blogs/kubecon-eu-2020/booth.png" >}}
-Example image.
+## Resolution
+
+## Related information
+
