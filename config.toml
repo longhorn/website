@@ -1,6 +1,6 @@
 baseURL = "https://longhorn.io"
 languageCode = "en-us"
-title = "Longhorn"
+title = "Longhorn: An Wonderful Project"
 pluralizeListTitles = false
 enableRobotsTXT = true
 pygmentsCodeFences = true
