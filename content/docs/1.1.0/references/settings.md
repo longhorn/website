@@ -172,6 +172,12 @@ The interval in seconds to poll the backup store for updating volumes' **Last Ba
 
 For more information on how the backupstore poll interval affects the recovery time objective and recovery point objective, refer to the [concepts section.](../../concepts/#34-backupstore-update-intervals-rto-and-rpo)
 
+#### Allow Recurring Job While Volume Is Detached
+> Default: `false`
+
+If this setting is enabled, Longhorn automatically attaches the volume and takes snapshot/backup when it is the time to do recurring snapshot/backup.
+
+Note that during the time the volume was attached automatically, the volume is not ready for the workload. the workload will have to wait until the recurring job finishes.
 
 ### Scheduling
 
