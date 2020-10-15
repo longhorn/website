@@ -21,16 +21,16 @@ If shutting down the workloads is not possible, follow the steps below to minimi
 
 1. Drain the node to move the workload to somewhere else.
 
-    You will need to use `--ignore-daemonsets` and `--force` options to drain the node.
+    You will need to use `--ignore-daemonsets` options to drain the node because Longhorn deployed some daemonsets such as `Longhorn manager`, `Longhorn CSI plugin`, `engine image`.
 
-    The replica processes on the node will be stopped at this stage. 
-        
+    The replica processes on the node will be stopped at this stage.
+
     The engine processes on the node will be migrated with the Pod to other nodes.
 
     After the `drain` is completed, there should be no engine or replica process running on the node. Two instance managers will still be running on the node, but they're stateless and won't cause interruption to the existing workload.
 1. Perform the necessary maintenance, including shutting down or rebooting the node.
 1. Uncordon the node. Longhorn will automatically re-enable the node scheduling.
-    
+
     > **Upcoming features:**
     >
     > - After adding the support of the **Reuse existing replica data for rebuild** feature, the replica rebuild will be faster and take less space.
@@ -61,7 +61,7 @@ To remove a node:
 1. Disable the disk scheduling.
 1. Evict all the replicas on the node.
 1. Detach all the volumes on the node.
-    
+
     If the node has been drained, all the workloads should be migrated to another node already.
 
     If there are any other volumes remaining attached, detach them before continuing.
