@@ -13,7 +13,7 @@ For more information about how taints and tolerations work, refer to the [offici
 
 ### During installing Longhorn
 
-Follow the instructions to set init taint tolerations: [Customize default settings](https://github.com/longhorn/longhorn/wiki/Feature:-Customized-Default-Setting#usage)
+Follow the instructions to set init taint tolerations: [Customize default settings](../customizing-default-settings/)
 
 ### After Longhorn has been installed
 
@@ -33,7 +33,7 @@ Don't operate the Longhorn system while toleration settings are updated and Long
 
 When tolerations are set, the substring `kubernetes.io` shouldn't be contained in the setting. That substring is used as the key of Kubernetes default tolerations.
 
-Multiple tolerations can be set here, and these tolerations are separated by the semicolon. For example: `key1=value1:NoSchedule; key2:NoExecute`. 
+Multiple tolerations can be set here, and these tolerations are separated by the semicolon. For example: `key1=value1:NoSchedule; key2:NoExecute`.
 
 ## History
 [Original feature request](https://github.com/longhorn/longhorn/issues/584)
