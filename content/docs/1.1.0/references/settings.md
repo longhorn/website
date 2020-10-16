@@ -39,6 +39,7 @@ weight: 1
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
   - [Guaranteed Engine CPU](#guaranteed-engine-cpu)
   - [Priority Class](#priority-class)
+  - [Disable Replica Rebuild](#disable-replica-rebuild)
 
 ### Customizing Default Settings
 
@@ -265,3 +266,8 @@ The Priority Class setting will specify a Priority Class for the Longhorn worklo
 > **Warning:** This setting should only be changed after detaching all Longhorn volumes, as the Longhorn components will be restarted to apply the setting. The Priority Class update will take a while, and users cannot operate Longhorn system during the update. Hence, it's recommended to set the Priority Class during Longhorn deployment.
 
 See [Priority Class](../../advanced-resources/deploy/priority-class) for details.
+
+#### Disable Replica Rebuild
+> Default: `false`
+
+By disable replica rebuild, there won't be any new rebuild cross the whole cluster. The [Disks or Nodes Eviction Support](../../volumes-and-nodes/disks-or-nodes-eviction) and [Data Locality](../../high-availability/data-locality) feature won't work. But any restore features and currently rebuilding replica would still work as expected.
