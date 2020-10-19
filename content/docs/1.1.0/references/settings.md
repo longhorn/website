@@ -35,6 +35,7 @@ weight: 1
   - [Storage Minimal Available Percentage](#storage-minimal-available-percentage)
   - [Disable Scheduling On Cordoned Node](#disable-scheduling-on-cordoned-node)
   - [Replica Zone Level Soft Anti-Affinity](#replica-zone-level-soft-anti-affinity)
+  - [Allow Volume Creation with Degraded Availability](#allow-volume-creation-with-degraded-availability)
 
 - [Danger Zone](#danger-zone)
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
@@ -229,6 +230,13 @@ When this setting is checked, the Longhorn Manager will allow scheduling new rep
 When this setting is un-checked, Longhorn Manager will not allow scheduling new replicas of a volume to the nodes in the same zone as existing healthy replicas.
 
 > **Note:** Nodes that don't belong to any zone will be treated as if they belong to the same zone.
+
+#### Allow Volume Creation with Degraded Availability
+> Default: `true`
+
+This setting allows user to create and attach a volume that doesn't have all the replicas scheduled at the time of creation.
+
+> **Note:** It's recommended to disable this setting when using Longhorn in the production environment. See [Best Practices](../../best-practices/) for details.
 
 ### Danger Zone
 
