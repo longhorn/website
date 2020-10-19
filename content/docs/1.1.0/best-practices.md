@@ -12,6 +12,8 @@ We recommend the following setup for deploying Longhorn in production.
 - [Deploying Workloads](#deploying-workloads)
 - [Volume Maintenance](#volume-maintenance)
 - [Guaranteed Engine CPU](#guaranteed-engine-cpu)
+- [StorageClass](#storageclass)
+- [Scheduling Settings](#scheduling-settings)
 
 ## Minimum Recommended Hardware
 
@@ -77,3 +79,15 @@ We recommend allowing Longhorn Engine to have guaranteed CPU allocation. The val
 ## StorageClass
 
 We don't recommend modifying the default StorageClass named `longhorn`, since the change of parameters might cause issues during an upgrade later. If you want to change the parameters set in the StorageClass, you can create a new StorageClass by referring to the [StorageClass examples](../references/examples/#storageclass).
+
+## Scheduling Settings
+
+### Replica Node Level Soft Anti-Affinity
+> Recommend: `false`
+
+This setting should be set to `false` in production environment to ensure the best availability of the volume. Otherwise, one node down event may bring down more than one replicas of a volume.
+
+### Allow Volume Creation with Degraded Availability
+> Recommend: `false`
+
+This setting should be set to `false` in production environment to ensure every volume have the best availability when created. Because with the setting set to `true`, the volume creation won't error out even there is only enough room to schedule one replica. So there is a risk that the cluster is running out of the spaces but the user won't be made aware immediately.
