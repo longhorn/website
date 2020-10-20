@@ -22,6 +22,7 @@ weight: 1
   - [Pod Deletion Policy When Node is Down](#pod-deletion-policy-when-node-is-down)
   - [Custom mkfs.ext4 parameters](#custom-mkfsext4-parameters)
   - [Disable Revision Counter](#disable-revision-counter)
+  - [System Pods Image Pull Policy](#system-pods-image-pull-policy)
 
 - [Backups](#backups)
   - [Backup Target](#backup-target)
@@ -151,8 +152,16 @@ Defines the Longhorn action when a Volume is stuck with a StatefulSet/Deployment
 Allows setting additional filesystem creation parameters for ext4. For older host kernels it might be necessary to disable the optional ext4 metadata_csum feature by specifying `-O ^64bit,^metadata_csum`.
 
 #### Disable Revision Counter
+> Default: `false`
 
 Allows engine controller and engine replica to disable revision counter file update for every data write. This improves the data path performance. See [Revision Counter](../../advanced-resources/deploy/revision_counter) for details.
+
+#### System Pods Image Pull Policy
+> Default: `if-not-present`
+
+Defines the image Pull Policy of Longhorn system managed pods, e.g. instance manager, engine image, CSI driver, etc. The new image Pull Policy will only apply after the system managed pods restart.
+
+See [Kubernetes document on images](https://kubernetes.io/docs/concepts/containers/images/) for more information on the possible choices of the setting.
 
 ### Backups
 
