@@ -4,6 +4,10 @@ weight: 1
 ---
 Longhorn is a lightweight, reliable and easy-to-use distributed block storage system for Kubernetes.
 
+Longhorn supports the following architectures:
+1. AMD64
+2. ARM64 (experimental)
+
 Longhorn is free, open source software. Originally developed by Rancher Labs, it is now being developed as a sandbox project of the Cloud Native Computing Foundation.
 
 With Longhorn, you can:
