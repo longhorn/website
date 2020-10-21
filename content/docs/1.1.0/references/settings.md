@@ -17,6 +17,7 @@ weight: 1
   - [Default Longhorn Static StorageClass Name](#default-longhorn-static-storageclass-name)
   - [Custom Resource API Version](#custom-resource-api-version)
   - [Automatic Salvage](#automatic-salvage)
+  - [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly)
   - [Registry Secret](#registry-secret)
   - [Volume Attachment Recovery Policy](#volume-attachment-recovery-policy)
   - [Pod Deletion Policy When Node is Down](#pod-deletion-policy-when-node-is-down)
@@ -124,6 +125,16 @@ The current customer resource's API version, e.g. longhorn.io/v1beta1. Set by ma
 > Default: `true`
 
 If enabled, volumes will be automatically salvaged when all the replicas become faulty e.g. due to network disconnection. Longhorn will try to figure out which replica(s) are usable, then use them for the volume.
+
+#### Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly
+> Default: `true`
+
+If enabled, Longhorn will automatically delete the workload pod that is managed by a controller (e.g. deployment, statefulset, daemonset, etc...) when Longhorn volume is detached unexpectedly (e.g. during Kubernetes upgrade, Docker reboot, or network disconnect).
+By deleting the pod, its controller restarts the pod and Kubernetes handles volume reattachment and remount.
+
+If disabled, Longhorn will not delete the workload pod that is managed by a controller. You will have to manually restart the pod to reattach and remount the volume.
+
+**Note:** This setting doesn't apply to the workload pods that don't have a controller. Longhorn never deletes them.
 
 #### Registry Secret
 
