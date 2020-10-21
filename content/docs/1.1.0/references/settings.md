@@ -23,6 +23,7 @@ weight: 1
   - [Custom mkfs.ext4 parameters](#custom-mkfsext4-parameters)
   - [Disable Revision Counter](#disable-revision-counter)
   - [System Pods Image Pull Policy](#system-pods-image-pull-policy)
+  - [Auto Cleanup system Generated Snapshot](#auto-cleanup-system-generated-snapshot)
 
 - [Backups](#backups)
   - [Backup Target](#backup-target)
@@ -163,6 +164,10 @@ Allows engine controller and engine replica to disable revision counter file upd
 Defines the image Pull Policy of Longhorn system managed pods, e.g. instance manager, engine image, CSI driver, etc. The new image Pull Policy will only apply after the system managed pods restart.
 
 See [Kubernetes document on images](https://kubernetes.io/docs/concepts/containers/images/) for more information on the possible choices of the setting.
+
+#### Auto Cleanup System Generated Snapshot
+
+Longhorn will generate system snapshot during replica rebuild, and if a user doesn't setup a recurring snapshot schedule, all the system generated snapshots would be left in the replica, and user has to delete them manually, this setting allow Longhorn to automatically cleanup system generated snapshot after replica rebuild.
 
 ### Backups
 
