@@ -25,7 +25,7 @@ From Rancher UI, navigate to `Catalog Apps` tab and delete Longhorn app.
 Run this command:
 
 ```
-helm delete longhorn --purge
+helm uninstall longhorn -n longhorn-system
 ```
 
 ### Uninstalling Longhorn using kubectl
@@ -57,8 +57,8 @@ helm delete longhorn --purge
     kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml
     kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/master/uninstall/uninstall.yaml
     ```
- 
-> **Tip:** If you try `kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml` first and get stuck there, 
+
+> **Tip:** If you try `kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml` first and get stuck there,
 pressing `Ctrl C` then running `kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/uninstall/uninstall.yaml` can also help you remove Longhorn. Finally, don't forget to cleanup remaining components.
 
 
