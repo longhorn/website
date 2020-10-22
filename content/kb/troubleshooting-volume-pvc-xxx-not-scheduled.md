@@ -8,7 +8,7 @@ catelogies:
   - "csi"
 ---
 
-## Applied version
+## Applicable versions
 All Longhorn versions.
 
 ## Symptoms
