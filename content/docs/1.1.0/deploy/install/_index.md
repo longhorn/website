@@ -21,7 +21,7 @@ For information on deploying Longhorn on specific nodes and rejecting general wo
 Each node in the Kubernetes cluster where Longhorn is installed must fulfill the following requirements:
 
 -  Docker v1.13+
--  Kubernetes v1.14+.
+-  Kubernetes v1.15+.
     - By default Longhorn installation requires a three-nodes cluster since the default replica count is 3 and the [node level soft anti-affinity](https://longhorn.io/docs/1.0.0/references/settings/#replica-node-level-soft-anti-affinity) is disabled.
 -  `open-iscsi` is installed, and the `iscsid` daemon is running on all the nodes. For help installing `open-iscsi`, refer to [this section.](#installing-open-iscsi)
 - The host filesystem supports the `file extents` feature to store the data. Currently we support:
@@ -98,6 +98,32 @@ For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 imag
 yum install iscsi-initiator-utils
 ```
 
+Longhorn also provide an easier way to install 'ISCSI' as 'DaemonSet' in YAML file. This will save user's time to login to each host and install the 'ISCSI' individually. User can use 'kubectl' to apply the yaml directly:
+```
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/iscsi/longhorn-iscsi-installation.yaml
+```
+After the deployment, run the following command to check pods'status:
+```
+kubectl get pod
+```
+And it will show 'Completed' as 'STATUS'.
+```
+NAME                                READY   STATUS              RESTARTS   AGE
+longhorn-iscsi-installation-cgztd   0/1     Completed           5          3m12s
+longhorn-iscsi-installation-jvc7k   0/1     Completed           5          3m13s
+longhorn-iscsi-installation-k85t7   0/1     Completed           5          3m12s
+```
+And also can check the log with the following command to see the installation result:
+```
+kubectl logs longhorn-iscsi-installation-cgztd
+```
+```
+Loaded plugins: priorities, update-motd
+Package iscsi-initiator-utils-6.2.0.874-7.amzn2.x86_64 already installed and latest version
+Nothing to do
+iscsi install successfully
+
+```
 
 ### Checking the Kubernetes Version
 
