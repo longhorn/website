@@ -6,7 +6,7 @@ In this section, you'll learn how Longhorn schedules replicas based on multiple 
 
 ### Scheduling Policy
 
-Longhorn scheduling policy has two stages. The scheduler only goes to the next stage if the previous stage is satisfied. Otherwise, the scheduling will fail.
+Longhorn's scheduling policy has two stages. The scheduler only goes to the next stage if the previous stage is satisfied. Otherwise, the scheduling will fail.
 
 If any tag has been set in order to be selected for scheduling, the node tag and the disk tag have to match when the node or the disk is selected.
 

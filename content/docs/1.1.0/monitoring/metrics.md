@@ -16,9 +16,9 @@ weight: 2
 | Name | Description  | Example |
 |---|---|---|
 | longhorn_node_status | Status of this node: 1=true, 0=false | longhorn_node_status{condition="ready",condition_reason="",node="worker-2"} 1 |
-| longhorn_node_count_total | Total number of nodes in Longhorn system | longhorn_node_count_total 4 |
-| longhorn_node_cpu_capacity_millicpu | The maximum allocatable cpu on this node | longhorn_node_cpu_capacity_millicpu{node="worker-2"} 2000 |
-| longhorn_node_cpu_usage_millicpu | The cpu usage on this node | longhorn_node_cpu_usage_millicpu{node="pworker-2"} 186 |
+| longhorn_node_count_total | Total number of nodes in the Longhorn system | longhorn_node_count_total 4 |
+| longhorn_node_cpu_capacity_millicpu | The maximum allocatable CPU on this node | longhorn_node_cpu_capacity_millicpu{node="worker-2"} 2000 |
+| longhorn_node_cpu_usage_millicpu | The CPU usage on this node | longhorn_node_cpu_usage_millicpu{node="pworker-2"} 186 |
 | longhorn_node_memory_capacity_bytes | The maximum allocatable memory on this node | longhorn_node_memory_capacity_bytes{node="worker-2"} 4.031229952e+09 |
 | longhorn_node_memory_usage_bytes |  The memory usage on this node | longhorn_node_memory_usage_bytes{node="worker-2"} 1.833582592e+09 |
 | longhorn_node_usage_bytes | Used storage space in bytes for this node | TODO |
@@ -44,5 +44,5 @@ weight: 2
 
 | Name | Description  | Example |
 |---|---|---|
-| longhorn_manager_cpu_usage_millicpu |  The cpu usage of this longhorn manager | longhorn_manager_cpu_usage_millicpu{manager="longhorn-manager-5rx2n",node="worker-2"} 27 |
-| longhorn_manager_memory_usage_bytes | The memory usage of this longhorn manager | longhorn_manager_memory_usage_bytes{manager="longhorn-manager-5rx2n",node="worker-2"} 2.6144768e+07|
+| longhorn_manager_cpu_usage_millicpu |  The CPU usage of this Longhorn Manager | longhorn_manager_cpu_usage_millicpu{manager="longhorn-manager-5rx2n",node="worker-2"} 27 |
+| longhorn_manager_memory_usage_bytes | The memory usage of this Longhorn Manager | longhorn_manager_memory_usage_bytes{manager="longhorn-manager-5rx2n",node="worker-2"} 2.6144768e+07|

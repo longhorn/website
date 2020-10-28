@@ -3,7 +3,7 @@
   weight: 43
 ---
 
-Backups in Longhorn are snapshots that are moved off-cluster into a BackupStore.  A Backup of a snapshot is copied to the a targeted BackupStore, this is called a BackupTarget.  
+Backups in Longhorn are off-cluster into a BackupStore. A BackupTarget
 
 To setup a BackupTarget see [Set the BackupTarget](../backupstores-and-backuptargets#set-backuptarget).
 

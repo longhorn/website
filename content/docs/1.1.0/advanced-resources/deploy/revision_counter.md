@@ -3,49 +3,52 @@ title: Revision Counter
 weight: 2
 ---
 
-Revision Counter is a strong mechanism that Longhorn keeps tracking each replicas' updates. During replica creation, Longhorn will create a 'revision.counter' file, it's initial counter is 0. And for every write to the replica, the counter in 'revision.counter' file will be increased by 1. And Longhorn Engine will use these counters to make sure all replcias are consistent during start time. Also for salvage recovering, will use these counters to decide which replica has the latest update.
+The revision counter is a strong mechanism that Longhorn uses to track each replica's updates.
 
-Disable Revision Counter is an option to boost Longhorn performance which doesn't keep tracking every write on replicas, but lose the strong tracking for each replica. If some user prefers higher performance and have a stable network infrastructure(e.g. internal network) with enough CPU resourse. This option can help in such case. During Longhorn Engine start time, it will skip checking the revision counter for all replicas. But Longhorn still support auto-salvage through the replica's head file stat. By default the revision counter is enabled.
+During replica creation, Longhorn will create a 'revision.counter' file with its initial counter set to 0. And for every write to the replica, the counter in 'revision.counter' file will be increased by 1.
 
-> **Note:** 'Salvage' is Longhorn trying to recover a 'Faulted' state volume(Longhorn Engine lost the connection to all the replicas, and mark all replicas as 'ERR' state).
+The Longhorn Engine will use these counters to make sure all replicas are consistent during start time. These counters are also used during salvage recovery to decide which replica has the latest update.
 
+Disable Revision Counter is an option in which every write on replicas is not tracked. When this setting is used, performance is improved, but the strong tracking for each replica is lost. This option can be helpful if you prefer higher performance and have a stable network infrastructure (e.g. an internal network) with enough CPU resources. When the Longhorn Engine starts, it will skip checking the revision counter for all replicas, but auto-salvage will still be supported through the replica's head file stat. For details on how auto-salvage works without the revision counter, refer to [this section.](#auto-salvage-support-with-revision-counter-disabled)
+
+By default, the revision counter is enabled.
+
+> **Note:** 'Salvage' is Longhorn trying to recover a volume in a faulted state. A volume is in a faulted state when the Longhorn Engine loses the connection to all the replicas, and all replicas are marked as being in an error state.
 
 # Disable Revision Counter
 ## Using Longhorn UI
-The 'Disable Revision Counter' setting can be found in the Longhorn UI:
+To disable or enable the revision counter from the Longhorn UI, click **Setting > General > Disable Revision Counter.**
 
-Setting -> General -> Disable Revision Counter
+To create individual volumes with settings that are customized against the general settings, go to the **Volume** page and click **Create Volume.**
 
-User can enable or disable the revision counter by unselect or select the setting.
+## Using a Manifest File
 
-And in 'Volume' page, once click 'Create Volume' button, user can customize individual volume setting against the general setting.
+A `StorageClass` can be customized to add a `disableRevisionCounter` parameter.
 
-## Using manifest file.
+By default, the `disableRevisionCounter` is false, so the revision counter is enabled.
 
-User can define customize 'StorageClass' and add 'disableRevisionCounter' parameter to it. By default disableRevisionCounter' is false, which the revision counter is enabled.
+Set `disableRevisionCounter` to true to disable the revision counter:
 
-    * Set 'disableRevisionCounter' to true to disable revision counter
+```yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: best-effort-longhorn
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+parameters:
+  numberOfReplicas: "1"
+  disableRevisionCounter: "true"
+  staleReplicaTimeout: "2880" # 48 hours in minutes
+  fromBackup: ""
+```
 
-      ```yaml
-      kind: StorageClass
-      apiVersion: storage.k8s.io/v1
-      metadata:
-        name: best-effort-longhorn
-      provisioner: driver.longhorn.io
-      allowVolumeExpansion: true
-      parameters:
-        numberOfReplicas: "1"
-        disableRevisionCounter: "true"
-        staleReplicaTimeout: "2880" # 48 hours in minutes
-        fromBackup: ""
-      ```
-
-## Auto-Salvage support with revision counter disabled
+## Auto-Salvage Support with Revision Counter Disabled
 The logic for auto-salvage is different when the revision counter is disabled.
 
-When revision counter is enabled and all the replicas in the volume are in 'ERR' state, the engine controller will be in faulted state, and for engine to recover the volume, it will get the replica with the largest revisiion counter as 'Source of Truth' to rebuild the rest replicas.
+When revision counter is enabled and all the replicas in the volume are in the 'ERR' state, the engine controller will be in a faulted state, and for engine to recover the volume, it will get the replica with the largest revision counter as 'Source of Truth' to rebuild the rest replicas.
 
-When reivision counter is disabled in this case, the engine controller will get the all replicas' 'volume-head-xxx.img' last modified time and head file size. And do the following steps:
-1. Based on 'volume-head-xxx.img' last modified time, to get the latest one and any one within 5 second can be put in the candidate replicas for now.
-2. Compare the head file size for all the candidate replicas, pick the one with the largest file size as the 'Source of Truth'.
-3. Only mark the 'Source of Truth' replica to 'RW' mode, the rest of replicas would be marked as 'ERR' mode. Rebuild replicas base on the 'Source of Truth' replica.
+When the revision counter is disabled in this case, the engine controller will get the `volume-head-xxx.img` last modified time and head file size of all replicas. It will also do the following steps:
+1. Based on the time that `volume-head-xxx.img` was last modified, get the latest modified replica, and any replica that was last modified within five seconds can be put in the candidate replicas for now.
+2. Compare the head file size for all the candidate replicas, and pick the one with the largest file size as the source of truth.
+3. The replica chosen as the source of truth is changed to 'RW' mode, and the rest of the replicas are marked as 'ERR' mode. Replicas are rebuilt based on the replica chosen as the source of truth.
