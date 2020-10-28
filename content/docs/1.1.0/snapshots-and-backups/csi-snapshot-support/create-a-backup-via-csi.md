@@ -3,11 +3,9 @@ title: Create a Backup via CSI
 weight: 2
 ---
 
-Backups in Longhorn are snapshots that are moved off-cluster into a backupstore.
-A backup of a snapshot is copied to the backupstore, and the endpoint to access the backupstore is the backup target.
+Backups in Longhorn are objects in an off-cluster backupstore, and the endpoint to access the backupstore is the backup target. For more information, see [this section.](../../../concepts/#31-how-backups-work)
 
-To programmatically create backups you can use the generic kubernetes csi snapshot mechanism.
-To learn more about the CSI snapshot mechanism, click [here](https://kubernetes.io/docs/concepts/storage/volume-snapshots/).
+To programmatically create backups, you can use the generic Kubernetes CSI snapshot mechanism. To learn more about the CSI snapshot mechanism, click [here](https://kubernetes.io/docs/concepts/storage/volume-snapshots/).
 
 > **Prerequisite:** CSI snapshot support needs to be enabled on your cluster.
 > If your kubernetes distribution does not provide the kubernetes snapshot controller
@@ -15,29 +13,44 @@ To learn more about the CSI snapshot mechanism, click [here](https://kubernetes.
 > For more information, see [Enable CSI Snapshot Support](../enable-csi-snapshot-support).
 
 
-#### Create a backup, via the csi mechanism
+## Create a Backup via the CSI Mechanism
 
-1. Create a kubernetes `VolumeSnapshot` object via `kubectl` (example object below)
-2. The `VolumeSnapshot.uuid` will be used to identify a **longhorn snapshot** and the associated `VolumeSnapshotContent` object.
-3. This will create a new longhorn snapshot named `snapshot-uuid`
-4. Then a backup of that snapshot will be initiated, and the csi request returns
-5. Afterwards a `VolumeSnapshotContent` named `snapcontent-uuid` will be created
-6. The CSI snapshotter side car will periodically query the longhorn csi plugin to evaluate the backup status
-7. Once the backup is completed, the `VolumeSnapshotContent.readyToUse` flag will be set to **true**
+To create a backup using the CSI mechanism, create a Kubernetes `VolumeSnapshot` object via `kubectl`. An example is [here.](#example-volumesnapshot)
 
 **Result:**
-A backup is created and the `VolumeSnapshotContent.snapshotHandle`
-refers to the backup via `bs://backup-volume/backup-name`.
+A backup is created. The `VolumeSnapshot` object creation leads to the creation of a `VolumeSnapshotContent` Kubernetes object.
 
-To see it, click **Backup** in the top navigation bar and navigate to the backup-volume mentioned in the `VolumeSnapshotContent.snapshotHandle`.
+The `VolumeSnapshotContent` refers to a Longhorn backup in its `VolumeSnapshotContent.snapshotHandle` field with the name `bs://backup-volume/backup-name`.
+
+### How the CSI Mechanism Works
+
+When the VolumeSnapshot object is created with kubectl, the `VolumeSnapshot.uuid` field is used to identify a Longhorn snapshot and the associated `VolumeSnapshotContent` object.
+
+This creates a new Longhorn snapshot named `snapshot-uuid`.
+
+Then a backup of that snapshot is initiated, and the CSI request returns.
+
+Afterwards a `VolumeSnapshotContent` object named `snapcontent-uuid` is created.
+
+The CSI snapshotter sidecar periodically queries the Longhorn CSI plugin to evaluate the backup status.
+
+Once the backup is completed, the `VolumeSnapshotContent.readyToUse` flag is set to **true**.
+
+### Viewing the Backup
+
+To see the backup, click **Backup** in the top navigation bar and navigate to the backup-volume mentioned in the `VolumeSnapshotContent.snapshotHandle`.
 
 For information on how to restore a volume via a `VolumeSnapshot` object,
 refer to [this page.](../restore-a-backup-via-csi)
 
+### Example VolumeSnapshot
 
-Example `VolumeSnapshot` object below, the source needs to point to the PVC of the Longhorn volume for which a backup should be created.
+An example `VolumeSnapshot` object is below. The `source` needs to point to the PVC of the Longhorn volume for which a backup should be created.
+
 The `volumeSnapshotClassName` field points to a `VolumeSnapshotClass`.
+
 We create a default class named `longhorn`, which uses `Delete` as its `deletionPolicy`.
+
 ```yaml
 apiVersion: snapshot.storage.k8s.io/v1beta1
 kind: VolumeSnapshot
@@ -49,6 +62,6 @@ spec:
     persistentVolumeClaimName: test-vol
 ```
 
-If you want the associated backup for a volume to be retained when the `VolumeSnapshot` is deleted,
-create a new `VolumeSnapshotClass` with `Retain` set as the `deletionPolicy`.
+If you want the associated backup for a volume to be retained when the `VolumeSnapshot` is deleted, create a new `VolumeSnapshotClass` with `Retain` set as the `deletionPolicy`.
+
 For more information about snapshot classes, see the kubernetes documentation for [VolumeSnapshotClasses](https://kubernetes.io/docs/concepts/storage/volume-snapshot-classes/).

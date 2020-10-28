@@ -3,35 +3,49 @@ title: Air Gap Installation
 weight: 2
 ---
 
-## Requirements:
+Longhorn can be installed in an air gapped environment by using a manifest file, a Helm chart, or the Rancher UI.
+
+- [Requirements](#requirements)
+- [Using a Manifest File](#using-a-manifest-file)
+- [Using a Helm chart](#using-a-helm-chart)
+- [Using a Rancher app](#using-a-rancher-app)
+- [Troubleshooting](#troubleshooting)
+
+## Requirements
   - Deploy Longhorn Components images to your own registry.
   - Deploy Kubernetes CSI driver components images to your own registry.
 
-#### Note:
-  - A full list of all needed images is in [longhorn-images.txt](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/deploy/longhorn-images.txt). First, download the images list by running:
-    ```shell
-    wget https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/deploy/longhorn-images.txt
-    ```
-  - We provide a script, [save-images.sh](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/save-images.sh), to quickly pull the above `longhorn-images.txt` list. If you specify a `tar.gz` file name for flag `--images`, the script will save all images to the provided filename. In the example below, the script pulls and saves Longhorn images to the file `longhorn-images.tar.gz`. You then can copy the file to your air-gap environment. On the other hand, if you don't specify the file name, the script just pulls the list of images to your computer.
-    ```shell
-    wget https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/save-images.sh
-    chmod +x save-images.sh
-    ./save-images.sh --image-list longhorn-images.txt --images longhorn-images.tar.gz
-    ```
-  - We provide another script, [load-images.sh](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/load-images.sh), to push Longhorn images to your private registry. If you specify a `tar.gz` file name for flag `--images`, the script loads images from the `tar` file and pushes them. Otherwise, it will find images in your local Docker and push them. In the example below, the script load images from the file `longhorn-images.tar.gz` and push them to `<YOUR-PRIVATE-REGISTRY>`
-    ```shell
-    wget https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/load-images.sh
-    chmod +x load-images.sh
-    ./load-images.sh --image-list longhorn-images.txt --images longhorn-images.tar.gz --registry <YOUR-PRIVATE-REGISTRY>
-    ```
-  - For more options with using the scripts, see flag `--help`:
-    ```shell
-    ./save-images.sh --help
-    ./load-images.sh --help
-    ```
 
+A full list of all needed images is in [longhorn-images.txt](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/deploy/longhorn-images.txt). First, download the images list by running:
 
-## Using manifest file.
+```shell
+wget https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/deploy/longhorn-images.txt
+```
+
+We provide a script, [save-images.sh](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/save-images.sh), to quickly pull the above `longhorn-images.txt` list. If you specify a `tar.gz` file name for flag `--images`, the script will save all images to the provided filename. In the example below, the script pulls and saves Longhorn images to the file `longhorn-images.tar.gz`. You then can copy the file to your air-gap environment. On the other hand, if you don't specify the file name, the script just pulls the list of images to your computer.
+
+```shell
+wget https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/save-images.sh
+chmod +x save-images.sh
+./save-images.sh --image-list longhorn-images.txt --images longhorn-images.tar.gz
+```
+
+We provide another script, [load-images.sh](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/load-images.sh), to push Longhorn images to your private registry. If you specify a `tar.gz` file name for flag `--images`, the script loads images from the `tar` file and pushes them. Otherwise, it will find images in your local Docker and push them. In the example below, the script load images from the file `longhorn-images.tar.gz` and push them to `<YOUR-PRIVATE-REGISTRY>`
+
+```shell
+wget https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/scripts/load-images.sh
+chmod +x load-images.sh
+./load-images.sh --image-list longhorn-images.txt --images longhorn-images.tar.gz --registry <YOUR-PRIVATE-REGISTRY>
+```
+
+For more options with using the scripts, see flag `--help`:
+
+```shell
+./save-images.sh --help
+./load-images.sh --help
+```
+
+## Using a Manifest File
 
 1. Get Longhorn Deployment manifest file
 
@@ -180,7 +194,8 @@ weight: 2
 
 5. Deploy Longhorn using modified manifest file
    `kubectl apply -f longhorn.yaml`
-## Using Helm Chart
+
+## Using a Helm Chart
 
 In v1.0.2, Longhorn automatically adds <REGISTRY_URL> prefix to images. You simply need to set the registryUrl parameters to pull images from your private registry.
 
@@ -271,7 +286,8 @@ If you want to use custom images' names, you can use the following steps:
       `kubectl create namespace longhorn-system`
 
       `helm install longhorn ./chart --namespace longhorn-system`
-## Using Rancher App
+
+# Using a Rancher App
 
 ### Use default image name
 
