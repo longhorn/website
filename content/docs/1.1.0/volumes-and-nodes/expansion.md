@@ -5,16 +5,15 @@
 
 Volumes are expanded in two stages. First, Longhorn expands the frontend (the block device), then it expands the filesystem.
 
-To prevent the frontend expansion from interference by unexpected data R/W, Longhorn supports offline expansion only. The `detached` volume will be automatically attached to a random node with [maintenance mode.](../../concepts/#22-reverting-volumes-in-maintenance-mode)
+To prevent the frontend expansion from being interfered by unexpected data R/W, Longhorn supports offline expansion only.  The `detached` volume will be automatically attached to a random node with [maintenance mode.](../../concepts/#22-reverting-volumes-in-maintenance-mode)
 
 Rebuilding and adding replicas is not allowed during the expansion, and expansion is not allowed while replicas are rebuilding or being added.
 
-If the volume was not expanded though the CSI interface (e.g. for Kubernetes older than v1.16), the capacity of the corresponding PVC and PV won't change.
+If the volume was not expanded though CSI interface (e.g. for Kubernetes older than v1.16), the capacity of corresponding PVC and PV won't change.
 
-## Prerequisite
-
-- The Longhorn version must be v0.8.0 or higher.
-- The volume to be expanded must be in the `detached` state.
+## Prerequisite:
+1. Longhorn version v0.8.0 or higher.
+2. The volume to be expanded is state `detached`.
 
 ## Expand a Longhorn volume
 There are two ways to expand a Longhorn volume: with a PersistentVolumeClaim (PVC) and with the Longhorn UI.
@@ -24,11 +23,11 @@ If you are using Kubernetes v1.14 or v1.15, the volume can only be expanded usin
 #### Via PVC
 This method is applied only if:
 
-- Kubernetes version v1.16 or higher.
-- The PVC is dynamically provisioned by the Kubernetes with Longhorn StorageClass.
-- The field `allowVolumeExpansion` should be `true` in the related StorageClass.
+1. Kubernetes version v1.16 or higher.
+2. The PVC is dynamically provisioned by the Kubernetes with Longhorn StorageClass.
+3. The field `allowVolumeExpansion` should be `true` in the related StorageClass.
 
-This method is recommended if it's applicable, because the PVC and PV will be updated automatically and everything is kept consistent after expansion.
+This method is recommended if it's applicable. Since the PVC and PV will be updated automatically and everything keeps consistent after expansion.
 
 Usage: Find the corresponding PVC for Longhorn volume, then modify the requested `spec.resources.requests.storage` of the PVC:
 
@@ -67,27 +66,31 @@ status:
   phase: Bound
 ```
 
+
+
 #### Via Longhorn UI
 If your Kubernetes version is v1.14 or v1.15, this method is the only choice for Longhorn volume expansion. 
 
 Usage: On the volume page of Longhorn UI, click `Expand` for the volume.
 
+
+
 ## Filesystem expansion
 
 Longhorn will try to expand the file system only if:
 
-- The expanded size should be greater than the current size.
-- There is a Linux filesystem in the Longhorn volume. 
-- The filesystem used in the Longhorn volume is one of the following:
-    - ext4
-    - XFS
-- The Longhorn volume is using the block device frontend. 
+1. The expanded size should be greater than the current size.
+2. There is a Linux filesystem in the Longhorn volume. 
+3. The filesystem used in the Longhorn volume is one of the followings:
+    1. ext4
+    2. XFS
+4. The Longhorn volume is using block device frontend. 
 
 #### Handling Volume Revert
-If a volume is reverted to a snapshot with smaller size, the frontend of the volume is still holding the expanded size. But the filesystem size will be the same as that of the reverted snapshot. In this case, you will need to handle the filesystem manually:
+If users revert a volume to a snapshot with smaller size, the frontend of the volume is still holding the expanded size. But the filesystem size will be the same as that of the reverted snapshot. In this case, users need to handle the filesystem manually:
 
-1. Attach the volume to a random node.
-2. Log in to the corresponding node, and expand the filesystem.
+1. Attach the volume to a random nodes.
+2. Log into the corresponding node, expand the filesystem.
 
     If the filesystem is `ext4`, the volume might need to be [mounted](https://linux.die.net/man/8/mount) and [umounted](https://linux.die.net/man/8/umount) once before resizing the filesystem manually. Otherwise, executing `resize2fs` might result in an error:
 
@@ -106,7 +109,7 @@ If a volume is reverted to a snapshot with smaller size, the frontend of the vol
     umount /dev/longhorn/<volume name>
     ```
 
-3. If the filesystem is `xfs`, you can directly mount, then expand the filesystem.
+3. If the filesystem is `xfs`, users can directly mount then expand the filesystem.
 
     ```
     mount /dev/longhorn/<volume name> <arbitrary mount directory>

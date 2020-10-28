@@ -1,11 +1,11 @@
 ---
-  title:  Create an Ingress with Basic Authentication (NGINX)
+  title:  Create an Ingress with Basic Authentication (nginx)
   weight: 1
 ---
 
 If you install Longhorn on a Kubernetes cluster with kubectl or Helm, you will need to create an Ingress to allow external traffic to reach the Longhorn UI.
 
-Authentication is not enabled by default for kubectl and Helm installations. In these steps, you'll learn how to create an Ingress with basic authentication using annotations for the NGINX Ingress controller.
+Authentication is not enabled by default for kubectl and Helm installations. In these steps, you'll learn how to create an Ingress with basic authentication using annotations for the nginx ingress controller.
 
 1. Create a basic auth file `auth`. It's important the file generated is named auth (actually - that the secret has a key `data.auth`), otherwise the Ingress returns a 503.
     ```

@@ -5,18 +5,18 @@ weight: 3
 
 ## Overview
 
-The storage tag feature enables only certain nodes or disks to be used for storing Longhorn volume data. For example, performance-sensitive data can use only the high-performance disks which can be tagged as `fast`, `ssd` or `nvme`, or only the high-performance node tagged as `baremetal`.
+The storage tag feature enables the user to only use certain nodes or disks for storing Longhorn volume data. For example, performance-sensitive data can use only the high-performance disks which can be tagged as `fast`, `ssd` or `nvme`, or only the high-performance node tagged as `baremetal`.
 
 This feature supports both disks and nodes. 
 
 ## Setup
 
-The tags can be set up using the Longhorn UI:
+The tag setup can be found at Longhorn UI:
 
 1. *Node -> Select one node -> Edit Node and Disks*
 2. Click `+New Node Tag` or `+New Disk Tag` to add new tags.
 
-All the existing scheduled replica on the node or disk won't be affected by the new tags.
+All the existing scheduled replica on the node or disk won't be affected by the new tags
 
 ## Usage
 

@@ -17,7 +17,9 @@ Follow the instructions to set init taint tolerations: [Customize default settin
 
 ### After Longhorn has been installed
 
-The taint toleration setting can be found at Longhorn UI under **Setting > General > Kubernetes Taint Toleration.**
+The taint toleration setting can be found at Longhorn UI:
+
+Setting -> General -> Kubernetes Taint Toleration
 
 Users can modify the existing tolerations or add more tolerations here, but noted that it will result in all the Longhorn system components to be recreated.
 
