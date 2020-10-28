@@ -52,7 +52,7 @@ Since Longhorn doesn't currently support sharding between the different disks, w
 
 Any extra disks must be written in the `/etc/fstab` directory to allow automatic mounting after the machine reboots.
 
-Don't use a symbolic link for the extra disks. Use `mount --bind` instead of `ln -s` and make sure it's in the `fstab` directory. For details, see [the section about multiple disk support.](../volumes-and-nodes/multidisk/#use-an-alternative-path-for-disk-on-the-node)
+Don't use a symbolic link for the extra disks. Use `mount --bind` instead of `ln -s` and make sure it's in the `fstab` directory. For details, see [the section about multiple disk support.](../volumes-and-nodes/multidisk/#use-an-alternative-path-for-a-disk-on-the-node)
 
 ## Configuring Default Disks Before and After Installation
 
