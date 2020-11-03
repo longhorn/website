@@ -21,15 +21,17 @@ weight: 2
 | longhorn_node_cpu_usage_millicpu | The CPU usage on this node | longhorn_node_cpu_usage_millicpu{node="pworker-2"} 186 |
 | longhorn_node_memory_capacity_bytes | The maximum allocatable memory on this node | longhorn_node_memory_capacity_bytes{node="worker-2"} 4.031229952e+09 |
 | longhorn_node_memory_usage_bytes |  The memory usage on this node | longhorn_node_memory_usage_bytes{node="worker-2"} 1.833582592e+09 |
-| longhorn_node_usage_bytes | Used storage space in bytes for this node | TODO |
-| longhorn_node_capacity_bytes | Total storage space in bytes on this node | TODO |
+| longhorn_node_storage_capacity_bytes | The storage capacity of this node | longhorn_node_storage_capacity_bytes{node="worker-3"} 8.3987283968e+10 |
+| longhorn_node_storage_usage_bytes | The used storage of this node | longhorn_node_storage_usage_bytes{node="worker-3"} 9.060941824e+09 |
+| longhorn_node_storage_reservation_bytes | The reserved storage for other applications and system on this node | longhorn_node_storage_reservation_bytes{node="worker-3"} 2.519618519e+10 |
 
 ## Disk
 
 | Name | Description  | Example |
 |---|---|---|
-| longhorn_disk_usage_bytes | Used storage space in bytes for this disk | TODO |
-| longhorn_disk_capacity_bytes | Total storage space in bytes on this disk | TODO |
+| longhorn_disk_capacity_bytes | The storage capacity of this disk | longhorn_disk_capacity_bytes{disk="default-disk-8b28ee3134628183",node="worker-3"} 8.3987283968e+10 |
+| longhorn_disk_usage_bytes | The used storage of this disk | longhorn_disk_usage_bytes{disk="default-disk-8b28ee3134628183",node="worker-3"} 9.060941824e+09 |
+| longhorn_disk_reservation_bytes | TThe reserved storage for other applications and system on this disk | longhorn_disk_reservation_bytes{disk="default-disk-8b28ee3134628183",node="worker-3"} 2.519618519e+10 |
 
 ## Instance Manager
 

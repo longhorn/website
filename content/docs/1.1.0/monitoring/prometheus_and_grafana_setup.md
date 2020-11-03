@@ -286,6 +286,8 @@ The following code gives an example configuration:
         auth_username: <the username>
         auth_identity: <the identity>
         auth_password: <the password>
+        headers:
+          subject: 'Longhorn-Alert'
         text: |-
           {{ range .Alerts }}
             *Alert:* {{ .Annotations.summary }} - `{{ .Labels.severity }}`
@@ -574,5 +576,5 @@ The following code gives an example configuration:
     See https://grafana.com/docs/grafana/latest/reference/export_import/ for the instructions about how to import a Grafana dashboard.
 
     You should see the following dashboard upon successful:
-    ![images](/img/screenshots/monitoring/longhorn-monitoring-system.png)
+    ![images](/img/screenshots/monitoring/longhorn-example-grafana-dashboard.png)
 

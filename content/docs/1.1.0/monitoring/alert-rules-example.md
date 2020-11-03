@@ -49,6 +49,26 @@ spec:
       labels:
         issue: Longhorn volume {{$labels.volume}} is Degraded.
         severity: warning
+    - alert: LonghornNodeStorageWarning
+      annotations:
+        description: The used storage of node {{$labels.node}} is at {{$value}}% capacity for
+          more than 5 minutes.
+        summary:  The used storage of node is over 70% of the capacity.
+      expr: (longhorn_node_storage_usage_bytes / longhorn_node_storage_capacity_bytes) * 100 > 70
+      for: 5m
+      labels:
+        issue: The used storage of node {{$labels.node}} is high.
+        severity: warning
+    - alert: LonghornDiskStorageWarning
+      annotations:
+        description: The used storage of disk {{$labels.disk}} on node {{$labels.node}} is at {{$value}}% capacity for
+          more than 5 minutes.
+        summary:  The used storage of disk is over 70% of the capacity.
+      expr: (longhorn_disk_usage_bytes / longhorn_disk_capacity_bytes) * 100 > 70
+      for: 5m
+      labels:
+        issue: The used storage of disk {{$labels.disk}} on node {{$labels.node}} is high.
+        severity: warning
     - alert: LonghornNodeDown
       annotations:
         description: There are {{$value}} Longhorn nodes which have been offline for more than 5 minutes.
@@ -56,7 +76,7 @@ spec:
       expr: longhorn_node_total - (count(longhorn_node_status{condition="ready"}==1) OR on() vector(0))
       for: 5m
       labels:
-        issue: {{$value}} Longhorn nodes are offline
+        issue: There are {{$value}} Longhorn nodes are offline
         severity: critical
     - alert: LonghornIntanceManagerCPUUsageWarning
       annotations:
