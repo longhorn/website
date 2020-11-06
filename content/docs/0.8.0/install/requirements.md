@@ -3,7 +3,7 @@ title: Installation Requirements
 weight: 1
 ---
 
--  Docker v1.13+
+-  A container runtime compatible with Kubernetes (Docker v1.13+, containerd v1.3.7+, etc.)
 -  Kubernetes v1.14+.
 -  `open-iscsi` has been installed on all the nodes of the Kubernetes cluster, and `iscsid` daemon is running on all the nodes.
     - For GKE, recommended Ubuntu as guest OS image since it contains open-iscsi already.
