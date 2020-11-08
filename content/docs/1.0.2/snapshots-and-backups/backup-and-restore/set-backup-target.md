@@ -64,7 +64,11 @@ This page covers the following topics:
     s3://<your-bucket-name>@<your-aws-region>/mypath/
     ```
 
-   Also make sure you've set **`<your-aws-region>` in the URL**. For example, for Google Cloud Storage, you can find the region code [here.](https://cloud.google.com/storage/docs/locations)
+   Also make sure you've set **`<your-aws-region>` in the URL**.
+
+   For example, For AWS, you can find the region codes [here.](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html) 
+   
+   For Google Cloud Storage, you can find the region codes [here.](https://cloud.google.com/storage/docs/locations)
 
 5.  In the Backup section set **Backup Target Credential Secret** to:
 
