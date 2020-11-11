@@ -46,7 +46,11 @@ For the minimum recommended hardware, refer to the [best practices guide.](../..
 
 ### Using the Environment Check Script
 
-We've written a script to help you gather enough information about the factors. Before installing, run:
+We've written a script to help you gather enough information about the factors. 
+
+Note `jq` maybe requred to be installed locally prior to running env check script.
+
+To run script:
 
 ```shell
 curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/master/scripts/environment_check.sh | bash
