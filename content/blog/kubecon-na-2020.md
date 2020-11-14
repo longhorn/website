@@ -50,3 +50,5 @@ As usual, during the KubeCon NA 2020, we will have a survey for the visitors of 
 {{< figure src="/img/blogs/kubecon-eu-2020/tshirt.png" >}}
 
 Come and join us, and win some cool swags!
+
+Looking forward to meet everyone in the KubeCon NA 2020!
