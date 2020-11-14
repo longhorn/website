@@ -45,7 +45,7 @@ Time: 4:00 pm to 5:00 pm EST (1:00 pm to 2:00 pm PST)
 
 ## Survey
 
-As usual, during the KubeCon NA 2020, we will have a survey for the visitors of Longhorn booth. Every respondent will has a chance to win some cool Longhorn swags, including Longhorn logo T-Shirts. We will draw 10 winners per day from Oct 17th to Oct 20th.
+As usual, during the KubeCon NA 2020, we will have a survey for the visitors of Longhorn booth. Every respondent will has a chance to win some cool Longhorn swags, including Longhorn logo T-Shirts. We will draw 10 winners per day from Nov 17th to Nov 20th.
 
 {{< figure src="/img/blogs/kubecon-eu-2020/tshirt.png" >}}
 
