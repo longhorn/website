@@ -23,7 +23,7 @@ Each node in the Kubernetes cluster where Longhorn is installed must fulfill the
 -  A container runtime compatible with Kubernetes (Docker v1.13+, containerd v1.3.7+, etc.)
 -  Kubernetes v1.14+.
     - By default Longhorn installation requires a three-nodes cluster since the default replica count is 3 and the [node level soft anti-affinity](https://longhorn.io/docs/1.0.0/references/settings/#replica-node-level-soft-anti-affinity) is disabled.
--  `open-iscsi` is installed, and the `iscsid` daemon is running on all the nodes. For help installing `open-iscsi`, refer to [this section.](#installing-open-iscsi)
+-  `open-iscsi` is installed, and the `iscsid` daemon is running on all the nodes. This is necessary, since Longhorn relies on `iscsiadm` on the host to provide persistent volumes to Kubernetes. For help installing `open-iscsi`, refer to [this section.](#installing-open-iscsi)
 - The host filesystem supports the `file extents` feature to store the data. Currently we support:
     - ext4
     - XFS
