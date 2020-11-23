@@ -60,33 +60,6 @@ For more options with using the scripts, see flag `--help`:
 
     `kubectl -n longhorn-system create secret docker-registry <SECRET_NAME> --docker-server=<REGISTRY_URL> --docker-username=<REGISTRY_USER> --docker-password=<REGISTRY_PASSWORD>`
 
-
-    * Add your secret name to `longhorn-default-setting` ConfigMap
-
-      ```yaml
-      apiVersion: v1
-      kind: ConfigMap
-      metadata:
-        name: longhorn-default-setting
-        namespace: longhorn-system
-      data:
-        default-setting.yaml: |-
-          backup-target:
-          backup-target-credential-secret:
-          create-default-disk-labeled-nodes:
-          default-data-path:
-          replica-soft-anti-affinity:
-          storage-over-provisioning-percentage:
-          storage-minimal-available-percentage:
-          upgrade-checker:
-          default-replica-count:
-          guaranteed-engine-cpu:
-          default-longhorn-static-storage-class:
-          backupstore-poll-interval:
-          taint-toleration:
-          registry-secret:  <SECRET_NAME>
-      ```
-
     * Add your secret name  `SECRET_NAME` to `imagePullSecrets.name` in the following resources
       * `longhorn-driver-deployer` Deployment
       * `longhorn-manager` DaemonSet
@@ -211,7 +184,8 @@ If you keep the images' names as recommended [here](./#recommendation), you only
 
 2. In `chart/values.yaml`
 
-    * Specify `Private registry URL`. If the registry requires authentication, specify `Private registry user`, `Private registry password`, and `Private registry secret`:
+    * Specify `Private registry URL`. If the registry requires authentication, specify `Private registry user`, `Private registry password`, and `Private registry secret`.
+    Longhorn will automatically generate a secret with the those information and use it to pull images from your private registry.
 
       ```yaml
       defaultSettings:
@@ -221,6 +195,7 @@ If you keep the images' names as recommended [here](./#recommendation), you only
           registryUrl: <REGISTRY_URL>
           registryUser: <REGISTRY_USER>
           registryPasswd: <REGISTRY_PASSWORD>
+          registrySecret: <REGISTRY_SECRET_NAME>
       ```
 
 ### Use custom image name
@@ -264,7 +239,8 @@ If you want to use custom images' names, you can use the following steps:
           resizerImageTag: <CSI_RESIZER_IMAGE_TAG>
         ```
 
-    - Specify `Private registry URL`. If the registry requires authentication, specify `Private registry user`, `Private registry password`, and `Private registry secret`:
+    - Specify `Private registry URL`. If the registry requires authentication, specify `Private registry user`, `Private registry password`, and `Private registry secret`.
+    Longhorn will automatically generate a secret with the those information and use it to pull images from your private registry.
 
         ```yaml
         defaultSettings:
@@ -293,15 +269,15 @@ If you want to use custom images' names, you can use the following steps:
 
 If you keep the images' names as recommended [here](./#recommendation), you only need to do the following steps:
 
-- In the `Longhorn Default Settings` section, click **Customize Default Setting** and specify the Private registry secret.
 - In the `Private Registry Settings` section specify:
    - Private registry URL
    - Private registry user
    - Private registry password
+   - Private registry secret name
+
+  Longhorn will automatically generate a secret with the those information and use it to pull images from your private registry.
 
   ![images](/img/screenshots/airgap-deploy/app-default-images.png)
-
-> The `Private registry secret` must be specified in the default settings so that Longhorn can create a secret under the name. The process for setting up the private registry will be fixed to be less confusing, but not in the v1.0.2 release. More detail is at [this comment.](https://github.com/longhorn/longhorn/issues/1670#issuecomment-670723484)
 
 ### Use custom image name
 
@@ -311,11 +287,10 @@ If you keep the images' names as recommended [here](./#recommendation), you only
 
   ![images](/img/screenshots/airgap-deploy/app-custom-images.png)
 
-- Specify `Private registry URL`. If the registry requires authentication, specify `Private registry user`, `Private registry password`, and `Private registry secret`:
+- Specify `Private registry URL`. If the registry requires authentication, specify `Private registry user`, `Private registry password`, and `Private registry secret name`.
+  Longhorn will automatically generate a secret with the those information and use it to pull images from your private registry.
 
   ![images](/img/screenshots/airgap-deploy/app-custom-images-reg.png)
-
-> The `Private registry secret` must be specified in the default settings so that Longhorn can create a secret under the name. The process for setting up the private registry will be fixed to be less confusing, but not in the v1.0.2 release. More detail is at [this comment.](https://github.com/longhorn/longhorn/issues/1670#issuecomment-670723484)
 
 ## Troubleshooting
 
