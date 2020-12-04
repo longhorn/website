@@ -98,31 +98,29 @@ For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 imag
 yum install iscsi-initiator-utils
 ```
 
-Longhorn also provide an easier way to install 'ISCSI' as 'DaemonSet' in YAML file. This will save user's time to login to each host and install the 'ISCSI' individually. User can use 'kubectl' to apply the yaml directly:
+We also provides an `iscsi` installer to make it easier for users to install `open-iscsi` automatically:
 ```
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/iscsi/longhorn-iscsi-installation.yaml
 ```
-After the deployment, run the following command to check pods'status:
+After the deployment, run the following command to check pods' status of the installer:
 ```
-kubectl get pod
-```
-And it will show 'Completed' as 'STATUS'.
-```
-NAME                                READY   STATUS              RESTARTS   AGE
-longhorn-iscsi-installation-cgztd   0/1     Completed           5          3m12s
-longhorn-iscsi-installation-jvc7k   0/1     Completed           5          3m13s
-longhorn-iscsi-installation-k85t7   0/1     Completed           5          3m12s
+kubectl get pod | grep longhorn-iscsi-installation
+longhorn-iscsi-installation-49hd7   1/1     Running   0          21m
+longhorn-iscsi-installation-pzb7r   1/1     Running   0          39m
 ```
 And also can check the log with the following command to see the installation result:
 ```
-kubectl logs longhorn-iscsi-installation-cgztd
-```
-```
-Loaded plugins: priorities, update-motd
-Package iscsi-initiator-utils-6.2.0.874-7.amzn2.x86_64 already installed and latest version
-Nothing to do
-iscsi install successfully
+kubectl logs longhorn-iscsi-installation-pzb7r -c iscsi-installation
+...
+Installed:
+  iscsi-initiator-utils.x86_64 0:6.2.0.874-7.amzn2
 
+Dependency Installed:
+  iscsi-initiator-utils-iscsiuio.x86_64 0:6.2.0.874-7.amzn2
+
+Complete!
+Created symlink from /etc/systemd/system/multi-user.target.wants/iscsid.service to /usr/lib/systemd/system/iscsid.service.
+iscsi install successfully
 ```
 
 ### Checking the Kubernetes Version
