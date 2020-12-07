@@ -20,10 +20,11 @@ For information on deploying Longhorn on specific nodes and rejecting general wo
 
 Each node in the Kubernetes cluster where Longhorn is installed must fulfill the following requirements:
 
--  Docker v1.13+
--  Kubernetes v1.15+.
-    - By default Longhorn installation requires a three-nodes cluster since the default replica count is 3 and the [node level soft anti-affinity](https://longhorn.io/docs/1.0.0/references/settings/#replica-node-level-soft-anti-affinity) is disabled.
--  `open-iscsi` is installed, and the `iscsid` daemon is running on all the nodes. For help installing `open-iscsi`, refer to [this section.](#installing-open-iscsi)
+-  Containerd v1.2.6+/Docker 19.03+
+-  Kubernetes v1.16+.
+    - Recommend Kubernetes v1.17+
+-  `open-iscsi` is installed, and the `iscsid` daemon is running on all the nodes.
+    - For installing `open-iscsi`, refer to [this section.](#installing-open-iscsi)
 - The host filesystem supports the `file extents` feature to store the data. Currently we support:
     - ext4
     - XFS
@@ -31,8 +32,6 @@ Each node in the Kubernetes cluster where Longhorn is installed must fulfill the
 - [Mount propagation](https://kubernetes-csi.github.io/docs/deploying.html#enabling-mount-propagation) must be enabled.
 
 The Longhorn workloads must be able to run as root in order for Longhorn to be deployed and operated properly.
-
-CSI v1.1 is supported.
 
 [This script](#using-the-environment-check-script) can be used to check the Longhorn environment for potential issues.
 
@@ -134,10 +133,10 @@ kubectl version
 Result:
 
 ```shell
-Client Version: version.Info{Major:"1", Minor:"10", GitVersion:"v1.10.3", GitCommit:"2bba0127d85d5a46ab4b778548be28623b32d0b0", GitTreeState:"clean", BuildDate:"2018-05-21T09:17:39Z", GoVersion:"go1.9.3", Compiler:"gc", Platform:"linux/amd64"}
-Server Version: version.Info{Major:"1", Minor:"10", GitVersion:"v1.10.1", GitCommit:"d4ab47518836c750f9949b9e0d387f20fb92260b", GitTreeState:"clean", BuildDate:"2018-04-12T14:14:26Z", GoVersion:"go1.9.3", Compiler:"gc", Platform:"linux/amd64"}
+Client Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCommit:"1e11e4a2108024935ecfcb2912226cedeafd99df", GitTreeState:"clean", BuildDate:"2020-10-14T12:50:19Z", GoVersion:"go1.15.2", Compiler:"gc", Platform:"linux/amd64"}
+Server Version: version.Info{Major:"1", Minor:"17", GitVersion:"v1.17.4", GitCommit:"8d8aa39598534325ad77120c120a22b3a990b5ea", GitTreeState:"clean", BuildDate:"2020-03-12T20:55:23Z", GoVersion:"go1.13.8", Compiler:"gc", Platform:"linux/amd64"}
 ```
 
-The `Server Version` should be `v1.10` or above.
+The `Server Version` should be `v1.16` or above.
 
 
