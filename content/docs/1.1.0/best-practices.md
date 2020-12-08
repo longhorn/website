@@ -40,7 +40,7 @@ It's recommended to dedicate a disk for Longhorn storage for production, instead
 
 If you need to use the root disk, use the default `minimal available storage percentage` setup which is 25%, and set `overprovisioning percentage` to 200% to minimize the chance of DiskPressure.
 
-If you're using a dedicated disk for Longhorn, you can lower the setting `minimal available storage percentage` to 10%. 
+If you're using a dedicated disk for Longhorn, you can lower the setting `minimal available storage percentage` to 10%.
 
 For the Over-provisioning percentage, it depends on how much space your volume uses on average. For example, if your workload only uses half of the available volume size, you can set the Over-provisioning percentage to `200`, which means Longhorn will consider the disk to have twice the schedulable size as its full size minus the reserved space.
 
@@ -74,7 +74,17 @@ Longhorn system will create snapshots automatically when rebuilding a replica. R
 
 ## Guaranteed Engine CPU
 
-We recommend allowing Longhorn Engine to have guaranteed CPU allocation. The value is how many CPUs should be reserved for each Engine/Replica Instance Manager Pod created by Longhorn. By default, the value is 0.25 CPUs. For details, refer to the [settings reference.](../references/settings/#guaranteed-engine-cpu)
+We recommend allowing Longhorn Engine to have guaranteed CPU allocation. The value is how many CPUs should be reserved for each Engine/Replica Instance Manager Pod created by Longhorn. By default, the value is 0.25 CPUs.
+
+In order to prevent unexpected volume crash, you can use the following formula to calculate an appropriate value for this setting:
+```
+Number of vCPUs = The estimated max Longhorn volume/replica count on a node * 0.1
+```
+The result of above calculation doesn't mean that's the maximum CPU resources the Longhorn workloads require. To fully exploit the Longhorn volume I/O performance, you can allocate/guarantee more CPU resources via this setting.
+
+If it's hard to estimate the volume/replica count now, you can leave it with the default value, or allocate 1/8 of total CPU of a node. Then you can tune it when there is no running workload using Longhorn volumes.
+
+For details, refer to the [settings reference.](../references/settings/#guaranteed-engine-cpu)
 
 ## StorageClass
 
