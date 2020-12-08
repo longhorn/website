@@ -275,6 +275,14 @@ Longhorn uses CPU resources on the node to serve the Longhorn Volumes. The Guara
 
 This number only applies to the Engine/Replica Manager Pods created after the setting takes effect.
 
+In order to prevent unexpected volume crash, you can use the following formula to calculate an appropriate value for this setting:
+```
+Number of vCPUs = The estimated max Longhorn volume/replica count on a node * 0.1
+```
+The result of above calculation doesn't mean that's the maximum CPU resources the Longhorn workloads require. To fully exploit the Longhorn volume I/O performance, you can allocate/guarantee more CPU resources via this setting.
+
+If it's hard to estimate the volume/replica count now, you can leave it with the default value, or allocate 1/8 of total CPU of a node. Then you can tune it when there is no running workload using Longhorn volumes.
+
 > **Warning:** This setting should be changed only when all the volumes on the nodes are detached. Changing the setting will result in all the Instance Manager Pods restarting, which will automatically detach all the attached volumes, and could cause a workload outage.
 
 ##### Recommendations for the Guaranteed Engine CPU Allocation
