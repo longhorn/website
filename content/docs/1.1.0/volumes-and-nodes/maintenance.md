@@ -12,39 +12,46 @@ This section describes how to handle planned maintenance of nodes.
 
 ## Updating the Node OS or Container Runtime
 
-Currently, it's recommended to shut down the workloads with Longhorn volume before performing the node maintenance. Otherwise, it might cause unnecessary replica failure during the node down period.
-
-If shutting down the workloads is not possible, follow the steps below to minimize the impact for node maintenance:
-
 1. Cordon the node. Longhorn will automatically disable the node scheduling when a Kubernetes node is cordoned.
-	Make sure the node has been disabled from scheduling, then evict all the replicas on the node.
 
 1. Drain the node to move the workload to somewhere else.
 
     You will need to use `--ignore-daemonsets` options to drain the node because Longhorn deployed some daemonsets such as `Longhorn manager`, `Longhorn CSI plugin`, `engine image`.
 
-    The replica processes on the node will be stopped at this stage.
+    The replica processes on the node will be stopped at this stage. Replicas on
+    the node will be shown as `Failed`.
+
+        Note: By default, if there is one last healthy replica for a volume on
+        the node, Longhorn will prevent the node from completing the drain
+        operation, to protect the last replica and prevent the disruption of the
+        workload. You can either override the behavior in the setting, or evict
+        the replica to other nodes before draining.
 
     The engine processes on the node will be migrated with the Pod to other nodes.
 
+        Note: If there are volumes not created by Kubernetes on the node,
+        Lognhorn will prevent the node from completing the drain operation, to
+        prevent the potential workload disruption.
+
     After the `drain` is completed, there should be no engine or replica process running on the node. Two instance managers will still be running on the node, but they're stateless and won't cause interruption to the existing workload.
+
+        Note: Normally you don't need to evict the replicas before the drain
+        operation, as long as you have healthy replicas on other nodes. The replicas
+        can be reused later, once the node back online and uncordoned.
+
 1. Perform the necessary maintenance, including shutting down or rebooting the node.
 1. Uncordon the node. Longhorn will automatically re-enable the node scheduling.
 
-    > **Upcoming features:**
-    >
-    > - After adding the support of the **Reuse existing replica data for rebuild** feature, the replica rebuild will be faster and take less space.
-    > - After adding the support of the **Disable replica rebuild** feature, there will not be an unnecessary replica rebuild caused by the node maintenance.
+    If there are existing replicas on the node, Longhorn might use those
+    replicas to speed up the rebuilding process. You can set the `Replica
+    Replenishment Wait Interval` setting to customize how long Longhorn should
+    wait for potentially reusable replica to be available.
 
 ## Updating Kubernetes
 
-If Longhorn is installed as a Rancher catalog app, follow [Rancher's Kubernetes upgrade guide](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/upgrading-kubernetes/#upgrading-the-kubernetes-version) to upgrade Kubernetes.
+Follow the official [Kubernetes upgrade documentation.](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/)
 
-Otherwise, follow the official [Kubernetes upgrade documentation.](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/)
-
-### Avoid Node `drain` During Upgrades
-
-We do not recommend draining the node for Kubernetes upgrades. It will cause an unnecessary burden to Longhorn since it will result in replica failure and rebuild in most cases.
+* If Longhorn is installed as a Rancher catalog app, follow [Rancher's Kubernetes upgrade guide](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/upgrading-kubernetes/#upgrading-the-kubernetes-version) to upgrade Kubernetes.
 
 ## Removing a Disk
 To remove a disk:
@@ -65,7 +72,9 @@ To remove a node:
     If the node has been drained, all the workloads should be migrated to another node already.
 
     If there are any other volumes remaining attached, detach them before continuing.
+
 1. Remove the node from Kubernetes, using:
 
         kubectl delete node <node-name>
-1. Delete the node in Longhorn.
+
+1. Longhorn will automatically remove the node from the cluster.
