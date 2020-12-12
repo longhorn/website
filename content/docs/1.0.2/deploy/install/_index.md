@@ -48,7 +48,7 @@ For the minimum recommended hardware, refer to the [best practices guide.](../..
 
 We've written a script to help you gather enough information about the factors.
 
-Note `jq` maybe requred to be installed locally prior to running env check script.
+Note `jq` maybe required to be installed locally prior to running env check script.
 
 To run script:
 
