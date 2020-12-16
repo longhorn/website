@@ -3,72 +3,93 @@ title: Support for ReadWriteMany (RWX) workloads
 weight: 4
 ---
 
-Longhorn supports RWX workloads via the **nfs.longhorn.io** provisioner.
+Longhorn natively supports RWX workloads, by exposing a regular Longhorn volume via a NFSv4 server (share-manager).
 
 The following diagram shows how the RWX support works:
 
-{{< figure src="/img/diagrams/rwx/rwx-01.png" >}}
+{{< figure src="/img/diagrams/rwx/rwx-native-architecture.png" >}}
 
-# Enabling RWX Support
+For each actively in use RWX volume Longhorn will create a `share-manager-<volume-name>` Pod in the `longhorn-system` namespace.
 
-To enable RWX support you need to deploy the following files:
+This Pod is responsible for exporting a Longhorn volume via a NFSv4 server that is running inside the Pod.
 
-- [01-security.yaml](https://github.com/longhorn/longhorn/blob/master/examples/rwx/01-security.yaml)
-- [02-longhorn-nfs-provisioner.yaml](https://github.com/longhorn/longhorn/blob/master/examples/rwx/02-longhorn-nfs-provisioner.yaml)
-- [03-rwx-test.yaml](https://github.com/longhorn/longhorn/blob/master/examples/rwx/03-rwx-test.yaml)
+There is also a service created for each RWX volume, that is used as an endpoint for the actual NFSv4 client connection.
 
-The `03-rwx-test.yaml` example deployment has four pods that share an RWX volume via NFS mounted at `/mnt/nfs-test`. Every second the pods append the current date and time to a shared log file under `/mnt/nfs-test/test.log`.
+# Requirements
 
-In the default configuration we provision a 20Gb Longhorn volume as a backing volume for the RWX workload. We suggest you set that to your required capacity before deploying `02-longhorn-nfs-provisioner.yaml`.
-The requested size should be roughly 10% bigger then the required RWX workload size.
+To be able to use RWX volumes, each client node needs to have a NFSv4 client installed
+- for Ubuntu you can install a NFSv4 client via `apt install nfs-common`
+- for RPM based distros you can install a NFSv4 client via `yum install nfs-utils`
 
-It's important to note that one can only run a single nfs-provisioner instance per StorageClass. It would be incorrect to increase the replica count for the nfs-provisioner. Instead read below to see how to deploy additional nfs-provisioners.
+if the NFSv4 client is not available on the node, when trying to mount the volume the below message will be part of the error.
+```
+for several filesystems (e.g. nfs, cifs) you might need a /sbin/mount.<type> helper program.\n
+```
 
-It's possible to provision multiple RWX volumes from a single nfs-provisioner, but the workloads would share the underlying Longhorn backing storage.
+# Creation and Usage of a RWX volume
 
-# Multiple RWX Workloads
+For dynamically provisioned Longhorn volumes the access mode is based on the PVC's access mode.
 
-If you want to run multiple RWX volumes, consider creating different nfs-provisioner deployments.
+For manually created Longhorn volumes (restore, DR volume) the access mode can be specified during creation in the Longhorn UI,
+when creating a PV/PVC for a Longhorn volume via the UI the access mode of the PV/PVC will be based on the volumes access mode.
 
-You can modify the provisioner argument and create a new StorageClass for that provisioner. For an example, see `02-longhorn-nfs-provisioner.yaml`.
+One can change the Longhorn volumes access mode via the UI as long as the volume is not bound to a PVC.
 
-You could call the new provisioner `nfs.longhorn.io/2` and the StorageClass `longhorn-nfs2`. Afterwards create a new service `longhorn-nfs-provisioner2` with a random unique cluster-ip and update the `SERVICE_NAME` environment variable to point to your new service. The different provisioners can share the same security setup from `01-security.yaml`.
-
-{{< figure src="/img/diagrams/rwx/rwx-02.png" >}}
+For a Longhorn volume that gets used by a RWX PVC, the volume access mode will be changed to RWX.
 
 # Failure handling
+Any failure of the share-manager Pod (volume failure, node failure, etc) will lead to the Pod being recreated
+and the volumes `remountRequestedAt` flag to be set, which will lead to the workload Pods being deleted and Kubernetes
+recreating them. This functionality depends on the setting of [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](../../references/settings#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly)
+which by default is `true`. If the setting is disabled the workload Pods might end up with `io errors` on RWX volume failures.
+It's recommended to enable the above settings, to guarantee automatic workload failover in the case of issues with the RWX volume.
 
-#### Service Cluster IP
+# Migration from previous external provisioner
+The below PVC creates a Kubernetes job that can copy data from one volume to another.
+- Replace the `data-source-pvc` with the name of previous NFSv4 RWX PVC, that was created by Kubernetes.
+- Replace the `data-target-pvc` with the name of the new RWX PVC that you wish to use for your new workloads.
 
-For the `longhorn-nfs-provisioner` service we hardcode the service IP to **10.43.111.111.**
+You can manually create a new RWX Longhorn volume + PVC/PV or just create a RWX PVC then have Longhorn dynamically
+provision a volume for you. Both PVC's need to exist in the same namespace, if you where using a different namespace then
+default change the job's namespace below.
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: default  # namespace where the PVC's exist
+  name: volume-migration
+spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: 3
+  template:
+    metadata:
+      name: volume-migration
+      labels:
+        name: volume-migration
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: volume-migration
+          image: ubuntu:xenial
+          tty: true
+          command: [ "/bin/sh" ]
+          args: [ "-c", "cp -r -v /mnt/old /mnt/new" ]
+          volumeMounts:
+            - name: old-vol
+              mountPath: /mnt/old
+            - name: new-vol
+              mountPath: /mnt/new
+      volumes:
+        - name: old-vol
+          persistentVolumeClaim:
+            claimName: data-source-pvc # change to data source PVC
+        - name: new-vol
+          persistentVolumeClaim:
+            claimName: data-target-pvc # change to data target PVC
+```
 
-If this IP is not available on your cluster (in use, outside of network range) you can choose any other random unique IP.
-We recommend hardcoding a random unique cluster IP since the PVCs will end up with this hardcoded service IP after creation.
 
-#### Node Failure
-In the case of a node failure, a replacement `longhorn-nfs-provisioner` pod should be available after roughly 90 seconds.
-
-We use the following tolerations to decide when to evict the nfs-provisioner pod. You can lower the `tolerationSeconds`
-to lower the nfs-provisioner failover time in the case of a node failure.
-
-We recommend setting up a liveness probe on your RWX workloads.
-The failing liveness probe will lead to a pod restart that will make the RWX volume available again, once the replacement nfs-provisioner is up and running.
-
-      terminationGracePeriodSeconds: 30
-      tolerations:
-        - effect: NoExecute
-          key: node.kubernetes.io/not-ready
-          operator: Exists
-          tolerationSeconds: 60
-        - effect: NoExecute
-          key: node.kubernetes.io/unreachable
-          operator: Exists
-          tolerationSeconds: 60
-
-#### Workload Health Check
-
-We recommend the setup of a liveness check on the workloads that makes sure the pods get restarted on NFS server failures.
-
-Example liveness probe: `timeout 10 ls /mnt/nfs-mountpoint`.
-
-We need to include the timeout command as part of the liveness check to work around this Kubernetes [issue](https://github.com/kubernetes/kubernetes/issues/26895).
+# History
+* Available since v1.0.1 [External provisioner](https://github.com/Longhorn/Longhorn/issues/1183)
+* Available since v1.1.0 [Native RWX support](https://github.com/Longhorn/Longhorn/issues/1470)

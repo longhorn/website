@@ -25,6 +25,8 @@ Each node in the Kubernetes cluster where Longhorn is installed must fulfill the
     - Recommend Kubernetes v1.17+
 -  `open-iscsi` is installed, and the `iscsid` daemon is running on all the nodes.
     - For installing `open-iscsi`, refer to [this section.](#installing-open-iscsi)
+-  RWX support requires that each node has a NFSv4 client installed.
+    - For installing a NFSv4 client, refer to [this section](#installing-nfsv4-client)
 - The host filesystem supports the `file extents` feature to store the data. Currently we support:
     - ext4
     - XFS
@@ -120,6 +122,22 @@ Dependency Installed:
 Complete!
 Created symlink from /etc/systemd/system/multi-user.target.wants/iscsid.service to /usr/lib/systemd/system/iscsid.service.
 iscsi install successfully
+```
+
+### Installing NFSv4 client
+
+The command used to install a NFSv4 client differs depending on the Linux distribution.
+
+For Debian and Ubuntu, use this command:
+
+```
+apt-get install nfs-common
+```
+
+For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`, use this command:
+
+```
+yum install nfs-utils
 ```
 
 ### Checking the Kubernetes Version
