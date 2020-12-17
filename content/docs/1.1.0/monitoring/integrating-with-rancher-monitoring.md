@@ -6,9 +6,7 @@ weight: 2
 
 Using Rancher, you can monitor the state and processes of your cluster nodes, Kubernetes components, and software deployments through integration with [Prometheus](https://prometheus.io/), a leading open-source monitoring solution.
 
-For each cluster that is enabled for monitoring, Rancher deploys a Prometheus server.
-
-The [Rancher monitoring system](https://rancher.com/docs/rancher/v2.x/en/project-admin/tools/monitoring/) automatically deploys Alertmanager and Grafana for you.
+See [here](https://rancher.com/docs/rancher/v2.x/en/monitoring-alerting/) for the instruction about how to deploy/enable the Rancher monitoring system.
 
 ## Add Longhorn Metrics to the Rancher Monitoring System
 
