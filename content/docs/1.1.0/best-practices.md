@@ -20,13 +20,18 @@ We recommend the following setup for deploying Longhorn in production.
 - 3 nodes
 - 4 vCPUs per node
 - 4 GiB per node
+- SSD/NVMe or similiar performance block device on the node for storage
+    - We don't recommend using spinning disks with Longhorn, due to low IOPS.
 
 ## Software
 
-Each node in the Kubernetes cluster should run an OS from the following list:
+It's recommended to run an OS from the following list for every node of your Kubernetes cluster:
 
 1. Ubuntu 18.04
 1. CentOS 7/8
+
+### OSes aren't supported by Longhorn
+1. RancherOS
 
 ## Node and Disk Setup
 
@@ -50,9 +55,9 @@ Since Longhorn doesn't currently support sharding between the different disks, w
 
 ### Setting up Extra Disks
 
-Any extra disks must be written in the `/etc/fstab` directory to allow automatic mounting after the machine reboots.
+Any extra disks must be written in the `/etc/fstab` file to allow automatic mounting after the machine reboots.
 
-Don't use a symbolic link for the extra disks. Use `mount --bind` instead of `ln -s` and make sure it's in the `fstab` directory. For details, see [the section about multiple disk support.](../volumes-and-nodes/multidisk/#use-an-alternative-path-for-a-disk-on-the-node)
+Don't use a symbolic link for the extra disks. Use `mount --bind` instead of `ln -s` and make sure it's in the `fstab` file. For details, see [the section about multiple disk support.](../volumes-and-nodes/multidisk/#use-an-alternative-path-for-a-disk-on-the-node)
 
 ## Configuring Default Disks Before and After Installation
 

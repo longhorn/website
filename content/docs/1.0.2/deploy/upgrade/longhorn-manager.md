@@ -13,10 +13,6 @@ For airgap upgrades when Longhorn is installed as a Rancher app, you will need t
 
 For example, the image `registry.example.com/longhorn/longhorn-manager:v1.0.1` is changed to `longhorn/longhorn-manager:v1.0.2` in Longhorn images section. For more information, see the air gap installation steps for v1.0.2 [here.](../../../advanced-resources/deploy/airgap/#using-a-rancher-app)
 
-For airgap upgrades using Rancher App, modify Image names and remove the registry URL part
-
-e.g `registry.example.com/longhorn/longhorn-manager:v1.0.1` to `longhorn/longhorn-manager:v1.0.2`  in Longhorn Images section, see airgap install steps for v1.0.2 [here](../../../advanced-resources/deploy/airgap/#using-rancher-app)
-
 #### Preparing for the Upgrade
 
 If Longhorn was installed using a Helm Chart, or if it was installed as a Rancher catalog app, check to make sure the parameters in the default StorageClass weren't changed. Changing the default StorageClass's parameter might result in a chart upgrade failure. if you want to reconfigure the parameters in the StorageClass, you can copy the default StorageClass's configuration to create another StorageClass.
