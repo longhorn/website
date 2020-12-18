@@ -3,19 +3,19 @@ title: Upgrading Longhorn Manager
 weight: 1
 ---
 
-### Upgrading from v1.0.0 or v1.0.1 to v1.0.2
+### Upgrading from v1.0.x
 
-We only support upgrading to v1.0.2 from v1.0.0 or v1.0.1. For other versions, please upgrade to v1.0.0 first.
+We only support upgrading to v1.1.0 from v1.0.x. For other versions, please upgrade to v1.0.x first.
 
-A live upgrade of the Longhorn Engine is supported from v1.0.0/v1.0.1 to v1.0.2.
+Engine live upgrade is supported from v1.0.x to v1.1.0.
 
 For airgap upgrades when Longhorn is installed as a Rancher app, you will need to modify the image names and remove the registry URL part.
 
-For example, the image `registry.example.com/longhorn/longhorn-manager:v1.0.1` is changed to `longhorn/longhorn-manager:v1.0.2` in Longhorn images section. For more information, see the air gap installation steps for v1.0.2 [here.](../../../advanced-resources/deploy/airgap/#using-a-rancher-app)
+For example, the image `registry.example.com/longhorn/longhorn-manager:v1.1.0` is changed to `longhorn/longhorn-manager:v1.1.0` in Longhorn images section. For more information, see the air gap installation steps [here.](../../../advanced-resources/deploy/airgap/#using-a-rancher-app)
 
 #### Preparing for the Upgrade
 
-If Longhorn was installed using a Helm Chart, or if it was installed as a Rancher catalog app, check to make sure the parameters in the default StorageClass weren't changed. Changing the default StorageClass's parameter might result in a chart upgrade failure. if you want to reconfigure the parameters in the StorageClass, you can copy the default StorageClass's configuration to create another StorageClass.
+If Longhorn was installed using a Helm Chart, or if it was installed as Rancher catalog app, check to make sure the parameters in the default StorageClass weren't changed. Changing the default StorageClass's parameter might result in a chart upgrade failure. if you want to reconfigure the parameters in the StorageClass, you can copy the default StorageClass's configuration to create another StorageClass.
 
     The current default StorageClass has the following parameters:
 
