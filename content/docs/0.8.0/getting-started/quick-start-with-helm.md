@@ -8,7 +8,7 @@ weight: 5
 ## Quick Start
 
 1. Helm 3.0+
-2. Docker v1.13+
+2. A container runtime compatible with Kubernetes (Docker v1.13+, containerd v1.3.7+, etc.)
 3. Kubernetes v1.14+ cluster with 1 or more nodes and Mount Propagation feature enabled. If your Kubernetes cluster was provisioned by Rancher v2.0.7+ or later, MountPropagation feature is enabled by default. [Check your Kubernetes environment now](https://github.com/longhorn/longhorn/#environment-check-script). If MountPropagation is disabled, Base Image feature will be disabled.
 4. Make sure `curl`, `findmnt`, `grep`, `awk` and `blkid` has been installed in all nodes of the Kubernetes cluster.
 5.  `open-iscsi` has been installed on all the nodes of the Kubernetes cluster, and `iscsid` daemon is running on all the nodes.
@@ -31,10 +31,15 @@ Once you have Helm installed, clone the Longhorn repository:
 git clone https://github.com/longhorn/longhorn && cd longhorn
 ```
 
-Use this `helm` command to install Longhorn:
+Install Longhorn in the `longhorn-system` namespace. To install Longhorn with Helm 2, use this command:
 
 ```shell
-helm install ./longhorn/chart --name longhorn --namespace longhorn-system
+helm install ./chart --name longhorn --namespace longhorn-system
+```
+To install Longhorn with `Helm3`, use these commands:
+```shell
+kubectl create namespace longhorn-system
+helm install longhorn ./chart --namespace longhorn-system
 ```
 
 This installs Longorn in the `longhorn-system` namespace.

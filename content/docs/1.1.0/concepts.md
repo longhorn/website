@@ -49,11 +49,11 @@ The Longhorn design has two layers: the data plane and the controlplane. The Lon
 
 ## 1.1. The Longhorn Manager and the Longhorn Engine
 
-The Longhorn Manager container runs on each node in the Longhorn cluster as a Kubernetes [DaemonSet.](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) It is responsible for creating and managing volumes in the Kubernetes cluster, and handles the API calls from the UI or the volume plugins for Kubernetes. It follows the Kubernetes controller pattern, which is sometimes called the operator pattern.
+The Longhorn Manager Pod runs on each node in the Longhorn cluster as a Kubernetes [DaemonSet.](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) It is responsible for creating and managing volumes in the Kubernetes cluster, and handles the API calls from the UI or the volume plugins for Kubernetes. It follows the Kubernetes controller pattern, which is sometimes called the operator pattern.
 
 The Longhorn Manager communicates with the Kubernetes API server to create a new Longhorn volume [CRD.](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) Then the Longhorn Manager watches the API server's response, and when it sees that the Kubernetes API server created a new Longhorn volume CRD, the Longhorn Manager creates a new volume.
 
-When the Longhorn Manager is asked to create a volume, it creates a Longhorn Engine container on the node the volume is attached to, and it creates a replica on each node where a replica will be placed. Replicas should be placed on separate hosts to ensure maximum availability.
+When the Longhorn Manager is asked to create a volume, it creates a Longhorn Engine instance on the node the volume is attached to, and it creates a replica on each node where a replica will be placed. Replicas should be placed on separate hosts to ensure maximum availability.
 
 The multiple data paths of the replicas ensure high availability of the Longhorn volume.  Even if a problem happens with a certain replica or with the Engine, the problem won't affect all the replicas or the Pod's access to the volume. The Pod will still function normally.
 
@@ -63,15 +63,15 @@ The Engine and replicas are orchestrated using Kubernetes.
 
 In the figure below,
 
-- There are three containers with Longhorn volumes.
-- Each volume has a dedicated controller, which is called the Longhorn Engine and runs as a container.
-- Each Longhorn volume has two replicas, and each replica is a container.
-- The arrows in the figure indicate the read/write data flow between the volume, controller container, replica containers, and disks.
+- There are three instances with Longhorn volumes.
+- Each volume has a dedicated controller, which is called the Longhorn Engine and runs as a Linux process.
+- Each Longhorn volume has two replicas, and each replica is a Linux process.
+- The arrows in the figure indicate the read/write data flow between the volume, controller instance, replica instances, and disks.
 - By creating a separate Longhorn Engine for each volume, if one controller fails, the function of other volumes is not impacted.
 
-**Figure 1. Read/write Data Flow between the Volume, Longhorn Engine, Replica Containers, and Disks**
+**Figure 1. Read/write Data Flow between the Volume, Longhorn Engine, Replica Instances, and Disks**
 
-{{< figure alt="read/write data flow between the volume, controller container, replica containers, and disks" src="/img/diagrams/architecture/how-longhorn-works.svg" >}}
+{{< figure alt="read/write data flow between the volume, controller instance, replica instances, and disks" src="/img/diagrams/architecture/how-longhorn-works.svg" >}}
 
 ## 1.2. Advantages of a Microservices Based Design
 
@@ -79,7 +79,7 @@ In Longhorn, each Engine only needs to serve one volume, simplifying the design 
 
 The Longhorn Engine is simple and lightweight enough so that we can create as many as 100,000 separate engines. Kubernetes schedules these separate engines, drawing resources from a shared set of disks and working with Longhorn to form a resilient distributed block storage system.
 
-Because each volume has its own controller, the controller and replica containers for each volume can also be upgraded without causing a noticeable disruption in IO operations.
+Because each volume has its own controller, the controller and replica instances for each volume can also be upgraded without causing a noticeable disruption in IO operations.
 
 Longhorn can create a long-running job to orchestrate the upgrade of all live volumes without disrupting the on-going operation of the system. To ensure that an upgrade does not cause unforeseen issues, Longhorn can choose to upgrade a small subset of the volumes and roll back to the old version if something goes wrong during the upgrade.
 

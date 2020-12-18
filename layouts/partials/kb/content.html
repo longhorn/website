@@ -1,0 +1,35 @@
+{{ $posts := where site.RegularPages "Section" "kb" }}
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-two-thirds">
+        <div class="content is-medium has-extra-bottom-padding">
+          {{ .Content }}
+        </div>
+
+        <a class="button is-primary" href="..">
+          <span class="icon">
+            <ion-icon name="arrow-back"></ion-icon>
+          </span>
+          <span>
+            Back to Knowledge Base
+          </span>
+        </a>
+      </div>
+
+      <div class="column is-one-third">
+        <p class="title is-size-4 is-size-5-mobile">
+          Recent articles
+        </p>
+
+        {{ range $posts }}
+        <a class="is-size-5 is-size-6-mobile" href="{{ .RelPermalink }}">
+          {{ .Title }}
+        </a>
+
+        <br />
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</section>

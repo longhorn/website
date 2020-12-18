@@ -30,6 +30,6 @@ In `Node` page, Longhorn will show the space allocation, schedule, and usage inf
 
 `Allocated` column: The left number is the size that has been used for **volume scheduling**, and it does not mean the space has been used for the Longhorn volume data store. The right number is the **max** size for volume scheduling, which the result of `Size` multiplying `Storage Over Provisioning Percentage`. (In the above illustration, `Storage Over Provisioning Percentage` is 500.) Hence, the difference between the 2 numbers (let's call it as the allocable space) determines if a volume replica can be scheduled to this node.
 
-`Used` column: The left part is actual available space of this node. The right part is total space of the node. 
+`Used` column: The left part indicates the currently used space of this node. The whole bar indicates the total space of the node.
 
 Notice that the allocable space may be greater than the actual available space of the node when setting `Storage Over Provisioning Percentage` to a value greater than 100. If the volumes are heavily used and lots of historical data will be stored in the volume snapshots, please be careful about using a large value for this setting. For more info about the setting, see [here](../../references/settings/#storage-over-provisioning-percentage) for details. 
