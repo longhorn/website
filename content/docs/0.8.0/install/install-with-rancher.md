@@ -11,7 +11,7 @@ If there is a new version of Longhorn available, you will see an `Upgrade Availa
 ## Prerequisites
 
 1. Rancher v2.1+
-2. Docker v1.13+
+2. A container runtime compatible with Kubernetes (Docker v1.13+, containerd v1.3.7+, etc.)
 3. Kubernetes v1.14+ cluster with 1 or more nodes and Mount Propagation feature enabled. If your Kubernetes cluster was provisioned by Rancher v2.0.7+ or later, MountPropagation feature is enabled by default. [Check your Kubernetes environment now](https://github.com/longhorn/longhorn/#environment-check-script). If MountPropagation is disabled, the Base Image feature will be disabled.
 4. Make sure `curl`, `findmnt`, `grep`, `awk` and `blkid` has been installed in all nodes of the Kubernetes cluster.
 5.  `open-iscsi` has been installed on all the nodes of the Kubernetes cluster, and `iscsid` daemon is running on all the nodes.

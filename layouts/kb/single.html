@@ -1,0 +1,10 @@
+{{ define "title" }}
+{{ .Title }} | The Longhorn Knowledge Base
+{{ end }}
+
+{{ define "main" }}
+{{ partial "navbar.html" . }}
+{{ partial "kb/hero.html" . }}
+{{ partial "kb/content.html" . }}
+{{ partial "footer.html" . }}
+{{ end }}

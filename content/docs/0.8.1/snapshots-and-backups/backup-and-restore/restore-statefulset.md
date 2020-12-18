@@ -72,12 +72,12 @@ To restore, follow the below instructions. The example below uses a StatefulSet 
     kind: PersistentVolumeClaim
     metadata:
       name: data-webapp-0
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 2Gi # must match size from earlier
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 2Gi # must match size from earlier
       storageClassName: longhorn # must match name from earlier
       volumeName: statefulset-vol-0 # must reference Persistent Volume
     ---
@@ -85,12 +85,12 @@ To restore, follow the below instructions. The example below uses a StatefulSet 
     kind: PersistentVolumeClaim
     metadata:
       name: data-webapp-1
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 2Gi # must match size from earlier
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 2Gi # must match size from earlier
       storageClassName: longhorn # must match name from earlier
       volumeName: statefulset-vol-1 # must reference Persistent Volume
     ```

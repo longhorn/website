@@ -89,6 +89,11 @@ url = "/blog"
 weight = 1
 
 [[menu.main]]
+name = "Knowledge Base"
+url = "/kb"
+weight = 1
+
+[[menu.main]]
 name = "Project"
 identifier = "project"
 url = "/project"
