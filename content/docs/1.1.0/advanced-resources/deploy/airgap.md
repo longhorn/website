@@ -170,7 +170,7 @@ Longhorn can be installed in an air gapped environment by using a manifest file,
 
 ## Using a Helm Chart
 
-In v1.0.2, Longhorn automatically adds <REGISTRY_URL> prefix to images. You simply need to set the registryUrl parameters to pull images from your private registry.
+In v1.1.0, Longhorn automatically adds <REGISTRY_URL> prefix to images. You simply need to set the registryUrl parameters to pull images from your private registry.
 
 > **Note:** Once you set registryUrl to your private registry, Longhorn tries to pull images from the registry exclusively. Make sure all Longhorn components' images are in the registry otherwise Longhorn will fail to pull images.
 
@@ -347,4 +347,4 @@ If you keep the images' names as recommended [here](./#recommendation), you only
 ## Recommendation:
 It's highly recommended not to manipulate image tags, especially instance manager image tags such as v1_20200301, because we intentionally use the date to avoid associating it with a Longhorn version.
 
-The images of Longhorn's components are hosted in Dockerhub under the `longhornio` account. For example, `longhornio/longhorn-manager:v1.0.2`. It's recommended to keep the account name, `longhornio`, the same when you push the images to your private registry. This helps avoid unnecessary configuration issues.
+The images of Longhorn's components are hosted in Dockerhub under the `longhornio` account. For example, `longhornio/longhorn-manager:v1.1.0`. It's recommended to keep the account name, `longhornio`, the same when you push the images to your private registry. This helps avoid unnecessary configuration issues.
