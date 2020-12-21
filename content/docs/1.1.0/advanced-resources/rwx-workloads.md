@@ -13,45 +13,60 @@ For each actively in use RWX volume Longhorn will create a `share-manager-<volum
 
 This Pod is responsible for exporting a Longhorn volume via a NFSv4 server that is running inside the Pod.
 
-There is also a service created for each RWX volume, that is used as an endpoint for the actual NFSv4 client connection.
+There is also a service created for each RWX volume, and that is used as an endpoint for the actual NFSv4 client connection.
 
 # Requirements
 
-To be able to use RWX volumes, each client node needs to have a NFSv4 client installed
-- for Ubuntu you can install a NFSv4 client via `apt install nfs-common`
-- for RPM based distros you can install a NFSv4 client via `yum install nfs-utils`
+To be able to use RWX volumes, each client node needs to have a NFSv4 client installed.
 
-if the NFSv4 client is not available on the node, when trying to mount the volume the below message will be part of the error.
+For Ubuntu you can install a NFSv4 client via:
+
+```
+apt install nfs-common
+```
+
+For RPM based distros you can install a NFSv4 client via:
+
+```
+yum install nfs-utils
+```
+
+If the NFSv4 client is not available on the node, when trying to mount the volume the below message will be part of the error:
 ```
 for several filesystems (e.g. nfs, cifs) you might need a /sbin/mount.<type> helper program.\n
 ```
 
-# Creation and Usage of a RWX volume
+# Creation and Usage of a RWX Volume
 
-For dynamically provisioned Longhorn volumes the access mode is based on the PVC's access mode.
+For dynamically provisioned Longhorn volumes, the access mode is based on the PVC's access mode.
 
-For manually created Longhorn volumes (restore, DR volume) the access mode can be specified during creation in the Longhorn UI,
-when creating a PV/PVC for a Longhorn volume via the UI the access mode of the PV/PVC will be based on the volumes access mode.
+For manually created Longhorn volumes (restore, DR volume) the access mode can be specified during creation in the Longhorn UI.
 
-One can change the Longhorn volumes access mode via the UI as long as the volume is not bound to a PVC.
+When creating a PV/PVC for a Longhorn volume via the UI, the access mode of the PV/PVC will be based on the volume's access mode.
+
+One can change the Longhorn volume's access mode via the UI as long as the volume is not bound to a PVC.
 
 For a Longhorn volume that gets used by a RWX PVC, the volume access mode will be changed to RWX.
 
-# Failure handling
-Any failure of the share-manager Pod (volume failure, node failure, etc) will lead to the Pod being recreated
-and the volumes `remountRequestedAt` flag to be set, which will lead to the workload Pods being deleted and Kubernetes
-recreating them. This functionality depends on the setting of [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](../../references/settings#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly)
-which by default is `true`. If the setting is disabled the workload Pods might end up with `io errors` on RWX volume failures.
-It's recommended to enable the above settings, to guarantee automatic workload failover in the case of issues with the RWX volume.
+# Failure Handling
 
-# Migration from previous external provisioner
+Any failure of the share-manager Pod (volume failure, node failure, etc) will lead to the Pod being recreated and the volume's `remountRequestedAt` flag to be set, which will lead to the workload Pods being deleted and Kubernetes
+recreating them. This functionality depends on the setting of [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly,](../../references/settings#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly)
+which by default is `true`. If the setting is disabled, the workload Pods might end up with `io errors` on RWX volume failures.
+
+It's recommended to enable the above settings to guarantee automatic workload failover in the case of issues with the RWX volume.
+
+# Migration from Previous External Provisioner
+
 The below PVC creates a Kubernetes job that can copy data from one volume to another.
-- Replace the `data-source-pvc` with the name of previous NFSv4 RWX PVC, that was created by Kubernetes.
+
+- Replace the `data-source-pvc` with the name of the previous NFSv4 RWX PVC that was created by Kubernetes.
 - Replace the `data-target-pvc` with the name of the new RWX PVC that you wish to use for your new workloads.
 
-You can manually create a new RWX Longhorn volume + PVC/PV or just create a RWX PVC then have Longhorn dynamically
-provision a volume for you. Both PVC's need to exist in the same namespace, if you where using a different namespace then
-default change the job's namespace below.
+You can manually create a new RWX Longhorn volume + PVC/PV, or just create a RWX PVC and then have Longhorn dynamically provision a volume for you.
+
+Both PVCs need to exist in the same namespace. If you were using a different namespace than the default, change the job's namespace below.
+
 ```yaml
 apiVersion: batch/v1
 kind: Job
