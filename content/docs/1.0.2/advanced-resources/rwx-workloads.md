@@ -13,9 +13,9 @@ The following diagram shows how the RWX support works:
 
 To enable RWX support you need to deploy the following files:
 
-- [01-security.yaml](https://github.com/longhorn/longhorn/blob/master/examples/rwx/01-security.yaml)
-- [02-longhorn-nfs-provisioner.yaml](https://github.com/longhorn/longhorn/blob/master/examples/rwx/02-longhorn-nfs-provisioner.yaml)
-- [03-rwx-test.yaml](https://github.com/longhorn/longhorn/blob/master/examples/rwx/03-rwx-test.yaml)
+- [01-security.yaml](https://github.com/longhorn/longhorn/blob/v1.0.2/examples/rwx/01-security.yaml)
+- [02-longhorn-nfs-provisioner.yaml](https://github.com/longhorn/longhorn/blob/v1.0.2/examples/rwx/02-longhorn-nfs-provisioner.yaml)
+- [03-rwx-test.yaml](https://github.com/longhorn/longhorn/blob/v1.0.2/examples/rwx/03-rwx-test.yaml)
 
 The `03-rwx-test.yaml` example deployment has four pods that share an RWX volume via NFS mounted at `/mnt/nfs-test`. Every second the pods append the current date and time to a shared log file under `/mnt/nfs-test/test.log`.
 
