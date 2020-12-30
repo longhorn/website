@@ -1,8 +1,8 @@
-{{ if or .Prev .Next }}
+{{ if or .PrevInSection .NextInSection }}
 <section class="section">
   <div class="container">
     <nav class="pagination" role="navigation" aria-label="pagination">
-      {{ with .Next }}
+      {{ with .NextInSection }}
       <a class="pagination-previous has-text-white has-background-primary" href="{{ .RelPermalink }}">
         <span class="icon">
           <ion-icon name="arrow-back-outline"></ion-icon>
@@ -13,7 +13,7 @@
       </a>
       {{ end }}
 
-      {{ with .Prev }}
+      {{ with .PrevInSection }}
       <a class="pagination-next has-text-white has-background-primary" href="{{ .RelPermalink }}">
         <span>
           {{ .Title }}
