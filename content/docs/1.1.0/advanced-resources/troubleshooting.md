@@ -19,7 +19,7 @@ The correct directory can be found by running `ps aux|grep kubelet` on the host 
 
 ## Troubleshooting guide
 
-There are a few compontents in Longhorn: Manager, Engine, Driver and UI. By default, all of those components run as pods in the `longhorn-system` namespace in the Kubernetes cluster.
+There are a few components in Longhorn: Manager, Engine, Driver and UI. By default, all of those components run as pods in the `longhorn-system` namespace in the Kubernetes cluster.
 
 Most of the logs are included in the Support Bundle. You can click the **Generate Support Bundle** link at the bottom of the UI to download a zip file that contains Longhorn-related configuration and logs.
 
