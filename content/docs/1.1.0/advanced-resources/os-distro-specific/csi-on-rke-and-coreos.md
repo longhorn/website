@@ -58,7 +58,7 @@ sudo su
 systemctl start iscsid
 ```
 
-### Troublshooting
+### Troubleshooting
 
 #### Failed to get arg root-dir: Cannot get kubelet root dir, no related proc for root-dir detection ...
 

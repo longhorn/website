@@ -20,7 +20,7 @@ We recommend the following setup for deploying Longhorn in production.
 - 3 nodes
 - 4 vCPUs per node
 - 4 GiB per node
-- SSD/NVMe or similiar performance block device on the node for storage
+- SSD/NVMe or similar performance block device on the node for storage
     - We don't recommend using spinning disks with Longhorn, due to low IOPS.
 
 ## Software

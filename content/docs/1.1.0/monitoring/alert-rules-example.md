@@ -86,7 +86,7 @@ spec:
       expr: (longhorn_instance_manager_cpu_usage_millicpu/longhorn_instance_manager_cpu_requests_millicpu) * 100 > 300
       for: 5m
       labels:
-        issue: Longhorn instance manager {{$labels.instance_manager}} on {{$labels.node}} comsumes 3 times the CPU request.
+        issue: Longhorn instance manager {{$labels.instance_manager}} on {{$labels.node}} consumes 3 times the CPU request.
         severity: warning
     - alert: LonghornNodeCPUUsageWarning
       annotations:

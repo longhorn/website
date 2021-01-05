@@ -43,5 +43,5 @@ Here, we will have an example that explains how volume `size` and `actual size` 
 {{< figure src="/img/screenshots/volumes-and-nodes/volume-size-example-3.png" >}}
 5. Delete snapshot#1 and wait for snapshot purge complete. See Figure 4 of the illustration.
     - Here Longhorn actually coalesces the snapshot#1 with the snapshot#2.
-    - For the overlapping part during the coalesce, the newer data (data#2) will be retained in the blocks. Then some historical data is removed and the volume gets shrinked (from 6.1Gi to 4.65Gi in the example).
+    - For the overlapping part during the coalesce, the newer data (data#2) will be retained in the blocks. Then some historical data is removed and the volume gets shrunk (from 6.1Gi to 4.65Gi in the example).
 {{< figure src="/img/screenshots/volumes-and-nodes/volume-size-example-4.png" >}}
