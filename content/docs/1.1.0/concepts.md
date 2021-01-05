@@ -94,7 +94,7 @@ To install Longhorn in an air gapped environment, refer to [this section](../adv
 
 Longhorn is managed in Kubernetes via a [CSI Plugin.](https://kubernetes-csi.github.io/docs/) This allows for easy installation of the Longhorn plugin.
 
-The Kubernetes CSI plugin calls Longhorn to create volumes to create persistent data for a Kubernetes workload. The CSI plugin gives you the ability to attach, create, delete, attach, detach, mount the volume, and take snapshots of the volume. All other functionality provided by Longhorn is implemented through the Longhorn UI.
+The Kubernetes CSI plugin calls Longhorn to create volumes to create persistent data for a Kubernetes workload. The CSI plugin gives you the ability to create, delete, attach, detach, mount the volume, and take snapshots of the volume. All other functionality provided by Longhorn is implemented through the Longhorn UI.
 
 The Kubernetes cluster internally uses the CSI interface to communicate with the Longhorn CSI plugin. And the Longhorn CSI plugin communicates with the Longhorn Manager using the Longhorn API.
 
