@@ -12,7 +12,7 @@ If there is a new version of Longhorn available, you will see an `Upgrade Availa
 
 Each node in the Kubernetes cluster where Longhorn is installed must fulfill [these requirements.](../#installation-requirements)
 
-[This script](https://github.com/longhorn/longhorn/blob/master/scripts/environment_check.sh) can be used to check the Longhorn environment for potential issues.
+[This script](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/scripts/environment_check.sh) can be used to check the Longhorn environment for potential issues.
     
 ## Installation
 

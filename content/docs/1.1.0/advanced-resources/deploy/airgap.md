@@ -16,19 +16,19 @@ Longhorn can be installed in an air gapped environment by using a manifest file,
   - Deploy Kubernetes CSI driver components images to your own registry.
 
 #### Note:
-  - A full list of all needed images is in [longhorn-images.txt](https://raw.githubusercontent.com/longhorn/longhorn/v1.1.0/deploy/longhorn-images.txt). First, download the images list by running:
+  - A full list of all needed images is in [longhorn-images.txt](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn-images.txt). First, download the images list by running:
     ```shell
-    wget https://raw.githubusercontent.com/longhorn/longhorn/v1.1.0/deploy/longhorn-images.txt
+    wget https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn-images.txt
     ```
-  - We provide a script, [save-images.sh](https://raw.githubusercontent.com/longhorn/longhorn/v1.1.0/scripts/save-images.sh), to quickly pull the above `longhorn-images.txt` list. If you specify a `tar.gz` file name for flag `--images`, the script will save all images to the provided filename. In the example below, the script pulls and saves Longhorn images to the file `longhorn-images.tar.gz`. You then can copy the file to your air-gap environment. On the other hand, if you don't specify the file name, the script just pulls the list of images to your computer.
+  - We provide a script, [save-images.sh](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/save-images.sh), to quickly pull the above `longhorn-images.txt` list. If you specify a `tar.gz` file name for flag `--images`, the script will save all images to the provided filename. In the example below, the script pulls and saves Longhorn images to the file `longhorn-images.tar.gz`. You then can copy the file to your air-gap environment. On the other hand, if you don't specify the file name, the script just pulls the list of images to your computer.
     ```shell
-    wget https://raw.githubusercontent.com/longhorn/longhorn/v1.1.0/scripts/save-images.sh
+    wget https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/save-images.sh
     chmod +x save-images.sh
     ./save-images.sh --image-list longhorn-images.txt --images longhorn-images.tar.gz
     ```
-  - We provide another script, [load-images.sh](https://raw.githubusercontent.com/longhorn/longhorn/v1.1.0/scripts/load-images.sh), to push Longhorn images to your private registry. If you specify a `tar.gz` file name for flag `--images`, the script loads images from the `tar` file and pushes them. Otherwise, it will find images in your local Docker and push them. In the example below, the script loads images from the file `longhorn-images.tar.gz` and pushes them to `<YOUR-PRIVATE-REGISTRY>`
+  - We provide another script, [load-images.sh](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/load-images.sh), to push Longhorn images to your private registry. If you specify a `tar.gz` file name for flag `--images`, the script loads images from the `tar` file and pushes them. Otherwise, it will find images in your local Docker and push them. In the example below, the script loads images from the file `longhorn-images.tar.gz` and pushes them to `<YOUR-PRIVATE-REGISTRY>`
     ```shell
-    wget https://raw.githubusercontent.com/longhorn/longhorn/v1.1.0/scripts/load-images.sh
+    wget https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/load-images.sh
     chmod +x load-images.sh
     ./load-images.sh --image-list longhorn-images.txt --images longhorn-images.tar.gz --registry <YOUR-PRIVATE-REGISTRY>
     ```
@@ -42,7 +42,7 @@ Longhorn can be installed in an air gapped environment by using a manifest file,
 
 1. Get Longhorn Deployment manifest file
 
-    `wget https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml`
+    `wget https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml`
 
 2. Create Longhorn namespace
 
@@ -170,7 +170,7 @@ Longhorn can be installed in an air gapped environment by using a manifest file,
 
 ## Using a Helm Chart
 
-In v1.1.0, Longhorn automatically adds <REGISTRY_URL> prefix to images. You simply need to set the registryUrl parameters to pull images from your private registry.
+In v{{< current-version >}}, Longhorn automatically adds <REGISTRY_URL> prefix to images. You simply need to set the registryUrl parameters to pull images from your private registry.
 
 > **Note:** Once you set registryUrl to your private registry, Longhorn tries to pull images from the registry exclusively. Make sure all Longhorn components' images are in the registry otherwise Longhorn will fail to pull images.
 
@@ -347,4 +347,4 @@ If you keep the images' names as recommended [here](./#recommendation), you only
 ## Recommendation:
 It's highly recommended not to manipulate image tags, especially instance manager image tags such as v1_20200301, because we intentionally use the date to avoid associating it with a Longhorn version.
 
-The images of Longhorn's components are hosted in Dockerhub under the `longhornio` account. For example, `longhornio/longhorn-manager:v1.1.0`. It's recommended to keep the account name, `longhornio`, the same when you push the images to your private registry. This helps avoid unnecessary configuration issues.
+The images of Longhorn's components are hosted in Dockerhub under the `longhornio` account. For example, `longhornio/longhorn-manager:v{{< current-version >}}`. It's recommended to keep the account name, `longhornio`, the same when you push the images to your private registry. This helps avoid unnecessary configuration issues.

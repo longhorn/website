@@ -53,7 +53,7 @@ Note `jq` maybe required to be installed locally prior to running env check scri
 To run script:
 
 ```shell
-curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/master/scripts/environment_check.sh | bash
+curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh | bash
 ```
 
 Example result:
@@ -104,7 +104,7 @@ yum install iscsi-initiator-utils
 
 We also provides an `iscsi` installer to make it easier for users to install `open-iscsi` automatically:
 ```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/iscsi/longhorn-iscsi-installation.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/iscsi/longhorn-iscsi-installation.yaml
 ```
 After the deployment, run the following command to check pods' status of the installer:
 ```

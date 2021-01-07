@@ -5,13 +5,13 @@ weight: 1
 
 ### Upgrading from v1.0.x
 
-We only support upgrading to v1.1.0 from v1.0.x. For other versions, please upgrade to v1.0.x first.
+We only support upgrading to v{{< current-version >}} from v1.0.x. For other versions, please upgrade to v1.0.x first.
 
-Engine live upgrade is supported from v1.0.x to v1.1.0.
+Engine live upgrade is supported from v1.0.x to v{{< current-version >}}.
 
 For airgap upgrades when Longhorn is installed as a Rancher app, you will need to modify the image names and remove the registry URL part.
 
-For example, the image `registry.example.com/longhorn/longhorn-manager:v1.1.0` is changed to `longhorn/longhorn-manager:v1.1.0` in Longhorn images section. For more information, see the air gap installation steps [here.](../../../advanced-resources/deploy/airgap/#using-a-rancher-app)
+For example, the image `registry.example.com/longhorn/longhorn-manager:v{{< current-version >}}` is changed to `longhorn/longhorn-manager:v{{< current-version >}}` in Longhorn images section. For more information, see the air gap installation steps [here.](../../../advanced-resources/deploy/airgap/#using-a-rancher-app)
 
 #### Preparing for the Upgrade
 
@@ -32,7 +32,7 @@ If Longhorn was installed using a Helm Chart, or if it was installed as Rancher 
 To upgrade with kubectl, run this command:
 
 ```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml
 ```
 
 To upgrade with Helm, run this command:
@@ -87,6 +87,6 @@ Next, [upgrade Longhorn engine.](../upgrade-engine)
 
 - To clean up the deprecated StorageClass, run this command:
     ```
-    kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v1.0.0/examples/storageclass.yaml
+    kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/storageclass.yaml
     ```
 
