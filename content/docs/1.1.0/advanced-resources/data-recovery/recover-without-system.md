@@ -5,7 +5,7 @@ weight: 5
 
 This command gives users the ability to restore a backup to a `raw` image or a `qcow2` image. If the backup is based on a backing file, users should provide the backing file as a `qcow2` image with `--backing file` parameter.
 
-1. Copy the [yaml template](https://github.com/longhorn/longhorn/blob/master/examples/restore_to_file.yaml.template): Make a copy of `examples/restore_to_file.yaml.template` as e.g. `restore.yaml`.
+1. Copy the [yaml template](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/examples/restore_to_file.yaml.template): Make a copy of `examples/restore_to_file.yaml.template` as e.g. `restore.yaml`.
     
 2. Set the node which the output file should be placed on by replacing `<NODE_NAME>`, e.g. `node1`.
 
