@@ -7,12 +7,12 @@ weight: 1
 Before you create Kubernetes volumes, you must first create a storage class. Use following command to create a StorageClass called `longhorn`.
 
 ```
-kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/examples/storageclass.yaml
+kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/storageclass.yaml
 ```
 
 Now you can create a pod using Longhorn like this:
 ```
-kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/examples/pvc.yaml
+kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/pvc.yaml
 ```
 
 The above yaml file contains two parts:
