@@ -18,7 +18,7 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
 1. Use following command to create a StorageClass called `longhorn`:
 
     ```
-    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/examples/storageclass.yaml
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/storageclass.yaml
     ```
 
     The following example StorageClass is created:
@@ -44,7 +44,7 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
 2. Create a Pod that uses Longhorn volumes by running this command:
 
     ```
-    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/examples/pod_with_pvc.yaml
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/pod_with_pvc.yaml
     ```
 
     A Pod named `volume-test` is launched, along with a PersistentVolumeClaim named `longhorn-volv-pvc`. The PersistentVolumeClaim references the Longhorn StorageClass:
