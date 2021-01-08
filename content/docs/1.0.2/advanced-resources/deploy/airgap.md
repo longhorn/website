@@ -42,7 +42,7 @@ Longhorn can be installed in an air gapped environment by using a manifest file,
 
 1. Get Longhorn Deployment manifest file
 
-    `wget https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml`
+    `wget https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml`
 
 2. Create Longhorn namespace
 

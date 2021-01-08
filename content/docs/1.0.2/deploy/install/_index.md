@@ -53,7 +53,7 @@ Note `jq` maybe required to be installed locally prior to running env check scri
 To run script:
 
 ```shell
-curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/master/scripts/environment_check.sh | bash
+curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh | bash
 ```
 
 Example result:
