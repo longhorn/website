@@ -33,13 +33,13 @@ helm delete longhorn --purge
 1. Create the uninstallation job to clean up CRDs from the system and wait for success:
 
     ```
-    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/uninstall/uninstall.yaml
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/uninstall/uninstall.yaml
     kubectl get job/longhorn-uninstall -w
     ```
 
     Example output:
     ```
-    $ kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/uninstall/uninstall.yaml
+    $ kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/uninstall/uninstall.yaml
     serviceaccount/longhorn-uninstall-service-account created
     clusterrole.rbac.authorization.k8s.io/longhorn-uninstall-role created
     clusterrolebinding.rbac.authorization.k8s.io/longhorn-uninstall-bind created
@@ -54,12 +54,12 @@ helm delete longhorn --purge
 
 2. Remove remaining components:
     ```
-    kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml
-    kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/master/uninstall/uninstall.yaml
+    kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml
+    kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/uninstall/uninstall.yaml
     ```
  
-> **Tip:** If you try `kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml` first and get stuck there, 
-pressing `Ctrl C` then running `kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/uninstall/uninstall.yaml` can also help you remove Longhorn. Finally, don't forget to cleanup remaining components.
+> **Tip:** If you try `kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml` first and get stuck there, 
+pressing `Ctrl C` then running `kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/uninstall/uninstall.yaml` can also help you remove Longhorn. Finally, don't forget to cleanup remaining components.
 
 
 

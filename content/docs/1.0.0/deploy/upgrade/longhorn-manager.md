@@ -68,7 +68,7 @@ plugin_watcher.go:212] Removing socket path /var/lib/kubelet/plugins_registry/io
 To upgrade with kubectl, run this command:
 
 ```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml
 ```
 
 To upgrade with Helm, run this command:

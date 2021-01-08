@@ -16,7 +16,7 @@ weight: 2
 
 1. Get Longhorn Deployment manifest file
 
-    `wget https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml`
+    `wget https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml`
 
 2. Create Longhorn namespace
 
