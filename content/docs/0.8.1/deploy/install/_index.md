@@ -42,7 +42,7 @@ Each node in the Kubernetes cluster where Longhorn is installed must fulfill the
 We've written a script to help you gather enough information about the factors. Before installing, run:
 
 ```shell
-curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/master/scripts/environment_check.sh | bash
+curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh | bash
 ```
 
 Example result:

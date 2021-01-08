@@ -8,7 +8,7 @@ weight: 8
 
 Each node in the Kubernetes cluster where Longhorn will be installed must fulfill [these requirements.](../#installation-requirements)
 
-[This script](https://github.com/longhorn/longhorn/blob/master/scripts/environment_check.sh) can be used to check the Longhorn environment for potential issues.
+[This script](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/scripts/environment_check.sh) can be used to check the Longhorn environment for potential issues.
 
 The initial settings for Longhorn can be customized by [editing the deployment configuration file.](../../../advanced-resources/deploy/customizing-default-settings/#using-the-longhorn-deployment-yaml-file)
 
@@ -17,7 +17,7 @@ The initial settings for Longhorn can be customized by [editing the deployment c
 1. Install Longhorn on any Kubernetes cluster using this command:
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml
+    kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml
     ```
 
     One way to monitor the progress of the installation is to watch pods being created in the `longhorn-system` namespace:
