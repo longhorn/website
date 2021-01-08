@@ -6,7 +6,7 @@
 You can install Longhorn on any Kubernetes cluster using kubectl with this command:
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml
 ```
 
 One way to monitor the progress of the installation is to watch Pods being created in the `longhorn-system` namespace:

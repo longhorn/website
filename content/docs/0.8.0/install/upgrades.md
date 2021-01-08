@@ -15,7 +15,7 @@ The steps to upgrade Longhorn manager are the same as the installation steps. In
 
 ##### Using kubectl
 ```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml
 ```
 
 ##### Using Helm
@@ -113,7 +113,7 @@ We'll use NFS backupstore for this example.
 1. Execute following command to create the backupstore
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/backupstores/nfs-backupstore.yaml
+    kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/backupstores/nfs-backupstore.yaml
     ```
 
 2. On Longhorn UI Settings page, set Backup Target to `nfs://longhorn-test-nfs-svc.default:/opt/backupstore` and click `Save`.
