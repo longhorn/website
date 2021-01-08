@@ -9,6 +9,7 @@ This repo houses the assets used to build the website for Longhorn, available at
 To run the website locally, you need to have the [Hugo](https://gohugo.io) static site generator installed (installation instructions [here](https://gohugo.io/getting-started/installing/)). Once Hugo is installed:
 
 ```bash
+npm install bulma
 hugo server --buildDrafts --buildFuture
 ```
 
