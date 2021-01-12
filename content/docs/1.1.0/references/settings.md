@@ -25,11 +25,15 @@ weight: 1
   - [Disable Revision Counter](#disable-revision-counter)
   - [System Pods Image Pull Policy](#system-pods-image-pull-policy)
   - [Auto Cleanup system Generated Snapshot](#auto-cleanup-system-generated-snapshot)
+  - [Allow Node Drain with the Last Healthy Replica](#allow-node-drain-with-the-last-healthy-replica)
+  - [Replica Replenishment Wait Interval](#replica-replenishment-wait-interval)
+  - [System Managed Pod Image Pull Policy](#system-managed-pod-image-pull-policy)
 
 - [Backups](#backups)
   - [Backup Target](#backup-target)
   - [Backup Target Credential Secret](#backup-target-credential-secret)
   - [Backupstore Poll Interval](#backupstore-poll-interval)
+  - [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
 
 - [Scheduling](#scheduling)
   - [Replica Node Level Soft Anti-Affinity](#replica-node-level-soft-anti-affinity)
@@ -179,6 +183,35 @@ See [Kubernetes document on images](https://kubernetes.io/docs/concepts/containe
 #### Auto Cleanup System Generated Snapshot
 
 Longhorn will generate system snapshot during replica rebuild, and if a user doesn't setup a recurring snapshot schedule, all the system generated snapshots would be left in the replica, and user has to delete them manually, this setting allow Longhorn to automatically cleanup system generated snapshot after replica rebuild.
+
+#### Allow Node Drain with the Last Healthy Replica
+> Default: `false`
+
+By default, Longhorn will block `kubectl drain` action on a node if the node contains the last healthy replica of a volume.
+
+If this setting is enabled, Longhorn will not block `kubectl drain` action on a node even if the node contains the last healthy replica of a volume.
+
+#### Replica Replenishment Wait Interval
+> Default: `600`
+
+When there is at least one failed replica volume in a degraded volume, this interval in seconds determines how long Longhorn will wait at most in order to reuse the existing data of the failed replicas rather than directly creating a new replica for this volume.
+
+Warning: This wait interval works only when there is at least one failed replica in the volume. And this option may block the rebuilding for a while.
+
+#### System Managed Pod Image Pull Policy
+> Default: `if-not-present`
+
+This setting defines the Image Pull Policy of Longhorn system managed pods, e.g. instance manager, engine image, CSI driver, etc.
+
+Notice that the new Image Pull Policy will only apply after the system managed pods restart.
+
+This setting definition is exactly the same as that of in Kubernetes. Here are the available options:
+
+- `always`. Every time the kubelet launches a container, the kubelet queries the container image registry to resolve the name to an image digest. If the kubelet has a container image with that exact digest cached locally, the kubelet uses its cached image; otherwise, the kubelet downloads (pulls) the image with the resolved digest, and uses that image to launch the container.
+
+- `if-not-present`. The image is pulled only if it is not already present locally.
+
+- `never`. The image is assumed to exist locally. No attempt is made to pull the image.
 
 ### Backups
 
