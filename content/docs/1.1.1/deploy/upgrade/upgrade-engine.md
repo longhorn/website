@@ -1,9 +1,9 @@
 ---
-title: Upgrading Longhorn Engine
+title: Manually Upgrading Longhorn Engine
 weight: 2
 ---
 
-In this section, you'll learn how to upgrade the Longhorn Engine from the Longhorn UI.
+In this section, you'll learn how to manually upgrade the Longhorn Engine from the Longhorn UI.
 
 ### Prerequisites
 

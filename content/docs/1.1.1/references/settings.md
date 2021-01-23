@@ -9,6 +9,7 @@ weight: 1
   - [Auto Cleanup System Generated Snapshot](#auto-cleanup-system-generated-snapshot)
   - [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly)
   - [Automatic Salvage](#automatic-salvage)
+  - [Concurrent Automatic Engine Upgrade Per Node Limit](#concurrent-automatic-engine-upgrade-per-node-limit)
   - [Create Default Disk on Labeled Nodes](#create-default-disk-on-labeled-nodes)
   - [Custom mkfs.ext4 parameters](#custom-mkfsext4-parameters)
   - [Custom Resource API Version](#custom-resource-api-version)
@@ -83,6 +84,14 @@ If disabled, Longhorn will not delete the workload pod that is managed by a cont
 > Default: `true`
 
 If enabled, volumes will be automatically salvaged when all the replicas become faulty e.g. due to network disconnection. Longhorn will try to figure out which replica(s) are usable, then use them for the volume.
+
+### Concurrent Automatic Engine Upgrade Per Node Limit
+
+> Default: `0`
+
+This setting controls how Longhorn automatically upgrades volumes' engines to the new default engine image after upgrading Longhorn manager.
+The value of this setting specifies the maximum number of engines per node that are allowed to upgrade to the default engine image at the same time.
+If the value is 0, Longhorn will not automatically upgrade volumes' engines to default version.
 
 #### Create Default Disk on Labeled Nodes
 
