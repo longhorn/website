@@ -28,6 +28,7 @@ weight: 1
   - [Replica Replenishment Wait Interval](#replica-replenishment-wait-interval)
   - [System Managed Pod Image Pull Policy](#system-managed-pod-image-pull-policy)
   - [Volume Attachment Recovery Policy](#volume-attachment-recovery-policy)
+  - [Backing Image Cleanup Wait Interval](#backing-image-cleanup-wait-interval)
 - [Backups](#backups)
   - [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
   - [Backup Target](#backup-target)
@@ -229,6 +230,11 @@ Defines the Longhorn action when a Volume is stuck with a Deployment Pod on a fa
 - `wait`: Longhorn will wait to recover the Volume Attachment until all the terminating pods have passed their deletion grace period.
 - `never`: The default Kubernetes behavior of never deleting volume attachments on terminating pods. Longhorn will not recover the Volume Attachment from a failed node.
 - `immediate`: Longhorn will recover the Volume Attachment from the failed node as soon as there are pending replacement pods available.
+
+#### Backing Image Cleanup Wait Interval
+> Default: `60`
+
+This interval in minutes determines how long Longhorn will wait before cleaning up the backing image file when there is no replica in the disk using it.
 
 ### Backups
 
