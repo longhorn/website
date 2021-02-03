@@ -78,6 +78,12 @@ For GKE, we recommend using Ubuntu as the guest OS image since it contains`open-
 
 You may need to edit the cluster security group to allow SSH access.
 
+For SUSE and openSUSE, use this command:
+
+```
+zypper install open-iscsi
+```
+
 For Debian and Ubuntu, use this command:
 
 ```
