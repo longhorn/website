@@ -13,9 +13,10 @@ weight: 5
 4. Make sure `curl`, `findmnt`, `grep`, `awk` and `blkid` has been installed in all nodes of the Kubernetes cluster.
 5.  `open-iscsi` has been installed on all the nodes of the Kubernetes cluster, and `iscsid` daemon is running on all the nodes.
     1. For GKE, recommended Ubuntu as guest OS image since it contains open-iscsi already.
-    2. For Debian/Ubuntu, use `apt-get install open-iscsi` to install.
-    3. For RHEL/CentOS, use `yum install iscsi-initiator-utils` to install.
-    4. For EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`, 
+    2. For SUSE/openSUSE, use `zypper install open-iscsi` to install.
+    3. For Debian/Ubuntu, use `apt-get install open-iscsi` to install.
+    4. For RHEL/CentOS, use `yum install iscsi-initiator-utils` to install.
+    5. For EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`, 
        use `yum install iscsi-initiator-utils` to install. You may need to edit cluster security group to allow ssh access.
 6. A host filesystem supports `file extents` feature on the nodes to store the data. Currently we support:
     1. ext4
