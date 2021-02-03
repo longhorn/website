@@ -7,6 +7,7 @@ weight: 1
 -  Kubernetes v1.14+.
 -  `open-iscsi` has been installed on all the nodes of the Kubernetes cluster, and `iscsid` daemon is running on all the nodes. This is necessary, since Longhorn relies on `iscsiadm` on the host to provide persistent volumes to Kubernetes.
     - For GKE, recommended Ubuntu as guest OS image since it contains open-iscsi already.
+    - For SUSE/openSUSE, use `zypper install open-iscsi` to install.
     - For Debian/Ubuntu, use `apt-get install open-iscsi` to install.
     - For RHEL/CentOS, use `yum install iscsi-initiator-utils` to install.
     - For EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`,
