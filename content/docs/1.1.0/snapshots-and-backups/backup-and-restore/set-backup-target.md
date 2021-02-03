@@ -45,11 +45,13 @@ This page covers the following topics:
     }
     ```
 
-3. Create a Kubernetes secret with a name such as `aws-secret` in the namespace where longhorn is placed(`longhorn-system` by default). For help creating a secret, refer to the [Kubernetes documentation.](https://kubernetes.io/docs/concepts/configuration/secret/) The secret must be created in the `longhorn-system` namespace for Longhorn to access it. Put the following key-value pairs in the secret:
+3. Create a Kubernetes secret with a name such as `aws-secret` in the namespace where longhorn is placed(`longhorn-system` by default). The secret must be created in the `longhorn-system` namespace for Longhorn to access it:
 
     ```shell
-    AWS_ACCESS_KEY_ID: <your_aws_access_key_id>
-    AWS_SECRET_ACCESS_KEY: <your_aws_secret_access_key>
+    kubectl create secret generic <aws-secret> \
+        --from-literal=AWS_ACCESS_KEY_ID=<your-aws-access-key-id> \
+        --from-literal=AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key> \
+        -n longhorn-system
     ```
 
 4. Go to the Longhorn UI. In the top navigation bar, click **Settings.** In the Backup section, set **Backup Target** to:
@@ -75,17 +77,19 @@ This page covers the following topics:
     ```
     aws-secret
     ```
-    This is the secret name with AWS keys from the third step.
+    This is the secret name with AWS credential from the third step.
 
 **Result:** Longhorn can store backups in S3. To create a backup, see [this section.](../create-a-backup)
 
 **Note:** If you operate Longhorn behind a proxy and you want to use AWS S3 as the backupstore, you must provide Longhorn information about your proxy in the `aws-secret` as below:
 ```shell
-    AWS_ACCESS_KEY_ID: <your_aws_access_key_id>
-    AWS_SECRET_ACCESS_KEY: <your_aws_secret_access_key>
-    HTTP_PROXY: <your_proxy_ip_and_port>
-    HTTPS_PROXY: <your_proxy_ip_and_port>
-    NO_PROXY: <excluded-ip-list>
+kubectl create secret generic <aws-secret> \
+    --from-literal=AWS_ACCESS_KEY_ID=<your-aws-access-key-id> \
+    --from-literal=AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key> \
+    --from-literal=HTTP_PROXY=<your-proxy-ip-and-port> \
+    --from-literal=HTTPS_PROXY=<your-proxy-ip-and-port> \
+    --from-literal=NO_PROXY=<excluded-ip-list> \
+    -n longhorn-system
 ```
 
 Make sure `NO_PROXY` contains the network addresses, network address ranges and domains that should be excluded from using the proxy. In order for Longhorn to operate, the minimum required values for `NO_PROXY` are:
