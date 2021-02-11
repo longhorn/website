@@ -46,7 +46,7 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
         upgrade-checker: false
         default-replica-count: 2
         default-data-locality: disabled
-        guaranteed-engine-cpu: 0.25
+        guaranteed-engine-cpu:
         default-longhorn-static-storage-class: longhorn-static-example
         backupstore-poll-interval: 500
         taint-toleration: key1=value1:NoSchedule; key2:NoExecute
@@ -57,6 +57,8 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
         volume-attachment-recovery-policy: never
         node-down-pod-deletion-policy: do-nothing
         mkfs-ext4-parameters: -O ^64bit,^metadata_csum
+        guaranteed-engine-manager-cpu: 15
+        guaranteed-replica-manager-cpu: 15
     ---
     ```
 
@@ -93,7 +95,7 @@ You can also provide a copy of the `values.yaml` file with the default settings 
       upgradeChecker: false
       defaultReplicaCount: 2
       defaultDataLocality: disabled
-      guaranteedEngineCPU: 0.25
+      guaranteedEngineCPU:
       defaultLonghornStaticStorageClass: longhorn-static-example
       backupstorePollInterval: 500
       taintToleration: key1=value1:NoSchedule; key2:NoExecute
@@ -104,6 +106,8 @@ You can also provide a copy of the `values.yaml` file with the default settings 
       volumeAttachmentRecoveryPolicy: never
       nodeDownPodDeletionPolicy: do-nothing
       mkfsExt4Parameters: -O ^64bit,^metadata_csum
+      guaranteed-engine-manager-cpu: 15
+      guaranteed-replica-manager-cpu: 15
     ```
 
 3. Run Helm with `values.yaml`:

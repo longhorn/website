@@ -11,7 +11,7 @@ We recommend the following setup for deploying Longhorn in production.
 - [Configuring Default Disks Before and After Installation](#configuring-default-disks-before-and-after-installation)
 - [Deploying Workloads](#deploying-workloads)
 - [Volume Maintenance](#volume-maintenance)
-- [Guaranteed Engine CPU](#guaranteed-engine-cpu)
+- [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu)
 - [StorageClass](#storageclass)
 - [Scheduling Settings](#scheduling-settings)
 
@@ -77,19 +77,17 @@ For each volume, schedule at least one recurring backup. If you must run Longhor
 
 Longhorn system will create snapshots automatically when rebuilding a replica. Recurring snapshots or backups can also automatically clean up the system-generated snapshot.
 
-## Guaranteed Engine CPU
+## Guaranteed Instance Manager CPU
 
-We recommend allowing Longhorn Engine to have guaranteed CPU allocation. The value is how many CPUs should be reserved for each Engine/Replica Instance Manager Pod created by Longhorn. By default, the value is 0.25 CPUs.
+We recommend allowing Longhorn to have CPU requests set for engine/replica manager pods.
 
-In order to prevent unexpected volume crash, you can use the following formula to calculate an appropriate value for this setting:
-```
-Number of vCPUs = The estimated max Longhorn volume/replica count on a node * 0.1
-```
-The result of above calculation doesn't mean that's the maximum CPU resources the Longhorn workloads require. To fully exploit the Longhorn volume I/O performance, you can allocate/guarantee more CPU resources via this setting.
+To be precise, you can set the percentage of a node total allocatable CPU reserved for all engine/replica manager pods by modifying settings `Guaranteed Engine Manager CPU` and `Guaranteed Replica Manager CPU`.
 
-If it's hard to estimate the volume/replica count now, you can leave it with the default value, or allocate 1/8 of total CPU of a node. Then you can tune it when there is no running workload using Longhorn volumes.
+If you want to set a concrete value (milli CPU amount) for engine/replica manager pods on a specific node, you can update the fields `Engine Manager CPU Request` or  `Replica Manager CPU Request` of the node. Notice that these 2 fields will overwrite the above settings for the specific node.
 
-For details, refer to the [settings reference.](../references/settings/#guaranteed-engine-cpu)
+The setting `Guarantee Engine CPU` is deprecated. For the system upgraded from old versions, Longhorn v1.1.1 will set the node fields mentioned above automatically to the same value as the deprecated setting then clean up the setting.
+
+For details, refer to the settings references [`Guaranteed Engine Manager CPU`](../references/settings/#guaranteed-engine-manager-cpu) and [`Guaranteed Replica Manager CPU`](../references/settings/#guaranteed-replica-manager-cpu).
 
 ## StorageClass
 

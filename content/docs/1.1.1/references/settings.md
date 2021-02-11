@@ -43,10 +43,12 @@ weight: 1
   - [Storage Over Provisioning Percentage](#storage-over-provisioning-percentage)
 - [Danger Zone](#danger-zone)
   - [Disable Replica Rebuild](#disable-replica-rebuild)
-  - [Guaranteed Engine CPU](#guaranteed-engine-cpu)
+  - [Guaranteed Engine Manager CPU](#guaranteed-engine-manager-cpu)
+  - [Guaranteed Replica Manager CPU](#guaranteed-replica-manager-cpu)
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
   - [Priority Class](#priority-class)
-    - [Recommendations for the Guaranteed Engine CPU Allocation](#recommendations-for-the-guaranteed-engine-cpu-allocation)
+- [Deprecated](#deprecated)
+  - [Guaranteed Engine CPU](#guaranteed-engine-cpu)
 
 ### Customizing Default Settings
 
@@ -328,25 +330,48 @@ This value can be lowered to avoid overprovisioning storage. See [Multiple Disks
 
 By disable replica rebuild, there won't be any new rebuild cross the whole cluster. The [Disks or Nodes Eviction Support](../../volumes-and-nodes/disks-or-nodes-eviction) and [Data Locality](../../high-availability/data-locality) feature won't work. But any restore features and currently rebuilding replica would still work as expected.
 
-#### Guaranteed Engine CPU
+#### Guaranteed Engine Manager CPU
 
-> Default: `0.25`
+> Default: `12`
 
-Longhorn uses CPU resources on the node to serve the Longhorn Volumes. The Guaranteed Engine CPU option will request Kubernetes to reserve a certain amount of CPU for Longhorn Instance Manager Pods, which contain the running processes. The value is how many CPUs should be reserved for each Engine/Replica Instance Manager Pod created by Longhorn. This will help maintain engine stability during high node workload.
+This integer value indicates what percentage of the total allocatable CPU on each node will be reserved for each engine manager Pod. For example, 10 means 10% of the total CPU on a node will be allocated to each engine manager pod on this node. This will help maintain engine stability during high node workload.
 
-This number only applies to the Engine/Replica Manager Pods created after the setting takes effect.
+In order to prevent an unexpected volume engine crash as well as guarantee a relatively acceptable I/O performance, you can use the following formula to calculate a value for this setting:
 
-In order to prevent unexpected volume crash, you can use the following formula to calculate an appropriate value for this setting:
-
-```
-Number of vCPUs = The estimated max Longhorn volume/replica count on a node * 0.1
-```
+    Guaranteed Engine Manager CPU = The estimated max Longhorn volume engine count on a node * 0.1 / The total allocatable CPUs on the node * 100.
 
 The result of above calculation doesn't mean that's the maximum CPU resources the Longhorn workloads require. To fully exploit the Longhorn volume I/O performance, you can allocate/guarantee more CPU resources via this setting.
 
-If it's hard to estimate the volume/replica count now, you can leave it with the default value, or allocate 1/8 of total CPU of a node. Then you can tune it when there is no running workload using Longhorn volumes.
+If it's hard to estimate the usage now, you can leave it with the default value, which is 12%. Then you can tune it when there is no running workload using Longhorn volumes.
 
-> **Warning:** This setting should be changed only when all the volumes on the nodes are detached. Changing the setting will result in all the Instance Manager Pods restarting, which will automatically detach all the attached volumes, and could cause a workload outage.
+> **Warning:**
+>  - Value 0 means removing the CPU requests from spec of engine manager pods.
+>  - Considering the possible number of new instance manager pods in a further system upgrade, this integer value ranges from 0 to 40. And the total combined with the setting 'Guaranteed Replica Manager CPU' should not be greater than 40.
+>  - One more set of instance manager pods may need to be deployed when the Longhorn system is upgraded. If current available CPUs of the nodes are not enough for the new instance manager pods, you need to detach the volumes using the oldest instance manager pods so that Longhorn can clean up the old pods automatically and release the CPU resources. And the new pods with the latest instance manager image will be launched then.
+>  - This global setting will be ignored for a node if the field "EngineManagerCPURequest" on the node is set.
+>  - After this setting is changed, all engine manager pods using this global setting on all the nodes will be automatically restarted. In other words, DO NOT CHANGE THIS SETTING WITH ATTACHED VOLUMES.
+
+#### Guaranteed Replica Manager CPU
+
+> Default: `12`
+
+Similar to "Guaranteed Engine Manager CPU", this integer value indicates what percentage of the total allocatable CPU on each node will be reserved for each replica manager Pod. For example, 10 means 10% of the total CPU on a node will be allocated to each replica manager pod on this node. This will help maintain replica stability during high node workload.
+
+In order to prevent an unexpected volume replica crash as well as guarantee a relatively acceptable IO performance, you can use the following formula to calculate a value for this setting:
+
+    Guaranteed Replica Manager CPU = The estimated max Longhorn volume replica count on a node * 0.1 / The total allocatable CPUs on the node * 100.
+
+The result of above calculation doesn't mean that's the maximum CPU resources the Longhorn workloads require. To fully exploit the Longhorn volume I/O performance, you can allocate/guarantee more CPU resources via this setting.
+
+If it's hard to estimate the usage now, you can leave it with the default value, which is 12%. Then you can tune it when there is no running workload using Longhorn volumes.
+
+> **Warning:**
+>  - Value 0 means removing the CPU requests from specs of replica manager pods.
+>  - Considering the possible number of new instance manager pods in a further system upgrade, this integer value ranges from 0 to 40. And the total combined with the setting 'Guaranteed Engine Manager CPU' should not be greater than 40.
+>  - One more set of instance manager pods may need to be deployed when the Longhorn system is upgraded. If current available CPUs of the nodes are not enough for the new instance manager pods, you need to detach the volumes using the oldest instance manager pods so that Longhorn can clean up the old pods automatically and release the CPU resources. And the new pods with the latest instance manager image will be launched then.
+>  - This global setting will be ignored for a node if the field "ReplicaManagerCPURequest" on the node is set.
+>  - After this setting is changed, all replica manager pods using this global setting on all the nodes will be automatically restarted. In other words, DO NOT CHANGE THIS SETTING WITH ATTACHED VOLUMES.
+
 
 #### Kubernetes Taint Toleration
 
@@ -372,14 +397,10 @@ The Priority Class setting will specify a Priority Class for the Longhorn worklo
 
 See [Priority Class](../../advanced-resources/deploy/priority-class) for details.
 
-##### Recommendations for the Guaranteed Engine CPU Allocation
+### Deprecated
 
-Since Longhorn exposes the Volume as a block device, it's critical to ensure the Longhorn Engine processes have enough CPU to satisfy the latency requirement of the Linux system.
+#### Guaranteed Engine CPU
 
-The Guaranteed Engine CPU should be set to **no more than a quarter** of what the node's available CPU resources, since the allocation is applied to the two Instance Managers on the node (engine and replica), and the future upgraded Instance Managers (another two for engine and replica).
+> Default:
 
-For example, if the setting value is 0.25 or 250m, that means you must have at least 0.25 \* 8 = 2 vCPUs per node. Otherwise, the new Instance Manager Pods may fail to start.
-
-There are normally two Instance Manager Pods per node: one for the engine processes, and another one for the replica processes. But when Longhorn is upgrading from an old version of the Instance Manager to a new version, there can be at most four Pods requesting the reserved CPU on the node.
-
-Taking other Kubernetes system components' CPU reservation request into consideration, we recommend having at least eight times the amount of CPU as the Guaranteed Engine CPU.
+This deprecated setting is replaced by 2 new settings "Guaranteed Engine Manager CPU" and "Guaranteed Replica Manager CPU" since Longhorn version v1.1.1.
