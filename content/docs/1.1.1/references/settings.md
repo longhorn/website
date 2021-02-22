@@ -6,7 +6,7 @@ weight: 1
 - [Customizing Default Settings](#customizing-default-settings)
 - [General](#general)
   - [Allow Node Drain with the Last Healthy Replica](#allow-node-drain-with-the-last-healthy-replica)
-  - [Auto Cleanup System Generated Snapshot](#auto-cleanup-system-generated-snapshot)
+  - [Automatically Cleanup System Generated Snapshot](#automatically-cleanup-system-generated-snapshot)
   - [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly)
   - [Automatic Salvage](#automatic-salvage)
   - [Concurrent Automatic Engine Upgrade Per Node Limit](#concurrent-automatic-engine-upgrade-per-node-limit)
@@ -27,7 +27,6 @@ weight: 1
   - [Registry Secret](#registry-secret)
   - [Replica Replenishment Wait Interval](#replica-replenishment-wait-interval)
   - [System Managed Pod Image Pull Policy](#system-managed-pod-image-pull-policy)
-  - [System Pods Image Pull Policy](#system-pods-image-pull-policy)
   - [Volume Attachment Recovery Policy](#volume-attachment-recovery-policy)
 - [Backups](#backups)
   - [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
@@ -62,7 +61,7 @@ By default, Longhorn will block `kubectl drain` action on a node if the node con
 
 If this setting is enabled, Longhorn will not block `kubectl drain` action on a node even if the node contains the last healthy replica of a volume.
 
-#### Auto Cleanup System Generated Snapshot
+#### Automatically Cleanup System Generated Snapshot
 
 > Default: `true`
 
@@ -85,7 +84,7 @@ If disabled, Longhorn will not delete the workload pod that is managed by a cont
 
 If enabled, volumes will be automatically salvaged when all the replicas become faulty e.g. due to network disconnection. Longhorn will try to figure out which replica(s) are usable, then use them for the volume.
 
-### Concurrent Automatic Engine Upgrade Per Node Limit
+#### Concurrent Automatic Engine Upgrade Per Node Limit
 
 > Default: `0`
 
@@ -220,14 +219,6 @@ This setting definition is exactly the same as that of in Kubernetes. Here are t
 - `if-not-present`. The image is pulled only if it is not already present locally.
 
 - `never`. The image is assumed to exist locally. No attempt is made to pull the image.
-
-#### System Pods Image Pull Policy
-
-> Default: `if-not-present`
-
-Defines the image Pull Policy of Longhorn system managed pods, e.g. instance manager, engine image, CSI driver, etc. The new image Pull Policy will only apply after the system managed pods restart.
-
-See [Kubernetes document on images](https://kubernetes.io/docs/concepts/containers/images/) for more information on the possible choices of the setting.
 
 #### Volume Attachment Recovery Policy
 
