@@ -73,7 +73,9 @@ To remove a node:
 
     If there are any other volumes remaining attached, detach them before continuing.
 
-1. Remove the node from Kubernetes, using:
+1. Remove the node from Longhorn using the `Delete` in the `Node` tab.
+
+    Or, remove the node from Kubernetes, using:
 
         kubectl delete node <node-name>
 
