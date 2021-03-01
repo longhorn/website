@@ -30,7 +30,7 @@ Once Longhorn has been installed in your Kubernetes cluster, you can access the 
 
     ```
 
-    In the example above, the IP is `10.20.245.110`.
+    In the example above, the ClusterIP is `10.20.245.110`. This IP is not accessible from your browser. There are three primary ways you can configure access: kubectl port-forward is the simplest. With the given example cluster-ip above, you would execute ```kubectl port-froward -n longhorn-system svc/longhorn-frontend 8090:80``` and then access the dashboard in your browser at ```http://127.0.0.1:8090```. Altenatively, you can expose through a load balancer or ingress controller (consult the Kubernetes documentation for more information on load balancer and ingress controller).
     
     > For Longhorn v0.8.0+, UI service type changed from `LoadBalancer` to `ClusterIP.`
 
