@@ -17,7 +17,7 @@ Authentication is not enabled by default for kubectl and Helm installations. In 
     ```
 3. Create an Ingress manifest `longhorn-ingress.yml` :
     ```
-    apiVersion: networking.k8s.io/v1beta1
+    apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:
       name: longhorn-ingress
@@ -35,10 +35,13 @@ Authentication is not enabled by default for kubectl and Helm installations. In 
       rules:
       - http:
           paths:
-          - path: /
+          - pathType: Prefix
+            path: "/"
             backend:
-              serviceName: longhorn-frontend
-              servicePort: 80
+              service:
+                name: longhorn-frontend
+                port:
+                  number: 80
     ```
 4. Create the Ingress:
     ```
@@ -68,7 +71,7 @@ metadata:
 type: Opaque
 
 $ echo "
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: longhorn-ingress
@@ -86,10 +89,13 @@ spec:
   rules:
   - http:
       paths:
-      - path: /
+      - pathType: Prefix
+        path: "/"
         backend:
-          serviceName: longhorn-frontend
-          servicePort: 80
+          service:
+            name: longhorn-frontend
+            port:
+              number: 80
 " | kubectl -n longhorn-system create -f -
 ingress.networking.k8s.io/longhorn-ingress created
 
@@ -146,7 +152,7 @@ $ curl -v http://97.107.142.125/ -u foo:bar
 <!DOCTYPE html>
 <html lang="en">
 ......
-```    
+```
 
 ## Additional Steps for AWS EKS Kubernetes Clusters
 
