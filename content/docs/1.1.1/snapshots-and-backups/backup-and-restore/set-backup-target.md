@@ -21,38 +21,103 @@ This page covers the following topics:
 
 1. Create a new bucket in [AWS S3.](https://aws.amazon.com/s3/)
 
-2. Follow the [guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) to create a new AWS IAM user, with the following permissions set. Edit the `Resource` section to use your S3 bucket name:
+2. Set permissions for Longhorn.
+   - Option 1: Set permissions with an IAM user.
 
-    ```json
-    {
-        "Version": "2012-10-17",
-        "Statement": [
+     1. Follow the [guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) to create a new AWS IAM user, with the following permissions set. Edit the `Resource` section to use your S3 bucket name:
+
+        ```json
+        {
+          "Version": "2012-10-17",
+          "Statement": [
             {
-                "Sid": "GrantLonghornBackupstoreAccess0",
-                "Effect": "Allow",
-                "Action": [
-                    "s3:PutObject",
-                    "s3:GetObject",
-                    "s3:ListBucket",
-                    "s3:DeleteObject"
-                ],
-                "Resource": [
-                    "arn:aws:s3:::<your-bucket-name>",
-                    "arn:aws:s3:::<your-bucket-name>/*"
-                ]
+              "Sid": "GrantLonghornBackupstoreAccess0",
+              "Effect": "Allow",
+              "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:DeleteObject"
+              ],
+              "Resource": [
+                "arn:aws:s3:::<your-bucket-name>",
+                "arn:aws:s3:::<your-bucket-name>/*"
+              ]
             }
-        ]
-    }
-    ```
+          ]
+        }
+        ```
 
-3. Create a Kubernetes secret with a name such as `aws-secret` in the namespace where longhorn is placed(`longhorn-system` by default). For help creating a secret, refer to the [Kubernetes documentation.](https://kubernetes.io/docs/concepts/configuration/secret/) The secret must be created in the `longhorn-system` namespace for Longhorn to access it. Put the following key-value pairs in the secret:
+     2. Create a Kubernetes secret with a name such as `aws-secret` in the namespace where longhorn is placed (`longhorn-system` by default). The secret must be created in the `longhorn-system` namespace for Longhorn to access it:
 
-    ```shell
-    AWS_ACCESS_KEY_ID: <your_aws_access_key_id>
-    AWS_SECRET_ACCESS_KEY: <your_aws_secret_access_key>
-    ```
+        ```shell
+        kubectl create secret generic <aws-secret> \
+            --from-literal=AWS_ACCESS_KEY_ID=<your-aws-access-key-id> \
+            --from-literal=AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key> \
+            -n longhorn-system
+        ```
 
-4. Go to the Longhorn UI. In the top navigation bar, click **Settings.** In the Backup section, set **Backup Target** to:
+   - Option 2: Set permissions using kube2iam or kiam.
+  
+     [kube2iam](https://github.com/jtblin/kube2iam) or [kiam](https://github.com/uswitch/kiam) is a Kubernetes application that allows managing AWS IAM permissions for Pod via annotations rather than operating on AWS credentials. Follow the kube2iam or kiam repository to install it into the Kubernetes cluster.
+
+     1. Follow the [guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html#roles-creatingrole-service-console) to create a new AWS IAM role for AWS S3 service, with the following permissions set.
+
+        ```json
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "GrantLonghornBackupstoreAccess0",
+              "Effect": "Allow",
+              "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:DeleteObject"
+              ],
+              "Resource": [
+                "arn:aws:s3:::<your-bucket-name>",
+                "arn:aws:s3:::<your-bucket-name>/*"
+              ]
+            }
+          ]
+        }
+        ```
+
+     2. Edit the AWS IAM role with the following trust relationship.
+
+        ```json
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                  "Service": "ec2.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/<WORKER_NODE_ROLE>"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        }
+        ```
+
+     3. Create a Kubernetes secret with a name such as `aws-secret` in the namespace where longhorn is placed (`longhorn-system` by default). The secret must be created in the `longhorn-system` namespace for Longhorn to access it:
+
+        ```shell
+        kubectl create secret generic <aws-secret> \
+            --from-literal=AWS_IAM_ROLE=<your-aws-iam-role-arn> \
+            -n longhorn-system
+        ```
+
+3. Go to the Longhorn UI. In the top navigation bar, click **Settings.** In the Backup section, set **Backup Target** to:
 
     ```text
     s3://<your-bucket-name>@<your-aws-region>/
@@ -70,7 +135,7 @@ This page covers the following topics:
    
    For Google Cloud Storage, you can find the region codes [here.](https://cloud.google.com/storage/docs/locations)
 
-5.  In the Backup section set **Backup Target Credential Secret** to:
+4.  In the Backup section set **Backup Target Credential Secret** to:
 
     ```
     aws-secret
