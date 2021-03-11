@@ -15,6 +15,8 @@ This page covers the following topics:
 
 - [Set up AWS S3 Backupstore](#set-up-aws-s3-backupstore)
 - [Set up a Local Testing Backupstore](#set-up-a-local-testing-backupstore)
+- [Using a self-signed SSL certificate for S3 communication](#using-a-self-signed-ssl-certificate-for-s3-communication)
+- [Enable virtual-hosted-style access for S3 compatible Backupstore](#enable-virtual-hosted-style-access-for-s3-compatible-backupstore)
 - [NFS Backupstore](#nfs-backupstore)
 
 ### Set up AWS S3 Backupstore
