@@ -142,7 +142,7 @@ This page covers the following topics:
     ```
     aws-secret
     ```
-    This is the secret name with AWS keys from the third step.
+    This is the secret name with AWS credentials or AWS IAM role.
 
 **Result:** Longhorn can store backups in S3. To create a backup, see [this section.](../create-a-backup)
 
