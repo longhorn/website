@@ -103,7 +103,7 @@ This page covers the following topics:
             {
               "Effect": "Allow",
               "Principal": {
-                "AWS": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/<WORKER_NODE_ROLE>"
+                "AWS": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/<AWS_EC2_NODE_INSTANCE_ROLE>"
               },
               "Action": "sts:AssumeRole"
             }
