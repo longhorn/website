@@ -6,9 +6,9 @@ weight: 1
 
 Longhorn can be installed on a Kubernetes cluster in several ways:
 
+- [Rancher catalog app](./install-with-rancher)
 - [kubectl](./install-with-kubectl/)
 - [Helm](./install-with-helm/)
-- [Rancher catalog app](./install-with-rancher)
 
 To install Longhorn in an air gapped environment, refer to [this section.](../../advanced-resources/deploy/airgap)
 
