@@ -115,7 +115,7 @@ This page covers the following topics:
 
         ```shell
         kubectl create secret generic <aws-secret> \
-            --from-literal=AWS_IAM_ROLE=<your-aws-iam-role-arn> \
+            --from-literal=AWS_IAM_ROLE_ARN=<your-aws-iam-role-arn> \
             -n longhorn-system
         ```
 
