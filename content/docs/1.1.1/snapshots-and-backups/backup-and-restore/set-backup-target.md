@@ -24,7 +24,7 @@ This page covers the following topics:
 1. Create a new bucket in [AWS S3.](https://aws.amazon.com/s3/)
 
 2. Set permissions for Longhorn.
-   - Option 1: Set permissions with an IAM user.
+   - Option 1: Set permissions with IAM user credentials
 
      1. Follow the [guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) to create a new AWS IAM user, with the following permissions set. Edit the `Resource` section to use your S3 bucket name:
 
@@ -59,7 +59,7 @@ This page covers the following topics:
             -n longhorn-system
         ```
 
-   - Option 2: Set permissions using kube2iam or kiam.
+   - Option 2: Set permissions with IAM temporary credentials by AWS STS AssumeRole (kube2iam or kiam)
   
      [kube2iam](https://github.com/jtblin/kube2iam) or [kiam](https://github.com/uswitch/kiam) is a Kubernetes application that allows managing AWS IAM permissions for Pod via annotations rather than operating on AWS credentials. Follow the kube2iam or kiam repository to install it into the Kubernetes cluster.
 
