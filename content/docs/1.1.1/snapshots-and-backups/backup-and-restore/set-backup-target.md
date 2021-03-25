@@ -23,8 +23,8 @@ This page covers the following topics:
 
 1. Create a new bucket in [AWS S3.](https://aws.amazon.com/s3/)
 
-2. Set permissions for Longhorn.
-   - Option 1: Set permissions with IAM user credentials
+2. Set permissions for Longhorn. There are two options for setting up the credentials. The first is that you can set up a Kubernetes secret with the credentials of an AWS IAM user. The second is that you can use a third-party application to manage temporary AWS IAM permissions for a Pod via annotations rather than operating with AWS credentials.
+   - Option 1: Create a Kubernetes secret with IAM user credentials
 
      1. Follow the [guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) to create a new AWS IAM user, with the following permissions set. Edit the `Resource` section to use your S3 bucket name:
 
@@ -50,7 +50,7 @@ This page covers the following topics:
         }
         ```
 
-     2. Create a Kubernetes secret with a name such as `aws-secret` in the namespace where longhorn is placed (`longhorn-system` by default). The secret must be created in the `longhorn-system` namespace for Longhorn to access it:
+     2. Create a Kubernetes secret with a name such as `aws-secret` in the namespace where Longhorn is placed (`longhorn-system` by default). The secret must be created in the `longhorn-system` namespace for Longhorn to access it:
 
         ```shell
         kubectl create secret generic <aws-secret> \
@@ -61,9 +61,9 @@ This page covers the following topics:
 
    - Option 2: Set permissions with IAM temporary credentials by AWS STS AssumeRole (kube2iam or kiam)
   
-     [kube2iam](https://github.com/jtblin/kube2iam) or [kiam](https://github.com/uswitch/kiam) is a Kubernetes application that allows managing AWS IAM permissions for Pod via annotations rather than operating on AWS credentials. Follow the kube2iam or kiam repository to install it into the Kubernetes cluster.
+     [kube2iam](https://github.com/jtblin/kube2iam) or [kiam](https://github.com/uswitch/kiam) is a Kubernetes application that allows managing AWS IAM permissions for Pod via annotations rather than operating on AWS credentials. Follow the instructions in the GitHub repository for kube2iam or kiam to install it into the Kubernetes cluster.
 
-     1. Follow the [guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html#roles-creatingrole-service-console) to create a new AWS IAM role for AWS S3 service, with the following permissions set.
+     1. Follow the [guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html#roles-creatingrole-service-console) to create a new AWS IAM role for AWS S3 service, with the following permissions set:
 
         ```json
         {
@@ -87,7 +87,7 @@ This page covers the following topics:
         }
         ```
 
-     2. Edit the AWS IAM role with the following trust relationship.
+     2. Edit the AWS IAM role with the following trust relationship:
 
         ```json
         {
@@ -111,7 +111,7 @@ This page covers the following topics:
         }
         ```
 
-     3. Create a Kubernetes secret with a name such as `aws-secret` in the namespace where longhorn is placed (`longhorn-system` by default). The secret must be created in the `longhorn-system` namespace for Longhorn to access it:
+     3. Create a Kubernetes secret with a name such as `aws-secret` in the namespace where Longhorn is placed (`longhorn-system` by default). The secret must be created in the `longhorn-system` namespace for Longhorn to access it:
 
         ```shell
         kubectl create secret generic <aws-secret> \
