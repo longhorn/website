@@ -60,14 +60,14 @@ Default path to use for storing data on a host.
 Can be used with `Create Default Disk on Labeled Nodes` option, to make Longhorn only use the nodes with specific storage mounted at, for example, `/opt/longhorn` when scaling the cluster.
 
 #### Default Engine Image
-> Default: `longhornio/longhorn-engine:v1.0.0` for Longhorn v1.0.0
+> Default: `longhornio/longhorn-engine:v{{< current-version >}}` for Longhorn v{{< current-version >}}
 
 The default engine image used by the manager. Can be changed on the manager starting command line only.
 
 Every Longhorn release will ship with a new Longhorn engine image. If the current Longhorn volumes are not using the default engine, a green arrow will show up, indicate this volume needs to be upgraded to use the default engine.
 
 #### Default Instance Manager Image
-> Default: `longhornio/longhorn-instance-manager:v1_20200514` for Longhorn v1.0.0
+> Default: `longhornio/longhorn-instance-manager:v1_20200514` for Longhorn v{{< current-version >}}
 
 The default instance manager image used by the manager. Can be changed on the manager starting command line only.
 
@@ -77,7 +77,7 @@ The default instance manager image used by the manager. Can be changed on the ma
 Upgrade Checker will check for a new Longhorn version periodically. When there is a new version available, it will notify the user in the Longhorn UI.
 
 #### Latest Longhorn Version
-> Default: `v1.0.0` for Longhorn v1.0.0
+> Default: `v{{< current-version >}}` for Longhorn v{{< current-version >}}
 
 The latest version of Longhorn available. Automatically updated by the Upgrade Checker.
 
