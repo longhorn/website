@@ -3,7 +3,7 @@ title: Performance and Scalability Report for Longhorn v1.0
 author: Sheng Yang
 draft: false
 date: 2020-08-12
-catelogies:
+categories:
   - "benchmark"
 tags:
   - "performance"

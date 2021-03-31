@@ -3,7 +3,7 @@ title: Announcing Longhorn v1.1.0
 author: Sheng Yang
 draft: false
 date: 2021-01-22
-catelogies:
+categories:
   - "announcement"
 ---
 

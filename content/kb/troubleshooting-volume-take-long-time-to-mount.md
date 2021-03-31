@@ -3,7 +3,7 @@ title: "Troubleshooting: Longhorn volumes take a long time to finish mounting"
 author: Phan Le
 draft: false
 date: 2021-02-26
-catelogies:
+categories:
   - "csi"
 ---
 
