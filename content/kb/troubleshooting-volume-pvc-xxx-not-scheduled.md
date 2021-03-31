@@ -3,7 +3,7 @@ title: "Troubleshooting: `volume pvc-xxx not scheduled`"
 author: Sheng Yang
 draft: false
 date: 2020-10-22
-catelogies:
+categories:
   - "scheduling"
   - "csi"
 ---

@@ -3,7 +3,7 @@ title: Longhorn at KubeCon EU 2020
 author: Sheng Yang
 draft: false
 date: 2020-08-13
-catelogies:
+categories:
   - "conference"
 ---
 
