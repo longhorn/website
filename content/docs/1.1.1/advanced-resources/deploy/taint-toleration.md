@@ -10,16 +10,22 @@ Notice that the taint tolerations setting for one workload will not prevent it f
 For more information about how taints and tolerations work, refer to the [official Kubernetes documentation.](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)
 
 # Setting up Taints and Tolerations
+Longhorn system contains user deployed components (e.g, Longhorn manager, Longhorn driver, Longhorn UI) and system managed components (e.g, instance manager, engine image, CSI driver, etc.)
+You need to set tolerations for both types of components. See more details below.
 
-### During installing Longhorn
+### Setting up Taints and Tolerations During installing Longhorn
 
-Follow the instructions to set init taint tolerations: [Customize default settings](../customizing-default-settings/)
+1. Set taint tolerations for system managed components: follow the [Customize default settings](../customizing-default-settings/) to set taint tolerations by changing the value for the `taint-toleration` default setting
+1. Set taint tolerations for user deployed components: modify the Helm chart or deployment YAML file depending on how you deploy Longhorn.
 
-### After Longhorn has been installed
+### Setting up Taints and Tolerations After Longhorn has been installed
 
-The taint toleration setting can be found at Longhorn UI under **Setting > General > Kubernetes Taint Toleration.**
+1. Set taint tolerations for system managed components:
+   the taint toleration setting can be found at Longhorn UI under **Setting > General > Kubernetes Taint Toleration.**
 
-Users can modify the existing tolerations or add more tolerations here, but noted that it will result in all the Longhorn system components to be recreated.
+1. Set taint tolerations for user deployed components:
+   modify the Helm chart or deployment YAML file depending on how you deploy Longhorn.
+   Then, do Helm upgrade or reapply the YAMl files.
 
 # Usage
 
@@ -29,11 +35,14 @@ Since all Longhorn components will be restarted, the Longhorn system is unavaila
 
 Don't operate the Longhorn system while toleration settings are updated and Longhorn components are being restarted.
 
-When tolerations are set, the substring `kubernetes.io` shouldn't be contained in the setting. That substring is used as the key of Kubernetes default tolerations.
-
-Multiple tolerations can be set here, and these tolerations are separated by the semicolon. For example: `key1=value1:NoSchedule; key2:NoExecute`.
-
+Multiple tolerations can be set here, and these tolerations are separated by the semicolon.
+For example:
+* `key1=value1:NoSchedule; key2:NoExecute`
+* `:` this toleration tolerates everything because an empty key with operator `Exists` matches all keys, values and effects
+* `key1=value1:`  this toleration has empty effect. It matches all effects with key `key1`
 ## History
-[Original feature request](https://github.com/longhorn/longhorn/issues/584)
-
 Available since v0.6.0
+* [Original feature request](https://github.com/longhorn/longhorn/issues/584)
+* [Resolve the problem with GitOps](https://github.com/longhorn/longhorn/issues/2120)
+
+

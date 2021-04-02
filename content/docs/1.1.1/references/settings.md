@@ -377,13 +377,20 @@ If it's hard to estimate the usage now, you can leave it with the default value,
 
 > Example: `nodetype=storage:NoSchedule`
 
-By setting tolerations for Longhorn then adding taints for the nodes, the nodes with large storage can be dedicated to Longhorn only (to store replica data) and reject other general workloads.
+If you want to dedicate nodes to just store Longhorn replicas and reject other general workloads, you can set tolerations for **all** Longhorn components and add taints to the nodes dedicated for storage.
 
-Before modifying toleration setting, all Longhorn volumes should be detached then Longhorn components will be restarted to apply new tolerations. And toleration update will take a while. Users cannot operate Longhorn system during update. Hence it's recommended to set toleration during Longhorn deployment.
+Longhorn system contains user deployed components (e.g, Longhorn manager, Longhorn driver, Longhorn UI) and system managed components (e.g, instance manager, engine image, CSI driver, etc.)
+This setting only sets taint tolerations for system managed components.
+Depending on how you deployed Longhorn, you need to set taint tolerations for user deployed components in Helm chart or deployment YAML file.
 
-Multiple tolerations can be set here, and these tolerations are separated by semicolon. For example, `key1=value1:NoSchedule; key2:NoExecute`
+All Longhorn volumes should be detached before modifying toleration settings.
+We recommend setting tolerations during Longhorn deployment because the Longhorn system cannot be operated during the update.
 
-See [Taint Toleration](../../advanced-resources/deploy/taint-toleration) for details.
+Multiple tolerations can be set here, and these tolerations are separated by semicolon. For example:
+* `key1=value1:NoSchedule; key2:NoExecute`
+* `:` this toleration tolerates everything because an empty key with operator `Exists` matches all keys, values and effects
+* `key1=value1:`  this toleration has empty effect. It matches all effects with key `key1`
+  See [Taint Toleration](../../advanced-resources/deploy/taint-toleration) for details.
 
 #### Priority Class
 
@@ -393,7 +400,10 @@ By default, Longhorn workloads run with the same priority as other pods in the c
 
 The Priority Class setting will specify a Priority Class for the Longhorn workloads to run as. This can be used to set the priority for Longhorn workloads higher so that they will not be the first to be evicted when a node is under pressure.
 
-> **Warning:** This setting should only be changed after detaching all Longhorn volumes, as the Longhorn components will be restarted to apply the setting. The Priority Class update will take a while, and users cannot operate Longhorn system during the update. Hence, it's recommended to set the Priority Class during Longhorn deployment.
+Longhorn system contains user deployed components (e.g, Longhorn manager, Longhorn driver, Longhorn UI) and system managed components (e.g, instance manager, engine image, CSI driver, etc.)
+Note that this setting only sets Priority Class for system managed components.
+Depending on how you deployed Longhorn, you need to set Priority Class for user deployed components in Helm chart or deployment YAML file.
+> **Warning:** This setting should only be changed after detaching all Longhorn volumes, as the Longhorn system components will be restarted to apply the setting. The Priority Class update will take a while, and users cannot operate Longhorn system during the update. Hence, it's recommended to set the Priority Class during Longhorn deployment.
 
 See [Priority Class](../../advanced-resources/deploy/priority-class) for details.
 
