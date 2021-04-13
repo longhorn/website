@@ -49,7 +49,7 @@ You will need to replace the `BACKEND_URL`, `ISSUE_URL`, `ISSUE_DESCRIPTION`.
     done
 
     curl -i -X GET http://${BACKEND_URL}/v1/supportbundles/${ID}/${SUPPORT_BUNDLE_NAME}/download --output /tmp/${SUPPORT_BUNDLE_NAME}.zip
-    echo "Downloaded support bundle to /tmp/${SUPPORT_BUNDLE_NAME}"
+    echo "Downloaded support bundle to /tmp/${SUPPORT_BUNDLE_NAME}.zip"
     ```
 
 ## Related information
