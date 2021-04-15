@@ -46,6 +46,7 @@ weight: 1
   - [Guaranteed Engine Manager CPU](#guaranteed-engine-manager-cpu)
   - [Guaranteed Replica Manager CPU](#guaranteed-replica-manager-cpu)
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
+  - [System Managed Components Node Selector](#system-managed-components-node-selector)
   - [Priority Class](#priority-class)
 - [Deprecated](#deprecated)
   - [Guaranteed Engine CPU](#guaranteed-engine-cpu)
@@ -406,6 +407,19 @@ Depending on how you deployed Longhorn, you need to set Priority Class for user 
 > **Warning:** This setting should only be changed after detaching all Longhorn volumes, as the Longhorn system components will be restarted to apply the setting. The Priority Class update will take a while, and users cannot operate Longhorn system during the update. Hence, it's recommended to set the Priority Class during Longhorn deployment.
 
 See [Priority Class](../../advanced-resources/deploy/priority-class) for details.
+
+#### System Managed Components Node Selector
+
+> Example: `label-key1=label-value1;label-key2=label-value2`
+
+If you want to restrict Longhorn components to only run on a particular set of nodes, you can set node selector for all Longhorn components.
+
+Longhorn system contains user deployed components (e.g, Longhorn manager, Longhorn driver, Longhorn UI) and system managed components (e.g, instance manager, engine image, CSI driver, etc.)
+You need to set node selector for both of them. This setting only sets node selector for system managed components. Follow the instruction at [Node Selector](../../advanced-resources/deploy/node-selector) to change node selector.
+
+> **Warning:**  Since all Longhorn components will be restarted, the Longhorn system is unavailable temporarily.
+Make sure all Longhorn volumes are `detached`. If there are running Longhorn volumes in the system, this means the Longhorn system cannot restart its components and the request will be rejected.
+Don't operate the Longhorn system while node selector settings are updated and Longhorn components are being restarted.
 
 ### Deprecated
 
