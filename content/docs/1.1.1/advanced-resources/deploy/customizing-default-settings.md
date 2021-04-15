@@ -51,6 +51,7 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
         default-longhorn-static-storage-class:
         backupstore-poll-interval:
         taint-toleration:
+        system-managed-components-node-selector:
         priority-class:
         auto-salvage:
         auto-delete-pod-when-volume-detached-unexpectedly:
@@ -110,6 +111,7 @@ You can also provide a copy of the `values.yaml` file with the default settings 
       defaultLonghornStaticStorageClass: longhorn-static-example
       backupstorePollInterval: 500
       taintToleration: key1=value1:NoSchedule; key2:NoExecute
+      systemManagedComponentsNodeSelector: "label-key1:label-value1"
       priority-class: high-priority
       autoSalvage: false
       disableSchedulingOnCordonedNode: false
