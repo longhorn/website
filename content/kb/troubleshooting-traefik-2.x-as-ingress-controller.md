@@ -19,13 +19,13 @@ The Longhorn GUI frontend API requests sometimes failed to reach longhorn-manage
 
 ## Reason
 
-The API requests would change the protocol between HTTPS/WSS, change the protocol between HTTPS/WSS would lead to a CORS problem.
+The API requests would change the protocol between HTTPS/WSS, and the change would lead to a CORS problem.
 
 ## Solution
 
-The Traefik 2.x ingress controller does not setting the websocket headers.
+The Traefik 2.x ingress controller does not set the WebSocket headers.
 
-1. We add the following middleware to the route for the Longhorn GUI.
+1. Adds the following middleware to the route for the Longhorn frontend service.
    ```yaml
    apiVersion: traefik.containo.us/v1alpha1
    kind: Middleware
