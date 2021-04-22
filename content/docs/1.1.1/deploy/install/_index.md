@@ -90,6 +90,12 @@ For GKE, we recommend using Ubuntu as the guest OS image since it contains`open-
 
 You may need to edit the cluster security group to allow SSH access.
 
+For SUSE and openSUSE, use this command:
+
+```
+zypper install open-iscsi
+```
+
 For Debian and Ubuntu, use this command:
 
 ```
@@ -102,7 +108,7 @@ For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 imag
 yum install iscsi-initiator-utils
 ```
 
-We also provides an `iscsi` installer to make it easier for users to install `open-iscsi` automatically:
+We also provide an `iscsi` installer to make it easier for users to install `open-iscsi` automatically:
 ```
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/prerequisite/longhorn-iscsi-installation.yaml
 ```
