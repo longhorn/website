@@ -1,6 +1,6 @@
 ---
 title: Node Selector
-weight: 3
+weight: 4
 ---
 
 If you want to restrict Longhorn components to only run on a particular set of nodes, you can set node selector for all Longhorn components.

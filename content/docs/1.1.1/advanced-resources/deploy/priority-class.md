@@ -1,6 +1,6 @@
 ---
 title: Priority Class
-weight: 3
+weight: 6
 ---
 The Priority Class setting can be used to set a higher priority on Longhorn workloads in the cluster, preventing them from being the first to be evicted during node pressure situations.
 
