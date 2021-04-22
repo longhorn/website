@@ -1,6 +1,6 @@
 ---
 title: Setting up Prometheus and Grafana to monitor Longhorn
-weight: 2
+weight: 1
 ---
 
 ## Overview
