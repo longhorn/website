@@ -1,6 +1,6 @@
 ---
 title: Longhorn Alert Rule Examples
-weight: 2
+weight: 5
 ---
 
 We provide a couple of example Longhorn alert rules below for your references.

@@ -1,6 +1,6 @@
 ---
 title: Kubelet Volume Metrics Support
-weight: 2
+weight: 4
 ---
 
 ## About Kubelet Volume Metrics
