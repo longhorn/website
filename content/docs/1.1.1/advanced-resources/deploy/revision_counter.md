@@ -1,6 +1,6 @@
 ---
 title: Revision Counter
-weight: 2
+weight: 7
 ---
 
 The revision counter is a strong mechanism that Longhorn uses to track each replica's updates.
