@@ -64,4 +64,4 @@ To sign off on a commit that is already in a pull request,
 
 The documentation is split into multiple versions, with a directory for docs corresponding to each Longhorn version. For example, Longhorn 0.8.0 docs are in `content/docs/0.8.0`.
 
-To make changes to the docs that are specific to an upcoming release, use the specific version branch, e.g. `v1.1.0` which contains the directory `content/docs/1.1.0` for that version.
+To make changes to the docs that are specific to an upcoming release, use the specific version branch, e.g. `v1.1.1` which contains the directory `content/docs/1.1.1` for that version.
