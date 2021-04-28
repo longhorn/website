@@ -25,8 +25,7 @@ In this section, you'll learn how to install Longhorn on a K3s Kubernetes cluste
 
 This error is due to Longhorn cannot detect where is the root dir setup for Kubelet, so the CSI plugin installation failed.
 
-User can override the root-dir detection by manually setting argument `kubelet-root-dir` here: 
-https://github.com/longhorn/longhorn/blob/master/deploy/longhorn.yaml#L329
+You can override the root-dir detection by setting environment variable `KUBELET_ROOT_DIR` in https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/deploy/longhorn.yaml.
 
 #### How to find `root-dir`?
 

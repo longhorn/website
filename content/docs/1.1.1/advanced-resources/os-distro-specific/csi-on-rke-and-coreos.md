@@ -64,7 +64,7 @@ systemctl start iscsid
 
 This error happens because Longhorn cannot detect the root dir setup for the kubelet, so the CSI plugin installation failed.
 
-User can override the root-dir detection by manually setting argument `kubelet-root-dir` here: https://github.com/longhorn/longhorn/blob/master/deploy/longhorn.yaml#L329
+You can override the root-dir detection by setting environment variable `KUBELET_ROOT_DIR` in https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/deploy/longhorn.yaml.
 
 #### How to find `root-dir`?
  
