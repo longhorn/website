@@ -170,7 +170,7 @@ We provides two testing purpose backupstore based on NFS server and Minio S3 ser
 1. Use following command to setup a Minio S3 server for the backupstore after `longhorn-system` was created.
 
     ```
-    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/backupstores/minio-backupstore.yaml
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/backupstores/minio-backupstore.yaml
     ```
 
 2. Go to the Longhorn UI. In the top navigation bar, click **Settings.** In the Backup section, set **Backup Target** to
