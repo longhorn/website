@@ -12,6 +12,12 @@ For disaster recovery volume, `Last Backup` indicates the most recent backup of 
 
 If the icon representing the disaster volume is gray, it means the volume is restoring the `Last Backup` and this volume cannot be activated. If the icon is blue, it means the volume has restored the `Last Backup`.
 
+> **Warning:** Disaster recovery volume on XFS filesystem cluster
+>
+> The DR volume data can differ from the backup on the XFS file system. This is due to the finding in https://github.com/longhorn/longhorn/issues/2503#issuecomment-828158607.
+>
+> If your cluster is already on the XFS file system and needs to restore from backup before the upgrade. We suggest restoring to an ext4 filesystem cluster to avoid data loss.
+
 ## Creating DR Volumes {#creating}
 
 > **Prerequisites:** Set up two Kubernetes clusters. These will be called cluster A and cluster B. Install Longhorn on both clusters, and set the same backup target on both clusters. For help setting the backup target, refer to [this page.](../backup-and-restore/set-backup-target)
