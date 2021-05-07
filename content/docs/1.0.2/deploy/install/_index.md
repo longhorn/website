@@ -27,7 +27,7 @@ Each node in the Kubernetes cluster where Longhorn is installed must fulfill the
 - The host filesystem supports the `file extents` feature to store the data. Currently we support:
     - ext4
     - XFS
-- `curl`, `findmnt`, `grep`, `awk`, `blkid`, `lsblk` must be installed.
+- `bash`, `curl`, `findmnt`, `grep`, `awk`, `blkid`, `lsblk` must be installed.
 - [Mount propagation](https://kubernetes-csi.github.io/docs/deploying.html#enabling-mount-propagation) must be enabled.
 
 The Longhorn workloads must be able to run as root in order for Longhorn to be deployed and operated properly.
