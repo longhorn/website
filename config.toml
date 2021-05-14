@@ -93,30 +93,6 @@ name = "Knowledge Base"
 url = "/kb"
 weight = 1
 
-[[menu.main]]
-name = "Project"
-identifier = "project"
-url = "/project"
-weight = 2
-
-[[menu.main]]
-name = "Code of conduct"
-parent = "project"
-url = "https://github.com/cncf/foundation/blob/master/code-of-conduct.md"
-weight = 1
-
-[[menu.main]]
-name = "Contributing"
-parent = "project"
-url = "https://github.com/longhorn/longhorn/blob/master/CONTRIBUTING.md"
-weight = 2
-
-[[menu.main]]
-name = "Source code"
-parent = "project"
-url = "/project#source-code"
-weight = 3
-
 [mediaTypes."text/netlify"]
 delimiter = ""
 
