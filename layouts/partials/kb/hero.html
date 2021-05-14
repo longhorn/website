@@ -1,7 +1,7 @@
 {{ $isPost := ne .File.BaseFileName "_index" }}
 <section class="hero is-primary is-bold is-medium">
   <div class="hero-body">
-    <div class="container">
+    <div class="docs-content">
       <p class="title is-size-1 is-size-2-mobile{{ if $isPost }} is-spaced{{ end }}">
         {{ .Title }}
       </p>
