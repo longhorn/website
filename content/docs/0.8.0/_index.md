@@ -24,8 +24,13 @@ Longhorn is beta-quality software. We appreciate your willingness to deploy Long
 The latest release of Longhorn is **v0.8.0**.
 
 ## Source code
-Longhorn is 100% open source software. Project source code is spread across a number of repos:
 
-1. Longhorn engine -- Core controller/replica logic https://github.com/longhorn/longhorn-engine
-1. Longhorn manager -- Longhorn orchestration https://github.com/longhorn/longhorn-manager
-1. Longhorn UI -- Dashboard https://github.com/longhorn/longhorn-ui
+Longhorn is 100% open source software under the auspices of the [Cloud Native Computing Foundation](https://cncf.io). The project's source code is spread across a number of repos:
+
+| Component                 | What it does                                                           | GitHub repo                                                                                 |
+| :------------------------ | :--------------------------------------------------------------------- | :------------------------------------------------------------------------------------------ |
+| Longhorn Engine           | Core controller/replica logic                                          | [longhorn/longhorn-engine](https://github.com/longhorn/longhorn-engine)                     |
+| Longhorn Instance Manager | Controller/replica instance lifecycle management                       | [longhorn/longhorn-instance-manager](https://github.com/longhorn/longhorn-instance-manager) |
+| Longhorn Share Manager    | NFS provisioner that exposes Longhorn volumes as ReadWriteMany volumes | [longhorn/longhorn-share-manager](https://github.com/longhorn/longhorn-share-manager)       |
+| Longhorn Manager          | Longhorn orchestration, includes CSI driver for Kubernetes             | [longhorn/longhorn-manager](https://github.com/longhorn/longhorn-manager)                   |
+| Longhorn UI               | The Longhorn dashboard                                                 | [longhorn/longhorn-ui](https://github.com/longhorn/longhorn-ui)                             |
