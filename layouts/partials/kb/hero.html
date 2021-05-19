@@ -2,9 +2,11 @@
 <section class="hero is-primary is-bold is-medium">
   <div class="hero-body">
     <div class="container">
-      <p class="title is-size-1 is-size-2-mobile{{ if $isPost }} is-spaced{{ end }}">
-        {{ .Title }}
-      </p>
+      <div class="docs-content">
+        <p class="title is-size-1 is-size-2-mobile{{ if $isPost }} is-spaced{{ end }}">
+          {{ .Title }}
+        </p>
+      </div>
 
       {{ if $isPost }}
       {{ $date := dateFormat "January 2, 2006" .Date }}
