@@ -28,14 +28,12 @@
 </script>
 
 {{/* Algolia search */}}
-{{ $currentVersion := index (split .Page.File.Dir "/" ) 1 }}
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
 <script type="text/javascript">
   docsearch({
     apiKey: '3c4082e162be342fa20a794144b4a479',
     indexName: 'longhorn',
     inputSelector: '#search-input',
-    algoliaOptions: { 'facetFilters': ["version:{{ $currentVersion }}"] },
     debug: false
   });
 </script>
