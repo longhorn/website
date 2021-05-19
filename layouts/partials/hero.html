@@ -1,10 +1,10 @@
-{{ $path := .File.Path }}
-{{ $title := .Title }}
-{{ $desc := .Params.description }}
+{{ $path    := .File.Path }}
+{{ $title   := .Title }}
+{{ $desc    := .Params.description }}
 {{ $editUrl := printf "https://github.com/longhorn/website/edit/master/content/%s" $path }}
 <section class="hero is-primary is-medium is-bold">
   <div class="hero-body">
-    <div class="docs-content">
+    <div class="container">
       <p class="title is-size-2 is-size-3-mobile has-text-weight-bold{{ if $desc }} is-spaced{{ end }}">
         {{ $title }}
       </p>
@@ -15,6 +15,16 @@
       </p>
       {{ end }}
 
+      <div class="buttons">
+        <a class="button is-small" href="{{ $editUrl }}" target="_blank">
+          <span class="icon">
+            <ion-icon name="logo-github"></ion-icon>
+          </span>
+          <span>
+            Edit this page
+          </span>
+        </a>
+      </div>
     </div>
   </div>
 </section>
