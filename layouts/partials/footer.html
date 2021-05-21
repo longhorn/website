@@ -5,39 +5,9 @@
 {{ $yearString  := cond (eq $firstYear $currentYear) $firstYear (printf "%d-%d" $firstYear $currentYear) }}
 {{ $menu        := site.Menus.main }}
 {{ $latest      := index site.Params.versions 0 }}
-<section class="hero is-medium footer-hero">
+<section class="hero">
   <div class="hero-body">
     <div class="container">
-      <div class="columns is-vcentered is-variable">
-        <div class="column is-one-third">
-          <img class="footer-logo" src="{{ $logo }}" alt="{{ $title }} footer logo">
-        </div>
-
-        <div class="column is-one-third">
-          <ul>
-            <li>
-              <a class="has-text-weight-bold" href="/docs/{{ $latest }}">
-                {{ "Docs" | upper }}
-              </a>
-            </li>
-
-            {{ range $menu }}
-            {{ $isExternal := hasPrefix .URL "http" }}
-            {{ $name       := .Name | upper }}
-            <li>
-              <a class="has-text-weight-bold" href="{{ .URL }}"{{ if $isExternal }} target="_blank"{{ end }}>
-                {{ $name }}
-              </a>
-            </li>
-            {{ end }}
-          </ul>
-        </div>
-
-        <div class="column is-one-third">
-          {{ partial "social-buttons.html" (dict "lean" true) }}
-        </div>
-      </div>
-
       <hr />
 
       <p class="has-text-weight-light">
