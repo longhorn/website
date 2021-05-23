@@ -15,7 +15,7 @@ Longhorn also supports setting up recurring snapshot/backup jobs for volumes, vi
 
 The user can setup a S3 or NFS type backupstore to store the backups of Longhorn volumes.
 
-If the user doesn't have access to AWS S3 or want to give a try first, we've also provided a way to [setup a local S3 testing backupstore](#setup-a-local-testing-backupstore) using [Minio](https://minio.io/).
+If the user doesn't have access to AWS S3 or want to give a try first, we've also provided a way to [setup a local S3 testing backupstore](#setup-a-local-testing-backupstore) using [MinIO](https://minio.io/).
 
 ### Setup AWS S3 backupstore
 1. Create a new bucket in AWS S3.
@@ -72,9 +72,9 @@ aws-secret
 Your secret name with AWS keys from 3rd point.
 
 ### Setup a local testing backupstore
-We provides two testing purpose backupstore based on NFS server and Minio S3 server for testing, in `./deploy/backupstores`.
+We provides two testing purpose backupstore based on NFS server and MinIO S3 server for testing, in `./deploy/backupstores`.
 
-Use following command to setup a Minio S3 server for BackupStore after `longhorn-system` was created.
+Use following command to setup a MinIO S3 server for BackupStore after `longhorn-system` was created.
 ```
 kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/backupstores/minio-backupstore.yaml
 ```
