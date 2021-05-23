@@ -7,7 +7,7 @@ A backup target is the endpoint used to access a backupstore in Longhorn. A back
 
 For more information about how the backupstore works in Longhorn, see the [concepts section.](../../../concepts/#3-backups-and-secondary-storage)
 
-If you don't have access to AWS S3 or want to give the backupstore a try first, we've also provided a way to [setup a local S3 testing backupstore](#set-up-a-local-testing-backupstore) using [Minio](https://minio.io/).
+If you don't have access to AWS S3 or want to give the backupstore a try first, we've also provided a way to [setup a local S3 testing backupstore](#set-up-a-local-testing-backupstore) using [MinIO](https://minio.io/).
 
 Longhorn also supports setting up recurring snapshot/backup jobs for volumes, via Longhorn UI or Kubernetes Storage Class. See [here](../../scheduling-backups-and-snapshots) for details.
 
@@ -167,9 +167,9 @@ Make sure `NO_PROXY` contains the network addresses, network address ranges and 
 * 192.168.0.0/16 (internal IPs in the cluster)
 
 ### Set up a Local Testing Backupstore
-We provides two testing purpose backupstore based on NFS server and Minio S3 server for testing, in `./deploy/backupstores`.
+We provides two testing purpose backupstore based on NFS server and MinIO S3 server for testing, in `./deploy/backupstores`.
 
-1. Use following command to setup a Minio S3 server for the backupstore after `longhorn-system` was created.
+1. Use following command to setup a MinIO S3 server for the backupstore after `longhorn-system` was created.
 
     ```
     kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/backupstores/minio-backupstore.yaml
