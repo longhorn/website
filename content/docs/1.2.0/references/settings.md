@@ -39,6 +39,7 @@ weight: 1
   - [Disable Scheduling On Cordoned Node](#disable-scheduling-on-cordoned-node)
   - [Replica Node Level Soft Anti-Affinity](#replica-node-level-soft-anti-affinity)
   - [Replica Zone Level Soft Anti-Affinity](#replica-zone-level-soft-anti-affinity)
+  - [Replica Auto Balance](#replica-auto-balance)
   - [Storage Minimal Available Percentage](#storage-minimal-available-percentage)
   - [Storage Over Provisioning Percentage](#storage-over-provisioning-percentage)
 - [Danger Zone](#danger-zone)
@@ -304,6 +305,36 @@ When this setting is checked, the Longhorn Manager will allow scheduling new rep
 When this setting is un-checked, Longhorn Manager will not allow scheduling new replicas of a volume to the nodes in the same zone as existing healthy replicas.
 
 > **Note:** Nodes that don't belong to any zone will be treated as if they belong to the same zone.
+
+#### Replica Auto Balance
+
+> Default: `disabled`
+
+Enable this setting automatically rebalances replicas when discovered an available node.
+
+The available global options are:
+- `disabled`. This is the default option. No replica auto-balance will be done.
+
+- `least-effort`. This option instructs Longhorn to balance replicas for minimal redundancy.
+
+- `best-effort`. This option instructs Longhorn try to balancing replicas for even redundancy.
+  Longhorn does not forcefully re-schedule the replicas to a zone that does not have enough nodes
+  to support even balance. Instead, Longhorn will re-schedule to balance at the node level.
+
+Longhorn also supports customizing for individual volume. The setting can be specified in UI or with Kubernetes manifest volume.spec.replicaAutoBalance, this overrules the global setting.
+The available volume spec options are:
+
+> Default: `ignored`
+
+- `ignored`. This is the default option that instructs Longhorn to inherit from the global setting.
+
+- `disabled`. This option instructs Longhorn no replica auto-balance should be done."
+
+- `least-effort`. This option instructs Longhorn to balance replicas for minimal redundancy.
+
+- `best-effort`. This option instructs Longhorn to try balancing replicas for even redundancy.
+  Longhorn does not forcefully re-schedule the replicas to a zone that does not have enough nodes
+  to support even balance. Instead, Longhorn will re-schedule to balance at the node level.
 
 #### Storage Minimal Available Percentage
 
