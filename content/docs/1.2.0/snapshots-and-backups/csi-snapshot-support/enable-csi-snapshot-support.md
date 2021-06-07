@@ -40,12 +40,12 @@ Note that the snapshot controller YAML files mentioned below deploy into the `de
 > For example, on a vanilla Kubernetes cluster, update the namespace from `default` to `kube-system` prior to issuing the `kubectl create` command.
 
 Install the Snapshot Beta CRDs:
-1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/master/client/config/crd
+1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/release-4.0/client/config/crd
 2. Run `kubectl create -f client/config/crd`.
 3. Do this once per cluster.
 
 Install the Common Snapshot Controller:
-1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/master/deploy/kubernetes/snapshot-controller
+1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/release-4.0/deploy/kubernetes/snapshot-controller
 2. Update the namespace to an appropriate value for your environment (e.g. `kube-system`)
 3. Run `kubectl create -f deploy/kubernetes/snapshot-controller`.
 3. Do this once per cluster.
