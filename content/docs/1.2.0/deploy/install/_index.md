@@ -184,10 +184,4 @@ Server Version: version.Info{Major:"1", Minor:"17", GitVersion:"v1.17.4", GitCom
 
 The `Server Version` should be `v1.16` or above.
 
-### Disable Profiling
 
-By default, Longhorn manager profiler is enabled to aid our troubleshooting.
-
-If using `kubectl` for install, you can disable by adding command flag `--disable-profiler` to `longhorn-manager` Daemonset in https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml.
-
-Or using `helm` for install, you can disable with `--set longhornManager.disableProfiler=true`.
