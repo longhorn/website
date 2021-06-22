@@ -119,6 +119,8 @@ This page covers the following topics:
             -n longhorn-system
         ```
 
+      4. The Longhorn will automatically annotates `iam.amazonaws.com/role=<your-aws-iam-role-arn>` to the longhorn manager as well as replica instance manager Pods. Please make sure the kube2iam or kiam Pods running on the same nodes as longhorn manager and replica instance manager Pods.
+
 3. Go to the Longhorn UI. In the top navigation bar, click **Settings.** In the Backup section, set **Backup Target** to:
 
     ```text
