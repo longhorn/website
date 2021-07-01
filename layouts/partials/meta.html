@@ -7,6 +7,10 @@
 {{ $img     := "img/logos/longhorn-icon-color.png" | absURL }}
 {{ $imgAlt  := printf "%s color logo" site.Title }}
 {{ $locale  := site.Params.locale }}
+{{ $versions := site.Params.versions }}
+{{ $latestVersion := index $versions 0 }}
+{{ $currentVersion := index (split .Page.File.Dir "/" ) 1 }}
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 {{ with $desc }}
@@ -43,3 +47,7 @@
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:alt" content="{{ $imgAlt }}">
 <meta property="og:locale" content="{{ $locale }}">
+
+{{ if and ($currentVersion) (ne $latestVersion $currentVersion) }}
+<meta name="robots" content="noindex">
+{{ end }}
