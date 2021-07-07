@@ -27,7 +27,6 @@ weight: 1
   - [Registry Secret](#registry-secret)
   - [Replica Replenishment Wait Interval](#replica-replenishment-wait-interval)
   - [System Managed Pod Image Pull Policy](#system-managed-pod-image-pull-policy)
-  - [Volume Attachment Recovery Policy](#volume-attachment-recovery-policy)
   - [Backing Image Cleanup Wait Interval](#backing-image-cleanup-wait-interval)
 - [Backups](#backups)
   - [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
