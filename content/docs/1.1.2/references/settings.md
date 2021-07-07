@@ -224,16 +224,6 @@ This setting definition is exactly the same as that of in Kubernetes. Here are t
 
 - `never`. The image is assumed to exist locally. No attempt is made to pull the image.
 
-#### Volume Attachment Recovery Policy
-
-> Default: `wait`
-
-Defines the Longhorn action when a Volume is stuck with a Deployment Pod on a failed node.
-
-- `wait`: Longhorn will wait to recover the Volume Attachment until all the terminating pods have passed their deletion grace period.
-- `never`: The default Kubernetes behavior of never deleting volume attachments on terminating pods. Longhorn will not recover the Volume Attachment from a failed node.
-- `immediate`: Longhorn will recover the Volume Attachment from the failed node as soon as there are pending replacement pods available.
-
 #### Backing Image Cleanup Wait Interval
 > Default: `60`
 
