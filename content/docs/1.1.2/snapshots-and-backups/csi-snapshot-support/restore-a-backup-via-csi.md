@@ -88,6 +88,6 @@ spec:
     volumeSnapshotContentName: test-existing-backup
 ```
 
-Now you can create a `PerstistantVolumeClaim` object that refers to the newly created `VolumeSnapshot` object.
+Now you can create a `PerstistentVolumeClaim` object that refers to the newly created `VolumeSnapshot` object.
 
 For an example see [Restore a backup via a `VolumeSnapshot` object](#restore-a-backup-via-a-volumesnapshot-object) above.
