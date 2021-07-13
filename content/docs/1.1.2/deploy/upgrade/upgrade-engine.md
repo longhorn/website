@@ -11,6 +11,18 @@ Always make backups before upgrading the Longhorn engine images.
 
 Upgrade the Longhorn manager before upgrading the Longhorn engine.
 
+> **Note:**
+> There is a bug in the instance manager image `v1_20201216` shipped in Longhorn v1.1.0 and v1.1.1
+> which can lead to a deadlock in a big cluster with hundreds of volumes.
+> See more details [here](https://github.com/longhorn/longhorn/issues/2697).
+> Longhorn v1.1.2 is shipped with a new instance manager image `v1_20210621` which fixed the deadlock
+> but engine/replica processes of volumes don't migrate from old instance manager to new instance manager
+> until the next time the volumes are detached/attached because Longhorn doesn't want to interrupt the
+> data plane of the volumes.
+>
+> To reduce the chance of hitting the deadlock while the engine/replica processes are still in the old instance manager,
+> you should upgrade engine for volumes in small batches, e.g., upgrading 2 or 3 volumes at a time.
+
 ### Offline Upgrade
 
 Follow these steps if the live upgrade is not available, or if the volume is stuck in degraded state:
@@ -21,7 +33,7 @@ Follow these steps if the live upgrade is not available, or if the volume is stu
 
 ### Live upgrade
 
-Live upgrade is supported for upgrading from v1.1.0 to v1.1.2.
+Live upgrade is supported for upgrading from v1.1.0 and v1.1.1 to v1.1.2.
 
 The `iSCSI` frontend does not support live upgrades.
 
