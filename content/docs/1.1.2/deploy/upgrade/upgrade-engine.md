@@ -33,7 +33,7 @@ Follow these steps if the live upgrade is not available, or if the volume is stu
 
 ### Live upgrade
 
-Live upgrade is supported for upgrading from v1.1.0 and v1.1.1 to v1.1.2.
+Live upgrade is supported for upgrading from v1.1.x to v{{< current-version >}}.
 
 The `iSCSI` frontend does not support live upgrades.
 
