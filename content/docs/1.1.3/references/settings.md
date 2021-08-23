@@ -292,7 +292,9 @@ When this setting is checked, the Longhorn Manager will allow scheduling new rep
 
 When this setting is un-checked, Longhorn Manager will not allow scheduling new replicas of a volume to the nodes in the same zone as existing healthy replicas.
 
-> **Note:** Nodes that don't belong to any zone will be treated as if they belong to the same zone.
+> **Note:**
+>   - Nodes that don't belong to any zone will be treated as if they belong to the same zone.
+>   - Longhorn relies on label `topology.kubernetes.io/zone=<Zone name of the node>` in the Kubernetes node object to identify the zone.
 
 #### Storage Minimal Available Percentage
 

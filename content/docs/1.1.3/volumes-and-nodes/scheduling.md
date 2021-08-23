@@ -43,3 +43,8 @@ For more information on settings that are relevant to scheduling replicas on nod
 - [Replica Zone Level Soft Anti-Affinity](../../references/settings/#replica-zone-level-soft-anti-affinity)
 - [Storage Minimal Available Percentage](../../references/settings/#storage-minimal-available-percentage)
 - [Storage Over Provisioning Percentage](../../references/settings/#storage-over-provisioning-percentage)
+
+### Notice
+Longhorn relies on label `topology.kubernetes.io/zone=<Zone name of the node>` or `topology.kubernetes.io/region=<Region name of the node>` in the Kubernetes node object to identify the zone/region.
+
+Since these are reserved and used by Kubernetes as [well-known labels](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone).
