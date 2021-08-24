@@ -21,8 +21,7 @@ For information on deploying Longhorn on specific nodes and rejecting general wo
 Each node in the Kubernetes cluster where Longhorn is installed must fulfill the following requirements:
 
 -  A container runtime compatible with Kubernetes (Docker v1.13+, containerd v1.3.7+, etc.)
--  Kubernetes v1.16+.
-    - Recommend Kubernetes v1.17+
+-  Kubernetes v1.18+.
 -  `open-iscsi` is installed, and the `iscsid` daemon is running on all the nodes. This is necessary, since Longhorn relies on `iscsiadm` on the host to provide persistent volumes to Kubernetes. For help installing `open-iscsi`, refer to [this section.](#installing-open-iscsi)
 -  RWX support requires that each node has a NFSv4 client installed.
     - For installing a NFSv4 client, refer to [this section.](#installing-nfsv4-client)
