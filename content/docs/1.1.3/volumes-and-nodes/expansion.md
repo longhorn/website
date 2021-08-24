@@ -19,12 +19,9 @@ If the volume was not expanded though the CSI interface (e.g. for Kubernetes old
 ## Expand a Longhorn volume
 There are two ways to expand a Longhorn volume: with a PersistentVolumeClaim (PVC) and with the Longhorn UI.
 
-If you are using Kubernetes v1.14 or v1.15, the volume can only be expanded using the Longhorn UI.
-
 #### Via PVC
 This method is applied only if:
 
-- Kubernetes version v1.16 or higher.
 - The PVC is dynamically provisioned by the Kubernetes with Longhorn StorageClass.
 - The field `allowVolumeExpansion` should be `true` in the related StorageClass.
 
@@ -68,7 +65,6 @@ status:
 ```
 
 #### Via Longhorn UI
-If your Kubernetes version is v1.14 or v1.15, this method is the only choice for Longhorn volume expansion. 
 
 Usage: On the volume page of Longhorn UI, click `Expand` for the volume.
 
@@ -77,11 +73,11 @@ Usage: On the volume page of Longhorn UI, click `Expand` for the volume.
 Longhorn will try to expand the file system only if:
 
 - The expanded size should be greater than the current size.
-- There is a Linux filesystem in the Longhorn volume. 
+- There is a Linux filesystem in the Longhorn volume.
 - The filesystem used in the Longhorn volume is one of the following:
     - ext4
     - XFS
-- The Longhorn volume is using the block device frontend. 
+- The Longhorn volume is using the block device frontend.
 
 #### Handling Volume Revert
 If a volume is reverted to a snapshot with smaller size, the frontend of the volume is still holding the expanded size. But the filesystem size will be the same as that of the reverted snapshot. In this case, you will need to handle the filesystem manually:
