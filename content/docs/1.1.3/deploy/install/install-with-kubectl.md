@@ -114,13 +114,16 @@ This connects the longhorn-role to the longhorn-service-account in the  longhorn
 The following CustomResourceDefinitions will be installed 
 
 - In longhorn.io
+  - backingimagemanagers
+  - backingimages
+  - engineimages
   - engines
+  - instancemanagers
+  - nodes
   - replicas
   - settings
+  - sharemanagers
   - volumes
-  - engineimages
-  - nodes
-  - instancemanagers
 
 #### Kubernetes API Objects
 
