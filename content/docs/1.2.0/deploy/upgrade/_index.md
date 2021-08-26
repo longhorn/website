@@ -19,7 +19,7 @@ After Longhorn Manager is upgraded, Longhorn Engine also needs to be upgraded [u
 
 ### 3. Automatically Upgrade Longhorn Engine
 
-Since Longhorn v1.1.1, we provide an option to help you [automatically upgrade engines](./auto-uprade-engine)
+Since Longhorn v1.1.1, we provide an option to help you [automatically upgrade engines](./auto-upgrade-engine)
 
 ### 4. Automatically Migrate Recurring Jobs
 
