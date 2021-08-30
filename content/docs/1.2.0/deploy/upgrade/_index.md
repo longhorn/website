@@ -11,14 +11,25 @@ There are normally two steps in the upgrade process: first upgrade Longhorn mana
 
 ### 1. Upgrade Longhorn manager
 
-- To upgrade from v1.0.x, see [this section.](./longhorn-manager)
+- To upgrade from v1.1.x, see [this section.](./longhorn-manager)
 
 ### 2. Manually Upgrade Longhorn Engine
 
 After Longhorn Manager is upgraded, Longhorn Engine also needs to be upgraded [using the Longhorn UI.](./upgrade-engine)
 
 ### 3. Automatically Upgrade Longhorn Engine
-Since Longhorn v1.1.1, we provide an option to help you [automatically upgrade engines](./auto-uprade-engine)
+
+Since Longhorn v1.1.1, we provide an option to help you [automatically upgrade engines](./auto-upgrade-engine)
+
+### 4. Automatically Migrate Recurring Jobs
+
+With the introduction of the new label-driven `Recurring Job` feature, Longhorn has removed the `RecurringJobs` field in the Volume Spec and planned to deprecate `RecurringJobs` in the StorageClass.
+
+During the upgrade, Longhorn will automatically:
+- Create new recurring job CRs from the `recurringJobs` field in Volume Spec and convert them to the volume labels.
+- Create new recurring job CRs from the `recurringJobs` in the StorageClass and convert them to the new `recurringJobSelector` parameter.
+
+Visit [Recurring Snapshots and Backups](../../snapshots-and-backups/scheduling-backups-and-snapshots) for more information about the new `Recurring Job` feature.
 
 # Need Help?
 

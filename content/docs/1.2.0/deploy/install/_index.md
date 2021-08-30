@@ -21,8 +21,7 @@ For information on deploying Longhorn on specific nodes and rejecting general wo
 Each node in the Kubernetes cluster where Longhorn is installed must fulfill the following requirements:
 
 -  A container runtime compatible with Kubernetes (Docker v1.13+, containerd v1.3.7+, etc.)
--  Kubernetes v1.16+.
-    - Recommend Kubernetes v1.17+
+-  Kubernetes v1.18+.
 -  `open-iscsi` is installed, and the `iscsid` daemon is running on all the nodes. This is necessary, since Longhorn relies on `iscsiadm` on the host to provide persistent volumes to Kubernetes. For help installing `open-iscsi`, refer to [this section.](#installing-open-iscsi)
 -  RWX support requires that each node has a NFSv4 client installed.
     - For installing a NFSv4 client, refer to [this section.](#installing-nfsv4-client)
@@ -178,10 +177,10 @@ kubectl version
 Result:
 
 ```shell
-Client Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCommit:"1e11e4a2108024935ecfcb2912226cedeafd99df", GitTreeState:"clean", BuildDate:"2020-10-14T12:50:19Z", GoVersion:"go1.15.2", Compiler:"gc", Platform:"linux/amd64"}
-Server Version: version.Info{Major:"1", Minor:"17", GitVersion:"v1.17.4", GitCommit:"8d8aa39598534325ad77120c120a22b3a990b5ea", GitTreeState:"clean", BuildDate:"2020-03-12T20:55:23Z", GoVersion:"go1.13.8", Compiler:"gc", Platform:"linux/amd64"}
+Client Version: version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.0", GitCommit:"cb303e613a121a29364f75cc67d3d580833a7479", GitTreeState:"clean", BuildDate:"2021-04-08T16:31:21Z", GoVersion:"go1.16.1", Compiler:"gc", Platform:"linux/amd64"}
+Server Version: version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.0+k3s1", GitCommit:"2705431d9645d128441c578309574cd262285ae6", GitTreeState:"clean", BuildDate:"2021-04-26T21:45:52Z", GoVersion:"go1.16.2", Compiler:"gc", Platform:"linux/amd64"}
 ```
 
-The `Server Version` should be `v1.16` or above.
+The `Server Version` should be `v1.18` or above.
 
 
