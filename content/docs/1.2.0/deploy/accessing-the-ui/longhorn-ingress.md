@@ -16,6 +16,8 @@ Authentication is not enabled by default for kubectl and Helm installations. In 
     $ kubectl -n longhorn-system create secret generic basic-auth --from-file=auth
     ```
 3. Create an Ingress manifest `longhorn-ingress.yml` :
+    > Since v1.2.0, Longhorn supports uploading backing image from the UI, so please specify `nginx.ingress.kubernetes.io/proxy-body-size: 10000m` as below to ensure uploading images work as expected.
+
     ```
     apiVersion: networking.k8s.io/v1
     kind: Ingress
@@ -31,6 +33,8 @@ Authentication is not enabled by default for kubectl and Helm installations. In 
         nginx.ingress.kubernetes.io/auth-secret: basic-auth
         # message to display with an appropriate context why the authentication is required
         nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required '
+        # custom max body size for file uploading like backing image uploading
+        nginx.ingress.kubernetes.io/proxy-body-size: 10000m
     spec:
       rules:
       - http:
