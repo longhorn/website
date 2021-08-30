@@ -6,26 +6,9 @@ weight: 1
 
 > **Prerequisite**
 >
-> CSI snapshot support is available for Kubernetes versions >= **1.17**.
->
 > It is the responsibility of the Kubernetes distribution to deploy the snapshot controller as well as the related custom resource definitions.
 >
 > For more information, see [CSI Volume Snapshots](https://kubernetes.io/docs/concepts/storage/volume-snapshots/).
-
-#### Add a Default `VolumeSnapshotClass`
-Ensure the availability of the Snapshot Beta CRDs. Afterwards create a default `VolumeSnapshotClass`.
-```yaml
-kind: VolumeSnapshotClass
-apiVersion: snapshot.storage.k8s.io/v1beta1
-metadata:
-  name: longhorn
-driver: driver.longhorn.io
-deletionPolicy: Delete
-```
-
-#### If You are Updating from a Previous Longhorn Version in an Air Gap Environment
-1. Update the `csi-provisioner` image to `longhornio/csi-provisioner:v1.6.0`.
-2. Add the`csi-snapshotter` image for `longhornio/csi-snapshotter:v2.1.1`.
 
 #### If your Kubernetes Distribution Does Not Bundle the Snapshot Controller
 
@@ -52,3 +35,14 @@ Install the Common Snapshot Controller:
 
 See the [Usage](https://github.com/kubernetes-csi/external-snapshotter#usage) section from the kubernetes
 external-snapshotter git repo for additional information.
+
+#### Add a Default `VolumeSnapshotClass`
+Ensure the availability of the Snapshot Beta CRDs. Afterwards create a default `VolumeSnapshotClass`.
+```yaml
+kind: VolumeSnapshotClass
+apiVersion: snapshot.storage.k8s.io/v1beta1
+metadata:
+  name: longhorn
+driver: driver.longhorn.io
+deletionPolicy: Delete
+```
