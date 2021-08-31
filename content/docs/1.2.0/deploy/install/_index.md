@@ -1,8 +1,11 @@
 ---
-title: Installation
+title: Quick Installation
 description: Install Longhorn on Kubernetes
 weight: 1
 ---
+
+> **Note**: This quick installation guide uses some configurations which are not for production usage.
+> Please see [Best Practices](../../best-practices/) for how to configure Longhorn for production usage.
 
 Longhorn can be installed on a Kubernetes cluster in several ways:
 
