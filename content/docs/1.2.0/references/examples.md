@@ -106,7 +106,6 @@ For reference, this page provides examples of Kubernetes resources that use Long
               - /data/lost+found
           initialDelaySeconds: 5
           periodSeconds: 5
-          timeoutSeconds: 4
         volumeMounts:
         - name: vol
           mountPath: /data
@@ -174,7 +173,6 @@ For reference, this page provides examples of Kubernetes resources that use Long
                   - /var/lib/mysql/lost+found
               initialDelaySeconds: 5
               periodSeconds: 5
-              timeoutSeconds: 4
             env:
             - name: MYSQL_ROOT_PASSWORD
               value: changeme
@@ -226,7 +224,6 @@ For reference, this page provides examples of Kubernetes resources that use Long
               - /data/lost+found
           initialDelaySeconds: 5
           periodSeconds: 5
-          timeoutSeconds: 4
         volumeMounts:
         - name: volv
           mountPath: /data
@@ -312,7 +309,6 @@ For more information about restoring to file, refer to [this section.](../../adv
                 - /data/lost+found
             initialDelaySeconds: 5
             periodSeconds: 5
-            timeoutSeconds: 4
           volumeMounts:
             - name: volv
               mountPath: /data
@@ -386,7 +382,6 @@ For more information about restoring to file, refer to [this section.](../../adv
                   - /usr/share/nginx/html/lost+found
               initialDelaySeconds: 5
               periodSeconds: 5
-              timeoutSeconds: 4
             ports:
             - containerPort: 80
               name: web
@@ -420,15 +415,15 @@ For more information about restoring to file, refer to [this section.](../../adv
     #  fsType: "ext4"
     #  recurringJobs: '[
     #   {
-    #     "name":"snap",
-    #     "task":"snapshot",
-    #     "cron":"*/1 * * * *",
+    #     "name":"snap", 
+    #     "task":"snapshot", 
+    #     "cron":"*/1 * * * *", 
     #     "retain":1
     #   },
     #   {
-    #     "name":"backup",
-    #     "task":"backup",
-    #     "cron":"*/2 * * * *",
+    #     "name":"backup", 
+    #     "task":"backup", 
+    #     "cron":"*/2 * * * *", 
     #     "retain":1,
     #     "labels": {
     #       "interval":"2m"

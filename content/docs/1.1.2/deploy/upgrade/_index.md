@@ -36,4 +36,3 @@ Since Longhorn v1.1.1, we provide an option to help you [automatically upgrade e
 If you have any issues, please report it at
 https://github.com/longhorn/longhorn/issues and include your backup yaml files
 as well as manager logs.
-

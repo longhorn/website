@@ -43,8 +43,7 @@ You need to set tolerations for both types of components. See more details below
 
 2. Set taint tolerations for system managed components
 
-   Follow the [Customize default settings](../customizing-default-settings/) to set taint tolerations by changing the value for the `taint-toleration` default setting
-
+   Follow the [Customize default settings](../customizing-default-settings/) to set taint tolerations by changing the value for the `taint-toleratio` default setting
    > Note: Because of the limitation of Rancher 2.5.x, if you are using Rancher UI to install Longhorn, you need to click `Edit As Yaml` and add setting `taintToleration` to `defaultSettings`.
    >
    > For example:
