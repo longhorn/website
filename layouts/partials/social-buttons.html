@@ -7,6 +7,10 @@
   {{ partial "button.html" (dict "inverted" $inverted "lean" $lean "text" "GitHub" "color" "black" "icon" "logo-github" "url" .) }}
   {{ end }}
 
+  {{ with $social.slack }}
+  {{ partial "button.html" (dict "inverted" $inverted "lean" $lean "text" "Slack" "color" "black" "icon" "logo-slack" "url" .) }}
+  {{ end }}
+
   {{ with $social.twitter }}
   {{ partial "button.html" (dict "inverted" $inverted "lean" $lean "text" "Twitter" "color" "twitter-blue" "icon" "logo-twitter" "url" .) }}
   {{ end }}
