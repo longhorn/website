@@ -1,6 +1,6 @@
 ---
 title: Uninstall Longhorn
-weight: 10
+weight: 6
 ---
 
 In this section, you'll learn how to uninstall Longhorn.
