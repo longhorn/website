@@ -1,6 +1,6 @@
 ---
 title: Upgrade
-weight: 5
+weight: 3
 ---
 
 Here we cover how to upgrade to latest Longhorn from all previous releases.
