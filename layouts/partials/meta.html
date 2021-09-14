@@ -10,6 +10,7 @@
 {{ $versions := site.Params.versions }}
 {{ $latestVersion := index $versions 0 }}
 {{ $currentVersion := index (split .Page.File.Dir "/" ) 1 }}
+{{ $latestURL := $url | replaceRE $currentVersion "latest" }}
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -24,7 +25,11 @@
 {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type $url site.Title | safeHTML }}
 {{ end -}}
 
+{{ if $currentVersion }}
+<link rel="canonical" href="{{ $latestURL }}">
+{{ else }}
 <link rel="canonical" href="{{ $url }}">
+{{ end }}
 
 {{/* Twitter Card metadata */}}
 <meta name="twitter:card" content="summary">
