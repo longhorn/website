@@ -29,6 +29,7 @@ weight: 1
   - [System Managed Pod Image Pull Policy](#system-managed-pod-image-pull-policy)
   - [Volume Attachment Recovery Policy](#volume-attachment-recovery-policy)
   - [Backing Image Cleanup Wait Interval](#backing-image-cleanup-wait-interval)
+  - [Backing Image Recovery Wait Interval](#backing-image-recovery-wait-interval)
 - [Backups](#backups)
   - [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
   - [Backup Target](#backup-target)
@@ -239,6 +240,14 @@ Defines the Longhorn action when a Volume is stuck with a Deployment Pod on a fa
 > Default: `60`
 
 This interval in minutes determines how long Longhorn will wait before cleaning up the backing image file when there is no replica in the disk using it.
+
+#### Backing Image Recovery Wait Interval
+> Default: `300`
+
+The interval in seconds determines how long Longhorn will wait before re-downloading the backing image file when all disk files of this backing image become `failed` or `unknown`.
+> **Note:**
+>  - This recovery only works for the backing image of which the creation type is `download`.
+>  - File state `unknown` means the related manager pods on the pod is not running or the node itself is down/disconnected.
 
 ### Backups
 
