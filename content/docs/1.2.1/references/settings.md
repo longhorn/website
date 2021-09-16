@@ -26,6 +26,7 @@ weight: 1
   - [Pod Deletion Policy When Node is Down](#pod-deletion-policy-when-node-is-down)
   - [Registry Secret](#registry-secret)
   - [Replica Replenishment Wait Interval](#replica-replenishment-wait-interval)
+  - [Concurrent Replica Rebuild Per Node Limit](#concurrent-replica-rebuild-per-node-limit)
   - [System Managed Pod Image Pull Policy](#system-managed-pod-image-pull-policy)
   - [Volume Attachment Recovery Policy](#volume-attachment-recovery-policy)
   - [Backing Image Cleanup Wait Interval](#backing-image-cleanup-wait-interval)
@@ -209,6 +210,12 @@ The Kubernetes Secret name.
 When there is at least one failed replica volume in a degraded volume, this interval in seconds determines how long Longhorn will wait at most in order to reuse the existing data of the failed replicas rather than directly creating a new replica for this volume.
 
 Warning: This wait interval works only when there is at least one failed replica in the volume. And this option may block the rebuilding for a while.
+
+#### Concurrent Replica Rebuild Per Node Limit
+
+> Default: `0`
+
+This setting controls how many replicas on a node can be rebuilt simultaneously. If the value is 0, Longhorn will not limit the rebuilding.
 
 #### System Managed Pod Image Pull Policy
 
