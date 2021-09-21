@@ -1,5 +1,7 @@
-{{ $lang   := site.LanguageCode | default "en-us" }}
-{{ $isDoc  := eq .Section "docs" }}
+{{ $lang    := site.LanguageCode | default "en-us" }}
+{{ $isDoc   := eq .Section "docs" }}
+{{ $isPromo := in .Title "promo" }}
+
 <!DOCTYPE html>
 <html lang="{{ $lang }}">
   <head>
@@ -14,7 +16,7 @@
     {{ partial "css.html" . }}
     {{ partial "favicon.html" . }}
   </head>
-  <body{{ if not $isDoc }} class="has-navbar-fixed-top"{{ end }}>
+  <body{{ if and (not $isDoc) (not $isPromo) }} class="has-navbar-fixed-top"{{ end }}>
     {{ block "main" . }}{{ end }}
 
     {{ partial "javascript.html" . }}

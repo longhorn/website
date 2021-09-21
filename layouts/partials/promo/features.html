@@ -1,0 +1,38 @@
+{{ $why      := site.Params.why }}
+{{ $features := site.Params.promo_features }}
+{{ $social   := site.Params.social }}
+{{ $align    := default "center" }}
+{{ $latest   := index site.Params.versions 0 }}
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-multiline">
+      {{ range $features }}
+      <div class="column is-one-quarter">
+        <p class="title is-size-4 is-size-5-mobile">
+          {{ .title }}
+        </p>
+
+        <div class="content">
+          {{ .text | markdownify }}
+        </div>
+      </div>
+      {{ end }}
+    </div>
+
+    <div class="buttons is-centered" style="margin-top: 50px">
+      {{ partial "promo/button.html" (dict "text" "Learn more" "color" "black" "icon" "information-circle" "url" "https://longhorn.io/docs/latest") }}
+
+      {{ with $social.github }}
+      {{ partial "promo/button.html" (dict "text" "GitHub" "color" "black" "icon" "logo-github" "url" .) }}
+      {{ end }}
+
+      {{ with $social.slack }}
+      {{ partial "promo/button.html" (dict "text" "Slack" "color" "black" "icon" "logo-slack" "url" .) }}
+      {{ end }}
+
+      {{ partial "promo/button.html" (dict "text" "KubeCon 2021 NA" "color" "black" "icon" "information-circle" "url" "/blog/kubecon-na-2021/") }}
+    </div>
+  </div>
+</section>
+
