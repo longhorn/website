@@ -56,6 +56,54 @@ Using Longhorn, you can control the granularity to the maximum, easily create a 
 If your main cluster fails, you can bring up the app in the DR cluster quickly with a defined RPO and RTO.
 """
 
+[[params.promo_features]]
+title = "Highly available persistent storage for Kubernetes"
+text = """
+Longhorn is based on Kubernetes and built for Kubernetes, 100% open source, cloud-native persistent block storage without the cost overhead of open core or proprietary alternatives.
+"""
+
+[[params.promo_features]]
+title = "Easy deployment, management, upgrade"
+text = """
+Longhorn delivers simplified methods for easy deploy, upgrade, and management.
+"""
+
+[[params.promo_features]]
+title = "Builtin snapshots and backups"
+text = """
+Longhorn’s built-in incremental snapshot and backup features keep the volume data safe in or out of the Kubernetes cluster.
+"""
+
+[[params.promo_features]]
+title = "Cross-cluster disaster recovery"
+text = """
+Longhorn can easily create a disaster recovery volume in another Kubernetes cluster and fail over to it in the event of an emergency. If your main cluster fails, you can bring up the app in the DR cluster quickly with a defined RPO and RTO.
+"""
+
+[[params.promo_features]]
+title = "CSI compatible storage driver"
+text = """
+Longhorn supports complete capabilities of CSI storage driver like volume creation, expansion, cloning, encryption, snapshot, restoring, etc.
+"""
+
+[[params.promo_features]]
+title = "Native virtual workload storage backend"
+text = """
+Longhorn provides built-in virtual disk image management and volume live-migration to support the integration with virutal workload orchestration solutions like Harvester and KubeVirt.
+"""
+
+[[params.promo_features]]
+title = "Microservices for volume lifecycle management"
+text = """
+Longhorn adopts microservices architecture to isolate each volume operations to avoid any cascading impacts among volume failures.
+"""
+
+[[params.promo_features]]
+title = "Community first"
+text = """
+Longhorn team has active, frequent, periodic community issues review meetings to discuss and reply users' questions/feedbacks, will plan the highly voted requests to the roadmap to reflect users interests.
+"""
+
 [params.social]
 github = "https://github.com/longhorn/longhorn"
 slack = "https://cloud-native.slack.com/messages/longhorn"
