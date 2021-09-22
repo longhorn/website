@@ -45,7 +45,6 @@ weight: 1
   - [Storage Minimal Available Percentage](#storage-minimal-available-percentage)
   - [Storage Over Provisioning Percentage](#storage-over-provisioning-percentage)
 - [Danger Zone](#danger-zone)
-  - [Disable Replica Rebuild](#disable-replica-rebuild)
   - [Guaranteed Engine Manager CPU](#guaranteed-engine-manager-cpu)
   - [Guaranteed Replica Manager CPU](#guaranteed-replica-manager-cpu)
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
@@ -53,6 +52,7 @@ weight: 1
   - [Priority Class](#priority-class)
 - [Deprecated](#deprecated)
   - [Guaranteed Engine CPU](#guaranteed-engine-cpu)
+  - [Disable Replica Rebuild](#disable-replica-rebuild)
 
 ### Customizing Default Settings
 
@@ -374,12 +374,6 @@ This value can be lowered to avoid overprovisioning storage. See [Multiple Disks
 
 ### Danger Zone
 
-#### Disable Replica Rebuild
-
-> Default: `false`
-
-By disable replica rebuild, there won't be any new rebuild cross the whole cluster. The [Disks or Nodes Eviction Support](../../volumes-and-nodes/disks-or-nodes-eviction) and [Data Locality](../../high-availability/data-locality) feature won't work. But any restore features and currently rebuilding replica would still work as expected.
-
 #### Guaranteed Engine Manager CPU
 
 > Default: `12`
@@ -477,3 +471,9 @@ Don't operate the Longhorn system while node selector settings are updated and L
 > Default:
 
 This deprecated setting is replaced by 2 new settings "Guaranteed Engine Manager CPU" and "Guaranteed Replica Manager CPU" since Longhorn version v1.1.1.
+
+#### Disable Replica Rebuild
+
+> Default: `false`
+
+This deprecated setting is replaced by the new setting 'Concurrent Replica Rebuild Per Node Limit'. Once the new setting value is 0, it means rebuilding disable.
