@@ -26,7 +26,6 @@ weight: 1
   - [Pod Deletion Policy When Node is Down](#pod-deletion-policy-when-node-is-down)
   - [Registry Secret](#registry-secret)
   - [Replica Replenishment Wait Interval](#replica-replenishment-wait-interval)
-  - [Concurrent Replica Rebuild Per Node Limit](#concurrent-replica-rebuild-per-node-limit)
   - [System Managed Pod Image Pull Policy](#system-managed-pod-image-pull-policy)
   - [Volume Attachment Recovery Policy](#volume-attachment-recovery-policy)
   - [Backing Image Cleanup Wait Interval](#backing-image-cleanup-wait-interval)
@@ -45,6 +44,7 @@ weight: 1
   - [Storage Minimal Available Percentage](#storage-minimal-available-percentage)
   - [Storage Over Provisioning Percentage](#storage-over-provisioning-percentage)
 - [Danger Zone](#danger-zone)
+  - [Concurrent Replica Rebuild Per Node Limit](#concurrent-replica-rebuild-per-node-limit)
   - [Guaranteed Engine Manager CPU](#guaranteed-engine-manager-cpu)
   - [Guaranteed Replica Manager CPU](#guaranteed-replica-manager-cpu)
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
@@ -211,12 +211,6 @@ When there is at least one failed replica volume in a degraded volume, this inte
 
 Warning: This wait interval works only when there is at least one failed replica in the volume. And this option may block the rebuilding for a while.
 
-#### Concurrent Replica Rebuild Per Node Limit
-
-> Default: `0`
-
-This setting controls how many replicas on a node can be rebuilt simultaneously. If the value is 0, Longhorn will not limit the rebuilding.
-
 #### System Managed Pod Image Pull Policy
 
 > Default: `if-not-present`
@@ -373,6 +367,19 @@ With the default setting of 200, the Longhorn Manager will allow scheduling new 
 This value can be lowered to avoid overprovisioning storage. See [Multiple Disks Support](../../volumes-and-nodes/multidisk/#configuration) for details. Also, a replica of volume may take more space than the volume's size since the snapshots need storage space as well. The users can delete snapshots to reclaim spaces.
 
 ### Danger Zone
+
+#### Concurrent Replica Rebuild Per Node Limit
+
+> Default: `5`
+
+This setting controls how many replicas on a node can be rebuilt simultaneously.
+
+Typically, Longhorn can block the replica starting once the current rebuilding count on a node exceeds the limit. But when the value is 0, it means disabling the replica rebuilding.
+
+> **WARNING:**
+>  - The old setting "Disable Replica Rebuild" is replaced by this setting.
+>  - Different from relying on replica starting delay to limit the concurrent rebuilding, if the rebuilding is disabled, replica object replenishment will be directly skipped.
+>  - When the value is 0/rebuilding is disabled, eviction and data locality feature won't work. But this shouldn't have any impact to any current replica rebuild and backup restore.
 
 #### Guaranteed Engine Manager CPU
 
