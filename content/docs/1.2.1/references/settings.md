@@ -379,7 +379,7 @@ Typically, Longhorn can block the replica starting once the current rebuilding c
 > **WARNING:**
 >  - The old setting "Disable Replica Rebuild" is replaced by this setting.
 >  - Different from relying on replica starting delay to limit the concurrent rebuilding, if the rebuilding is disabled, replica object replenishment will be directly skipped.
->  - When the value is 0/rebuilding is disabled, eviction and data locality feature won't work. But this shouldn't have any impact to any current replica rebuild and backup restore.
+>  - When the value is 0, the eviction and data locality feature won't work. But this shouldn't have any impact to any current replica rebuild and backup restore.
 
 #### Guaranteed Engine Manager CPU
 
