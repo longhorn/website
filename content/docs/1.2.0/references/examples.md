@@ -413,21 +413,14 @@ For more information about restoring to file, refer to [this section.](../../adv
     #  diskSelector: "ssd,fast"
     #  nodeSelector: "storage,fast"
     #  fsType: "ext4"
-    #  recurringJobs: '[
+    #  recurringJobSelector: '[
     #   {
     #     "name":"snap", 
-    #     "task":"snapshot", 
-    #     "cron":"*/1 * * * *", 
-    #     "retain":1
+    #     "isGroup":true,
     #   },
     #   {
-    #     "name":"backup", 
-    #     "task":"backup", 
-    #     "cron":"*/2 * * * *", 
-    #     "retain":1,
-    #     "labels": {
-    #       "interval":"2m"
-    #      }
+    #     "name":"backup",
+    #     "isGroup":false,
     #   }
     #  ]'
 
