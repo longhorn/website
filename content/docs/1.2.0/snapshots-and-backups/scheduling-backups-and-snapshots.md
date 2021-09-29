@@ -41,6 +41,7 @@ Recurring snapshots and backups can be configured from the `Recurring Job` page 
 ## Set up Recurring Jobs using a Longhorn RecurringJob
 
 Recurring jobs can also be set up by using a Longhorn `RecurringJob`.
+
     apiVersion: longhorn.io/v1beta1
     kind: RecurringJob
     metadata:
@@ -61,11 +62,11 @@ Recurring jobs can also be set up by using a Longhorn `RecurringJob`.
 The following parameters should be specified for each recurring job selector:
 
 - `name`: Name of the recurring job. Do not use duplicate names. And the length of `name` should be no more than 40 characters.
- 
+
 - `task`: Type of the job. It supports `snapshot` (periodically create snapshot) or `backup` (periodically create snapshot then do backup).
- 
+
 - `cron`: Cron expression. It tells the execution time of the job.
- 
+
 - `retain`: How many snapshots/backups Longhorn will retain for each volume job. It should be no less than 1.
 
 - `concurrency`: The number of jobs to run concurrently. It should be no less than 1.
