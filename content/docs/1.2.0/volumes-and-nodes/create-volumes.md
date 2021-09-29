@@ -36,9 +36,16 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
       fromBackup: ""
     #  diskSelector: "ssd,fast"
     #  nodeSelector: "storage,fast"
-    #  recurringJobs: '[{"name":"snap", "task":"snapshot", "cron":"*/1 * * * *", "retain":1},
-    #                   {"name":"backup", "task":"backup", "cron":"*/2 * * * *", "retain":1,
-    #                    "labels": {"interval":"2m"}}]'
+    #  recurringJobSelector: '[
+    #   {
+    #     "name":"snap",
+    #     "isGroup":true,
+    #   },
+    #   {
+    #     "name":"backup",
+    #     "isGroup":false,
+    #   }
+    #  ]'
     ```
 
 2. Create a Pod that uses Longhorn volumes by running this command:
