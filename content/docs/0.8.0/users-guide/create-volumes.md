@@ -31,7 +31,7 @@ spec:
       storage: 2Gi
 ```
 
-2. Use it in the a Pod as a persistent volume:
+2. Use it in the Pod as a persistent volume:
 ```
 apiVersion: v1
 kind: Pod
