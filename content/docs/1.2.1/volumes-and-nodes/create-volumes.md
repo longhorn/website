@@ -36,9 +36,16 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
       fromBackup: ""
     #  diskSelector: "ssd,fast"
     #  nodeSelector: "storage,fast"
-    #  recurringJobs: '[{"name":"snap", "task":"snapshot", "cron":"*/1 * * * *", "retain":1},
-    #                   {"name":"backup", "task":"backup", "cron":"*/2 * * * *", "retain":1,
-    #                    "labels": {"interval":"2m"}}]'
+    #  recurringJobSelector: '[
+    #   {
+    #     "name":"snap",
+    #     "isGroup":true,
+    #   },
+    #   {
+    #     "name":"backup",
+    #     "isGroup":false,
+    #   }
+    #  ]'
     ```
 
 2. Create a Pod that uses Longhorn volumes by running this command:
@@ -103,7 +110,7 @@ If the PVC names a StorageClass, Kubernetes will:
 
 ### Creating Longhorn Volumes with the Longhorn UI
 
-Since the Longhorn volume already exists while creating PV/PVC, a StorageClass is not needed for dynamically provisioning Longhorn volume. However, the field `storageClassName` should be set in PVC/PV, to be used for PVC bounding purpose. And it's unnecessary for users create the related StorageClass object. 
+Since the Longhorn volume already exists while creating PV/PVC, a StorageClass is not needed for dynamically provisioning Longhorn volume. However, the field `storageClassName` should be set in PVC/PV, to be used for PVC bounding purpose. And it's unnecessary for users create the related StorageClass object.
 
 By default the StorageClass for Longhorn created PV/PVC is `longhorn-static`. Users can modified it in `Setting - General - Default Longhorn Static StorageClass Name` as they need.
 
@@ -111,5 +118,5 @@ Users need to manually delete PVC and PV created by Longhorn.
 
 
 # PV/PVC creation for existing Longhorn volume
-Now users can create PV/PVC via our Longhorn UI for the existing Longhorn volumes. 
+Now users can create PV/PVC via our Longhorn UI for the existing Longhorn volumes.
 Only detached volume can be used by newly created pod.
