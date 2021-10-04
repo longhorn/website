@@ -24,7 +24,7 @@ Workload Type:StatefulSet
 
 ## History
 
-After the a workload is no longer using the Longhorn volume, the volume detail page shows the historical status of the most recent workload that used the volume:
+After the workload is no longer using the Longhorn volume, the volume detail page shows the historical status of the most recent workload that used the volume:
 
 ```
 Last time used by Pod: a few seconds ago
