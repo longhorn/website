@@ -419,9 +419,16 @@ For more information about restoring to file, refer to [this section.](../../adv
       #  backingImageChecksum: "SHA512 checksum of the backing image"
       #  diskSelector: "ssd,fast"
       #  nodeSelector: "storage,fast"
-      #  recurringJobSelector: '[{"name":"snap-group", "isGroup":true},
-      #                          {"name":"backup", "isGroup":false}]'
-
+      #  recurringJobSelector: '[
+      #   {
+      #     "name":"snap",
+      #     "isGroup":true,
+      #   },
+      #   {
+      #     "name":"backup",
+      #     "isGroup":false,
+      #   }
+      #  ]'
 
 Note that Longhorn supports automatic remount only for the workload pod that is managed by a controller (e.g. deployment, statefulset, daemonset, etc...).
 See [here](../../high-availability/recover-volume/) for details.
