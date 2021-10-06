@@ -5,7 +5,7 @@ weight: 1
 
 ### Upgrading from v1.1.x
 
-We only support upgrading to v{{< current-version >}} from v1.1.x. For other versions, please upgrade to v1.1.x first.
+We only support upgrading to v{{< current-version >}} from v1.1.x or v1.2.0. For other versions, please upgrade to v1.1.x first.
 
 Engine live upgrade is supported from v1.1.x or v1.2.0 to v{{< current-version >}}.
 
