@@ -3,7 +3,8 @@ title: Important Notes
 weight: 4
 ---
 
-This page lists important notes and known issues for Longhorn v1.2.0.
+This page lists important notes for Longhorn v1.2.1.
+Please see [here](https://github.com/longhorn/longhorn/releases/tag/v1.2.1) for the full release note.
 Please see [here](https://github.com/longhorn/longhorn/releases/tag/v1.2.0) for the full release note.
 
 ## Notes
