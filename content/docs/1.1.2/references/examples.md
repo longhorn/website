@@ -411,29 +411,22 @@ For more information about restoring to file, refer to [this section.](../../adv
       name: longhorn
     provisioner: driver.longhorn.io
     allowVolumeExpansion: true
+    reclaimPolicy: Delete
+    volumeBindingMode: Immediate
     parameters:
       numberOfReplicas: "3"
       staleReplicaTimeout: "2880" # 48 hours in minutes
       fromBackup: ""
+    #  fsType: "ext4"
+    #  backingImage: "bi-test"
+    #  backingImageURL: "https://backing-image-example.s3-region.amazonaws.com/test-backing-image"
     #  diskSelector: "ssd,fast"
     #  nodeSelector: "storage,fast"
-    #  fsType: "ext4"
-    #  recurringJobs: '[
-    #   {
-    #     "name":"snap",
-    #     "task":"snapshot",
-    #     "cron":"*/1 * * * *",
-    #     "retain":1
-    #   },
-    #   {
-    #     "name":"backup",
-    #     "task":"backup",
-    #     "cron":"*/2 * * * *",
-    #     "retain":1,
-    #     "labels": {
-    #       "interval":"2m"
-    #      }
-    #   }
-    #  ]'
+    #  recurringJobs: '[{"name":"snap", "task":"snapshot", "cron":"*/1 * * * *", "retain":1},
+    #                   {"name":"backup", "task":"backup", "cron":"*/2 * * * *", "retain":1,
+    #                    "labels": {"interval":"2m"}}]'
 
-Note that only `ext4` filesystem supports automatically remount after a volume is detached unexpectedly. See [here](../../high-availability/recover-volume/) for details.
+
+
+Note that Longhorn supports automatic remount only for the workload pod that is managed by a controller (e.g. deployment, statefulset, daemonset, etc...).
+See [here](../../high-availability/recover-volume/) for details.
