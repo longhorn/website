@@ -3,7 +3,7 @@ title: Upgrading Longhorn Manager
 weight: 1
 ---
 
-### Upgrading from v1.1.x
+### Upgrading from v1.1.x or v1.2.0
 
 We only support upgrading to v{{< current-version >}} from v1.1.x or v1.2.0. For other versions, please upgrade to v1.1.x first.
 
