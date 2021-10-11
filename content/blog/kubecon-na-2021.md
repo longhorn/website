@@ -22,7 +22,7 @@ Monday, October 11, 9:00am - 9:45am Pacific Daylight Time (UTC -7)
 
 ## Survey
 
-During the conference, we will have a survey for the visitors to the Longhorn booth. Every respondent will have a chance to win some cool Longhorn swags, including Longhorn logo T-Shirts. We will draw 10 winners per day from October 11th to 15th.
+During the conference, we will have a survey ([here](https://forms.office.com/r/t1bRvUCXXj)) for the visitors to the Longhorn booth. Every respondent will have a chance to win some cool Longhorn swags, including Longhorn logo T-Shirts. We will draw 10 winners per day from October 13th to 15th.
 
 {{< figure src="/img/blogs/kubecon-eu-2020/tshirt.png" >}}
 
