@@ -7,9 +7,9 @@ Longhorn is open source software, so contributions are greatly welcome. Please r
 
 Contributing code is not the only way of contributing. We value feedback very much and many of the Longhorn features are originated from users' feedback. If you have any feedback, feel free to [file an issue](https://github.com/longhorn/longhorn/issues/new/choose) and talk to the developers at the [CNCF](https://slack.cncf.io/) [#longhorn](https://cloud-native.slack.com/messages/longhorn) slack channel.
 
-Longhorn is a [CNCF Sandbox Project.](https://www.cncf.io/sandbox-projects/)
+Longhorn is a [CNCF Incubating Project.](https://www.cncf.io/projects/longhorn/)
 
-![Longhorn is a CNCF Sandbox Project](https://raw.githubusercontent.com/cncf/artwork/master/other/cncf/horizontal/color/cncf-color.svg)
+![Longhorn is a CNCF Incubating Project](https://raw.githubusercontent.com/cncf/artwork/master/other/cncf/horizontal/color/cncf-color.svg)
 
 ## Source Code
 
