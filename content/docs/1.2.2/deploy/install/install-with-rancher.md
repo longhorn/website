@@ -17,17 +17,20 @@ Each node in the Kubernetes cluster where Longhorn is installed must fulfill [th
 ## Installation
 
 1. Optional: If Rancher version is 2.5.9 or before, we recommend creating a new project for Longhorn, for example, `Storage`.
-2. Navigate to the cluster and project where you will install Longhorn. 
+2. Navigate to the cluster where you will install Longhorn. 
     {{< figure src="/img/screenshots/install/select-project.png" >}}
 3. Navigate to the `Apps & Marketplace` screen.
-4. Find the Longhorn item in the catalog and click it.
+    {{< figure src="/img/screenshots/install/apps-launch.png" >}}
+4. Find the Longhorn item in the charts and click it.
     {{< figure src="/img/screenshots/install/longhorn.png" >}}
-5. Optional: Customize the default settings. 
-6. Click **Install**. Longhorn will be installed in the `longhorn-system` namespace.
+5. Click **Install**.
+    {{< figure src="/img/screenshots/install/longhorn-chart.png" >}}
+6. Optional: Select the project where you want to install Longhorn.
+7. Optional: Customize the default settings.
     {{< figure src="/img/screenshots/install/launch-longhorn.png" >}}
-    Longhorn is now installed.
+8. Click Next. Longhorn will be installed in the longhorn-system namespace.    
     {{< figure src="/img/screenshots/install/installed-longhorn.png" >}}
-7. Click the `Manage storage system via UI` link to navigate to the Longhorn dashboard.
+9. Click the Longhorn App Icon to navigate to the Longhorn dashboard.
     {{< figure src="/img/screenshots/install/dashboard.png" >}}
 
 After Longhorn has been successfully installed, you can access the Longhorn UI by navigating to the `Longhorn` option from Rancher left panel.
