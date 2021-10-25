@@ -1,6 +1,6 @@
 ---
 title: Python Client
-weight: 5
+weight: 2
 ---
 
 Currently, you can operate Longhorn using Longhorn UI.

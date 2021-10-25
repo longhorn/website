@@ -1,6 +1,6 @@
 ---
 title: Examples
-weight: 5
+weight: 4
 ---
 
 For reference, this page provides examples of Kubernetes resources that use Longhorn storage.
