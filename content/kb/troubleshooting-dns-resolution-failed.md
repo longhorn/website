@@ -17,7 +17,7 @@ The longhorn-driver-deployer or longhorn-csi-plugin or longhorn-ui Pods unable t
 
 ## Reason
 
-The Kubernetes cluster CoreDNS unable to resolve the longhorn-backend service, causing the DNS resolution failed.
+The CoreDNS of the Kubernetes cluster is unable to resolve the longhorn-backend service, causing the DNS resolution to fail.
 
 ## Solution
 
