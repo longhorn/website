@@ -42,7 +42,7 @@ The Kubernetes cluster CoreDNS unable to resolve the longhorn-backend service, c
    K3S_RESOLV_CONF=/etc/resolv.conf
    RKE2_RESOLV_CONF=/etc/resolv.conf
    ```
-   to k3s env files on all nodes. And restart the k3s server/agent service.
+   to k3s env files on all nodes, then restart the k3s server/agent service.
 6. If you're not using k3s, check the [Kubernetes DNS Resolution Known Issues](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/#known-issues) to see how to set kubelet's `--resolv-conf` flag to point to the correct `resolv.conf`.
 
 ## Related information
