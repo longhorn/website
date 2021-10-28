@@ -235,9 +235,7 @@ weight: 2
 
     * **Helm3**
 
-      `kubectl create namespace longhorn-system`
-
-      `helm install longhorn ./chart --namespace longhorn-system`
+      `helm install longhorn ./chart --namespace longhorn-system --create-namespace`
 
 
 ## Using Rancher App

@@ -25,8 +25,7 @@ Now use the following command(s) to install Longhorn in the `longhorn-system` na
 * Helm 3: When installing Longhorn with Helm 3, the namespace is created separately.
 
     ```
-    kubectl create namespace longhorn-system
-    helm install longhorn ./longhorn/chart/ --namespace longhorn-system
+    helm install longhorn ./longhorn/chart/ --namespace longhorn-system --create-namespace
     ```
 ---
 
