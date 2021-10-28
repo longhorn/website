@@ -39,8 +39,7 @@ helm install ./chart --name longhorn --namespace longhorn-system
 ```
 To install Longhorn with `Helm3`, use these commands:
 ```shell
-kubectl create namespace longhorn-system
-helm install longhorn ./chart --namespace longhorn-system
+helm install longhorn ./chart --namespace longhorn-system --create-namespace
 ```
 
 This installs Longorn in the `longhorn-system` namespace.

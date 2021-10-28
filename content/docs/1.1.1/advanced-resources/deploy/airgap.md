@@ -273,9 +273,7 @@ If you want to use custom images' names, you can use the following steps:
 
     * **Helm3**
 
-      `kubectl create namespace longhorn-system`
-
-      `helm install longhorn ./chart --namespace longhorn-system`
+      `helm install longhorn ./chart --namespace longhorn-system --create-namespace`
 
 # Using a Rancher App
 

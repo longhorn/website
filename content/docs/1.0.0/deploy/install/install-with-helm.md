@@ -38,8 +38,7 @@ If you're using a Helm version prior to version 3.0, you need to [install Tiller
     To install Longhorn with Helm 3, use these commands:
 
     ```
-    kubectl create namespace longhorn-system
-    helm install longhorn ./longhorn/chart/ --namespace longhorn-system
+    helm install longhorn ./longhorn/chart/ --namespace longhorn-system --create-namespace
     ```
 
 3. To confirm that the deployment succeeded, run:
