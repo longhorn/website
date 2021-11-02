@@ -23,29 +23,6 @@ Longhorn provides an option to help users automatically force delete terminating
 
 You can find more detail about the setting options in the `Pod Deletion Policy When Node is Down` in the **Settings** tab in the Longhorn UI or [Settings reference](../../references/settings/#pod-deletion-policy-when-node-is-down)
 
-### Volume Attachment recovery policy
-
-If you decide to force delete the pod (either manually or with the help of Longhorn), Kubernetes will take about another **six minutes** to delete the VolumeAttachment object associated with the Pod, then finally detach the volume from the lost Node and allow it to be used by the new pod.
-
-This six-minute period is [hard-coded in Kubernetes](https://github.com/kubernetes/kubernetes/blob/5e31799701123c50025567b8534e1a62dbc0e9f6/pkg/controller/volume/attachdetach/attach_detach_controller.go#L95): If the pod on the lost node is forced deleting, the related volumes won't be unmounted correctly. Then Kubernetes will wait for this fixed timeout to directly clean up the VolumeAttachment object.
-
-To deal with this problem we provide 3 different Volume Attachment recovery policies.
-
-##### Volume Attachment recovery policy `never` *(Kubernetes default)*
-Longhorn will not recover the Volume Attachment from a failed node, which is consistent with the default Kubernetes behavior.
-The user needs to force delete the terminating pods, at which point Longhorn will recover the Volume Attachment from the failed node.
-Which then allows the pending replacement pods to start correctly with the requested volumes being available.
-
-##### Volume Attachment recovery policy `wait` *(Longhorn default)*
-Longhorn will wait to recover the Volume Attachment till all the terminating pods deletion grace period has passed.
-Since the nodes `kubelet` is required to delete the pods by this point, and the pods are still available we can conclude that the failed nodes `Kubelet` is incapable of deleting the pods.
-At this point Longhorn will recover the Volume Attachment from the failed node.
-Which then allows the pending replacement pods to start correctly with the requested volumes being available.
-
-##### Volume Attachment recovery policy `immediate`
-Longhorn will recover the Volume Attachment from a failed node as soon as there are pending replacement pods available.
-Which then allows the pending replacement pods to start correctly with the requested volumes being available.
-
 ## What to expect when a failed Kubernetes Node recovers
 
 If the node is back online within 5 - 6 minutes of the failure, Kubernetes will restart pods, unmount, and re-mount volumes without volume re-attaching and VolumeAttachment cleanup.
