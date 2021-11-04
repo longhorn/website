@@ -33,8 +33,8 @@ spec:
 
 Once the ServiceMonitor is created, Rancher will automatically discover all Longhorn metrics.
 
-You can then set up a [Grafana](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/tools/monitoring/viewing-metrics/#grafana) dashboard for visualization.
+You can then set up a Grafana dashboard for visualization.
 
 You can import our prebuilt [Longhorn example dashboard](https://grafana.com/grafana/dashboards/13032) to have an idea.
 
-You can also [set up alerts](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/tools/alerts/) in Rancher UI.
+You can also set up alerts in Rancher UI.
