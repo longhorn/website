@@ -57,7 +57,6 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
         auto-delete-pod-when-volume-detached-unexpectedly:
         disable-scheduling-on-cordoned-node:
         replica-zone-soft-anti-affinity:
-        volume-attachment-recovery-policy:
         node-down-pod-deletion-policy:
         allow-node-drain-with-last-healthy-replica:
         mkfs-ext4-parameters:
