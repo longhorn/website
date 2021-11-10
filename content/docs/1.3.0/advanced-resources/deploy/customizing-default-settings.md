@@ -5,8 +5,6 @@ weight: 1
 
 You may customize Longhorn's default settings when deploying it. You may specify, for example, `Create Default Disk With Node Labeled` and `Default Data Path` before starting Longhorn.
 
-This default setting is only for a Longhorn system that hasn't been deployed. It has no impact on an existing Longhorn system. The settings for any existing Longhorn system should be modified using the Longhorn UI.
-
 The default settings can be customized in the following ways:
 
 - [Using the Rancher UI](#using-the-rancher-ui)
@@ -25,53 +23,24 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
     git clone https://github.com/longhorn/longhorn.git
     ```
 
-2. Modify the config map named `longhorn-default-setting` in the yaml file `longhorn/deploy/longhorn.yaml`. For example:
+2. Modify the Setting CRs in the yaml file `longhorn/deploy/longhorn.yaml`. For example:
 
-    ```
-    ---
-    apiVersion: v1
-    kind: ConfigMap
+    ```yaml
+    apiVersion: longhorn.io/v1beta2
+    kind: Setting
     metadata:
-      name: longhorn-default-setting
+      name: create-default-disk-labeled-nodes
       namespace: longhorn-system
-    data:
-      default-setting.yaml: |-
-        backup-target:
-        backup-target-credential-secret:
-        allow-recurring-job-while-volume-detached:
-        create-default-disk-labeled-nodes:
-        default-data-path:
-        replica-soft-anti-affinity:
-        storage-over-provisioning-percentage:
-        storage-minimal-available-percentage:
-        upgrade-checker:
-        default-replica-count:
-        default-data-locality:
-        guaranteed-engine-cpu:
-        default-longhorn-static-storage-class:
-        backupstore-poll-interval:
-        taint-toleration:
-        system-managed-components-node-selector:
-        priority-class:
-        auto-salvage:
-        auto-delete-pod-when-volume-detached-unexpectedly:
-        disable-scheduling-on-cordoned-node:
-        replica-zone-soft-anti-affinity:
-        volume-attachment-recovery-policy:
-        node-down-pod-deletion-policy:
-        allow-node-drain-with-last-healthy-replica:
-        mkfs-ext4-parameters:
-        disable-replica-rebuild:
-        replica-replenishment-wait-interval:
-        disable-revision-counter:
-        system-managed-pods-image-pull-policy:
-        allow-volume-creation-with-degraded-availability:
-        auto-cleanup-system-generated-snapshot:
-        concurrent-automatic-engine-upgrade-per-node-limit:
-        backing-image-cleanup-wait-interval:
-        guaranteed-engine-manager-cpu:
-        guaranteed-replica-manager-cpu:
+    value: "true"
     ---
+    apiVersion: longhorn.io/v1beta2
+    kind: Setting
+    metadata:
+      name: default-data-path
+      namespace: longhorn-system
+    value: "/var/lib/longhorn/"
+    ---
+    ...
     ```
 
 ### Using Helm
