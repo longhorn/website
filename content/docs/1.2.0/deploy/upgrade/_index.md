@@ -31,6 +31,9 @@ During the upgrade, Longhorn will automatically:
 
 Visit [Recurring Snapshots and Backups](../../snapshots-and-backups/scheduling-backups-and-snapshots) for more information about the new `Recurring Job` feature.
 
+# Extended Reading
+Visit [Some old instance manager pods are still running after upgrade](https://longhorn.io/kb/troubleshooting-some-old-instance-manager-pods-are-still-running-after-upgrade) for more information about the cleanup strategy of instance manager pods during upgrade.
+
 # Need Help?
 
 If you have any issues, please report it at
