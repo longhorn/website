@@ -26,6 +26,7 @@ Run this command:
 
 ```
 helm uninstall longhorn -n longhorn-system
+helm uninstall longhorn-crd -n longhorn-system
 ```
 
 ### Uninstalling Longhorn using kubectl

@@ -38,12 +38,14 @@ If you're using a Helm version prior to version 3.0, you need to [install Tiller
     To install Longhorn with Helm 2, use this command:
 
     ```shell
+    helm install longhorn/longhorn-crd --name longhorn-crd --namespace longhorn-system
     helm install longhorn/longhorn --name longhorn --namespace longhorn-system
     ```
 
     To install Longhorn with Helm 3, use these commands:
 
     ```shell
+    helm install longhorn-crd longhorn/longhorn-crd --namespace longhorn-system --create-namespace
     helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace
     ```
 

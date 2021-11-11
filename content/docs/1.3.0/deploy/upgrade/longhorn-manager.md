@@ -37,9 +37,17 @@ kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< curren
 
 To upgrade with Helm, run this command:
 
-```
-helm upgrade longhorn ./longhorn/chart
-```
+- Helm2
+  ```
+  helm upgrade longhorn-crd ./longhorn/chart-crd --namespace longhorn-system
+  helm upgrade longhorn ./longhorn/chart --namespace longhorn-system
+  ```
+
+- Helm3
+  ```
+  helm upgrade ./longhorn/chart-crd longhorn-crd --namespace longhorn-system
+  helm upgrade ./longhorn/chart longhorn --namespace longhorn-system
+  ```
 
 On Kubernetes clusters managed by Rancher 2.1 or newer, the steps to upgrade the catalog app `longhorn-system` are the similar to the installation steps.
 
