@@ -1,12 +1,12 @@
 ---
-title: Restore cluster with a Rancher snapshot
+title: Restore to a cluster contains data using Rancher snapshot
 weight: 4
 ---
 
 This doc describes what users need to do after restoring the cluster with a Rancher snapshot.
 
 ## Assumptions:
-- Most of the data and the underlying disks still exist in the cluster before the restore and can be directly reused then.
+- **Most of the data and the underlying disks still exist** in the cluster before the restore and can be directly reused then.
 - There is a backupstore holding all volume data.
 - The setting [`Disable Revision Counter`](../../references/settings/#disable-revision-counter) is false. (It's false by default.) Otherwise, users need to manually check if the data among volume replicas are consistent, or directly restore volumes from backup.
 
