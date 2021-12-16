@@ -3,7 +3,7 @@ title: Upgrade
 weight: 3
 ---
 
-Here we cover how to upgrade to latest Longhorn from all previous releases.
+Here we cover how to upgrade to the latest Longhorn from all previous releases.
 
 # Upgrading Longhorn
 
@@ -30,6 +30,9 @@ During the upgrade, Longhorn will automatically:
 - Create new recurring job CRs from the `recurringJobs` in the StorageClass and convert them to the new `recurringJobSelector` parameter.
 
 Visit [Recurring Snapshots and Backups](../../snapshots-and-backups/scheduling-backups-and-snapshots) for more information about the new `Recurring Job` feature.
+
+# Extended Reading
+Visit [Some old instance manager pods are still running after upgrade](https://longhorn.io/kb/troubleshooting-some-old-instance-manager-pods-are-still-running-after-upgrade) for more information about the cleanup strategy of instance manager pods during upgrade.
 
 # Need Help?
 
