@@ -32,7 +32,7 @@ Last time used by Pod: a few seconds ago
 Last Pod Name: teststatefulset-0
 Last Workload Name: teststatefulset
 Last Workload Type: Statefulset
-``` 
+```
 
 If these fields are set, they indicate that currently no workload is using this volume.
 

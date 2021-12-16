@@ -37,7 +37,7 @@ Replicas are thin-provisioned on the underlying disks or network storage.
 
 ### Schedule Multiple Replicas across Multiple Compute or Storage Hosts
 
-To increase availability, Longhorn creates replicas of each volume. Replicas contain a chain of snapshots of the volume, with each snapshot storing the change from a previous snapshot. Each replica of a volume also runs in a container, so a volume with three replicas results in four containers. 
+To increase availability, Longhorn creates replicas of each volume. Replicas contain a chain of snapshots of the volume, with each snapshot storing the change from a previous snapshot. Each replica of a volume also runs in a container, so a volume with three replicas results in four containers.
 
 The number of replicas for each volume is configurable in Longhorn, as well as the nodes where replicas will be scheduled. Longhorn monitors the health of each replica and performs repairs, rebuilding the replica when necessary.
 
