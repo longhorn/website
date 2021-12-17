@@ -31,6 +31,9 @@ Since Longhorn v1.1.1, we provide an option to help you [automatically upgrade e
 >
 > If you hit the deadlock in the old instance manager, please follow the recovering steps [here](https://github.com/longhorn/longhorn/issues/2697#issuecomment-879374809)
 
+# Extended Reading
+Visit [Some old instance manager pods are still running after upgrade](https://longhorn.io/kb/troubleshooting-some-old-instance-manager-pods-are-still-running-after-upgrade) for more information about the cleanup strategy of instance manager pods during upgrade.
+
 # Need Help?
 
 If you have any issues, please report it at

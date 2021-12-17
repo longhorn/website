@@ -27,7 +27,7 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
 
 2. Modify the config map named `longhorn-default-setting` in the yaml file `longhorn/deploy/longhorn.yaml`. For example:
 
-    ```
+    ```yaml
     ---
     apiVersion: v1
     kind: ConfigMap
@@ -68,12 +68,21 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
 
 2. Use helm command with `--set` flag to modify the default settings. For example:
 
-    ```shell
-    helm install ./longhorn/chart \
-    --name longhorn \
-    --namespace longhorn-system \
-    --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
-    ```
+    - Helm 2
+      ```shell
+      helm install longhorn/longhorn \
+        --name longhorn \
+        --namespace longhorn-system \
+        --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
+      ```
+
+    - Helm 3
+      ```shell
+      helm install longhorn longhorn/longhorn \
+        --namespace longhorn-system \
+        --create-namespace \
+        --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
+      ```
 
     Or directly modify the default settings in the YAML file `longhorn/chart/values.yaml`, then use the Helm command without `--set` to deploy Longhorn. The following is an example `longhorn/chart/values.yaml`:
 
@@ -102,9 +111,20 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
 
     Then use the `helm` command:
 
-    ```
-    helm install ./longhorn/chart --name longhorn --namespace longhorn-system
-    ```
+    - Helm 2
+      ```shell
+      helm install longhorn/longhorn \
+        --name longhorn \
+        --namespace longhorn-system \
+        --values values.yaml
+      ```
+    - Helm 3
+      ```shell
+      helm install longhorn longhorn/longhorn \
+        --namespace longhorn-system \
+        --create-namespace \
+        --values values.yaml
+      ```
 
 For more info about using helm, see the section about
 [installing Longhorn with Helm](../../../deploy/install/install-with-helm)
