@@ -6,9 +6,9 @@ weight: 1
 
 Longhorn can be installed on a Kubernetes cluster in several ways:
 
+- [Rancher catalog app](./install-with-rancher)
 - [kubectl](./install-with-kubectl/)
 - [Helm](./install-with-helm/)
-- [Rancher catalog app](./install-with-rancher)
 
 To install Longhorn in an air gapped environment, refer to [this section.](../../advanced-resources/deploy/airgap)
 
@@ -29,7 +29,7 @@ Each node in the Kubernetes cluster where Longhorn is installed must fulfill the
 - The host filesystem supports the `file extents` feature to store the data. Currently we support:
     - ext4
     - XFS
-- `bash`, `curl`, `findmnt`, `grep`, `awk`, `blkid`, `lsblk` must be installed.
+- `curl`, `findmnt`, `grep`, `awk`, `blkid`, `lsblk` must be installed.
 - [Mount propagation](https://kubernetes-csi.github.io/docs/deploying.html#enabling-mount-propagation) must be enabled.
 
 The Longhorn workloads must be able to run as root in order for Longhorn to be deployed and operated properly.
@@ -110,7 +110,7 @@ yum install iscsi-initiator-utils
 
 We also provide an `iscsi` installer to make it easier for users to install `open-iscsi` automatically:
 ```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/iscsi/longhorn-iscsi-installation.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/prerequisite/longhorn-iscsi-installation.yaml
 ```
 After the deployment, run the following command to check pods' status of the installer:
 ```
@@ -147,6 +147,24 @@ For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 imag
 
 ```
 yum install nfs-utils
+```
+
+We also provides an `nfs` installer to make it easier for users to install `nfs-client` automatically:
+```
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/prerequisite/longhorn-nfs-installation.yaml
+```
+After the deployment, run the following command to check pods' status of the installer:
+```
+kubectl get pod | grep longhorn-nfs-installation
+NAME                                  READY   STATUS    RESTARTS   AGE
+longhorn-nfs-installation-t2v9v   1/1     Running   0          143m
+longhorn-nfs-installation-7nphm   1/1     Running   0          143m
+```
+And also can check the log with the following command to see the installation result:
+```
+kubectl logs longhorn-nfs-installation-t2v9v -c nfs-installation
+...
+nfs install successfully
 ```
 
 ### Checking the Kubernetes Version
