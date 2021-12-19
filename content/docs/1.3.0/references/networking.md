@@ -33,6 +33,12 @@ To | Port | Protocol
 `External Backupstore` | User defined | TCP
 `Kubernetes API server` | `Kubernetes API server port` | TCP
 
+### Longhorn Webhook
+#### Ingress:
+From | Port | Protocol
+--- | --- | ---
+`Kubernetes API server` | 9443 | TCP
+
 ### UI
 #### ingress:
 Users defined
