@@ -8,7 +8,7 @@ This doc describes what users need to do after restoring the cluster with a Ranc
 ## Assumptions:
 - **Most of the data and the underlying disks still exist** in the cluster before the restore and can be directly reused then.
 - There is a backupstore holding all volume data.
-- The setting [`Disable Revision Counter`](../../references/settings/#disable-revision-counter) is false. (It's false by default.) Otherwise, users need to manually check if the data among volume replicas are consistent, or directly restore volumes from backup.
+- The setting [`Disable Revision Counter`](../../../references/settings/#disable-revision-counter) is false. (It's false by default.) Otherwise, users need to manually check if the data among volume replicas are consistent, or directly restore volumes from backup.
 
 ## Expectation:
 - All settings and node & disk configs will be restored.
@@ -28,7 +28,7 @@ This doc describes what users need to do after restoring the cluster with a Ranc
 - If the following happens after the snapshot and before the cluster restore:
     - A volume is unchanged: Users don't need to do anything.
     - The data is updated: Users don't need to do anything typically. Longhorn will automatically fail the replicas that don't contain the latest data.
-    - A new volume is created: This volume will disappear after the restore. Users need to recreate a new volume, launch [a single replica volume](../data-recovery/export-from-replica) based on the replica of the disappeared volume, then transfer the data to the new volume.
+    - A new volume is created: This volume will disappear after the restore. Users need to recreate a new volume, launch [a single replica volume](../../data-recovery/export-from-replica) based on the replica of the disappeared volume, then transfer the data to the new volume.
     - A volume is deleted: Since the data is cleaned up when the volume is removed, the restored volume contains no data. Users may need to re-delete it.
     - For DR volumes: Users don't need to do anything. Longhorn will redo a full restore.
     - Some operations are applied for a volume:
@@ -37,7 +37,7 @@ This doc describes what users need to do after restoring the cluster with a Ranc
         - Replica rebuilding & replica removal:
             - If there are new replicas rebuilt, those replicas will disappear from the Longhorn system after the restoring. Users need to clean up the replica data manually, or use the data directories of these replicas to export a single replica volume then do data recovery if necessary.
             - If there are some failed/removed replicas and there is at least one replica keeping healthy, those failed/removed replicas will be back after the restoration. Then Longhorn can detect these restored replicas do not contain any data, and copy the latest data from the healthy replica to these replicas.
-            - If all replicas are replaced by new replicas after the snapshot, the volume will contain invalid replicas only after the restore. Then users need to export [a single replica volume](../data-recovery/export-from-replica) for the data recovery.
+            - If all replicas are replaced by new replicas after the snapshot, the volume will contain invalid replicas only after the restore. Then users need to export [a single replica volume](../../data-recovery/export-from-replica) for the data recovery.
         -  Engine image upgrade: Users need to redo the upgrade.
         - Expansion: The spec size of the volume will be smaller than the current size. This is like someone requesting volume shrinking but actually Longhorn will refuse to handle it internally. To recover the volume, users need to scale down the workloads and re-do the expansion.
 
