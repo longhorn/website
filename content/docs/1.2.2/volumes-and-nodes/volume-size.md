@@ -24,7 +24,7 @@ In this section, you'll have a better understanding of concepts related to volum
 Here, we will have an example that explains how volume `size` and `actual size` get changed after a bunch of I/O and snapshot related operations. 
 
 {{< figure src="/img/screenshots/volumes-and-nodes/volume-size-example-0.png" >}}
-> The illustraion presents the the file organazation of **one replica**. The volume head and snapshots are actually sparse files, which we mentioned above.
+> The illustration presents the file organization of **one replica**. The volume head and snapshots are actually sparse files, which we mentioned above.
 
 1. Create a 5Gi volume, then attach and mount it on a node. See Figure 1 of the illustration.
     - For this empty volume, the nominal `size` is 5Gi and the `actual size` is almost 0.
