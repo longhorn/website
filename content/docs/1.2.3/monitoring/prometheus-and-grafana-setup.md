@@ -22,7 +22,7 @@ There are 2 unmentioned components in the above picture:
 
 * Longhorn Backend service is a service pointing to the set of Longhorn manager pods. Longhorn's metrics are exposed in Longhorn manager pods at the endpoint `http://LONGHORN_MANAGER_IP:PORT/metrics`.
 * [Prometheus operator](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/user-guides/getting-started.md) makes running Prometheus on top of Kubernetes very easy. The operator watches 3 custom resources: ServiceMonitor, Prometheus and AlertManager.
-  When users create those custom resources, Prometheus Operator deploys and manages the Prometheus server, AlerManager with the user-specified configurations.
+  When users create those custom resources, Prometheus Operator deploys and manages the Prometheus server, AlertManager with the user-specified configurations.
 
 ## Installation
 
