@@ -432,7 +432,7 @@ See [Priority Class](../../advanced-resources/deploy/priority-class) for details
 
 #### System Managed Components Node Selector
 
-> Example: `label-key1=label-value1;label-key2=label-value2`
+> Example: `label-key1:label-value1;label-key2:label-value2`
 
 If you want to restrict Longhorn components to only run on a particular set of nodes, you can set node selector for all Longhorn components.
 
