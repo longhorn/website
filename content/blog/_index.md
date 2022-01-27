@@ -1,5 +1,5 @@
 ---
-title: The Longhorn blog
+title: The Longhorn Blog
 ---
 
-Welcome to the Longhorn blog!
+Welcome to the Longhorn Blog!
