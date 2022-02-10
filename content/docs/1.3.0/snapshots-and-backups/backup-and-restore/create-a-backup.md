@@ -16,6 +16,6 @@ To create a backup,
 
 **Result:** The backup is created. To see it, click **Backup** in the top navigation bar.
 
-> **Note:** Longhorn support backup for detached volume with CSI. See [Enable CSI Snapshot Support on a Cluster](../../csi-snapshot-support/enable-csi-snapshot-support) and [Create a Backup via CSI](../../csi-snapshot-support/create-a-backup-via-csi) for more information.
+> **Note:** Longhorn support backup for attached volume with CSI. See [Enable CSI Snapshot Support on a Cluster](../../csi-snapshot-support/enable-csi-snapshot-support) and [Create a Backup via CSI](../../csi-snapshot-support/csi-volume-snapshot-associated-with-longhorn-backup) for more information.
 
 For information on how to restore a volume from a snapshot, refer to [this page.](../restore-from-a-backup)
