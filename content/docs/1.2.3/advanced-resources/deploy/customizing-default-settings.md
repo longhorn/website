@@ -9,11 +9,11 @@ This default setting is only for a Longhorn system that hasn't been deployed. It
 
 The default settings can be customized in the following ways:
 
-- [Deploy](#deploy)
+- Deploy(#deploy)
   - [Using the Rancher UI](#using-the-rancher-ui)
   - [Using the Longhorn Deployment YAML File](#using-the-longhorn-deployment-yaml-file)
   - [Using Helm](#using-helm)
-- [Upgrade](#upgrade)
+- Upgrade(#upgrade)
   - [Using the Longhorn UI](#using-the-longhorn-ui)
   - [Using Kubectl](#using-kubectl)
   - [Using Script](#using-script)
