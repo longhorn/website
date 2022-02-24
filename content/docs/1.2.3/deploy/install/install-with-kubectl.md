@@ -1,5 +1,5 @@
 ---
-title: Install With Kubectl
+title: Install with Kubectl
 description: Install Longhorn with the kubectl client.
 weight: 8
 ---
