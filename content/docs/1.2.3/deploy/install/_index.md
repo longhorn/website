@@ -118,7 +118,9 @@ apt-get install open-iscsi
 For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`, use this command:
 
 ```
-yum install iscsi-initiator-utils
+yum --setopt=tsflags=noscripts install iscsi-initiator-utils
+systemctl enable iscsid
+systemctl start iscsid
 ```
 
 We also provide an `iscsi` installer to make it easier for users to install `open-iscsi` automatically:
