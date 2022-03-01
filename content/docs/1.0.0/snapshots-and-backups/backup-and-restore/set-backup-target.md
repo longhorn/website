@@ -60,7 +60,7 @@ This page covers the following topics:
     ```
 
     Make sure that you have `/` at the end, otherwise you will get an error. A subdirectory (prefix) may be used:
-    
+
     ```text
     s3://<your-bucket-name>@<your-aws-region>/mypath/
     ```
@@ -82,7 +82,7 @@ We provides two testing purpose backupstore based on NFS server and MinIO S3 ser
 1. Use following command to setup a MinIO S3 server for the backupstore after `longhorn-system` was created.
 
     ```
-    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/backupstores/minio-backupstore.yaml
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/backupstores/minio-backupstore.yaml
     ```
 
 2. Go to the Longhorn UI. In the top navigation bar, click **Settings.** In the Backup section, set **Backup Target** to
