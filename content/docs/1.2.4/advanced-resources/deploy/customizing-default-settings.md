@@ -5,14 +5,20 @@ weight: 1
 
 You may customize Longhorn's default settings when deploying it. You may specify, for example, `Create Default Disk With Node Labeled` and `Default Data Path` before starting Longhorn.
 
-This default setting is only for a Longhorn system that hasn't been deployed. It has no impact on an existing Longhorn system. The settings for any existing Longhorn system should be modified using the Longhorn UI.
+This default setting is only for a Longhorn system that hasn't been deployed. It has no impact on an existing Longhorn system. The settings for any existing Longhorn system should be modified using the Longhorn UI _or_ by kubectl. Reference to the [knowledge base doc](https://longhorn.io/kb/troubleshooting-default-settings-do-not-persist/) for the details.
 
 The default settings can be customized in the following ways:
 
-- [Using the Rancher UI](#using-the-rancher-ui)
-- [Using the Longhorn Deployment YAML File](#using-the-longhorn-deployment-yaml-file)
-- [Using Helm](#using-helm)
+- [Deploy](#deploy)
+  - [Using the Rancher UI](#using-the-rancher-ui)
+  - [Using the Longhorn Deployment YAML File](#using-the-longhorn-deployment-yaml-file)
+  - [Using Helm](#using-helm)
+- [Upgrade](#upgrade)
+  - [Using the Longhorn UI](#using-the-longhorn-ui)
+  - [Using Kubectl](#using-kubectl)
+  - [Using Script](#using-script)
 
+## Deploy
 ### Using the Rancher UI
 
 From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit the settings before launching the app.
@@ -149,6 +155,29 @@ You can also provide a copy of the `values.yaml` file with the default settings 
 
 For more info about using helm, see the section about
 [installing Longhorn with Helm](../../../deploy/install/install-with-helm)
+
+## Upgrade
+
+### Using the Longhorn UI
+
+We recommend using the Longhorn UI to change Longhorn setting on the existing cluster.
+It would make the setting persistent.
+
+### Using Kubectl
+
+If you prefer to use the command line to update the setting, you could use kubectl.
+But please be aware **this will bypass Longhorn backend validation**.
+```shell
+kubectl edit settings <SETTING-NAME> -n longhorn-system
+```
+
+### Using Script
+
+If you're using Rancher UI _or_ Helm to upgrade the setting, but found that the customized setting does not apply to the cluster. You could run the below script to update the Longhorn Setting CR according to the longhorn-default-setting ConfigMap.
+But please be aware **this will bypass Longhorn backend validation**.
+```shell
+kubectl -n longhorn-system get configmap longhorn-default-setting -ojsonpath="{.data['default-setting\.yaml']}" | awk '{if ($2) print $0;}' | while read key val; do kubectl -n longhorn-system patch settings ${key%:} --type='json' -p='[{"op": "replace", "path": "/value", "value": "'${val}'"}]'; done
+```
 
 ## History
 [Original feature request](https://github.com/longhorn/longhorn/issues/623)
