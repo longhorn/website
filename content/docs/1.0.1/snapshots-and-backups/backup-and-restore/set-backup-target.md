@@ -97,7 +97,7 @@ We provides two testing purpose backupstore based on NFS server and MinIO S3 ser
 1. Use following command to setup a MinIO S3 server for the backupstore after `longhorn-system` was created.
 
     ```
-    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/backupstores/minio-backupstore.yaml
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/backupstores/minio-backupstore.yaml
     ```
 
 2. Go to the Longhorn UI. In the top navigation bar, click **Settings.** In the Backup section, set **Backup Target** to
@@ -160,7 +160,7 @@ To include multiple certificates, one can just concatenate the different certifi
       AWS_ENDPOINTS: aHR0cHM6Ly9taW5pby1zZXJ2aWNlLmRlZmF1bHQ6OTAwMA==
       VIRTUAL_HOSTED_STYLE: dHJ1ZQ== # true
     ```
-2. Deploy/update the secret and set it in `Settings/General/BackupTargetSecret`. 
+2. Deploy/update the secret and set it in `Settings/General/BackupTargetSecret`.
 
 ### NFS Backupstore
 
