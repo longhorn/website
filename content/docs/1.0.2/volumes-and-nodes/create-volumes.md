@@ -18,7 +18,7 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
 1. Use following command to create a StorageClass called `longhorn`:
 
     ```
-    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/examples/storageclass.yaml
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/storageclass.yaml
     ```
 
     The following example StorageClass is created:
@@ -44,7 +44,7 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
 2. Create a Pod that uses Longhorn volumes by running this command:
 
     ```
-    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/examples/pod_with_pvc.yaml
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/pod_with_pvc.yaml
     ```
 
     A Pod named `volume-test` is launched, along with a PersistentVolumeClaim named `longhorn-volv-pvc`. The PersistentVolumeClaim references the Longhorn StorageClass:
@@ -103,7 +103,7 @@ If the PVC names a StorageClass, Kubernetes will:
 
 ### Creating Longhorn Volumes with the Longhorn UI
 
-Since the Longhorn volume already exists while creating PV/PVC, a StorageClass is not needed for dynamically provisioning Longhorn volume. However, the field `storageClassName` should be set in PVC/PV, to be used for PVC bounding purpose. And it's unnecessary for users create the related StorageClass object. 
+Since the Longhorn volume already exists while creating PV/PVC, a StorageClass is not needed for dynamically provisioning Longhorn volume. However, the field `storageClassName` should be set in PVC/PV, to be used for PVC bounding purpose. And it's unnecessary for users create the related StorageClass object.
 
 By default the StorageClass for Longhorn created PV/PVC is `longhorn-static`. Users can modified it in `Setting - General - Default Longhorn Static StorageClass Name` as they need.
 
@@ -111,5 +111,5 @@ Users need to manually delete PVC and PV created by Longhorn.
 
 
 # PV/PVC creation for existing Longhorn volume
-Now users can create PV/PVC via our Longhorn UI for the existing Longhorn volumes. 
+Now users can create PV/PVC via our Longhorn UI for the existing Longhorn volumes.
 Only detached volume can be used by newly created pod.
