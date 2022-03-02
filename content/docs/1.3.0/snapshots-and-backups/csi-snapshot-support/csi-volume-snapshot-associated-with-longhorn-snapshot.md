@@ -15,7 +15,7 @@ To programmatically create Longhorn snapshots, you can use the generic Kubernete
 ## Create A CSI VolumeSnapshot Associated With Longhorn Snapshot
 
 To create a CSI VolumeSnapshot associated with a Longhorn snapshot, you first need to create a `VolumeSnapshotClass` object
-with the parameter `type` set to `ss` as follow:
+with the parameter `type` set to `snap` as follow:
 ```yaml
 kind: VolumeSnapshotClass
 apiVersion: snapshot.storage.k8s.io/v1beta1
@@ -24,7 +24,7 @@ metadata:
 driver: driver.longhorn.io
 deletionPolicy: Delete
 parameters:
-  type: ss
+  type: snap
 ```
 For more information about `VolumeSnapshotClass`, see the kubernetes documentation for [VolumeSnapshotClasses](https://kubernetes.io/docs/concepts/storage/volume-snapshot-classes/).
 
@@ -43,7 +43,7 @@ spec:
 
 **Result:**
 A Longhorn snapshot is created. The `VolumeSnapshot` object creation leads to the creation of a `VolumeSnapshotContent` Kubernetes object.
-The `VolumeSnapshotContent` refers to a Longhorn snapshot in its `VolumeSnapshotContent.snapshotHandle` field with the name `ss://volume-name/snapshot-name`.
+The `VolumeSnapshotContent` refers to a Longhorn snapshot in its `VolumeSnapshotContent.snapshotHandle` field with the name `snap://volume-name/snapshot-name`.
 
 ### Viewing the Longhorn Snapshot
 

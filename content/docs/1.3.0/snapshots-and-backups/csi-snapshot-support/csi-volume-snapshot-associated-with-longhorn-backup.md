@@ -15,7 +15,7 @@ To programmatically create backups, you can use the generic Kubernetes CSI Volum
 ## Create A CSI VolumeSnapshot Associated With Longhorn Backup
 
 To create a CSI VolumeSnapshot associated with a Longhorn backup, you first need to create a `VolumeSnapshotClass` object
-with the parameter `type` set to `bs` as follow:
+with the parameter `type` set to `bak` as follow:
 ```yaml
 kind: VolumeSnapshotClass
 apiVersion: snapshot.storage.k8s.io/v1beta1
@@ -24,7 +24,7 @@ metadata:
 driver: driver.longhorn.io
 deletionPolicy: Delete
 parameters:
-  type: bs
+  type: bak
 ```
 For more information about `VolumeSnapshotClass`, see the kubernetes documentation for [VolumeSnapshotClasses](https://kubernetes.io/docs/concepts/storage/volume-snapshot-classes/).
 
@@ -43,7 +43,7 @@ spec:
 
 **Result:**
 A backup is created. The `VolumeSnapshot` object creation leads to the creation of a `VolumeSnapshotContent` Kubernetes object.
-The `VolumeSnapshotContent` refers to a Longhorn backup in its `VolumeSnapshotContent.snapshotHandle` field with the name `bs://backup-volume/backup-name`.
+The `VolumeSnapshotContent` refers to a Longhorn backup in its `VolumeSnapshotContent.snapshotHandle` field with the name `bak://backup-volume/backup-name`.
 
 ### Viewing the Backup
 
@@ -97,7 +97,7 @@ Note that the `spec.resources.requests.storage` value must be the same as the si
 You can use the CSI mechanism to restore Longhorn backups that have not been created via the CSI mechanism.
 To restore Longhorn backups that have not been created via the CSI mechanism, you have to first manually create a `VolumeSnapshot` and `VolumeSnapshotContent` object for the backup.
 
-Create a `VolumeSnapshotContent` object with the `snapshotHandle` field set to `bs://backup-volume/backup-name`.
+Create a `VolumeSnapshotContent` object with the `snapshotHandle` field set to `bak://backup-volume/backup-name`.
 
 The `backup-volume` and `backup-name` values can be retrieved from the **Backup** page in the Longhorn UI.
 
@@ -112,7 +112,7 @@ spec:
   deletionPolicy: Delete
   source:
     # NOTE: change this to point to an existing backup on the backupstore
-    snapshotHandle: bs://test-vol/backup-625159fb469e492e
+    snapshotHandle: bak://test-vol/backup-625159fb469e492e
   volumeSnapshotRef:
     name: test-snapshot-existing-backup
     namespace: default
