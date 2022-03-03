@@ -18,11 +18,13 @@ Note that the snapshot controller YAML files mentioned below deploy into the `de
 
 > **Prerequisite**
 >
+> Please install the same release version of snapshot CRDs and snapshot controller to ensure that the CRD version is compatible with the snapshot controller.
+>
 > For general use, update the snapshot controller YAMLs with an appropriate **namespace** prior to installing.
 >
 > For example, on a vanilla Kubernetes cluster, update the namespace from `default` to `kube-system` prior to issuing the `kubectl create` command.
 
-Install the Snapshot Beta CRDs:
+Install the Snapshot CRDs:
 1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/release-4.0/client/config/crd
 2. Run `kubectl create -f client/config/crd`.
 3. Do this once per cluster.
