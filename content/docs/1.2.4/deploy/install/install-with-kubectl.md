@@ -1,5 +1,5 @@
 ---
-title: Install With Kubectl
+title: Install with Kubectl
 description: Install Longhorn with the kubectl client.
 weight: 8
 ---
@@ -111,7 +111,7 @@ This connects the longhorn-role to the longhorn-service-account in the  longhorn
 
 #### CustomResourceDefinitions
 
-The following CustomResourceDefinitions will be installed 
+The following CustomResourceDefinitions will be installed
 
 - In longhorn.io
   - backingimagedatasources
@@ -137,6 +137,6 @@ The following CustomResourceDefinitions will be installed
 - The longhorn-backend service exposing the longhorn-manager DaemonSet internally to Kubernetes
 - The longhorn-ui Deployment
 - The longhorn-frontend service exposing the longhorn-ui internally to Kubernetes
-- The longhorn-driver-deployer that deploys the CSI driver 
+- The longhorn-driver-deployer that deploys the CSI driver
 - The longhorn StorageClass
 

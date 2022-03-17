@@ -89,13 +89,7 @@ transparently used so no additional actions are needed from the user.
 
 # Filesystem expansion
 
-The encrypted filesystem needs manual expansion after regular [expansion](../../volumes-and-nodes/expansion) of the Longhorn block device.
-After offline volume expansion is completed the next time the volume is used by a workload, one can do an online filesystem expansion either on the node
-or as part of a shell in the workload pod.
-
-The following commands can be used on the node where the encrypted volume is being used to expand the filesystem.
-For `EXT4` one can use `resize2fs /dev/mapper/<volume-name>`
-For `XFS` one can use `xfs_growfs /dev/mapper/<volume-name>`
+Longhorn supports offline [expansion](../../volumes-and-nodes/expansion) for encrypted volumes.
 
 # History
 Available since v1.2.0 [#1859](https://github.com/longhorn/longhorn/issues/1859)
