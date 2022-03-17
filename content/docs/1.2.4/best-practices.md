@@ -27,8 +27,14 @@ We recommend the following setup for deploying Longhorn in production.
 
 It's recommended to run an OS from the following list for every node of your Kubernetes cluster:
 
-1. Ubuntu 18.04
-1. CentOS 7/8
+| S No.| OS           | Versions
+|------|--------------| --------
+|1.    | Ubuntu       | 18.04, 20.04
+|2.    | SLES         | 15 SP1, 15 SP2, 15 SP3
+|3.    | CentOS       | 7, 8
+|4.    | RHEL         | 7.9, 8.3, 8.4
+|5.    | Oracle Linux | 8.3
+|6.    | Rocky Linux  | 8.4
 
 ### OSes aren't supported by Longhorn
 1. RancherOS
