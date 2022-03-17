@@ -29,11 +29,25 @@ If Longhorn was installed using a Helm Chart, or if it was installed as Rancher 
 
 > **Prerequisite:** Always back up volumes before upgrading. If anything goes wrong, you can restore the volume using the backup.
 
+#### Upgrade as a Rancher Catalog App
+
+To upgrade the Longhorn App, make sure which Rancher UI the existing Longhorn App was installed with. There are two Rancher UIs, one is the Cluster Manager (old UI), and the other one is the Cluster Explorer (new UI). The Longhorn App in different UIs considered as two different applications by Rancher. They cannot upgrade to each other. If you installed Longhorn in the Cluster Manager, you need to use the Cluster Manager to upgrade Longhorn to a newer version, and vice versa for the Cluster Explorer.
+
+Different Rancher UIs screenshots.
+- The Cluster Manager (old UI)
+{{< figure src="/img/screenshots/install/cluster-manager.png" >}}
+- The Cluster Explorer (new UI)
+{{< figure src="/img/screenshots/install/cluster-explorer.png" >}}
+
+#### Upgrade with Kubectl
+
 To upgrade with kubectl, run this command:
 
 ```
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml
 ```
+
+#### Upgrade with Helm
 
 To upgrade with Helm, run this command:
 

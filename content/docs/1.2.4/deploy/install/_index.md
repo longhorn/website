@@ -84,6 +84,17 @@ If your Kubernetes cluster was provisioned by Rancher v2.0.7+ or later, the Moun
 
 If MountPropagation is disabled, Base Image feature will be disabled.
 
+### Root and Privileged Permission
+
+The longhorn manager uses `Bidirectional` mount propagation to access the host's disk (default `/var/lib/longhorn`) in the container.
+An use case is to access disk metadata and replicas directory on the host.
+
+Besides, Longhorn uses `nsenter` command to execute commands on the host. The `nsenter` command, for example, is to check the host's disk space usage
+```shell
+stat /var/lib/longhorn/ -fc '{"path":"%n","fsid":"%i","type":"%T","freeBlock":%f,"totalBlock":%b,"blockSize":%s}'
+```
+The `nsenter` command rely on privileged containers and `hostPID: true`.
+
 ### Installing open-iscsi
 
 The command used to install `open-iscsi` differs depending on the Linux distribution.
@@ -107,7 +118,9 @@ apt-get install open-iscsi
 For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`, use this command:
 
 ```
-yum install iscsi-initiator-utils
+yum --setopt=tsflags=noscripts install iscsi-initiator-utils
+systemctl enable iscsid
+systemctl start iscsid
 ```
 
 We also provide an `iscsi` installer to make it easier for users to install `open-iscsi` automatically:
