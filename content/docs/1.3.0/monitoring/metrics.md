@@ -48,3 +48,10 @@ weight: 3
 |---|---|---|
 | longhorn_manager_cpu_usage_millicpu |  The CPU usage of this Longhorn Manager | longhorn_manager_cpu_usage_millicpu{manager="longhorn-manager-5rx2n",node="worker-2"} 27 |
 | longhorn_manager_memory_usage_bytes | The memory usage of this Longhorn Manager | longhorn_manager_memory_usage_bytes{manager="longhorn-manager-5rx2n",node="worker-2"} 2.6144768e+07|
+
+## Backup
+
+| Name | Description  | Example |
+|---|---|---|
+| longhorn_backup_actual_size_bytes | Actual size of this backup | longhorn_backup_actual_size_bytes{backup="backup-4ab66eca0d60473e",volume="testvol"} 6.291456e+07 |
+| longhorn_backup_state | State of this backup: 0=New, 1=InProgress, 2=Completed, 3=Error, 4=Unknown | longhorn_backup_state{backup="backup-4ab66eca0d60473e",volume="testvol"} 2 |
