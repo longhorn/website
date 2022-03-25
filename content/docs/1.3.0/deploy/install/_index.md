@@ -86,14 +86,42 @@ If MountPropagation is disabled, Base Image feature will be disabled.
 
 ### Root and Privileged Permission
 
-The longhorn manager uses `Bidirectional` mount propagation to access the host's disk (default `/var/lib/longhorn`) in the container.
-An use case is to access disk metadata and replicas directory on the host.
+Longhorn components require root access with privileged permissions to achieve volume operations and management, because Longhorn relies on system resources on the host across different namespaces, for example, Longhorn uses `nsenter` to understand block devices' usage or encrypt/decrypt volumes on the host.
 
-Besides, Longhorn uses `nsenter` command to execute commands on the host. The `nsenter` command, for example, is to check the host's disk space usage
-```shell
-stat /var/lib/longhorn/ -fc '{"path":"%n","fsid":"%i","type":"%T","freeBlock":%f,"totalBlock":%b,"blockSize":%s}'
-```
-The `nsenter` command rely on privileged containers and `hostPID: true`.
+Below are the directories Longhorn components requiring access with root and privileged permissions :
+
+- Longhorn Manager
+  - /dev: Block devices created by Longhorn are under the `/dev` path.
+  - /proc: Find the recognized host process like container runtime, then use `nsenter` to access the mounts on the host to understand disks usage.
+  - /var/lib/longhorn: The default path for storing volume data on a host.
+- Longhorn Engine Image
+  - /var/lib/longhorn/engine-binaries: The default path for storing the Longhorn engine binaries.
+- Longhorn Instance Manager (Engine)
+  - /dev: Block devices created by Longhorn are under the `/dev` path.
+  - /proc: Find the recognized host process like container runtime, then use `nsenter` to manage iSCSI targets and initiators, also some file system operations like sync before snapshotting.
+  - /var/lib/longhorn/engine-binaries: The default path for storing the Longhorn engine binaries.
+- Longhorn Instance Manager (Replica)
+  - /: Access any data path on this node and access Longhorn engine binaries.
+- Longhorn Share Manager
+  - /dev: Block devices created by Longhorn are under the `/dev` path.
+  - /lib/modules: Kernel modules requried by `cryptsetup` for volume encryption.
+  - /proc: Find the recognized host process like container runtime, then use `nsenter` for volume encryption.
+  - /sys: Support volume encryption by `cryptsetup`.
+- Longhorn CSI Plugin
+  - /: For host checks via the NFS customer mounter (deprecated). Note that, this will be removed in the future release.
+  - /dev: Block devices created by Longhorn are under the `/dev` path.
+  - /lib/modules: Kernel modules required by Longhorn CSI plugin.
+  - /sys: Support volume encryption by `cryptsetup`.
+  - /var/lib/kubelet/plugins/kubernetes.io/csi: The path where the Longhorn CSI plugin creates the staging path (via `NodeStageVolume`) of a block device. The staging path will be bind-mounted to the target path `/var/lib/kubelet/pods` (via `NodePublishVolume`) for support single volume could be mounted to multiple Pods.
+  - /var/lib/kubelet/plugins_registry: The path where the node-driver-registrar registers the CSI plugin with kubelet.
+  - /var/lib/kubelet/plugins/driver.longhorn.io: The path where the socket for the communication between kubelet Longhorn CSI driver.
+  - /var/lib/kubelet/pods: The path where the Longhorn CSI driver mounts volume from the target path (via `NodePublishVolume`).
+- Longhorn CSI Attacher/Provisioner/Resizer/Snapshotter
+  - /var/lib/kubelet/plugins/driver.longhorn.io: The path where the socket for the communication between kubelet Longhorn CSI driver.
+- Longhorn Backing Image Manager
+  - /var/lib/longhorn: The default path for storing data on the host.
+- Longhorn Backing Image Data Source
+  - /var/lib/longhorn: The default path for storing data on the host.
 
 ### Installing open-iscsi
 
