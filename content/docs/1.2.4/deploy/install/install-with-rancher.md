@@ -1,10 +1,10 @@
 ---
-title: Install as a Rancher Catalog App
+title: Install as a Rancher Apps & Marketplace
 description: Run Longhorn on Kubernetes with Rancher 2.x
 weight: 7
 ---
 
-One benefit of installing Longhorn through Rancher catalog is that Rancher provides authentication to the Longhorn UI.
+One benefit of installing Longhorn through Rancher Apps & Marketplace is that Rancher provides authentication to the Longhorn UI.
 
 If there is a new version of Longhorn available, you will see an `Upgrade Available` sign on the `Apps & Marketplace` screen. You can click `Upgrade` button to upgrade Longhorn manager. See more about upgrade [here](../../upgrade).
 
