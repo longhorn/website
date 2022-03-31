@@ -39,10 +39,11 @@ See the [Usage](https://github.com/kubernetes-csi/external-snapshotter#usage) se
 external-snapshotter git repo for additional information.
 
 #### Add a Default `VolumeSnapshotClass`
-Ensure the availability of the Snapshot Beta CRDs. Afterwards create a default `VolumeSnapshotClass`.
+Ensure the availability of the Snapshot CRDs. Afterwards create a default `VolumeSnapshotClass`.
 ```yaml
+# Use v1 as an example
 kind: VolumeSnapshotClass
-apiVersion: snapshot.storage.k8s.io/v1beta1
+apiVersion: snapshot.storage.k8s.io/v1
 metadata:
   name: longhorn
 driver: driver.longhorn.io
