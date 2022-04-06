@@ -1,5 +1,5 @@
 ---
-title:  Manage Node-Group Management on AWS EKS
+title:  Manage Node-Group on AWS EKS
 weight: 1
 ---
 
