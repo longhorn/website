@@ -22,6 +22,7 @@ For reference, this page provides examples of Kubernetes resources that use Long
     kind: PersistentVolumeClaim
     metadata:
       name: longhorn-block-vol
+      namespace: default
     spec:
       accessModes:
         - ReadWriteOnce
@@ -137,6 +138,7 @@ For reference, this page provides examples of Kubernetes resources that use Long
     kind: PersistentVolumeClaim
     metadata:
       name: mysql-pvc
+      namespace: default
     spec:
       accessModes:
         - ReadWriteOnce
@@ -198,6 +200,7 @@ For reference, this page provides examples of Kubernetes resources that use Long
     kind: PersistentVolumeClaim
     metadata:
       name: longhorn-volv-pvc
+      namespace: default
     spec:
       accessModes:
         - ReadWriteOnce
