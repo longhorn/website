@@ -1,5 +1,5 @@
 ---
-title: Install With Kubectl
+title: Install with Kubectl
 description: Install Longhorn with the kubectl client.
 weight: 8
 ---
@@ -17,7 +17,7 @@ The initial settings for Longhorn can be customized by [editing the deployment c
 1. Install Longhorn on any Kubernetes cluster using this command:
 
     ```shell
-    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml
+    kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml
     ```
 
     One way to monitor the progress of the installation is to watch pods being created in the `longhorn-system` namespace:
@@ -111,7 +111,7 @@ This connects the longhorn-role to the longhorn-service-account in the  longhorn
 
 #### CustomResourceDefinitions
 
-The following CustomResourceDefinitions will be installed 
+The following CustomResourceDefinitions will be installed
 
 - In longhorn.io
   - backingimagedatasources
@@ -137,6 +137,6 @@ The following CustomResourceDefinitions will be installed
 - The longhorn-backend service exposing the longhorn-manager DaemonSet internally to Kubernetes
 - The longhorn-ui Deployment
 - The longhorn-frontend service exposing the longhorn-ui internally to Kubernetes
-- The longhorn-driver-deployer that deploys the CSI driver 
+- The longhorn-driver-deployer that deploys the CSI driver
 - The longhorn StorageClass
 
