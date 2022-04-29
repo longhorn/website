@@ -24,100 +24,100 @@ This page covers the following topics:
 1. Create a new bucket in [AWS S3.](https://aws.amazon.com/s3/)
 
 2. Set permissions for Longhorn. There are two options for setting up the credentials. The first is that you can set up a Kubernetes secret with the credentials of an AWS IAM user. The second is that you can use a third-party application to manage temporary AWS IAM permissions for a Pod via annotations rather than operating with AWS credentials.
-   - Option 1: Create a Kubernetes secret with IAM user credentials
+  - Option 1: Create a Kubernetes secret with IAM user credentials
 
-     1. Follow the [guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) to create a new AWS IAM user, with the following permissions set. Edit the `Resource` section to use your S3 bucket name:
+    1. Follow the [guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console) to create a new AWS IAM user, with the following permissions set. Edit the `Resource` section to use your S3 bucket name:
 
-        ```json
-        {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Sid": "GrantLonghornBackupstoreAccess0",
-              "Effect": "Allow",
-              "Action": [
-                "s3:PutObject",
-                "s3:GetObject",
-                "s3:ListBucket",
-                "s3:DeleteObject"
-              ],
-              "Resource": [
-                "arn:aws:s3:::<your-bucket-name>",
-                "arn:aws:s3:::<your-bucket-name>/*"
-              ]
-            }
-          ]
-        }
-        ```
+       ```json
+       {
+         "Version": "2012-10-17",
+         "Statement": [
+           {
+             "Sid": "GrantLonghornBackupstoreAccess0",
+             "Effect": "Allow",
+             "Action": [
+               "s3:PutObject",
+               "s3:GetObject",
+               "s3:ListBucket",
+               "s3:DeleteObject"
+             ],
+             "Resource": [
+               "arn:aws:s3:::<your-bucket-name>",
+               "arn:aws:s3:::<your-bucket-name>/*"
+             ]
+           }
+         ]
+       }
+       ```
 
-     2. Create a Kubernetes secret with a name such as `aws-secret` in the namespace where Longhorn is placed (`longhorn-system` by default). The secret must be created in the `longhorn-system` namespace for Longhorn to access it:
+    2. Create a Kubernetes secret with a name such as `aws-secret` in the namespace where Longhorn is placed (`longhorn-system` by default). The secret must be created in the `longhorn-system` namespace for Longhorn to access it:
 
-        ```shell
-        kubectl create secret generic <aws-secret> \
-            --from-literal=AWS_ACCESS_KEY_ID=<your-aws-access-key-id> \
-            --from-literal=AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key> \
-            -n longhorn-system
-        ```
+       ```shell
+       kubectl create secret generic <aws-secret> \
+           --from-literal=AWS_ACCESS_KEY_ID=<your-aws-access-key-id> \
+           --from-literal=AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key> \
+           -n longhorn-system
+       ```
 
-   - Option 2: Set permissions with IAM temporary credentials by AWS STS AssumeRole (kube2iam or kiam)
+  - Option 2: Set permissions with IAM temporary credentials by AWS STS AssumeRole (kube2iam or kiam)
 
-     [kube2iam](https://github.com/jtblin/kube2iam) or [kiam](https://github.com/uswitch/kiam) is a Kubernetes application that allows managing AWS IAM permissions for Pod via annotations rather than operating on AWS credentials. Follow the instructions in the GitHub repository for kube2iam or kiam to install it into the Kubernetes cluster.
+    [kube2iam](https://github.com/jtblin/kube2iam) or [kiam](https://github.com/uswitch/kiam) is a Kubernetes application that allows managing AWS IAM permissions for Pod via annotations rather than operating on AWS credentials. Follow the instructions in the GitHub repository for kube2iam or kiam to install it into the Kubernetes cluster.
 
-     1. Follow the [guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html#roles-creatingrole-service-console) to create a new AWS IAM role for AWS S3 service, with the following permissions set:
+    1. Follow the [guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html#roles-creatingrole-service-console) to create a new AWS IAM role for AWS S3 service, with the following permissions set:
 
-        ```json
-        {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Sid": "GrantLonghornBackupstoreAccess0",
-              "Effect": "Allow",
-              "Action": [
-                "s3:PutObject",
-                "s3:GetObject",
-                "s3:ListBucket",
-                "s3:DeleteObject"
-              ],
-              "Resource": [
-                "arn:aws:s3:::<your-bucket-name>",
-                "arn:aws:s3:::<your-bucket-name>/*"
-              ]
-            }
-          ]
-        }
-        ```
+       ```json
+       {
+         "Version": "2012-10-17",
+         "Statement": [
+           {
+             "Sid": "GrantLonghornBackupstoreAccess0",
+             "Effect": "Allow",
+             "Action": [
+               "s3:PutObject",
+               "s3:GetObject",
+               "s3:ListBucket",
+               "s3:DeleteObject"
+             ],
+             "Resource": [
+               "arn:aws:s3:::<your-bucket-name>",
+               "arn:aws:s3:::<your-bucket-name>/*"
+             ]
+           }
+         ]
+       }
+       ```
 
-     2. Edit the AWS IAM role with the following trust relationship:
+    2. Edit the AWS IAM role with the following trust relationship:
 
-        ```json
-        {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Principal": {
-                  "Service": "ec2.amazonaws.com"
-              },
-              "Action": "sts:AssumeRole"
-            },
-            {
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/<AWS_EC2_NODE_INSTANCE_ROLE>"
-              },
-              "Action": "sts:AssumeRole"
-            }
-          ]
-        }
-        ```
+       ```json
+       {
+         "Version": "2012-10-17",
+         "Statement": [
+           {
+             "Effect": "Allow",
+             "Principal": {
+                 "Service": "ec2.amazonaws.com"
+             },
+             "Action": "sts:AssumeRole"
+           },
+           {
+             "Effect": "Allow",
+             "Principal": {
+               "AWS": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/<AWS_EC2_NODE_INSTANCE_ROLE>"
+             },
+             "Action": "sts:AssumeRole"
+           }
+         ]
+       }
+       ```
 
-     3. Create a Kubernetes secret with a name such as `aws-secret` in the namespace where Longhorn is placed (`longhorn-system` by default). The secret must be created in the `longhorn-system` namespace for Longhorn to access it:
+    3. Create a Kubernetes secret with a name such as `aws-secret` in the namespace where Longhorn is placed (`longhorn-system` by default). The secret must be created in the `longhorn-system` namespace for Longhorn to access it:
 
-        ```shell
-        kubectl create secret generic <aws-secret> \
-            --from-literal=AWS_IAM_ROLE_ARN=<your-aws-iam-role-arn> \
-            -n longhorn-system
-        ```
+       ```shell
+       kubectl create secret generic <aws-secret> \
+           --from-literal=AWS_IAM_ROLE_ARN=<your-aws-iam-role-arn> \
+           -n longhorn-system
+       ```
 
 3. Go to the Longhorn UI. In the top navigation bar, click **Settings.** In the Backup section, set **Backup Target** to:
 
@@ -125,7 +125,7 @@ This page covers the following topics:
     s3://<your-bucket-name>@<your-aws-region>/
     ```
 
-    Make sure that you have `/` at the end, otherwise you will get an error. A subdirectory (prefix) may be used:
+   Make sure that you have `/` at the end, otherwise you will get an error. A subdirectory (prefix) may be used:
 
     ```text
     s3://<your-bucket-name>@<your-aws-region>/mypath/
@@ -170,7 +170,7 @@ We provides two testing purpose backupstore based on NFS server and MinIO S3 ser
 1. Use following command to setup a MinIO S3 server for the backupstore after `longhorn-system` was created.
 
     ```
-    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/backupstores/minio-backupstore.yaml
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/backupstores/minio-backupstore.yaml
     ```
 
 2. Go to the Longhorn UI. In the top navigation bar, click **Settings.** In the Backup section, set **Backup Target** to
@@ -178,12 +178,12 @@ We provides two testing purpose backupstore based on NFS server and MinIO S3 ser
     ```
     s3://backupbucket@us-east-1/
     ```
-    And set **Backup Target Credential Secret** to:
+   And set **Backup Target Credential Secret** to:
     ```
     minio-secret
     ```
 
-    The `minio-secret` yaml looks like this:
+   The `minio-secret` yaml looks like this:
 
     ```
     apiVersion: v1
@@ -196,11 +196,11 @@ We provides two testing purpose backupstore based on NFS server and MinIO S3 ser
       AWS_ACCESS_KEY_ID: bG9uZ2hvcm4tdGVzdC1hY2Nlc3Mta2V5 # longhorn-test-access-key
       AWS_SECRET_ACCESS_KEY: bG9uZ2hvcm4tdGVzdC1zZWNyZXQta2V5 # longhorn-test-secret-key
       AWS_ENDPOINTS: aHR0cHM6Ly9taW5pby1zZXJ2aWNlLmRlZmF1bHQ6OTAwMA== # https://minio-service.default:9000
-      AWS_CERT: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURMRENDQWhTZ0F3SUJBZ0lSQU1kbzQycGhUZXlrMTcvYkxyWjVZRHN3RFFZSktvWklodmNOQVFFTEJRQXcKR2pFWU1CWUdBMVVFQ2hNUFRHOXVaMmh2Y200Z0xTQlVaWE4wTUNBWERUSXdNRFF5TnpJek1EQXhNVm9ZRHpJeApNakF3TkRBek1qTXdNREV4V2pBYU1SZ3dGZ1lEVlFRS0V3OU1iMjVuYUc5eWJpQXRJRlJsYzNRd2dnRWlNQTBHCkNTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFEWHpVdXJnUFpEZ3pUM0RZdWFlYmdld3Fvd2RlQUQKODRWWWF6ZlN1USs3K21Oa2lpUVBvelVVMmZvUWFGL1BxekJiUW1lZ29hT3l5NVhqM1VFeG1GcmV0eDBaRjVOVgpKTi85ZWFJNWRXRk9teHhpMElPUGI2T0RpbE1qcXVEbUVPSXljdjRTaCsvSWo5Zk1nS0tXUDdJZGxDNUJPeThkCncwOVdkckxxaE9WY3BKamNxYjN6K3hISHd5Q05YeGhoRm9tb2xQVnpJbnlUUEJTZkRuSDBuS0lHUXl2bGhCMGsKVHBHSzYxc2prZnFTK3hpNTlJeHVrbHZIRXNQcjFXblRzYU9oaVh6N3lQSlorcTNBMWZoVzBVa1JaRFlnWnNFbQovZ05KM3JwOFhZdURna2kzZ0UrOElXQWRBWHExeWhqRDdSSkI4VFNJYTV0SGpKUUtqZ0NlSG5HekFnTUJBQUdqCmF6QnBNQTRHQTFVZER3RUIvd1FFQXdJQ3BEQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBVEFQQmdOVkhSTUIKQWY4RUJUQURBUUgvTURFR0ExVWRFUVFxTUNpQ0NXeHZZMkZzYUc5emRJSVZiV2x1YVc4dGMyVnlkbWxqWlM1awpaV1poZFd4MGh3Ui9BQUFCTUEwR0NTcUdTSWIzRFFFQkN3VUFBNElCQVFDbUZMMzlNSHVZMzFhMTFEajRwMjVjCnFQRUM0RHZJUWozTk9kU0dWMmQrZjZzZ3pGejFXTDhWcnF2QjFCMVM2cjRKYjJQRXVJQkQ4NFlwVXJIT1JNU2MKd3ViTEppSEtEa0Jmb2U5QWI1cC9VakpyS0tuajM0RGx2c1cvR3AwWTZYc1BWaVdpVWorb1JLbUdWSTI0Q0JIdgpnK0JtVzNDeU5RR1RLajk0eE02czNBV2xHRW95YXFXUGU1eHllVWUzZjFBWkY5N3RDaklKUmVWbENtaENGK0JtCmFUY1RSUWN3cVdvQ3AwYmJZcHlERFlwUmxxOEdQbElFOW8yWjZBc05mTHJVcGFtZ3FYMmtYa2gxa3lzSlEralAKelFadHJSMG1tdHVyM0RuRW0yYmk0TktIQVFIcFc5TXUxNkdRakUxTmJYcVF0VEI4OGpLNzZjdEg5MzRDYWw2VgotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+      AWS_CERT: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURMRENDQWhTZ0F3SUJBZ0lSQU1kbzQycGhUZXlrMTcvYkxyWjVZRHN3RFFZSktvWklodmNOQVFFTEJRQXcKR2pFWU1CWUdBMVVFQ2hNUFRHOXVaMmh2Y200Z0xTQlVaWE4wTUNBWERUSXdNRFF5TnpJek1EQXhNVm9ZRHpJeApNakF3TkRBek1qTXdNREV4V2pBYU1SZ3dGZ1lEVlFRS0V3OU1iMjVuYUc5eWJpQXRJRlJsYzNRd2dnRWlNQTBHCkNTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFEWHpVdXJnUFpEZ3pUM0RZdWFlYmdld3Fvd2RlQUQKODRWWWF6ZlN1USs3K21Oa2lpUVBvelVVMmZvUWFGL1BxekJiUW1lZ29hT3l5NVhqM1VFeG1GcmV0eDBaRjVOVgpKTi85ZWFJNWRXRk9teHhpMElPUGI2T0RpbE1qcXVEbUVPSXljdjRTaCsvSWo5Zk1nS0tXUDdJZGxDNUJPeThkCncwOVdkckxxaE9WY3BKamNxYjN6K3hISHd5Q05YeGhoRm9tb2xQVnpJbnlUUEJTZkRuSDBuS0lHUXl2bGhCMGsKVHBHSzYxc2prZnFTK3hpNTlJeHVrbHZIRXNQcjFXblRzYU9oaVh6N3lQSlorcTNBMWZoVzBVa1JaRFlnWnNFbQovZ05KM3JwOFhZdURna2kzZ0UrOElXQWRBWHExeWhqRDdSSkI4VFNJYTV0SGpKUUtqZ0NlSG5HekFnTUJBQUdqCmF6QnBNQTRHQTFVZER3RUIvd1FFQXdJQ3BEQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBVEFQQmdOVkhSTUIKQWY4RUJUQURBUUgvTURFR0ExVWRFUVFxTUNpQ0NXeHZZMkZzYUc5emRJSVZiV2x1YVc4dGMyVnlkbWxqWlM1awpaV1poZFd4MGh3Ui9BQUFCTUEwR0NTcUdTSWIzRFFFQkN3VUFBNElCQVFDbUZMMzlNSHVZMzFhMTFEajRwMjVjCnFQRUM0RHZJUWozTk9kU0dWMmQrZjZzZ3pGejFXTDhWcnF2QjFCMVM2cjRKYjJQRXVJQkQ4NFlwVXJIT1JNU2MKd3ViTEppSEtEa0Jmb2U5QWI1cC9VakpyS0tuajM0RGx2c1cvR3AwWTZYc1BWaVdpVWorb1JLbUdWSTI0Q0JIdgpnK0JtVzNDeU5RR1RLajk0eE02czNBV2xHRW95YXFXUGU1eHllVWUzZjFBWkY5N3RDaklKUmVWbENtaENGK0JtCmFUY1RSUWN3cVdvQ3AwYmJZcHlERFlwUmxxOEdQbElFOW8yWjZBc05mTHJVcGFtZ3FYMmtYa2gxa3lzSlEralAKelFadHJSMG1tdHVyM0RuRW0yYmk0TktIQVFIcFc5TXUxNkdRakUxTmJYcVF0VEI4OGpLNzZjdEg5MzRDYWw2VgotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0t
     ```
-    For more information on creating a secret, see [the Kubernetes documentation.](https://kubernetes.io/docs/concepts/configuration/secret/#creating-a-secret-manually) The secret must be created in the `longhorn-system` namespace for Longhorn to access it.
+   For more information on creating a secret, see [the Kubernetes documentation.](https://kubernetes.io/docs/concepts/configuration/secret/#creating-a-secret-manually) The secret must be created in the `longhorn-system` namespace for Longhorn to access it.
 
-    > Note: Make sure to use `echo -n` when generating the base64 encoding, otherwise an new line will be added at the end of the string and it will cause error when accessing the S3.
+   > Note: Make sure to use `echo -n` when generating the base64 encoding, otherwise an new line will be added at the end of the string and it will cause error when accessing the S3.
 
 3. Click the **Backup** tab in the UI. It should report an empty list without any errors.
 
