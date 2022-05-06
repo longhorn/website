@@ -9,7 +9,7 @@ In this tutorial, you'll learn how to create Kubernetes persistent storage resou
 
 ### Creating Longhorn Volumes with kubectl
 
-First, you will create a Longhorn StorageClass. The Longhorn StorageClass contains the parameters to provision persistent volumes.
+First, you will create a Longhorn StorageClass. The Longhorn StorageClass contains the parameters to provision PVs.
 
 Next, a PersistentVolumeClaim is created that references the StorageClass. Finally, the PersistentVolumeClaim is mounted as a volume within a Pod.
 
@@ -110,13 +110,52 @@ If the PVC names a StorageClass, Kubernetes will:
 
 ### Creating Longhorn Volumes with the Longhorn UI
 
-Since the Longhorn volume already exists while creating PV/PVC, a StorageClass is not needed for dynamically provisioning Longhorn volume. However, the field `storageClassName` should be set in PVC/PV, to be used for PVC bounding purpose. And it's unnecessary for users create the related StorageClass object.
+Since the Longhorn volume already exists while creating PV/PVC, a StorageClass is not needed for dynamically provisioning Longhorn volume. However, the field `storageClassName` should be set in PVC/PV, to be used for PVC bounding purpose. And it's unnecessary for users to create the related StorageClass object.
 
-By default the StorageClass for Longhorn created PV/PVC is `longhorn-static`. Users can modified it in `Setting - General - Default Longhorn Static StorageClass Name` as they need.
+By default the StorageClass for Longhorn created PV/PVC is `longhorn-static`. Users can modify it in `Setting - General - Default Longhorn Static StorageClass Name` as they need.
 
 Users need to manually delete PVC and PV created by Longhorn.
 
 
-# PV/PVC creation for existing Longhorn volume
+### PV/PVC Creation for Existing Longhorn Volume
+
 Now users can create PV/PVC via our Longhorn UI for the existing Longhorn volumes.
-Only detached volume can be used by newly created pod.
+Only detached volume can be used by a newly created pod.
+
+### The Failure of the Longhorn Volume Creation
+
+Creating a Longhorn volume will fail if there are no available nodes, disks, or insufficient storage. The failures are categorized into:
+- insufficient storage,
+- disk not found,
+- disks are unavailable,
+- failed to retrieve scheduling settings failed to retrieve,
+- tags not fulfilled,
+- node not found,
+- nodes are unavailable,
+- none of the node candidates contains a ready engine image,
+- hard affinity cannot be satisfied,
+- replica scheduling failed.
+
+The failure results in the workload failing to use the provisioned PV and showing a warning message
+```
+# kubectl describe pod workload-test
+
+Events:
+  Type     Reason              Age                From                     Message
+  ----     ------              ----               ----                     -------
+  Warning  FailedAttachVolume  14s (x8 over 82s)  attachdetach-controller  AttachVolume.Attach 
+  failed for volume "pvc-e130e369-274d-472d-98d1-f6074d2725e8" : rpc error: code = Aborted 
+  desc = volume pvc-e130e369-274d-472d-98d1-f6074d2725e8 is not ready for workloads
+```
+
+In order to help users understand the error causes, Longhorn summarizes them in the PV annotation, `longhorn.io/volume-scheduling-error`. Failures are combined in this annotation and separated by a semicolon, for example, `longhorn.io/volume-scheduling-error: insufficient storage;disks are unavailable`. The annotation can be checked by using `kubectl describe pv <pvc name>`.
+```
+# kubectl describe pv pvc-e130e369-274d-472d-98d1-f6074d2725e8
+Name:            pvc-e130e369-274d-472d-98d1-f6074d2725e8
+Labels:          <none>
+Annotations:     longhorn.io/volume-scheduling-error: insufficient storage
+                 pv.kubernetes.io/provisioned-by: driver.longhorn.io
+
+...
+
+```
