@@ -5,7 +5,7 @@ weight: 4
 
 Longhorn natively supports backing images since v1.1.1.
 
-A QCOW2 or RAW image can be set as the backing/base image of a Longhorn volume, which allows Longhorn to be integreted with a VM like [Harvester](https://github.com/rancher/harvester).
+A QCOW2 or RAW image can be set as the backing/base image of a Longhorn volume, which allows Longhorn to be integrated with a VM like [Harvester](https://github.com/rancher/harvester).
 
 ## Create and Use a Backing Image
 

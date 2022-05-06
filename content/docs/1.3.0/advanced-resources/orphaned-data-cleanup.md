@@ -1,17 +1,17 @@
 ---
-title: Orphaned Data Clean
+title: Orphaned Data Cleanup
 weight: 4
 ---
 
 Longhorn supports orphaned data cleanup. Currently, Longhorn can identify and clean up the orphaned replica directories on disks.
 
-# Orphaned Replica Directories
+## Orphaned Replica Directories
 
 When a user introduces a disk into a Longhorn node, it may contain replica directories that are not tracked by the Longhorn system. The untracked replica directories may belong to other Longhorn clusters. Or, the replica CRs associated with the replica directories are removed after the node or the disk is down. When the node or the disk comes back, the corresponding replica data directories are no longer tracked by the Longhorn system. These replica data directories are called orphaned.
 
 Longhorn supports the detection and cleanup of orphaned replica directories. It identifies the directories and gives a list of `orphan` resources that describe those directories. By default, Longhorn does not automatically delete `orphan` resources and their directories. Users can trigger the deletion of orphaned replica directories manually or have it done automatically.
 
-## Example
+### Example
 
 In the example, we will explain how to delete orphaned replica directories identified by Longhorn.
 
@@ -127,7 +127,7 @@ In the example, we will explain how to delete orphaned replica directories ident
 
    ```
 
-## Exception
+### Exception
 Longhorn will not create an `orphan` resource for an orphaned directory when
 - The orphaned directory is not an **orphaned replica directory**.
   - The directory name does not follow the replica directory's naming convention.
