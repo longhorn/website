@@ -125,16 +125,16 @@ Only detached volume can be used by a newly created pod.
 ### The Failure of the Longhorn Volume Creation
 
 Creating a Longhorn volume will fail if there are no available nodes, disks, or insufficient storage. The failures are categorized into:
-- insufficient storage,
-- disk not found,
-- disks are unavailable,
-- failed to retrieve scheduling settings failed to retrieve,
-- tags not fulfilled,
-- node not found,
-- nodes are unavailable,
-- none of the node candidates contains a ready engine image,
-- hard affinity cannot be satisfied,
-- replica scheduling failed.
+- insufficient storage
+- disk not found
+- disks are unavailable
+- failed to retrieve scheduling settings failed to retrieve
+- tags not fulfilled
+- node not found
+- nodes are unavailable
+- none of the node candidates contains a ready engine image
+- hard affinity cannot be satisfied
+- replica scheduling failed
 
 The failure results in the workload failing to use the provisioned PV and showing a warning message
 ```
@@ -143,8 +143,8 @@ The failure results in the workload failing to use the provisioned PV and showin
 Events:
   Type     Reason              Age                From                     Message
   ----     ------              ----               ----                     -------
-  Warning  FailedAttachVolume  14s (x8 over 82s)  attachdetach-controller  AttachVolume.Attach 
-  failed for volume "pvc-e130e369-274d-472d-98d1-f6074d2725e8" : rpc error: code = Aborted 
+  Warning  FailedAttachVolume  14s (x8 over 82s)  attachdetach-controller  AttachVolume.Attach
+  failed for volume "pvc-e130e369-274d-472d-98d1-f6074d2725e8" : rpc error: code = Aborted
   desc = volume pvc-e130e369-274d-472d-98d1-f6074d2725e8 is not ready for workloads
 ```
 
