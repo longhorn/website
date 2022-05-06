@@ -76,6 +76,7 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
         backing-image-cleanup-wait-interval:
         guaranteed-engine-manager-cpu:
         guaranteed-replica-manager-cpu:
+        orphan-auto-deletion:
     ---
     ```
 
@@ -135,6 +136,7 @@ You can also provide a copy of the `values.yaml` file with the default settings 
       mkfsExt4Parameters: -O ^64bit,^metadata_csum
       guaranteed-engine-manager-cpu: 15
       guaranteed-replica-manager-cpu: 15
+      orphan-auto-deletion: false
     ```
 
 3. Run Helm with `values.yaml`:
