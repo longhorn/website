@@ -44,7 +44,7 @@ The Backup page pops up with a "No such file or directory" error, for example,
 
 ### Possible Reason 1
 
-The backup target is not correct or exported direcotry does not exist on NFS server.
+The backup target is not correct or exported directory does not exist on NFS server.
 
 ### Solution
 
@@ -52,7 +52,7 @@ Correct the backup target or create the directory on NFS server.
 
 ### Possible Reason 2
 
-If the configuretion file `/etc/exports` is as the below example:
+If the configuration file `/etc/exports` is as the below example:
 
 ```text
 /opt/nfs-server 192.168.121.0/24(rw,sync,no_subtree_check,crossmnt,fsid=0)
