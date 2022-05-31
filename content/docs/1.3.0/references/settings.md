@@ -49,6 +49,7 @@ weight: 1
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
   - [System Managed Components Node Selector](#system-managed-components-node-selector)
   - [Priority Class](#priority-class)
+  - [Storage Network](#storage-network)
 - [Deprecated](#deprecated)
   - [Guaranteed Engine CPU](#guaranteed-engine-cpu)
   - [Disable Replica Rebuild](#disable-replica-rebuild)
@@ -460,6 +461,16 @@ You need to set node selector for both of them. This setting only sets node sele
 > **Warning:**  Since all Longhorn components will be restarted, the Longhorn system is unavailable temporarily.
 Make sure all Longhorn volumes are `detached`. If there are running Longhorn volumes in the system, this means the Longhorn system cannot restart its components and the request will be rejected.
 Don't operate the Longhorn system while node selector settings are updated and Longhorn components are being restarted.
+
+#### Storage Network
+
+> Example: `kube-system/demo-192-168-0-0`
+
+The storage network uses Multus NetworkAttachmentDefinition to segregate the in-cluster data traffic from the default Kubernetes cluster network.
+
+> **Warning:** This setting should change after detaching all Longhorn volumes, as some of the Longhorn system component pods will get recreated to apply the setting. Longhorn will try to block this setting update when there are attached volumes.
+
+See [Storage Network](../../advanced-resources/deploy/storage-network) for details.
 
 ### Deprecated
 
