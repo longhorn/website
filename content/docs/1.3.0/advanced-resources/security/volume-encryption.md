@@ -1,6 +1,6 @@
 ---
 title: Volume Encryption
-weight: 4
+weight: 2
 ---
 
 Longhorn supports encrypted volumes by utilizing the linux kernel module `dm_crypt` via `cryptsetup` for the encryption.
@@ -89,7 +89,7 @@ transparently used so no additional actions are needed from the user.
 
 # Filesystem expansion
 
-Longhorn supports offline [expansion](../../volumes-and-nodes/expansion) for encrypted volumes.
+Longhorn supports offline [expansion](../../../volumes-and-nodes/expansion) for encrypted volumes.
 
 # History
 Available since v1.2.0 [#1859](https://github.com/longhorn/longhorn/issues/1859)
