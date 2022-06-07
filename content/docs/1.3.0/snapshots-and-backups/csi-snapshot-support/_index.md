@@ -1,6 +1,6 @@
 ---
 title: CSI Snapshot Support
-description: Creating and Restoring Longhorn Backups via the kubernetes CSI snapshot mechanism
+description: Creating and Restoring Longhorn Snapshots/Backups via the kubernetes CSI snapshot mechanism
 weight: 3
 ---
 

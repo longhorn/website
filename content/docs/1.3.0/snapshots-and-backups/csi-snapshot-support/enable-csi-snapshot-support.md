@@ -1,6 +1,6 @@
 ---
 title: Enable CSI Snapshot Support on a Cluster
-description: Enable CSI Snapshot Support for Programmatic Creation of Longhorn Backups
+description: Enable CSI Snapshot Support for Programmatic Creation of Longhorn Snapshots/Backups
 weight: 1
 ---
 
