@@ -49,6 +49,7 @@ weight: 1
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
   - [System Managed Components Node Selector](#system-managed-components-node-selector)
   - [Priority Class](#priority-class)
+  - [Kubernetes Cluster Autoscaler Enabled (Experimental)](#kubernetes-cluster-autoscaler-enabled-experimental)
 - [Deprecated](#deprecated)
   - [Guaranteed Engine CPU](#guaranteed-engine-cpu)
   - [Disable Replica Rebuild](#disable-replica-rebuild)
@@ -460,6 +461,17 @@ You need to set node selector for both of them. This setting only sets node sele
 > **Warning:**  Since all Longhorn components will be restarted, the Longhorn system is unavailable temporarily.
 Make sure all Longhorn volumes are `detached`. If there are running Longhorn volumes in the system, this means the Longhorn system cannot restart its components and the request will be rejected.
 Don't operate the Longhorn system while node selector settings are updated and Longhorn components are being restarted.
+
+#### Kubernetes Cluster Autoscaler Enabled (Experimental)
+
+> Default: `false`
+
+Setting the Kubernetes Cluster Autoscaler Enabled to `true` allows Longhorn to unblock the Kubernetes Cluster Autoscaler scaling.
+
+See [Kubernetes Cluster Autoscaler Support](../../high-availability/k8s-cluster-autoscaler) for details.
+
+> **Warning:** Replica rebuilding could be expensive because nodes with reusable replicas could get removed by the Kubernetes Cluster Autoscaler.
+
 
 ### Deprecated
 
