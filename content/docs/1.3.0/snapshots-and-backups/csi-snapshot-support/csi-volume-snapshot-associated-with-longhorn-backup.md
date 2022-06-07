@@ -18,7 +18,7 @@ To create a CSI VolumeSnapshot associated with a Longhorn backup, you first need
 with the parameter `type` set to `bak` as follow:
 ```yaml
 kind: VolumeSnapshotClass
-apiVersion: snapshot.storage.k8s.io/v1beta1
+apiVersion: snapshot.storage.k8s.io/v1
 metadata:
   name: longhorn-backup-vsc
 driver: driver.longhorn.io
@@ -31,7 +31,7 @@ For more information about `VolumeSnapshotClass`, see the kubernetes documentati
 After that, create a Kubernetes `VolumeSnapshot` object with `volumeSnapshotClassName` points to the name of the `VolumeSnapshotClass` (`longhorn-backup-vsc`) and
 the `source` points to the PVC of the Longhorn volume for which a backup should be created.
 ```yaml
-apiVersion: snapshot.storage.k8s.io/v1beta1
+apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshot
 metadata:
   name: test-csi-volume-snapshot-longhorn-backup
@@ -102,7 +102,7 @@ Create a `VolumeSnapshotContent` object with the `snapshotHandle` field set to `
 The `backup-volume` and `backup-name` values can be retrieved from the **Backup** page in the Longhorn UI.
 
 ```yaml
-apiVersion: snapshot.storage.k8s.io/v1beta1
+apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshotContent
 metadata:
   name: test-existing-backup
@@ -125,7 +125,7 @@ This differs from the creation of a backup, in which case the `source` field ref
 Only one type of reference can be set for a `VolumeSnapshot` object.
 
 ```yaml
-apiVersion: snapshot.storage.k8s.io/v1beta1
+apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshot
 metadata:
   name: test-snapshot-existing-backup
