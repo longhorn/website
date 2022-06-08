@@ -3,7 +3,7 @@
   weight: 1
 ---
 
-By default, Longhorn blocks Kubernetes Cluster Autoscaler from scaling down because:
+By default, Longhorn blocks Kubernetes Cluster Autoscaler from scaling down nodes because:
 - Longhorn creates PodDisruptionBudgets for all engine and replica instance-manager pods.
 - Longhorn instance manager pods have strict PodDisruptionBudgets.
 - Longhorn instance manager pods are not backed by a controller.
