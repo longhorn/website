@@ -73,7 +73,7 @@ spec:
       annotations:
         description: There are {{$value}} Longhorn nodes which have been offline for more than 5 minutes.
         summary: Longhorn nodes is offline
-      expr: longhorn_node_total - (count(longhorn_node_status{condition="ready"}==1) OR on() vector(0))
+      expr: (avg(longhorn_node_count_total) or on() vector(0)) - (count(longhorn_node_status{condition="ready"} == 1) or on() vector(0)) > 0
       for: 5m
       labels:
         issue: There are {{$value}} Longhorn nodes are offline

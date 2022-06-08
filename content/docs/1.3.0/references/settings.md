@@ -50,6 +50,7 @@ weight: 1
   - [System Managed Components Node Selector](#system-managed-components-node-selector)
   - [Priority Class](#priority-class)
   - [Kubernetes Cluster Autoscaler Enabled (Experimental)](#kubernetes-cluster-autoscaler-enabled-experimental)
+  - [Storage Network](#storage-network)
 - [Deprecated](#deprecated)
   - [Guaranteed Engine CPU](#guaranteed-engine-cpu)
   - [Disable Replica Rebuild](#disable-replica-rebuild)
@@ -451,7 +452,7 @@ See [Priority Class](../../advanced-resources/deploy/priority-class) for details
 
 #### System Managed Components Node Selector
 
-> Example: `label-key1=label-value1;label-key2=label-value2`
+> Example: `label-key1:label-value1;label-key2:label-value2`
 
 If you want to restrict Longhorn components to only run on a particular set of nodes, you can set node selector for all Longhorn components.
 
@@ -471,6 +472,16 @@ Setting the Kubernetes Cluster Autoscaler Enabled to `true` allows Longhorn to u
 See [Kubernetes Cluster Autoscaler Support](../../high-availability/k8s-cluster-autoscaler) for details.
 
 > **Warning:** Replica rebuilding could be expensive because nodes with reusable replicas could get removed by the Kubernetes Cluster Autoscaler.
+
+#### Storage Network
+
+> Example: `kube-system/demo-192-168-0-0`
+
+The storage network uses Multus NetworkAttachmentDefinition to segregate the in-cluster data traffic from the default Kubernetes cluster network.
+
+> **Warning:** This setting should change after detaching all Longhorn volumes, as some of the Longhorn system component pods will get recreated to apply the setting. Longhorn will try to block this setting update when there are attached volumes.
+
+See [Storage Network](../../advanced-resources/deploy/storage-network) for details.
 
 
 ### Deprecated

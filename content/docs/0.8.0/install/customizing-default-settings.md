@@ -61,13 +61,20 @@ You should modify the settings for any existing Longhorn system via the Longhorn
     ```
 
 2.1 Use helm command with `--set` flag to modify the default settings. For example:
-
-   ```shell
-   helm install ./longhorn/chart \
-   --name longhorn \
-   --namespace longhorn-system \
-   --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
-   ```
+   - Helm 2
+      ```shell
+      helm install longhorn/longhorn \
+        --name longhorn \
+        --namespace longhorn-system \
+        --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
+      ```
+   - Helm 3
+      ```shell
+      helm install longhorn longhorn/longhorn \
+        --namespace longhorn-system \
+        --create-namespace \
+        --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
+      ```
 
 2.2. Or directly modifying the default settings in the yaml file `longhorn/chart/values.yaml` then using helm command without `--set` to deploy Longhorn. For example:
 
@@ -92,9 +99,20 @@ In `longhorn/chart/values.yaml`:
 
 Then use the `helm` command:
 
-   ```shell
-   helm install ./longhorn/chart --name longhorn --namespace longhorn-system
-   ```
+   - Helm 2
+      ```shell
+      helm install longhorn/longhorn \
+        --name longhorn \
+        --namespace longhorn-system \
+        --values values.yaml
+      ```
+   - Helm 3
+      ```shell
+      helm install longhorn longhorn/longhorn \
+        --namespace longhorn-system \
+        --create-namespace \
+        --values values.yaml
+      ```
 
 For more info about using helm, see: 
 [Install-Longhorn-with-helm](../install-with-helm)

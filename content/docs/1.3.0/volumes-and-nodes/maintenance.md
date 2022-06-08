@@ -16,7 +16,9 @@ This section describes how to handle planned maintenance of nodes.
 
 1. Drain the node to move the workload to somewhere else.
 
-    You will need to use `--ignore-daemonsets` options to drain the node because Longhorn deployed some daemonsets such as `Longhorn manager`, `Longhorn CSI plugin`, `engine image`.
+    You will need to use `--ignore-daemonsets` and `--pod-selector='app!=csi-attacher,app!=csi-provisioner'` options to drain the node.
+    The `--ignore-daemonsets` is needed because Longhorn deployed some daemonsets such as `Longhorn manager`, `Longhorn CSI plugin`, `engine image`.
+    The `--pod-selector='app!=csi-attacher,app!=csi-provisioner'` is needed so CSI Attacher can properly detaches Longhorn volumes (see the [GitHub issue](https://github.com/longhorn/longhorn/issues/3304) for more detail).
 
     The replica processes on the node will be stopped at this stage. Replicas on
     the node will be shown as `Failed`.
@@ -30,7 +32,7 @@ This section describes how to handle planned maintenance of nodes.
     The engine processes on the node will be migrated with the Pod to other nodes.
 
         Note: If there are volumes not created by Kubernetes on the node,
-        Lognhorn will prevent the node from completing the drain operation, to
+        Longhorn will prevent the node from completing the drain operation, to
         prevent the potential workload disruption.
 
     After the `drain` is completed, there should be no engine or replica process running on the node. Two instance managers will still be running on the node, but they're stateless and won't cause interruption to the existing workload.

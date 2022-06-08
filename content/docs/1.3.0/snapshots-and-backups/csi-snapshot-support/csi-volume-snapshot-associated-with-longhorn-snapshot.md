@@ -18,7 +18,7 @@ To create a CSI VolumeSnapshot associated with a Longhorn snapshot, you first ne
 with the parameter `type` set to `snap` as follow:
 ```yaml
 kind: VolumeSnapshotClass
-apiVersion: snapshot.storage.k8s.io/v1beta1
+apiVersion: snapshot.storage.k8s.io/v1
 metadata:
   name: longhorn-snapshot-vsc
 driver: driver.longhorn.io
@@ -31,7 +31,7 @@ For more information about `VolumeSnapshotClass`, see the kubernetes documentati
 After that, create a Kubernetes `VolumeSnapshot` object with `volumeSnapshotClassName` points to the name of the `VolumeSnapshotClass` (`longhorn-snapshot-vsc`) and
 the `source` points to the PVC of the Longhorn volume for which a Longhorn snapshot should be created.
 ```yaml
-apiVersion: snapshot.storage.k8s.io/v1beta1
+apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshot
 metadata:
   name: test-csi-volume-snapshot-longhorn-snapshot

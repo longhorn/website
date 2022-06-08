@@ -293,3 +293,8 @@ anything goes wrong, you can restore the volume using the backup.
 If you have any issues, please report it at
 https://github.com/longhorn/longhorn/issues and include your backup yaml files
 as well as manager logs.
+
+## Extended Reading
+Visit [Some old instance manager pods are still running after upgrade](https://longhorn.io/kb/troubleshooting-some-old-instance-manager-pods-are-still-running-after-upgrade) for more information about the cleanup strategy of instance manager pods during upgrade.
+
+

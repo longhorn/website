@@ -39,25 +39,25 @@ For more information on how snapshots and backups work, refer to the [concepts](
 Recurring snapshots and backups can be configured from the `Recurring Job` page or the volume detail page.
 
 ## Set up Recurring Jobs using a Longhorn RecurringJob
-
 Recurring jobs can also be set up by using a Longhorn `RecurringJob`.
-
-    apiVersion: longhorn.io/v1beta1
-    kind: RecurringJob
-    metadata:
-      name: snapshot-1
-      namespace: longhorn-system
-    spec:
-      cron: "* * * * *"
-      task: "snapshot"
-      groups:
-      - default
-      - group1
-      retain: 1
-      concurrency: 2
-      labels:
-        label/1: a
-        label/2: b
+```yaml
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: snapshot-1
+  namespace: longhorn-system
+spec:
+  cron: "* * * * *"
+  task: "snapshot"
+  groups:
+  - default
+  - group1
+  retain: 1
+  concurrency: 2
+  labels:
+    label/1: a
+    label/2: b
+```
 
 The following parameters should be specified for each recurring job selector:
 
@@ -111,26 +111,27 @@ Recurring job assignment can be configured in the `recurringJobSelector` paramet
 Any future volumes created using this StorageClass will have those recurring jobs automatically assigned.
 
 The `recurringJobSelector` field should follow JSON format:
-
-    kind: StorageClass
-    apiVersion: storage.k8s.io/v1
-    metadata:
-      name: longhorn
-    provisioner: driver.longhorn.io
-    parameters:
-      numberOfReplicas: "3"
-      staleReplicaTimeout: "30"
-      fromBackup: ""
-      recurringJobSelector: '[
-        {
-          "name":"snap",
-          "isGroup":true,
-        },
-        {
-          "name":"backup",
-          "isGroup":false,
-        }
-      ]'
+```yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: longhorn
+provisioner: driver.longhorn.io
+parameters:
+  numberOfReplicas: "3"
+  staleReplicaTimeout: "30"
+  fromBackup: ""
+  recurringJobSelector: '[
+    {
+      "name":"snap",
+      "isGroup":true,
+    },
+    {
+      "name":"backup",
+      "isGroup":false,
+    }
+  ]'
+```
 
 The following parameters should be specified for each recurring job selector:
 
