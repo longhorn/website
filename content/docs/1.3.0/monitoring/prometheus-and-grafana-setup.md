@@ -3,14 +3,19 @@ title: Setting up Prometheus and Grafana to monitor Longhorn
 weight: 1
 ---
 
-## Overview
+This document is a quick guide to setting up the monitor for Longhorn.
 
 Longhorn natively exposes metrics in [Prometheus text format](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format) on a REST endpoint `http://LONGHORN_MANAGER_IP:PORT/metrics`.
-See [Longhorn's metrics](../metrics) for the descriptions of all available metrics.
+
 You can use any collecting tools such as [Prometheus](https://prometheus.io/), [Graphite](https://graphiteapp.org/), [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/) to scrape these metrics then visualize the collected data by tools such as [Grafana](https://grafana.com/).
 
-This document presents an example setup to monitor Longhorn. The monitoring system uses Prometheus for collecting data and alerting, Grafana for visualizing/dashboarding the collected data. From a high-level overview, the monitoring system contains:
-* Prometheus server which scrapes and stores time series data from Longhorn metrics endpoints. The Prometheus is also responsible for generating alerts base on configured rules and collected data. Prometheus servers then send alerts to an Alertmanager.
+See [Longhorn Metrics for Monitoring](../metrics) for available metrics.
+
+## High-level Overview
+
+The monitoring system uses `Prometheus` for collecting data and alerting, and `Grafana` for visualizing/dashboarding the collected data.
+
+* Prometheus server which scrapes and stores time-series data from Longhorn metrics endpoints. The Prometheus is also responsible for generating alerts based on configured rules and collected data. Prometheus servers then send alerts to an Alertmanager.
 * AlertManager then manages those alerts, including silencing, inhibition, aggregation, and sending out notifications via methods such as email, on-call notification systems, and chat platforms.
 * Grafana which queries Prometheus server for data and draws a dashboard for visualization.
 
@@ -21,254 +26,61 @@ The below picture describes the detailed architecture of the monitoring system.
 There are 2 unmentioned components in the above picture:
 
 * Longhorn Backend service is a service pointing to the set of Longhorn manager pods. Longhorn's metrics are exposed in Longhorn manager pods at the endpoint `http://LONGHORN_MANAGER_IP:PORT/metrics`.
-* [Prometheus operator](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/user-guides/getting-started.md) makes running Prometheus on top of Kubernetes very easy. The operator watches 3 custom resources: ServiceMonitor, Prometheus and AlertManager.
-  When users create those custom resources, Prometheus Operator deploys and manages the Prometheus server, AlertManager with the user-specified configurations.
+* [Prometheus operator](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/user-guides/getting-started.md) makes running Prometheus on top of Kubernetes very easy. The operator watches 3 custom resources: ServiceMonitor, Prometheus ,and AlertManager.
+  When you create those custom resources, Prometheus Operator deploys and manages the Prometheus server, AlertManager with the user-specified configurations.
 
 ## Installation
 
-Following this instruction will install all components into the `monitoring` namespace. To install them into a different namespace, change the field `namespace: OTHER_NAMESPACE`
-
-### Create `monitoring` namespace
-
-```yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: monitoring
-```
+This document uses the `default` namespace for the monitoring system. To install on a different namespace, change the field `namespace: <OTHER_NAMESPACE>` in manifests.
 
 ### Install Prometheus Operator
+Follow instructions in [Prometheus Operator - Quickstart](https://github.com/prometheus-operator/prometheus-operator#quickstart).
 
-Deploy Prometheus Operator and its required ClusterRole, ClusterRoleBinding, and Service Account.
-```yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/name: prometheus-operator
-    app.kubernetes.io/version: v0.38.3
-  name: prometheus-operator
-  namespace: monitoring
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: prometheus-operator
-subjects:
-- kind: ServiceAccount
-  name: prometheus-operator
-  namespace: monitoring
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/name: prometheus-operator
-    app.kubernetes.io/version: v0.38.3
-  name: prometheus-operator
-  namespace: monitoring
-rules:
-- apiGroups:
-  - apiextensions.k8s.io
-  resources:
-  - customresourcedefinitions
-  verbs:
-  - create
-- apiGroups:
-  - apiextensions.k8s.io
-  resourceNames:
-  - alertmanagers.monitoring.coreos.com
-  - podmonitors.monitoring.coreos.com
-  - prometheuses.monitoring.coreos.com
-  - prometheusrules.monitoring.coreos.com
-  - servicemonitors.monitoring.coreos.com
-  - thanosrulers.monitoring.coreos.com
-  resources:
-  - customresourcedefinitions
-  verbs:
-  - get
-  - update
-- apiGroups:
-  - monitoring.coreos.com
-  resources:
-  - alertmanagers
-  - alertmanagers/finalizers
-  - prometheuses
-  - prometheuses/finalizers
-  - thanosrulers
-  - thanosrulers/finalizers
-  - servicemonitors
-  - podmonitors
-  - prometheusrules
-  verbs:
-  - '*'
-- apiGroups:
-  - apps
-  resources:
-  - statefulsets
-  verbs:
-  - '*'
-- apiGroups:
-  - ""
-  resources:
-  - configmaps
-  - secrets
-  verbs:
-  - '*'
-- apiGroups:
-  - ""
-  resources:
-  - pods
-  verbs:
-  - list
-  - delete
-- apiGroups:
-  - ""
-  resources:
-  - services
-  - services/finalizers
-  - endpoints
-  verbs:
-  - get
-  - create
-  - update
-  - delete
-- apiGroups:
-  - ""
-  resources:
-  - nodes
-  verbs:
-  - list
-  - watch
-- apiGroups:
-  - ""
-  resources:
-  - namespaces
-  verbs:
-  - get
-  - list
-  - watch
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/name: prometheus-operator
-    app.kubernetes.io/version: v0.38.3
-  name: prometheus-operator
-  namespace: monitoring
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/component: controller
-      app.kubernetes.io/name: prometheus-operator
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/component: controller
-        app.kubernetes.io/name: prometheus-operator
-        app.kubernetes.io/version: v0.38.3
-    spec:
-      containers:
-      - args:
-        - --kubelet-service=kube-system/kubelet
-        - --logtostderr=true
-        - --config-reloader-image=jimmidyson/configmap-reload:v0.3.0
-        - --prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.38.3
-        image: quay.io/prometheus-operator/prometheus-operator:v0.38.3
-        name: prometheus-operator
-        ports:
-        - containerPort: 8080
-          name: http
-        resources:
-          limits:
-            cpu: 200m
-            memory: 200Mi
-          requests:
-            cpu: 100m
-            memory: 100Mi
-        securityContext:
-          allowPrivilegeEscalation: false
-      nodeSelector:
-        beta.kubernetes.io/os: linux
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 65534
-      serviceAccountName: prometheus-operator
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/name: prometheus-operator
-    app.kubernetes.io/version: v0.38.3
-  name: prometheus-operator
-  namespace: monitoring
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/name: prometheus-operator
-    app.kubernetes.io/version: v0.38.3
-  name: prometheus-operator
-  namespace: monitoring
-spec:
-  clusterIP: None
-  ports:
-  - name: http
-    port: 8080
-    targetPort: http
-  selector:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/name: prometheus-operator
-```
+> **NOTE:** You may need to choose a release that is compatible with the Kubernetes version of the cluster.
 
 ### Install Longhorn ServiceMonitor
 
-Longhorn ServiceMonitor has a label selector `app: longhorn-manager` to select Longhorn backend service.
-Later on, the Prometheus CRD can include Longhorn ServiceMonitor so that the Prometheus server can discover all Longhorn manager pods and their endpoints.
+1. Create a ServiceMonitor for Longhorn manager.
 
-```yaml
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: longhorn-prometheus-servicemonitor
-  namespace: monitoring
-  labels:
-    name: longhorn-prometheus-servicemonitor
-spec:
-  selector:
-    matchLabels:
-      app: longhorn-manager
-  namespaceSelector:
-    matchNames:
-    - longhorn-system
-  endpoints:
-  - port: manager
-```
+    ```yaml
+    apiVersion: monitoring.coreos.com/v1
+    kind: ServiceMonitor
+    metadata:
+      name: longhorn-prometheus-servicemonitor
+      namespace: default
+      labels:
+        name: longhorn-prometheus-servicemonitor
+    spec:
+      selector:
+        matchLabels:
+          app: longhorn-manager
+      namespaceSelector:
+        matchNames:
+        - longhorn-system
+      endpoints:
+      - port: manager
+    ```
+
+    Longhorn ServiceMonitor has a label selector `app: longhorn-manager` for selecting Longhorn backend service.
+
+    Longhorn ServiceMonitor is included in the Prometheus custom resource so that the Prometheus server can discover all Longhorn manager pods and their endpoints.
 
 ### Install and configure Prometheus AlertManager
 
-1. Create a highly available Alertmanager deployment with 3 instances:
+1. Create a highly available Alertmanager deployment with 3 instances.
 
     ```yaml
     apiVersion: monitoring.coreos.com/v1
     kind: Alertmanager
     metadata:
       name: longhorn
-      namespace: monitoring
+      namespace: default
     spec:
       replicas: 3
     ```
-1. The Alertmanager instances will not be able to start up unless a valid configuration is given.
-See [here](https://prometheus.io/docs/alerting/latest/configuration/) for more explanation about Alertmanager configuration.
-The following code gives an example configuration:
+
+1. The Alertmanager instances will not start unless a valid configuration is given.
+See [Prometheus - Configuration](https://prometheus.io/docs/alerting/latest/configuration/) for more explanation.
 
     ```yaml
     global:
@@ -311,20 +123,20 @@ The following code gives an example configuration:
 
     Save the above Alertmanager config in a file called `alertmanager.yaml` and create a secret from it using kubectl.
 
-    Alertmanager instances require the secret resource naming to follow the format `alertmanager-{ALERTMANAGER_NAME}`. In the previous step, the name of the Alertmanager is `longhorn`, so the secret name must be `alertmanager-longhorn`
+    Alertmanager instances require the secret resource naming to follow the format `alertmanager-<ALERTMANAGER_NAME>`. In the previous step, the name of the Alertmanager is `longhorn`, so the secret name must be `alertmanager-longhorn`
 
     ```
-    $ kubectl create secret generic alertmanager-longhorn --from-file=alertmanager.yaml -n monitoring
+    $ kubectl create secret generic alertmanager-longhorn --from-file=alertmanager.yaml -n default
     ```
 
-1. To be able to view the web UI of the Alertmanager, expose it through a Service. A simple way to do this is to use a Service of type NodePort:
+1. To be able to view the web UI of the Alertmanager, expose it through a Service. A simple way to do this is to use a Service of type NodePort.
 
     ```yaml
     apiVersion: v1
     kind: Service
     metadata:
       name: alertmanager-longhorn
-      namespace: monitoring
+      namespace: default
     spec:
       type: NodePort
       ports:
@@ -339,11 +151,11 @@ The following code gives an example configuration:
 
     After creating the above service, you can access the web UI of Alertmanager via a Node's IP and the port 30903.
 
-    > Use the above `NodePort` service for quick verification only because it doesn't communicate over the TLS connection. You may want to change the service type to `ClusterIP`, and set up an Ingress-controller to expose the web UI of Alertmanager over TLS connection.
+    > Use the above `NodePort` service for quick verification only because it doesn't communicate over the TLS connection. You may want to change the service type to `ClusterIP` and set up an Ingress-controller to expose the web UI of Alertmanager over a TLS connection.
 
 ### Install and configure Prometheus server
 
-1. Create PrometheusRule custom resource which defines alert conditions. See more examples about Longhorn alert rules at [Longhorn Alert Rule Examples](../alert-rules-example).
+1. Create PrometheusRule custom resource to define alert conditions. See more examples about Longhorn alert rules at [Longhorn Alert Rule Examples](../alert-rules-example).
 
     ```yaml
     apiVersion: monitoring.coreos.com/v1
@@ -353,7 +165,7 @@ The following code gives an example configuration:
         prometheus: longhorn
         role: alert-rules
       name: prometheus-longhorn-rules
-      namespace: monitoring
+      namespace: default
     spec:
       groups:
       - name: longhorn.rules
@@ -369,24 +181,24 @@ The following code gives an example configuration:
             issue: Longhorn volume {{$labels.volume}} usage on {{$labels.node}} is critical.
             severity: critical
     ```
-   For more information on how to define alert rules see [here](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/#alerting-rules).
+   See [Prometheus - Alerting rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/#alerting-rules) for more information.
 
-1. If [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/authorization/) authorization is activated, Create a ClusterRole and ClusterRoleBinding for the Prometheus Pods:
+1. If [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/authorization/) authorization is activated, Create a ClusterRole and ClusterRoleBinding for the Prometheus Pods.
 
     ```yaml
     apiVersion: v1
     kind: ServiceAccount
     metadata:
       name: prometheus
-      namespace: monitoring
+      namespace: default
     ```
 
     ```yaml
-    apiVersion: rbac.authorization.k8s.io/v1beta1
+    apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
       name: prometheus
-      namespace: monitoring
+      namespace: default
     rules:
     - apiGroups: [""]
       resources:
@@ -404,7 +216,7 @@ The following code gives an example configuration:
     ```
 
     ```yaml
-    apiVersion: rbac.authorization.k8s.io/v1beta1
+    apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
       name: prometheus
@@ -415,7 +227,7 @@ The following code gives an example configuration:
     subjects:
     - kind: ServiceAccount
       name: prometheus
-      namespace: monitoring
+      namespace: default
     ```
 
 1. Create a Prometheus custom resource. Notice that we select the Longhorn service monitor and Longhorn rules in the spec.
@@ -424,14 +236,14 @@ The following code gives an example configuration:
     apiVersion: monitoring.coreos.com/v1
     kind: Prometheus
     metadata:
-      name: prometheus
-      namespace: monitoring
+      name: longhorn
+      namespace: default
     spec:
       replicas: 2
       serviceAccountName: prometheus
       alerting:
         alertmanagers:
-          - namespace: monitoring
+          - namespace: default
             name: alertmanager-longhorn
             port: web
       serviceMonitorSelector:
@@ -443,14 +255,14 @@ The following code gives an example configuration:
           role: alert-rules
     ```
 
-1. To be able to view the web UI of the Prometheus server, expose it through a Service. A simple way to do this is to use a Service of type NodePort:
+1. To be able to view the web UI of the Prometheus server, expose it through a Service. A simple way to do this is to use a Service of type NodePort.
 
     ```yaml
     apiVersion: v1
     kind: Service
     metadata:
-      name: prometheus
-      namespace: monitoring
+      name: prometheus-longhorn
+      namespace: default
     spec:
       type: NodePort
       ports:
@@ -460,25 +272,25 @@ The following code gives an example configuration:
         protocol: TCP
         targetPort: web
       selector:
-        prometheus: prometheus
+        prometheus: longhorn
     ```
 
-    After creating the above service, you can access the web UI of Prometheus server via a Node's IP and the port 30904.
+    After creating the above service, you can access the web UI of the Prometheus server via a Node's IP and the port 30904.
 
     > At this point, you should be able to see all Longhorn manager targets as well as Longhorn rules in the targets and rules section of the Prometheus server UI.
 
-    > Use the above NodePort service for quick verification only because it doesn't communicate over TLS connection. You may want to change the service type to `ClusterIP`, and set up an Ingress-controller to expose the web UI of Prometheus server over TLS connection.
+    > Use the above NodePort service for quick verification only because it doesn't communicate over the TLS connection. You may want to change the service type to `ClusterIP` and set up an Ingress controller to expose the web UI of the Prometheus server over a TLS connection.
 
-### Install Grafana
+### Setup Grafana
 
-1. Create Grafana datasource config:
+1. Create Grafana datasource ConfigMap.
 
     ```yaml
     apiVersion: v1
     kind: ConfigMap
     metadata:
       name: grafana-datasources
-      namespace: monitoring
+      namespace: default
     data:
       prometheus.yaml: |-
         {
@@ -487,23 +299,26 @@ The following code gives an example configuration:
                 {
                    "access":"proxy",
                     "editable": true,
-                    "name": "prometheus",
+                    "name": "prometheus-longhorn",
                     "orgId": 1,
                     "type": "prometheus",
-                    "url": "http://prometheus:9090",
+                    "url": "http://prometheus-longhorn.default.svc:9090",
                     "version": 1
                 }
             ]
         }
     ```
 
-1. Create Grafana deployment:
+    > **NOTE:** change field `url` if you are installing the monitoring stack in a different namespace.
+    > `http://prometheus-longhorn.<NAMESPACE>.svc:9090"`
+
+1. Create Grafana Deployment.
     ```yaml
     apiVersion: apps/v1
     kind: Deployment
     metadata:
       name: grafana
-      namespace: monitoring
+      namespace: default
       labels:
         app: grafana
     spec:
@@ -545,36 +360,42 @@ The following code gives an example configuration:
                   name: grafana-datasources
     ```
 
-1. Expose Grafana on NodePort 32000:
+1. Create Grafana Service.
     ```yaml
     apiVersion: v1
     kind: Service
     metadata:
       name: grafana
-      namespace: monitoring
+      namespace: default
     spec:
       selector:
         app: grafana
-      type: NodePort
+      type: ClusterIP
       ports:
         - port: 3000
           targetPort: 3000
-          nodePort: 32000
     ```
 
-   > Use the above NodePort service for quick verification only because it doesn't communicate over TLS connection. You may want to change the service type to ClusterIP, and setup an Ingress-controller to expose Grafana over TLS connection.
-
-1. Access the Grafana dashboard using any node IP on port 32000. The default credential is:
+1. Expose Grafana on NodePort `32000`.
+    ```yaml
+    kubectl -n default patch svc grafana --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":32000}]'
     ```
+
+   > Use the above NodePort service for quick verification only because it doesn't communicate over the TLS connection. You may want to change the service type to ClusterIP and set up an Ingress controller to expose Grafana over a TLS connection.
+
+1. Access the Grafana dashboard using any node IP on port `32000`.
+    ```
+    # Default Credential
     User: admin
     Pass: admin
     ```
-1. Setup Longhorn dashboard
+
+1. Setup Longhorn dashboard.
 
     Once inside Grafana, import the prebuilt [Longhorn example dashboard](https://grafana.com/grafana/dashboards/13032).
 
-    See https://grafana.com/docs/grafana/latest/reference/export_import/ for the instructions about how to import a Grafana dashboard.
+    See [Grafana Lab - Export and import](https://grafana.com/docs/grafana/latest/reference/export_import/) for instructions on how to import a Grafana dashboard.
 
-    You should see the following dashboard upon successful:
+    You should see the following dashboard at successful setup:
     ![images](/img/screenshots/monitoring/longhorn-example-grafana-dashboard.png)
 
