@@ -41,6 +41,7 @@ weight: 3
 | longhorn_instance_manager_cpu_requests_millicpu | Requested CPU resources in kubernetes of this Longhorn instance manager | longhorn_instance_manager_cpu_requests_millicpu{instance_manager="instance-manager-e-2189ed13",instance_manager_type="engine",node="worker-2"} 250 |
 | longhorn_instance_manager_memory_usage_bytes | The memory usage of this longhorn instance manager | longhorn_instance_manager_memory_usage_bytes{instance_manager="instance-manager-e-2189ed13",instance_manager_type="engine",node="worker-2"} 2.4072192e+07 |
 | longhorn_instance_manager_memory_requests_bytes | Requested memory in Kubernetes of this longhorn instance manager | longhorn_instance_manager_memory_requests_bytes{instance_manager="instance-manager-e-2189ed13",instance_manager_type="engine",node="worker-2"} 0 |
+| longhorn_instance_manager_proxy_grpc_connection | The number of proxy gRPC connection of this longhorn instance manager | longhorn_instance_manager_proxy_grpc_connection{instance_manager="instance-manager-e-814dfd05", instance_manager_type="engine", node="worker-2"} 0
 
 ## Manager
 
