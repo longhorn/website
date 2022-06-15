@@ -30,6 +30,7 @@ This section describes how to handle planned maintenance of nodes.
     The engine processes on the node will be migrated with the Pod to other nodes.
 
         Note: If there are volumes not created by Kubernetes on the node,
+
         Longhorn will prevent the node from completing the drain operation, to
         prevent the potential workload disruption.
 
