@@ -9,7 +9,7 @@ categories:
 
 ## Applicable versions
 
-All Longhorn versions.
+Longhorn version < v1.3.0.
 
 ## Symptoms
 

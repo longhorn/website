@@ -17,7 +17,7 @@ The initial settings for Longhorn can be customized by [editing the deployment c
 1. Install Longhorn on any Kubernetes cluster using this command:
 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml
     ```
 
     One way to monitor the progress of the installation is to watch pods being created in the `longhorn-system` namespace:
