@@ -137,7 +137,7 @@ Since v1.3.0, users can download existing backing image files to the local via U
 5. As mentioned in the section [#clean-up-backing-images-in-disks](#clean-up-backing-images-in-disks), the file will be cleaned up automatically if all replicas in one disk do not use one backing image file.
 
 ## Warning
-- The download URL of the backing image should be public. We will improve this part in the further.
+- The download URL of the backing image should be public. We will improve this part in the future.
 - If there is a high memory usage of one backing image manager pod after [file download](#download–the–backing–image-file-to-the-local-machine), this is caused by the system cache/buffer. The memory usage will decrease automatically hence you don't need to worry about it. See [the GitHub ticket](https://github.com/longhorn/longhorn/issues/4055) for more details.
 
 ## History
