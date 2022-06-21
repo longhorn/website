@@ -138,7 +138,7 @@ Since v1.3.0, users can download existing backing image files to the local via U
 
 ## Warning
 - The download URL of the backing image should be public. We will improve this part in the future.
-- If there is the high memory usage of one backing image manager pod after [file download](#download–the–backing–image-file-to-the-local-machine), this is caused by the system cache/buffer. The memory usage will decrease automatically hence you don't need to worry about it. See [the GitHub ticket](https://github.com/longhorn/longhorn/issues/4055) for more details.
+- If there is high memory usage of one backing image manager pod after [file download](#download-the-backing-image-file-to-the-local-machine), this is caused by the system cache/buffer. The memory usage will decrease automatically hence you don't need to worry about it. See [the GitHub ticket](https://github.com/longhorn/longhorn/issues/4055) for more details.
 
 ## History
 * Available since v1.1.1 [Enable backing image feature in Longhorn](https://github.com/Longhorn/Longhorn/issues/2006)
