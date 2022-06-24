@@ -3,25 +3,32 @@ title: Customizing Default Settings
 weight: 1
 ---
 
-You may customize Longhorn's default settings when deploying it. You may specify, for example, `Create Default Disk With Node Labeled` and `Default Data Path` before starting Longhorn.
-
-This default setting is only for a Longhorn system that hasn't been deployed. It has no impact on an existing Longhorn system. The settings for any existing Longhorn system should be modified using the Longhorn UI _or_ by kubectl. Reference to the [knowledge base doc](https://longhorn.io/kb/troubleshooting-default-settings-do-not-persist/) for the details.
+You may customize Longhorn's default settings while installing or upgrading. You may specify, for example, `Create Default Disk With Node Labeled` and `Default Data Path` before starting Longhorn.
 
 The default settings can be customized in the following ways:
 
-- [Deploy](#deploy)
+- [Installation](#installation)
   - [Using the Rancher UI](#using-the-rancher-ui)
   - [Using the Longhorn Deployment YAML File](#using-the-longhorn-deployment-yaml-file)
   - [Using Helm](#using-helm)
-- [Upgrade](#upgrade)
+- [Update Settings](#update-settings)
   - [Using the Longhorn UI](#using-the-longhorn-ui)
+  - [Using the Rancher UI](#using-the-rancher-ui-1)
   - [Using Kubectl](#using-kubectl)
-  - [Using Script](#using-script)
+  - [Using Helm](#using-helm-1)
+- [Upgrade](#upgrade)
+  - [Using the Rancher UI](#using-the-rancher-ui-2)
+  - [Using the Longhorn Deployment YAML File](#using-the-longhorn-deployment-yaml-file-1)
+  - [Using Helm](#using-helm-2)
+- [History](#history)
 
-## Deploy
+
+> **NOTE:** When using Longhorn Deployment YAML file or Helm for installation, updating or upgrading, if the value of a default setting is an empty string and valid, the default setting will be cleaned up in Longhorn. If not, Longhorn will ignore the invalid values and will not update the default values.
+
+## Installation
 ### Using the Rancher UI
 
-From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit the settings before launching the app.
+From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Install > Next > Edit Options > Longhorn Default Settings > Customize Default Settings** and edit the settings before installing the app.
 
 ### Using the Longhorn Deployment YAML File
 
@@ -31,7 +38,10 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
     git clone https://github.com/longhorn/longhorn.git
     ```
 
-2. Modify the config map named `longhorn-default-setting` in the yaml file `longhorn/deploy/longhorn.yaml`. For example:
+1. Modify the config map named `longhorn-default-setting` in the yaml file `longhorn/deploy/longhorn.yaml`.
+
+    In the below example, users customize the default settings, backup-target, backup-target-credential-secret, and default-data-path.
+    When the setting is absent or has a leading `#` symbol, the default setting will use the default value in Longhorn or the customized values previously configured.
 
     ```yaml
     ---
@@ -42,41 +52,45 @@ From the project view in Rancher, go to **Apps > Launch > Longhorn** and edit th
       namespace: longhorn-system
     data:
       default-setting.yaml: |-
-        backup-target:
-        backup-target-credential-secret:
-        allow-recurring-job-while-volume-detached:
-        create-default-disk-labeled-nodes:
-        default-data-path:
-        replica-soft-anti-affinity:
-        storage-over-provisioning-percentage:
-        storage-minimal-available-percentage:
-        upgrade-checker:
-        default-replica-count:
-        default-data-locality:
-        guaranteed-engine-cpu:
-        default-longhorn-static-storage-class:
-        backupstore-poll-interval:
-        taint-toleration:
-        system-managed-components-node-selector:
-        priority-class:
-        auto-salvage:
-        auto-delete-pod-when-volume-detached-unexpectedly:
-        disable-scheduling-on-cordoned-node:
-        replica-zone-soft-anti-affinity:
-        node-down-pod-deletion-policy:
-        allow-node-drain-with-last-healthy-replica:
-        mkfs-ext4-parameters:
-        disable-replica-rebuild:
-        replica-replenishment-wait-interval:
-        disable-revision-counter:
-        system-managed-pods-image-pull-policy:
-        allow-volume-creation-with-degraded-availability:
-        auto-cleanup-system-generated-snapshot:
-        concurrent-automatic-engine-upgrade-per-node-limit:
-        backing-image-cleanup-wait-interval:
-        guaranteed-engine-manager-cpu:
-        guaranteed-replica-manager-cpu:
-        orphan-auto-deletion:
+        backup-target: s3://backupbucket@us-east-1/backupstore
+        backup-target-credential-secret: minio-secret
+        #allow-recurring-job-while-volume-detached:
+        #create-default-disk-labeled-nodes:
+        default-data-path: /var/lib/longhorn-example/
+        #replica-soft-anti-affinity:
+        #replica-auto-balance:
+        #storage-over-provisioning-percentage:
+        #storage-minimal-available-percentage:
+        #upgrade-checker:
+        #default-replica-count:
+        #default-data-locality:
+        #default-longhorn-static-storage-class:
+        #backupstore-poll-interval:
+        #taint-toleration:
+        #system-managed-components-node-selector:
+        #priority-class:
+        #auto-salvage:
+        #auto-delete-pod-when-volume-detached-unexpectedly:
+        #disable-scheduling-on-cordoned-node:
+        #replica-zone-soft-anti-affinity:
+        #node-down-pod-deletion-policy:
+        #allow-node-drain-with-last-healthy-replica:
+        #mkfs-ext4-parameters:
+        #disable-replica-rebuild:
+        #replica-replenishment-wait-interval:
+        #concurrent-replica-rebuild-per-node-limit:
+        #disable-revision-counter:
+        #system-managed-pods-image-pull-policy:
+        #allow-volume-creation-with-degraded-availability:
+        #auto-cleanup-system-generated-snapshot:
+        #concurrent-automatic-engine-upgrade-per-node-limit:
+        #backing-image-cleanup-wait-interval:
+        #backing-image-recovery-wait-interval:
+        #guaranteed-engine-manager-cpu:
+        #guaranteed-replica-manager-cpu:
+        #kubernetes-cluster-autoscaler-enabled:
+        #orphan-auto-deletion:
+        #storage-network:
     ---
     ```
 
@@ -110,6 +124,8 @@ You can also provide a copy of the `values.yaml` file with the default settings 
 
 2. Modify the default settings in the YAML file. The following is an example snippet of `values.yaml`:
 
+   When the setting is absent or has a leading `#` symbol, the default setting will use the default value in Longhorn or the customized values previously configured.
+
     ```yaml
     defaultSettings:
       backupTarget: s3://backupbucket@us-east-1/backupstore
@@ -122,21 +138,20 @@ You can also provide a copy of the `values.yaml` file with the default settings 
       upgradeChecker: false
       defaultReplicaCount: 2
       defaultDataLocality: disabled
-      guaranteedEngineCPU:
       defaultLonghornStaticStorageClass: longhorn-static-example
       backupstorePollInterval: 500
       taintToleration: key1=value1:NoSchedule; key2:NoExecute
       systemManagedComponentsNodeSelector: "label-key1:label-value1"
-      priority-class: high-priority
+      priorityClass: high-priority
       autoSalvage: false
       disableSchedulingOnCordonedNode: false
       replicaZoneSoftAntiAffinity: false
       volumeAttachmentRecoveryPolicy: never
       nodeDownPodDeletionPolicy: do-nothing
       mkfsExt4Parameters: -O ^64bit,^metadata_csum
-      guaranteed-engine-manager-cpu: 15
-      guaranteed-replica-manager-cpu: 15
-      orphan-auto-deletion: false
+      guaranteedEngineManagerCpu: 15
+      guaranteedReplicaManagerCpu: 15
+      orphanAutoDeletion: false
     ```
 
 3. Run Helm with `values.yaml`:
@@ -158,30 +173,42 @@ You can also provide a copy of the `values.yaml` file with the default settings 
 For more info about using helm, see the section about
 [installing Longhorn with Helm](../../../deploy/install/install-with-helm)
 
-## Upgrade
+## Update Settings
 
 ### Using the Longhorn UI
 
-We recommend using the Longhorn UI to change Longhorn setting on the existing cluster.
-It would make the setting persistent.
+We recommend using the Longhorn UI to change Longhorn setting on the existing cluster. It would make the setting persistent.
+
+### Using the Rancher UI
+
+From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Upgrade > Next > Edit Options > Longhorn Default Settings > Customize Default Settings** and edit the settings before upgrading the app to the current Longhorn version.
 
 ### Using Kubectl
 
-If you prefer to use the command line to update the setting, you could use kubectl.
-But please be aware **this will bypass Longhorn backend validation**.
+If you prefer to use the command line to update the setting, you could use `kubectl`.
 ```shell
 kubectl edit settings <SETTING-NAME> -n longhorn-system
 ```
 
-### Using Script
+### Using Helm
 
-If you're using Rancher UI _or_ Helm to upgrade the setting, but found that the customized setting does not apply to the cluster. You could run the below script to update the Longhorn Setting CR according to the longhorn-default-setting ConfigMap.
-But please be aware **this will bypass Longhorn backend validation**.
-```shell
-kubectl -n longhorn-system get configmap longhorn-default-setting -ojsonpath="{.data['default-setting\.yaml']}" | awk '{if ($2) print $0;}' | while read key val; do kubectl -n longhorn-system patch settings ${key%:} --type='json' -p='[{"op": "replace", "path": "/value", "value": "'${val}'"}]'; done
+Modify the default settings in the YAML file as described in [Fresh Installation > Using Helm](#using-helm) and then update the settings using
+```
+helm upgrade longhorn longhorn/longhorn --namespace longhorn-system --values ./values.yaml --version `helm list -n longhorn-system -o json | jq -r .'[0].app_version'`
 ```
 
-## History
-[Original feature request](https://github.com/longhorn/longhorn/issues/623)
+## Upgrade
 
-Available since v0.6.0
+### Using the Rancher UI
+
+From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Upgrade > Next > Edit Options > Longhorn Default Settings > Customize Default Settings** and edit the settings before upgrading the app.
+### Using the Longhorn Deployment YAML File
+
+Modify the config map named `longhorn-default-setting` in the yaml file `longhorn/deploy/longhorn.yaml` as described in [Fresh Installation > Using the Longhorn Deployment YAML File](#using-the-longhorn-deployment-yaml-file) and then upgrade the Longhorn system using `kubectl`.
+
+### Using Helm
+
+Modify the default settings in the YAML file as described in [Fresh Installation > Using Helm](#using-helm) and then upgrade the Longhorn system using `helm upgrade`.
+
+## History
+Available since v1.3.0 ([Reference](https://github.com/longhorn/longhorn/issues/2570))
