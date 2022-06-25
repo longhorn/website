@@ -52,7 +52,7 @@ kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< curren
 To upgrade with Helm, run this command:
 
 ```
-helm upgrade longhorn ./longhorn/chart
+helm upgrade longhorn longhorn/longhorn --namespace longhorn-system
 ```
 
 On Kubernetes clusters managed by Rancher 2.1 or newer, the steps to upgrade the catalog app `longhorn-system` are the similar to the installation steps.
@@ -61,36 +61,31 @@ Then wait for all the pods to become running and Longhorn UI working. e.g.:
 
 ```
 $ kubectl -n longhorn-system get pod
-NAME                                        READY   STATUS    RESTARTS   AGE
-csi-attacher-78bf9b9898-mb7jt               1/1     Running   1          3m11s
-csi-attacher-78bf9b9898-n2224               1/1     Running   1          3m11s
-csi-attacher-78bf9b9898-rhv6m               1/1     Running   1          3m11s
-csi-provisioner-8599d5bf97-dr5n4            1/1     Running   1          2m58s
-csi-provisioner-8599d5bf97-drzn9            1/1     Running   1          2m58s
-csi-provisioner-8599d5bf97-rz5fj            1/1     Running   1          2m58s
-csi-resizer-586665f745-5bkcm                1/1     Running   0          2m49s
-csi-resizer-586665f745-vgqx8                1/1     Running   0          2m49s
-csi-resizer-586665f745-wdvdg                1/1     Running   0          2m49s
-engine-image-ei-62c02f63-bjfkp              1/1     Running   0          14m
-engine-image-ei-62c02f63-nk2jr              1/1     Running   0          14m
-engine-image-ei-62c02f63-pjtgg              1/1     Running   0          14m
-engine-image-ei-ac045a0d-9bbb8              1/1     Running   0          3m46s
-engine-image-ei-ac045a0d-cqvv2              1/1     Running   0          3m46s
-engine-image-ei-ac045a0d-wzmhv              1/1     Running   0          3m46s
-instance-manager-e-4deb2a16                 1/1     Running   0          3m23s
-instance-manager-e-5526b121                 1/1     Running   0          3m28s
-instance-manager-e-eff765b6                 1/1     Running   0          2m59s
-instance-manager-r-3b70b0db                 1/1     Running   0          3m27s
-instance-manager-r-4f7d629a                 1/1     Running   0          3m22s
-instance-manager-r-bbcf4f17                 1/1     Running   0          2m58s
-longhorn-csi-plugin-bkgjj                   2/2     Running   0          2m39s
-longhorn-csi-plugin-tjhhq                   2/2     Running   0          2m39s
-longhorn-csi-plugin-zslp6                   2/2     Running   0          2m39s
-longhorn-driver-deployer-75b6bf4d6d-d4hcv   1/1     Running   0          3m57s
-longhorn-manager-4j77v                      1/1     Running   0          3m53s
-longhorn-manager-cwm5z                      1/1     Running   0          3m50s
-longhorn-manager-w7scb                      1/1     Running   0          3m50s
-longhorn-ui-8fcd9fdd-qpknp                  1/1     Running   0          3m56s
+NAME                                           READY   STATUS    RESTARTS      AGE
+engine-image-ei-4dbdb778-nw88l                 1/1     Running   0             4m29s
+longhorn-conversion-webhook-5dc58756b6-8vf8g   1/1     Running   0             75s
+longhorn-conversion-webhook-5dc58756b6-jqq6n   1/1     Running   0             75s
+longhorn-ui-b7c844b49-jn5g6                    1/1     Running   0             75s
+longhorn-admission-webhook-8b7f74576-898c4     1/1     Running   0             75s
+longhorn-admission-webhook-8b7f74576-t7jqk     1/1     Running   0             75s
+longhorn-manager-z2p8h                         1/1     Running   0             71s
+instance-manager-r-de8337e2                    1/1     Running   0             65s
+instance-manager-e-c812d56c                    1/1     Running   0             65s
+longhorn-driver-deployer-6bd59c9f76-jp6pg      1/1     Running   0             75s
+engine-image-ei-df38d2e5-zccq5                 1/1     Running   0             65s
+csi-snapshotter-588457fcdf-h2lgc               1/1     Running   0             30s
+csi-resizer-6d8cf5f99f-8v4sp                   1/1     Running   1 (30s ago)   37s
+csi-snapshotter-588457fcdf-6pgf4               1/1     Running   0             30s
+csi-provisioner-869bdc4b79-7ddwd               1/1     Running   1 (30s ago)   44s
+csi-snapshotter-588457fcdf-p4kkn               1/1     Running   0             30s
+csi-attacher-7bf4b7f996-mfbdn                  1/1     Running   1 (30s ago)   50s
+csi-provisioner-869bdc4b79-4dc7n               1/1     Running   1 (30s ago)   43s
+csi-resizer-6d8cf5f99f-vnspd                   1/1     Running   1 (30s ago)   37s
+csi-attacher-7bf4b7f996-hrs7w                  1/1     Running   1 (30s ago)   50s
+csi-attacher-7bf4b7f996-rt2s9                  1/1     Running   1 (30s ago)   50s
+csi-resizer-6d8cf5f99f-7vv89                   1/1     Running   1 (30s ago)   37s
+csi-provisioner-869bdc4b79-sn6zr               1/1     Running   1 (30s ago)   43s
+longhorn-csi-plugin-b2zzj                      2/2     Running   0             24s
 ```
 
 Next, [upgrade Longhorn engine.](../upgrade-engine)
@@ -101,11 +96,27 @@ To avoid crashing existing volumes, as well as switch from the deprecated settin
 You may need to check the new mechanism and the setting descriptions to see if you need any adjustments.
 
 ### TroubleShooting
-#### Error: `"longhorn" is invalid: provisioner: Forbidden: updates to provisioner are forbidden.`
+1. Error: `"longhorn" is invalid: provisioner: Forbidden: updates to provisioner are forbidden.`
 - This means there are some modifications applied to the default storageClass and you need to clean up the old one before upgrade.
 
 - To clean up the deprecated StorageClass, run this command:
     ```
     kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/storageclass.yaml
     ```
+
+2. Error: `...proto: duplicate proto type registered: VersionResponse panic: Unrecognized command: conversion-webhook ...` in the longhorn-conversion-webhook pods in `CrashLoopBackOff` state.
+    - Check if the longhorn-conversion-webhook image tag is v{{< current-version >}} by
+        ```
+        kubectl -n longhorn-system get deployments longhorn-conversion-webhook -o yaml | grep image
+        ```
+
+    - It indicates Helm uses the previously configured image tag value if the image tag is different than expected, i.e. v{{< current-version >}}. Then, you need to reset the values by `--reset-values`.
+        - You can simply upgrade Longhorn without updating your customized default settings.
+            ```
+            helm upgrade longhorn longhorn/longhorn -n longhorn-system --reset-values
+            ```
+        - You can customize the default settings in as described in [Customize Default Settings](../../../advanced-resources/deploy/customizing-default-settings/) and then run
+            ```
+            helm upgrade longhorn longhorn/longhorn -n longhorn-system --values ./values.yaml --reset-values
+            ```
 

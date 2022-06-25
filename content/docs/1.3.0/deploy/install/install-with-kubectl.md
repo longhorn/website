@@ -32,24 +32,30 @@ The initial settings for Longhorn can be customized by [editing the deployment c
 
     ```shell
     $ kubectl -n longhorn-system get pod
-    NAME                                        READY     STATUS    RESTARTS   AGE
-    csi-attacher-6fdc77c485-8wlpg               1/1       Running   0          9d
-    csi-attacher-6fdc77c485-psqlr               1/1       Running   0          9d
-    csi-attacher-6fdc77c485-wkn69               1/1       Running   0          9d
-    csi-provisioner-78f7db7d6d-rj9pr            1/1       Running   0          9d
-    csi-provisioner-78f7db7d6d-sgm6w            1/1       Running   0          9d
-    csi-provisioner-78f7db7d6d-vnjww            1/1       Running   0          9d
-    engine-image-ei-6e2b0e32-2p9nk              1/1       Running   0          9d
-    engine-image-ei-6e2b0e32-s8ggt              1/1       Running   0          9d
-    engine-image-ei-6e2b0e32-wgkj5              1/1       Running   0          9d
-    longhorn-csi-plugin-g8r4b                   2/2       Running   0          9d
-    longhorn-csi-plugin-kbxrl                   2/2       Running   0          9d
-    longhorn-csi-plugin-wv6sb                   2/2       Running   0          9d
-    longhorn-driver-deployer-788984b49c-zzk7b   1/1       Running   0          9d
-    longhorn-manager-nr5rs                      1/1       Running   0          9d
-    longhorn-manager-rd4k5                      1/1       Running   0          9d
-    longhorn-manager-snb9t                      1/1       Running   0          9d
-    longhorn-ui-67b9b6887f-n7x9q                1/1       Running   0          9d
+    NAME                                           READY   STATUS    RESTARTS   AGE
+    longhorn-ui-b7c844b49-w25g5                    1/1     Running   0          2m41s
+    longhorn-conversion-webhook-5dc58756b6-9d5w7   1/1     Running   0          2m41s
+    longhorn-conversion-webhook-5dc58756b6-jp5fw   1/1     Running   0          2m41s
+    longhorn-admission-webhook-8b7f74576-rbvft     1/1     Running   0          2m41s
+    longhorn-admission-webhook-8b7f74576-pbxsv     1/1     Running   0          2m41s
+    longhorn-manager-pzgsp                         1/1     Running   0          2m41s
+    longhorn-driver-deployer-6bd59c9f76-lqczw      1/1     Running   0          2m41s
+    longhorn-csi-plugin-mbwqz                      2/2     Running   0          100s
+    csi-snapshotter-588457fcdf-22bqp               1/1     Running   0          100s
+    csi-snapshotter-588457fcdf-2wd6g               1/1     Running   0          100s
+    csi-provisioner-869bdc4b79-mzrwf               1/1     Running   0          101s
+    csi-provisioner-869bdc4b79-klgfm               1/1     Running   0          101s
+    csi-resizer-6d8cf5f99f-fd2ck                   1/1     Running   0          101s
+    csi-provisioner-869bdc4b79-j46rx               1/1     Running   0          101s
+    csi-snapshotter-588457fcdf-bvjdt               1/1     Running   0          100s
+    csi-resizer-6d8cf5f99f-68cw7                   1/1     Running   0          101s
+    csi-attacher-7bf4b7f996-df8v6                  1/1     Running   0          101s
+    csi-attacher-7bf4b7f996-g9cwc                  1/1     Running   0          101s
+    csi-attacher-7bf4b7f996-8l9sw                  1/1     Running   0          101s
+    csi-resizer-6d8cf5f99f-smdjw                   1/1     Running   0          101s
+    instance-manager-r-371b1b2e                    1/1     Running   0          114s
+    instance-manager-e-7c5ac28d                    1/1     Running   0          114s
+    engine-image-ei-df38d2e5-cv6nc                 1/1     Running   0          114s
     ```
 3. To enable access to the Longhorn UI, you will need to set up an Ingress controller. Authentication to the Longhorn UI is not enabled by default. For information on creating an NGINX Ingress controller with basic authentication, refer to [this section.](../../accessing-the-ui/longhorn-ingress)
 4. Access the Longhorn UI using [these steps.](../../accessing-the-ui)
