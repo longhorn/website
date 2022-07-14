@@ -48,7 +48,7 @@ The reason is Longhorn is planing to stop releasing new versions in the App Cata
    (We need to do this because the migration process will involve updating the engine image to a new one that has an identical git commit but a different tag.
    Upgrading the engine image for volumes in this case will cause the volumes to be stuck in upgrading).
    If you don't want to use Longhorn UI, you can change the setting by `kubectl edit settings.longhorn.io -n longhorn-system concurrent-automatic-engine-upgrade-per-node-limit`
-2. Download the kubeconfig file for the upstream rancher cluster.
+2. Download the kubeconfig file for the upstream rancher cluster (the kubeconfig file of the cluster on which the rancher instance is running on).
    Download the kubeconfig file for the downstream cluster where Longhorn is running on.
 3. Run the script `longhorn_rancher_chart_migration.sh` with the flag `--type=migrate`.
    E.g., `./longhorn_rancher_chart_migration.sh -u /path/to/upstream/rancher/cluster/kubeconfig -d /path/to/downstream/cluster/kubeconfig --type=migrate"`.
