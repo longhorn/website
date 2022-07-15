@@ -34,7 +34,7 @@ It's better not to "upload" a file via YAML. Otherwise, you need to manually han
 
 Here are some examples:
 ```yaml
-apiVersion: longhorn.io/v1beta1
+apiVersion: longhorn.io/v1beta2
 kind: BackingImage
 metadata:
   name: bi-download
@@ -46,7 +46,7 @@ spec:
   checksum: 304f3ed30ca6878e9056ee6f1b02b328239f0d0c2c1272840998212f9734b196371560b3b939037e4f4c2884ce457c2cbc9f0621f4f5d1ca983983c8cdf8cd9a
 ```
 ```yaml
-apiVersion: longhorn.io/v1beta1
+apiVersion: longhorn.io/v1beta2
 kind: BackingImage
 metadata:
   name: bi-export
