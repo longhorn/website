@@ -319,7 +319,7 @@ If you keep the images' names as recommended [here](./#recommendation), you only
 2. Create `registry-secret` setting object manually.
 
     ```yaml
-    apiVersion: longhorn.io/v1beta1
+    apiVersion: longhorn.io/v1beta2
     kind: Setting
     metadata:
       name: registry-secret

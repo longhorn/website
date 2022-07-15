@@ -116,9 +116,9 @@ Allows setting additional filesystem creation parameters for ext4. For older hos
 
 #### Custom Resource API Version
 
-> Default: `longhorn.io/v1beta1`
+> Default: `longhorn.io/v1beta2`
 
-The current customer resource's API version, e.g. longhorn.io/v1beta1. Set by manager automatically.
+The current customer resource's API version, e.g. longhorn.io/v1beta2. Set by manager automatically.
 
 #### Default Data Locality
 
