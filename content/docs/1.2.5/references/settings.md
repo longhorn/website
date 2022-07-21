@@ -71,7 +71,7 @@ If this setting is enabled, Longhorn will not block `kubectl drain` action on a 
 
 > Default: `true`
 
-Longhorn will generate system snapshot during replica rebuild, and if a user doesn't setup a recurring snapshot schedule, all the system generated snapshots would be left in the replica, and user has to delete them manually, this setting allow Longhorn to automatically cleanup system generated snapshot after replica rebuild.
+Longhorn will generate system snapshot during replica rebuild, and if a user doesn't setup a recurring snapshot schedule, all the system generated snapshots would be left in the replica, and user has to delete them manually, this setting allow Longhorn to automatically cleanup system generated snapshot before and after replica rebuild.
 
 #### Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly
 
