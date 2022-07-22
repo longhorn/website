@@ -27,7 +27,7 @@ The Longhorn Manager component orchestrates the Longhorn Engines, so they work t
 
 ### Use Persistent Storage in Kubernetes without Relying on a Cloud Provider
 
-Pods can reference storage directly, but this is not recommended because it doesn't allow the Pod or container to be portable. Instead, the workloads' storage requirements should be defined in Kubernetes Persistent Volumes (PVs) and Persistent Volume Claims (PVCs). With Longhorn, you can specify the size of the volume, IOPS requirements, and the number of synchronous replicas you want across the hosts that supply the storage resource for the volume. Then your Kubernetes resources can use the PVC and corresponding PV for each Longhorn volume, or use a Longhorn storage class to automatically create a PV for a workload.
+Pods can reference storage directly, but this is not recommended because it doesn't allow the Pod or container to be portable. Instead, the workloads' storage requirements should be defined in Kubernetes Persistent Volumes (PVs) and Persistent Volume Claims (PVCs). With Longhorn, you can specify the size of the volume, the number of synchronous replicas and other volume specific configurations you want across the hosts that supply the storage resource for the volume. Then your Kubernetes resources can use the PVC and corresponding PV for each Longhorn volume, or use a Longhorn storage class to automatically create a PV for a workload.
 
 Replicas are thin-provisioned on the underlying disks or network storage.
 

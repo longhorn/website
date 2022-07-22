@@ -31,13 +31,13 @@ The Longhorn Manager component orchestrates the Longhorn Engines, so they work t
 
 ### Use Persistent Storage in Kubernetes without Relying on a Cloud Provider
 
-Pods can reference storage directly, but this is not recommended because it doesn't allow the Pod or container to be portable. Instead, the workloads' storage requirements should be defined in Kubernetes Persistent Volumes (PVs) and Persistent Volume Claims (PVCs). With Longhorn, you can specify the size of the volume, IOPS requirements, and the number of synchronous replicas you want across the hosts that supply the storage resource for the volume. Then your Kubernetes resources can use the PVC and corresponding PV for each Longhorn volume, or use a Longhorn storage class to automatically create a PV for a workload.
+Pods can reference storage directly, but this is not recommended because it doesn't allow the Pod or container to be portable. Instead, the workloads' storage requirements should be defined in Kubernetes Persistent Volumes (PVs) and Persistent Volume Claims (PVCs). With Longhorn, you can specify the size of the volume, the number of synchronous replicas and other volume specific configurations you want across the hosts that supply the storage resource for the volume. Then your Kubernetes resources can use the PVC and corresponding PV for each Longhorn volume, or use a Longhorn storage class to automatically create a PV for a workload.
 
 Replicas are thin-provisioned on the underlying disks or network storage.
 
 ### Schedule Multiple Replicas across Multiple Compute or Storage Hosts
 
-To increase availability, Longhorn creates replicas of each volume. Replicas contain a chain of snapshots of the volume, with each snapshot storing the change from a previous snapshot. Each replica of a volume also runs in a container, so a volume with three replicas results in four containers. 
+To increase availability, Longhorn creates replicas of each volume. Replicas contain a chain of snapshots of the volume, with each snapshot storing the change from a previous snapshot. Each replica of a volume also runs in a container, so a volume with three replicas results in four containers.
 
 The number of replicas for each volume is configurable in Longhorn, as well as the nodes where replicas will be scheduled. Longhorn monitors the health of each replica and performs repairs, rebuilding the replica when necessary.
 
