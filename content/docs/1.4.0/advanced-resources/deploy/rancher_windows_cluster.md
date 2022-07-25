@@ -19,7 +19,7 @@ You can update the Helm value `global.cattle.windowsCluster.enabled` to allow Lo
 
 When this value is set to `true`, Longhorn will recognize the Rancher Windows cluster then deploy Longhorn components with the correct node selector and tolerations so that all Longhorn workloads can be launched on Linux nodes only.
 
-The setting is in customize Helm options before install: \
+On the Rancher marketplace, the setting can be customized in `customize Helm options` before installation: \
 `Edit Options` > `Other Settings` > `Rancher Windows Cluster`
 
 Also in: \
