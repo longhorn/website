@@ -10,7 +10,7 @@ In a Rancher Windows cluster, all Linux worker nodes are:
 - Tainted with the taint `cattle.io/os=linux:NoSchedule`
 - Labeled with `kubernetes.io/os:linux`
 
-Follow this document to [Deploy Longhorn With Supported Helm Chart](#deploy-longhorn-with-supported-helm-chart) or [Setup Longhorn Components For Existing Longhorn](#setup-longhorn-components-for-existing-longhorn).
+Follow the below [Deploy Longhorn With Supported Helm Chart](#deploy-longhorn-with-supported-helm-chart) or [Setup Longhorn Components For Existing Longhorn](#setup-longhorn-components-for-existing-longhorn) to know how to deploy or setup Longhorn on a Rancher Windows cluster.
 
 > **Note**: After Longhorn is deployed, you can launch workloads that use Longhorn volumes only on Linux nodes.
 
