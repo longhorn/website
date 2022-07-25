@@ -4,9 +4,10 @@
   {{ range $versions }}
   {{ $isLatest := eq . $latest }}
   <li>
-    <a href="/docs/{{ . }}">
+    <a href="/docs/{{ strings.TrimSuffix "-dev" . }}">
       {{ . }}{{ if $isLatest }} (latest){{ end }}
     </a>
   </li>
   {{ end }}
 </ul>
+
