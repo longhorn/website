@@ -136,21 +136,19 @@ Here we summarize the important things related to disk space usage we have in th
             - Users don't want snapshot at all. Neither (manually created) snapshot nor recurring job will be launched. Assume [setting _Automatically Cleanup System Generated Snapshot_](../../references/settings/#automatically-cleanup-system-generated-snapshot) is enabled, then formula would become:
 
                 ```
-                (1 + 1 + 1) x head/snapshot average actual size
+                (1 + 1 + 1 + 1) x head/snapshot average actual size
                 ```
 
                 - The worst case that leads to so much space usage:
-                    1. At some point the 1st rebuilding/expansion is triggered, which leads to the 1st system snapshot creation.
-                        - The purges before and after the 1st rebuilding does nothing.
-                    2. There is data written to the new volume head, and the 2nd rebuilding/expansion somehow is triggered.
-                        - The snapshot purge before the 2nd rebuilding may lead to the shrink of the 1st system snapshot.
-                        - Then the 2nd system snapshot is created and the rebuilding is started.
-                        - After the rebuilding done, the subsequent snapshot purge would lead to the coalescing of the 2 system snapshots. This coalescing requires temporary space.
-                    3. During the afterward snapshot purging for the 2nd rebuilding, there is more data written to the new volume head.
+                    1. Somehow the 1st rebuilding/expansion is triggered, which leads to the 1st system snapshot creation.
+                    2. The 1st purge following by the 1st rebuilding does nothing.
+                    3. Before another purging/pruning coming, there is data written to the new volume head and the 2nd rebuilding/expansion is triggered. Then the 2nd system snapshot is triggered.
+                    4. The 2nd purge following by the 2nd rebuilding would lead to the coalescing of the 2 system snapshots. This coalescing requires temporary space.
                 - The explanation of the formula:
                     - The 1st `1` means the volume head.
-                    - The 2nd `1` is the second system snapshot mentioned in the worst case.
-                    - The 3rd `1` is for the temporary space that may be required by the 2 system snapshot purge/coalescing.
+                    - The 2nd `1` is the first system snapshot mentioned in the worst case.
+                    - The 3rd `1` is the second system snapshot mentioned in the worst case.
+                    - The 4th `1` is for the temporary space that may be required by the 2 system snapshot purge/coalescing.
 
 2. Do not retain too many snapshots for the volumes.
 
