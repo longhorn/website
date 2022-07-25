@@ -13,8 +13,19 @@
     </a>
 
     <div class="navbar-dropdown">
+      {{ $devVersionCount := 0 }}
       {{ range $versions }}
-      {{ $link     := printf "docs/%s" . | relURL }}
+
+      {{ $link := printf "docs/%s" . | relURL }}
+      {{ if strings.HasSuffix . "-dev" }}
+      {{ $devVersionCount = add $devVersionCount 1 }}
+      {{ $link = strings.TrimSuffix "-dev" $link }}
+      {{ end }}
+
+      {{ if eq $devVersionCount 1 }}
+      <hr>
+      {{ end }}
+
       {{ $isLatest := eq . $latest }}
       <a class="navbar-item" href="{{ $link }}">
         {{ . }}{{ if $isLatest }} (<strong>latest</strong>){{ end }}
