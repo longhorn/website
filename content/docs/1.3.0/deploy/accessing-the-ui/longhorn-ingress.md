@@ -81,7 +81,7 @@ metadata:
   name: longhorn-ingress
   namespace: longhorn-system
   annotations:
-    # 
+    # class of ingress
     kubernetes.io/ingress.class: "nginx"
     # type of authentication
     nginx.ingress.kubernetes.io/auth-type: basic
