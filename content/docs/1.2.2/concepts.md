@@ -206,7 +206,7 @@ To add the blank replica, the Engine performs the following operations:
   1. Pauses all read and write operations.
   2. Adds the blank replica in WO (write-only) mode.
   3. Takes a snapshot of all existing replicas, which will now have a blank differencing disk at its head.
-  4. Unpauses all read the write operations. Only write operations will be dispatched to the newly added replica.
+  4. Unpauses all read and write operations. Only write operations will be dispatched to the newly added replica.
   5. Starts a background process to sync all but the most recent differencing disk from a good replica to the blank replica.
   6. After the sync completes, all replicas now have consistent data, and the volume manager sets the new replica to RW (read-write) mode.
 
