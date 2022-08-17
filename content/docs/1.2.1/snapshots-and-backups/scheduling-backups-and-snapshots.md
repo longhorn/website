@@ -124,11 +124,11 @@ parameters:
   recurringJobSelector: '[
     {
       "name":"snap",
-      "isGroup":true,
+      "isGroup":true
     },
     {
       "name":"backup",
-      "isGroup":false,
+      "isGroup":false
     }
   ]'
 ```
