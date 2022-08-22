@@ -1,6 +1,6 @@
 ---
 title: "Troubleshooting: Pod stuck in creating state when Longhorn volumes filesystem is corrupted"
-author: Chin-Ya Huang
+author: Chin-Ya Huang and Derek Su
 draft: false
 date: 2021-08-19
 categories:
@@ -35,9 +35,13 @@ Longhorn cannot fix this automatically. You will need to resolve this manually w
   - Check Longhorn manager pods log for system corruption error messages.
   > If the volume is not in an error state then the file system inside Longhorn volume may be corrupted by an external reason.
 2. Scale down the workload.
-3. Attach the volume to any node from the UI. 
+3. Attach the volume to any node from the UI.
+
+> **Warning**
+>  When Filesystem Check (fsck) fixes errors, it modifies the filesystem metadata and brings the brought the filesystem to a consistent state. However, an incorrect fix might lead to unexpected data loss or more serious filesystem corruption. To mitigate the potential risk, we highly suggest that users take a snapshot of the corrupted filesystem before attempting any fix. In case of an accident, users can recover the volumes.
+
 4. SSH into the node.
 5. Find the block device corresponding to the Longhorn volume under /dev/longhorn/<volume-name>.
 6. Run `fsck` to fix the filesystem. 
 7. Detach the volume from the UI.
-9. Scale up the workload.
+8. Scale up the workload.
