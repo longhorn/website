@@ -50,8 +50,8 @@ The reason is Longhorn is planing to stop releasing new versions in the App Cata
    If you don't want to use Longhorn UI, you can change the setting by `kubectl edit settings.longhorn.io -n longhorn-system concurrent-automatic-engine-upgrade-per-node-limit`
 2. Download the kubeconfig file for the upstream rancher cluster (the kubeconfig file of the cluster on which the rancher instance is running on).
    Download the kubeconfig file for the downstream cluster where Longhorn is running on.
-3. Run the script `longhorn_rancher_chart_migration.sh` with the flag `--type=migrate`.
-   E.g., `./longhorn_rancher_chart_migration.sh -u /path/to/upstream/rancher/cluster/kubeconfig -d /path/to/downstream/cluster/kubeconfig --type=migrate"`.
+3. Run the script `longhorn_rancher_chart_migration.sh` with the flag `--type migrate`.
+   E.g., `./longhorn_rancher_chart_migration.sh -u /path/to/upstream/rancher/cluster/kubeconfig -d /path/to/downstream/cluster/kubeconfig --type migrate"`.
    This script will update the annotations and labels for Longhorn resources so that Helm3 can adopt them. A sample of running output is:
     ```
     longhorn_rancher_chart_migration.sh -u /home/peterle/.kube/local -d /home/peterle/.kube/v154
@@ -161,7 +161,7 @@ The reason is Longhorn is planing to stop releasing new versions in the App Cata
       4. Install the chart with the correct helm values. Here are the helm values of your old charts:
     enablePSP=true,image.defaultImage=true,ingress.enabled=false,longhorn.default_setting=false,persistence.backingImage.enable=false,persistence.defaultClass=true,persistence.defaultClassReplicaCount=3,persistence.reclaimPolicy=Delete,persistence.recurringJobSelector.enable=false,persistence.recurringJobs.enable=false,privateRegistry.registryPasswd=,privateRegistry.registrySecret=,privateRegistry.registryUrl=,privateRegistry.registryUser=,service.ui.type=Rancher-Proxy
       5. Verify that the migrated charts are working ok
-      6. Run this script again with the flag --type=cleanup to remove the old chart from the legacy UI
+      6. Run this script again with the flag --type cleanup to remove the old chart from the legacy UI
     ```
 4. Go to Rancher UI -> Go to the downstream cluster -> App&Marketplace -> Charts -> Find and select Longhorn chart
    -> Select the chart version corresponding to the correct Longhorn version
@@ -171,12 +171,12 @@ The reason is Longhorn is planing to stop releasing new versions in the App Cata
    try to scale up and down workload to attach/detach Longhorn volumes, ...
 6. At this point the chart is migrated. However, you may notice that the old installation is still visible inside the legacy section:
    {{< figure src="/img/kb/how-to-migrate-longhorn-chart-installed-in-old-rancher-ui-to-the-chart-in-new-rancher-ui/longhorn-installation-in-legacy-ui.png" >}}
-7. To remove the legacy icon without affecting Longhorn, you can run `longhorn_rancher_chart_migration.sh` script with the flag `--type=cleanup`.
-   E.g., `./longhorn_rancher_chart_migration.sh -u /path/to/upstream/rancher/cluster/kubeconfig -d /path/to/downstream/cluster/kubeconfig --type=cleanup`.
+7. To remove the legacy icon without affecting Longhorn, you can run `longhorn_rancher_chart_migration.sh` script with the flag `--type cleanup`.
+   E.g., `./longhorn_rancher_chart_migration.sh -u /path/to/upstream/rancher/cluster/kubeconfig -d /path/to/downstream/cluster/kubeconfig --type cleanup`.
    Note that you must NOT delete the chart directly from the UI because doing so would remove the resource of the newly migrated chart.
    You must run the script instead. An example of the output of running the script is:
     ```
-    ./longhorn_rancher_chart_migration.sh -u /home/peterle/.kube/local -d /home/peterle/.kube/v154 --type=cleanup
+    ./longhorn_rancher_chart_migration.sh -u /home/peterle/.kube/local -d /home/peterle/.kube/v154 --type cleanup
     Looking up Rancher Project App 'longhorn-system' ...
 
     Rancher Project App 'longhorn-system' found:
