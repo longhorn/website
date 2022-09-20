@@ -199,7 +199,7 @@ For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 imag
 yum install nfs-utils
 ```
 
-We also provides an `nfs` installer to make it easier for users to install `nfs-client` automatically:
+We also provide an `nfs` installer to make it easier for users to install `nfs-client` automatically:
 ```
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/prerequisite/longhorn-nfs-installation.yaml
 ```
