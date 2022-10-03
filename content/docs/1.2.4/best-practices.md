@@ -89,7 +89,7 @@ Longhorn system will create snapshots automatically when rebuilding a replica. R
 
 We recommend allowing Longhorn to have CPU requests set for engine/replica manager pods.
 
-To be precise, you can set the percentage of a node total allocatable CPU reserved for all engine/replica manager pods by modifying settings `Guaranteed Engine Manager CPU` and `Guaranteed Replica Manager CPU`.
+To avoid increasing the chances of running in low resource environments, such as Minikube, it is not recommended to specify default resources in Helm charts. To be precise, you can set the percentage of a node total allocatable CPU reserved for all engine/replica manager pods by modifying settings `Guaranteed Engine Manager CPU` and `Guaranteed Replica Manager CPU`.
 
 If you want to set a concrete value (milli CPU amount) for engine/replica manager pods on a specific node, you can update the fields `Engine Manager CPU Request` or  `Replica Manager CPU Request` of the node. Notice that these 2 fields will overwrite the above settings for the specific node.
 
