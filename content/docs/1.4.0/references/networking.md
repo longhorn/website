@@ -90,6 +90,18 @@ To | Port | Protocol
 `Longhorn Manager` | 9500 | TCP
 `Kubernetes API server` | `Kubernetes API server port` | TCP
 
+### Conversion and Admission Webhook Server
+#### ingress:
+From | Port | Protocol
+--- | --- | ---
+`Webhook Server` | 9443 | TCP
+
+### NFS Recovery Backend Server
+#### ingress:
+From | Port | Protocol
+--- | --- | ---
+`Recovery Backend Server` | 9600 | TCP
+
 ### Engine Image
 #### ingress:
 None
