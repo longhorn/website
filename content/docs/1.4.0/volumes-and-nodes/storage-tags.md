@@ -28,10 +28,36 @@ When creating a volume, specify the disk tag and node tag in the UI.
 
 ### Kubernetes
 
-Use Kubernetes StorageClass setting to specify tags.
+Use Kubernetes StorageClass parameters to specify tags.
 
+You can specify tags in the default Longhorn StorageClass by adding parameter `nodeSelector: "storage,fast"` in the ConfigMap named `longhorn-storageclass`. 
 For example:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+data:
+  storageclass.yaml: |
+    kind: StorageClass
+    apiVersion: storage.k8s.io/v1
+    metadata:
+      name: longhorn
+      annotations:
+        storageclass.kubernetes.io/is-default-class: "true"
+    provisioner: driver.longhorn.io
+    allowVolumeExpansion: true
+    reclaimPolicy: "Delete"
+    volumeBindingMode: Immediate
+    parameters:
+      numberOfReplicas: "3"
+      staleReplicaTimeout: "480"
+      diskSelector: "ssd"
+      nodeSelector: "storage,fast"
 ```
+If Longhorn is installed via Helm, you can achieve that by editing `persistence.defaultNodeSelector` in [values.yaml](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/chart/values.yaml).
+
+Alternatively, a custom storageClass setting can be used, e.g.:
+```yaml
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
