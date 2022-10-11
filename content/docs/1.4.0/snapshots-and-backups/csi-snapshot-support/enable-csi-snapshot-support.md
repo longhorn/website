@@ -14,7 +14,6 @@ weight: 1
 
 You may manually install these components by executing the following steps.
 
-Note that the snapshot controller YAML files mentioned below deploy into the `default` namespace.
 
 > **Prerequisite**
 >
@@ -25,15 +24,20 @@ Note that the snapshot controller YAML files mentioned below deploy into the `de
 > For example, on a vanilla Kubernetes cluster, update the namespace from `default` to `kube-system` prior to issuing the `kubectl create` command.
 
 Install the Snapshot CRDs:
-1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/release-4.0/client/config/crd
+1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/v5.0.1/client/config/crd
+because Longhorn v{{< current-version >}} uses [CSI external-snapshotter](https://kubernetes-csi.github.io/docs/external-snapshotter.html) v5.0.1
 2. Run `kubectl create -f client/config/crd`.
 3. Do this once per cluster.
 
 Install the Common Snapshot Controller:
-1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/release-4.0/deploy/kubernetes/snapshot-controller
+1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/v5.0.1/deploy/kubernetes/snapshot-controller
+because Longhorn v{{< current-version >}} uses [CSI external-snapshotter](https://kubernetes-csi.github.io/docs/external-snapshotter.html) v5.0.1
 2. Update the namespace to an appropriate value for your environment (e.g. `kube-system`)
 3. Run `kubectl create -f deploy/kubernetes/snapshot-controller`.
 3. Do this once per cluster.
+> **Note:** previously, the snapshot controller YAML files were deployed into the `default` namespace by default.
+> The updated YAML files are being deployed into `kube-system` namespace by default.
+> Therefore, we suggest deleting the previous snapshot controller in the `default` namespace to avoid having multiple snapshot controllers.
 
 See the [Usage](https://github.com/kubernetes-csi/external-snapshotter#usage) section from the kubernetes
 external-snapshotter git repo for additional information.
