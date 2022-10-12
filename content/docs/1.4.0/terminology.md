@@ -152,7 +152,7 @@ A replica consists of a chain of snapshots, showing a history of the changes in 
 
 ### S3
 
-[Amazon S3](https://aws.amazon.com/s3/) is an object storage service.
+[Amazon S3](https://aws.amazon.com/s3/) is an object storage service. Longhorn does not provide a S3-like API.
 
 ### Salvage a volume
 
