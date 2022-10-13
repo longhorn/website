@@ -20,6 +20,7 @@ weight: 1
   - [Default Longhorn Static StorageClass Name](#default-longhorn-static-storageclass-name)
   - [Default Replica Count](#default-replica-count)
   - [Default Share Manager Image](#default-share-manager-image)
+  - [Deleting Confirmation Flag](#deleting-confirmation-flag)
   - [Disable Revision Counter](#disable-revision-counter)
   - [Enable Upgrade Checker](#enable-upgrade-checker)
   - [Latest Longhorn Version](#latest-longhorn-version)
@@ -171,6 +172,13 @@ The recommended way of choosing the default replica count is: if you have three 
 #### Default Share Manager Image
 
 The default instance manager image used by the manager. Can be changed on the manager starting command line only.
+
+#### Deleting Confirmation Flag
+This flag protects Longhorn from unexpected uninstallation which leads to data loss.
+Set this flag to **true** to allow Longhorn uninstallation.
+If this flag is **false**, the Longhorn uninstallation job will fail.
+
+> Default: `false`
 
 #### Disable Revision Counter
 
