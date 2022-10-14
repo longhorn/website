@@ -6,7 +6,7 @@ weight: 5
 We recommend the following setup for deploying Longhorn in production.
 
 - [Minimum Recommended Hardware](#minimum-recommended-hardware)
-- [Software](#software)
+- [Operating System](#operating-system)
 - [Node and Disk Setup](#node-and-disk-setup)
 - [Configuring Default Disks Before and After Installation](#configuring-default-disks-before-and-after-installation)
 - [Deploying Workloads](#deploying-workloads)
@@ -23,11 +23,12 @@ We recommend the following setup for deploying Longhorn in production.
 - SSD/NVMe or similar performance block device on the node for storage
     - We don't recommend using spinning disks with Longhorn, due to low IOPS.
 
-## Software
+## Operating System
 
-It's recommended to run an OS from the following list for every node of your Kubernetes cluster:
+The below Linux OS distributions and versions have been verified during the v{{< current-version >}} release testing, but it does not mean Longhorn only supports them. Basically,
+Longhorn should work well on any certified Kubernetes cluster running on Linux nodes with a most general-purpose operating system as below examples.
 
-| S No.| OS           | Versions
+| No.| OS           | Versions
 |------|--------------| --------
 |1.    | Ubuntu       | 18.04, 20.04
 |2.    | SLES         | 15 SP1, 15 SP2, 15 SP3
@@ -36,8 +37,9 @@ It's recommended to run an OS from the following list for every node of your Kub
 |5.    | Oracle Linux | 8.3
 |6.    | Rocky Linux  | 8.4
 
-### OSes aren't supported by Longhorn
-1. RancherOS
+### Unsupported Operating System
+
+Non-General Purpose OS or Container-Optimized OS due to lacking package manager or immutable system limitation.
 
 ## Node and Disk Setup
 
