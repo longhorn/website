@@ -47,6 +47,7 @@ For example, adding the following labels to the namespace that is running Longho
         pod-security.kubernetes.io/audit: privileged
         pod-security.kubernetes.io/audit-version: latest
         pod-security.kubernetes.io/warn: privileged
+        pod-security.kubernetes.io/warn-version: latest
    	```
 
 ### Updating CSI Snapshot CRD `v1beta1` to `v1`, `v1beta1` Deprecated
@@ -54,7 +55,4 @@ For example, adding the following labels to the namespace that is running Longho
 The CSI snapshot CRDs `v1beta1` version is being deprecated and replaced by `v1` version,
 please follow the instruction [Enable CSI Snapshot Support](../../snapshots-and-backups/csi-snapshot-support/enable-csi-snapshot-support) to update CSI snapshot CRDs and CSI snapshot controller.
 If you have manifests or scripts that are still using `v1beta1` version, consider upgrading them to use `v1` as well.
-
-        pod-security.kubernetes.io/warn-version: latest
-    ```
 
