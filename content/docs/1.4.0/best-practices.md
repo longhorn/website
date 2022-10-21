@@ -7,8 +7,8 @@ We recommend the following setup for deploying Longhorn in production.
 
 - [Minimum Recommended Hardware](#minimum-recommended-hardware)
 - [Architecture](#architecture)
-- [Software](#software)
-  - [OSes aren't supported by Longhorn](#oses-arent-supported-by-longhorn)
+- [Operating System](#operating-system)
+  - [Unsupported Operating System](#unsupported-operating-system)
 - [Node and Disk Setup](#node-and-disk-setup)
   - [Use a Dedicated Disk](#use-a-dedicated-disk)
   - [Minimal Available Storage and Over-provisioning](#minimal-available-storage-and-over-provisioning)
@@ -41,22 +41,23 @@ Longhorn supports the following architectures:
 1. ARM64 (experimental)
 1. s390x (experimental)
 
-## Software
+## Operating System
 
-It's recommended to run an OS from the following list for every node of your Kubernetes cluster:
+The below Linux OS distributions and versions have been verified during the v{{< current-version >}} release testing, but it does not mean Longhorn only supports them. Basically,
+Longhorn should work well on any certified Kubernetes cluster running on Linux nodes with a most general-purpose operating system as below examples.
 
-| S No.| OS           | Versions
+| No.| OS           | Versions
 |------|--------------| --------
-|1.    | Ubuntu       | 18.04, 20.04
-|2.    | SLES         | 15 SP1, 15 SP2, 15 SP3
-|3.    | CentOS       | 7, 8
-|4.    | RHEL         | 7.9, 8.3, 8.4
-|5.    | Oracle Linux | 8.3
-|6.    | Rocky Linux  | 8.4
+|1.    | Ubuntu       | 20.04, 22.04
+|2.    | SLES         | 15 SP3, 15 SP4
+|3.    | CentOS       | 8.4
+|4.    | RHEL         | 8.6
+|5.    | Oracle Linux | 8.6
+|6.    | Rocky Linux  | 8.6
 
-### OSes aren't supported by Longhorn
+### Unsupported Operating System
 
-1. RancherOS
+Non-General Purpose OS or Container-Optimized OS due to lacking package manager or immutable system limitation.
 
 ## Node and Disk Setup
 
