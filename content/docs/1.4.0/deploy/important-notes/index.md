@@ -24,6 +24,8 @@ If this flag is **false**, the Longhorn uninstallation job will fail.
 Set this flag to **true** to allow Longhorn uninstallation.
 See more in the [uninstall](../uninstall) section.
 
+### Pod Security Policies Disabled & Pod Security Admission Introduction
+
 - Longhorn pods require privileged access to manage nodes' storage. In Longhorn `v1.3.x` or older, Longhorn was shipping some Pod Security Policies by default, (e.g., [link](https://github.com/longhorn/longhorn/blob/4ba39a989b4b482d51fd4bc651f61f2b419428bd/chart/values.yaml#L260)).
 However, Pod Security Policy has been deprecated since Kubernetes v1.21 and removed since Kubernetes v1.25, [link](https://kubernetes.io/docs/concepts/security/pod-security-policy/).
 Therefore, we stopped shipping the Pod Security Policies by default.
@@ -34,7 +36,7 @@ If you enable the Pod Security Admission controller and change the default behav
 you must add the correct labels to the namespace where Longhorn pods run to allow Longhorn pods to start successfully
 (because Longhorn pods require privileged access to manage storage).
 For example, adding the following labels to the namespace that is running Longhorn pods:
-    ```
+    ```yaml
     apiVersion: v1
     kind: Namespace
     metadata:
@@ -45,6 +47,14 @@ For example, adding the following labels to the namespace that is running Longho
         pod-security.kubernetes.io/audit: privileged
         pod-security.kubernetes.io/audit-version: latest
         pod-security.kubernetes.io/warn: privileged
+   	```
+
+### Updating CSI Snapshot CRD `v1beta1` to `v1`, `v1beta1` Deprecated
+
+The CSI snapshot CRDs `v1beta1` version is being deprecated and replaced by `v1` version,
+please follow the instruction [Enable CSI Snapshot Support](../../snapshots-and-backups/csi-snapshot-support/enable-csi-snapshot-support) to update CSI snapshot CRDs and CSI snapshot controller.
+If you have manifests or scripts that are still using `v1beta1` version, consider upgrading them to use `v1` as well.
+
         pod-security.kubernetes.io/warn-version: latest
     ```
 
