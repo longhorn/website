@@ -38,13 +38,13 @@ If you're using a Helm version prior to version 3.0, you need to [install Tiller
     To install Longhorn with Helm 2, use this command:
 
     ```shell
-    helm install longhorn/longhorn --name longhorn --namespace longhorn-system
+    helm install longhorn/longhorn --name longhorn --namespace longhorn-system --version {{< current-version >}}
     ```
 
     To install Longhorn with Helm 3, use these commands:
 
     ```shell
-    helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace
+    helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --version {{< current-version >}}
     ```
 
 4. To confirm that the deployment succeeded, run:
