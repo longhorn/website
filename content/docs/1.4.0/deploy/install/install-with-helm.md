@@ -37,13 +37,13 @@ In this section, you will learn how to install Longhorn with Helm.
     To install Longhorn with Helm 2, use the command:
 
     ```shell
-    helm install longhorn/longhorn --name longhorn --namespace longhorn-system
+    helm install longhorn/longhorn --name longhorn --namespace longhorn-system --version {{< current-version >}}
     ```
 
     To install Longhorn with Helm 3, use the commands:
 
     ```shell
-    helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace
+    helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --version {{< current-version >}}
     ```
 
 4. To confirm that the deployment succeeded, run:
