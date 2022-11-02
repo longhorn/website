@@ -15,7 +15,7 @@ There are normally two steps in the upgrade process: first upgrade Longhorn mana
 
 ## 1. Upgrade Longhorn manager
 
-- To upgrade from v1.3.0 or v1.2.x, see [this section.](./longhorn-manager)
+- To upgrade from v1.3.x (< v{{< current-version >}}) or v1.2.x, see [this section.](./longhorn-manager)
 
 ## 2. Manually Upgrade Longhorn Engine
 

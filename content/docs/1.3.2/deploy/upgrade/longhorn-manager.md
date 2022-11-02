@@ -3,11 +3,11 @@ title: Upgrading Longhorn Manager
 weight: 1
 ---
 
-### Upgrading from v1.3.0 or v1.2.x
+### Upgrading from v1.3.x (< v{{< current-version >}}) or v1.2.x
 
-We only support upgrading to v{{< current-version >}} from v1.3.0 or v1.2.x. For other versions, please upgrade to v1.3.0 or v1.2.x first.
+We only support upgrading to v{{< current-version >}} from v1.3.x or v1.2.x. For other versions, please upgrade to v1.3.x or v1.2.x first.
 
-Engine live upgrade is supported from v1.3.0 or v1.2.x to v{{< current-version >}}.
+Engine live upgrade is supported from v1.3.x or v1.2.x to v{{< current-version >}}.
 
 For airgap upgrades when Longhorn is installed as a Rancher app, you will need to modify the image names and remove the registry URL part.
 
