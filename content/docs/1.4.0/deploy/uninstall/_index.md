@@ -40,7 +40,7 @@ helm uninstall longhorn -n longhorn-system
 
     ```
     kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/uninstall/uninstall.yaml
-    kubectl get job/longhorn-uninstall -n default -w
+    kubectl get job/longhorn-uninstall -n longhorn-system -w
     ```
 
     Example output:
@@ -55,7 +55,6 @@ helm uninstall longhorn -n longhorn-system
     NAME                 COMPLETIONS   DURATION   AGE
     longhorn-uninstall   0/1           3s         3s
     longhorn-uninstall   1/1           20s        20s
-    ^C
     ```
 
 2. Remove remaining components:
