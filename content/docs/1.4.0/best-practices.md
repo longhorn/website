@@ -38,7 +38,7 @@ We recommend the following setup for deploying Longhorn in production.
 Longhorn supports the following architectures:
 
 1. AMD64
-1. ARM64 (experimental)
+1. ARM64
 1. s390x (experimental)
 
 ## Operating System
