@@ -31,6 +31,7 @@ weight: 1
   - [Backing Image Cleanup Wait Interval](#backing-image-cleanup-wait-interval)
   - [Backing Image Recovery Wait Interval](#backing-image-recovery-wait-interval)
   - [Orphaned Data Automatic Deletion](#orphaned-data-automatic-deletion)
+  - [Engine to Replica Timeout](#engine-to-replica-timeout)
 - [Backups](#backups)
   - [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
   - [Backup Target](#backup-target)
@@ -255,6 +256,11 @@ The interval in seconds determines how long Longhorn will wait before re-downloa
 > Default: `false`
 
 This setting allows Longhorn to automatically delete the `orphan` resource and its orphaned data like volume replica.
+
+#### Engine to Replica Timeout
+> Default: `8`
+
+The value in seconds specifies the timeout of the engine to the replica(s), and the value should be between 8 to 30 seconds. The default value is 8 seconds.
 
 ### Backups
 
