@@ -37,6 +37,7 @@ weight: 1
   - [Backup Target](#backup-target)
   - [Backup Target Credential Secret](#backup-target-credential-secret)
   - [Backupstore Poll Interval](#backupstore-poll-interval)
+  - [Failed Backup Time To Live](#failed-backup-time-to-live)
 - [Scheduling](#scheduling)
   - [Allow Volume Creation with Degraded Availability](#allow-volume-creation-with-degraded-availability)
   - [Disable Scheduling On Cordoned Node](#disable-scheduling-on-cordoned-node)
@@ -291,6 +292,14 @@ The Kubernetes secret associated with the backup target. See [Setting a Backup T
 The interval in seconds to poll the backup store for updating volumes' **Last Backup** field. Set to 0 to disable the polling. See [Setting up Disaster Recovery Volumes](../../snapshots-and-backups/setup-disaster-recovery-volumes) for details.
 
 For more information on how the backupstore poll interval affects the recovery time objective and recovery point objective, refer to the [concepts section.](../../concepts/#34-backupstore-update-intervals-rto-and-rpo)
+
+#### Failed Backup Time To Live
+
+> Default: `1440`
+
+The interval in minutes to keep the backup resource that was failed. Set to 0 to disable the auto-deletion.
+
+Failed backups will be checked and cleaned up during backupstore polling which is controlled by **Backupstore Poll Interval** setting. Hence this value determines the minimal wait interval of the cleanup. And the actual cleanup interval is multiple of **Backupstore Poll Interval**. Disabling **Backupstore Poll Interval** also means to disable failed backup auto-deletion.
 
 ### Scheduling
 
