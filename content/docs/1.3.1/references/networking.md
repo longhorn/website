@@ -8,7 +8,7 @@ weight: 3
 This page documents the networking communication between components in the Longhorn system. Using this information, users can write Kubernetes NetworkPolicy
 to control the inbound/outbound traffic to/from Longhorn components. This helps to reduce the damage when a malicious pod breaks into the in-cluster network.
 
-We have provided some NetworkPolicy example yamls at [here](https://github.com/longhorn/longhorn-manager/tree/master/examples/network-policy).
+We have provided some NetworkPolicy example yamls at [here](https://github.com/longhorn/longhorn/tree/master/examples/network-policy).
 Note that depending on the deployed [CNI](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/), not all Kubernetes clusters support NetworkPolicy.
 See [here](https://kubernetes.io/docs/concepts/services-networking/network-policies/) for more detail.
 
