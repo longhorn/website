@@ -40,7 +40,7 @@ In the example, we will explain how volume `size` and `actual size` get changed 
 
 3. Delete the 4 Gi data. Then, `df` command shows that the used space of the filesystem is nearly 0, but the `actual size` is unchanged.
 
-    > Users can see the volume `actual size` is not shrunk after deleting the 4 Gi data. Longhorn is a block-level storage system. Therefore, the deletion in the filesystem only marks the blocks that belong to the deleted file as unused. Currently, Longhorn does not support TRIM/UNMAP operations, so the `discard` mount option or `fstrim` in the filesystem layer cannot reclaim the unused blocks. In consequence, the actual size of Longhorn volumes cannot be shrunk in this case.
+    > Users can see by default the volume `actual size` is not shrunk after deleting the 4 Gi data. Longhorn is a block-level storage system. Therefore, the deletion in the filesystem only marks the blocks that belong to the deleted file as unused. Currently, Longhorn will not apply TRIM/UNMAP operations automatically/periodically. if you want to do filesystem trim, please check [this doc](../trim-filesystem) for details.
 
 {{< figure src="/img/screenshots/volumes-and-nodes/volume-size-illustration-fig2.png" >}}
 
@@ -97,7 +97,7 @@ Here we summarize the important things related to disk space usage we have in th
 
 - Unused blocks are not released
 
-  Longhorn does not support TRIM/UNMAP operations. Hence deleting files from filesystems will not lead to volume actual size decreasing/shrinking.
+  Longhorn will not issue TRIM/UNMAP operations automatically. Hence deleting files from filesystems will not lead to volume actual size decreasing/shrinking. You may need to check [the doc](../trim-filesystem) and handle it by yourself if needed.
 
 
 - Allocated blocks but unused are not reused
