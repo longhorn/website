@@ -55,6 +55,7 @@ weight: 1
   - [System Managed Components Node Selector](#system-managed-components-node-selector)
   - [Kubernetes Cluster Autoscaler Enabled (Experimental)](#kubernetes-cluster-autoscaler-enabled-experimental)
   - [Storage Network](#storage-network)
+  - [Remove Snapshots During Filesystem Trim](#remove-snapshots-during-filesystem-trim)
 - [Deprecated](#deprecated)
   - [Guaranteed Engine CPU](#guaranteed-engine-cpu)
   - [Disable Replica Rebuild](#disable-replica-rebuild)
@@ -512,6 +513,17 @@ The storage network uses Multus NetworkAttachmentDefinition to segregate the in-
 
 See [Storage Network](../../advanced-resources/deploy/storage-network) for details.
 
+#### Remove Snapshots During Filesystem Trim
+
+> Example: `false`
+
+This setting allows Longhorn filesystem trim feature to automatically mark the latest snapshot and its ancestors as removed and stops at the snapshot containing multiple children.
+
+Since Longhorn filesystem trim feature can be applied to the volume head and the followed continuous removed or system snapshots only.
+
+Notice that trying to trim a removed files from a valid snapshot will do nothing but the filesystem will discard this kind of in-memory trimmable file info. Later on if you mark the snapshot as removed and want to retry the trim, you may need to unmount and remount the filesystem so that the filesystem can recollect the trimmable file info.
+
+See [Trim Filesystem](../../volumes-and-nodes/trim-filesystem) for details.
 
 ### Deprecated
 
