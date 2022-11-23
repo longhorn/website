@@ -32,7 +32,7 @@ To help reclaim as much space as possible automatically, Longhorn introduces [se
 #### The Volume Spec Field "UnmapMarkSnapChainAsRemoved"
 Of course there is a per-volume field `volume.Spec.UnmapMarkSnapChainAsRemoved` would overwrite the global setting mentioned above.
 
-There are 3 options for this volume field: `ignored`, `enabled`, and `disabled`. `ignored` means followings the global setting, which is the default value.
+There are 3 options for this volume field: `ignored`, `enabled`, and `disabled`. `ignored` means following the global setting, which is the default value.
 
 You can directly set this field in the StoragaClasses so that the customized value can be applied to all volumes created by the StorageClasses.
 
