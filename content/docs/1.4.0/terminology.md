@@ -32,6 +32,7 @@ weight: 4
 - [Stable identity](#stable-identity)
 - [StatefulSet](#statefulset)
 - [StorageClass](#storageclass)
+- [System backup](#system-backup)
 - [Thin provisioning](#thin-provisioning)
 - [Umount](#umount)
 - [Volume (Kubernetes concept)](#volume-kubernetes-concept)
@@ -45,13 +46,7 @@ If the volume engine dies unexpectedly, Longhorn will reattach the volume.
 
 ### Backup
 
-A backup is an object in the backupstore. The backupstore contains backup volumes, and each backup volume may contain multiple backups for the same original volume.
-
-Backups can be created from snapshots. They contain the state of the volume at the time the snapshot was created, but they don't contain snapshots, so they do not contain the history of changes to the volume data. While backups are made of 2 MB files, snapshots can be terabytes.
-
-Backups are made of 2 MB blocks in an object store.
-
-For a longer explanation of how snapshots and backups work, refer to the [conceptual documentation.](../concepts/#241-how-snapshots-work)
+A backup is an object in the backupstore. The backupstore may contain volume backups and system backups.
 
 ### Backupstore
 
@@ -66,6 +61,12 @@ A backup target is the endpoint used to access a backupstore in Longhorn.
 ### Backup volume
 
 A backup volume is the backup that maps to one original volume, and it is located in the backupstore. Backup volumes can be viewed on the **Backup** page in the Longhorn UI. The backup volume will contain multiple backups for the same volume.
+
+Backups can be created from snapshots. They contain the state of the volume at the time the snapshot was created, but they don't contain snapshots, so they do not contain the history of changes to the volume data. While backups are made of 2 MB files, snapshots can be terabytes.
+
+Backups are made of 2 MB blocks in an object store.
+
+For a longer explanation of how snapshots and backups work, refer to the [conceptual documentation.](../concepts/#241-how-snapshots-work)
 
 ### Block storage
 
@@ -179,6 +180,12 @@ A [Kubernetes resource](https://kubernetes.io/docs/concepts/workloads/controller
 ### StorageClass
 
 A Kubernetes resource that can be used to automatically provision a PersistentVolume for a pod. For more information, refer to the [Kubernetes documentation.](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+
+### System Backup
+
+Longhorn uploads the system backup to the backupstore. Each system backup contains the system backup resource bundle of the Longhorn system.
+
+See [Longhorn System Backup Bundle](../advanced-resources/system-backup-restore/backup-longhorn-system/#longhorn-system-backup-bundle) for details.
 
 ### Thin provisioning
 

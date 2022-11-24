@@ -119,6 +119,8 @@ Below are the directories Longhorn components requiring access with root and pri
   - /var/lib/longhorn: The default path for storing data on the host.
 - Longhorn Backing Image Data Source
   - /var/lib/longhorn: The default path for storing data on the host.
+- Longhorn System Restore Rollout
+  - /var/lib/longhorn/engine-binaries: The default path for storing the Longhorn engine binaries.
 
 ### Installing open-iscsi
 
