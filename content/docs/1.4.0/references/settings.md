@@ -32,6 +32,8 @@ weight: 1
   - [Backing Image Recovery Wait Interval](#backing-image-recovery-wait-interval)
   - [Orphaned Data Automatic Deletion](#orphaned-data-automatic-deletion)
   - [Engine to Replica Timeout](#engine-to-replica-timeout)
+  - [Support Bundle Manager Image](#support-bundle-manager-image)
+  - [Support Bundle Failed History Limit](#support-bundle-failed-history-limit)
 - [Backups](#backups)
   - [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
   - [Backup Target](#backup-target)
@@ -263,6 +265,25 @@ This setting allows Longhorn to automatically delete the `orphan` resource and i
 > Default: `8`
 
 The value in seconds specifies the timeout of the engine to the replica(s), and the value should be between 8 to 30 seconds. The default value is 8 seconds.
+
+#### Support Bundle Manager Image
+
+Longhorn uses the support bundle manager image to generate the support bundles.
+
+There will be a default image given during installation and upgrade. You can also change it in the settings.
+
+An example of the support bundle manager image:
+> Default: `longhornio/support-bundle-kit:v0.0.14`
+
+#### Support Bundle Failed History Limit
+
+> Default: `1`
+
+This setting specifies how many failed support bundles can exist in the cluster.
+
+The retained failed support bundle is for analysis purposes and needs to clean up manually.
+
+Longhorn blocks support bundle creation when reaching the upper bound of the limitation. You can set this value to **0** to have Longhorn automatically purge all failed support bundles.
 
 ### Backups
 
