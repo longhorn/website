@@ -1,9 +1,9 @@
 ---
 title: Troubleshooting
-weight: 6
+weight: 7
 ---
 
-You can click `Generate Support Bundle` link at the bottom of the UI to download a zip file contains Longhorn related configuration and logs.
+> You can generate a support bundle file for offline troubleshooting. See [Support Bundle](../support-bundle) for detail.
 
 ## Common issues
 ### Volume can be attached/detached from UI, but Kubernetes Pod/StatefulSet etc cannot use it
