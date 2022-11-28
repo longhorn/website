@@ -60,6 +60,8 @@ The initial settings for Longhorn can be customized by [editing the deployment c
 3. To enable access to the Longhorn UI, you will need to set up an Ingress controller. Authentication to the Longhorn UI is not enabled by default. For information on creating an NGINX Ingress controller with basic authentication, refer to [this section.](../../accessing-the-ui/longhorn-ingress)
 4. Access the Longhorn UI using [these steps.](../../accessing-the-ui)
 
+> **Note**:
+> For Kubernetes < v1.25, if your cluster still enables Pod Security Policy admission controller, need to apply the [podsecuritypolicy.yaml](https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/podsecuritypolicy.yaml) manifest in addition to applying the `longhorn.yaml` manifests.
 
 
 

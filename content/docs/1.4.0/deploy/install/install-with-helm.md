@@ -17,7 +17,9 @@ In this section, you will learn how to install Longhorn with Helm.
 ### Installing Longhorn
 
 
-> **Note**: The initial settings for Longhorn can be found in [customized using Helm options or by editing the deployment configuration file.](../../../advanced-resources/deploy/customizing-default-settings/#using-helm)
+> **Note**:
+> * The initial settings for Longhorn can be found in [customized using Helm options or by editing the deployment configuration file.](../../../advanced-resources/deploy/customizing-default-settings/#using-helm)
+> * For Kubernetes < v1.25, if your cluster still enables Pod Security Policy admission controller, set the helm value `enablePSP` to `true` to install `longhorn-psp` PodSecurityPolicy resource which allows privileged Longhorn pods to start.
 
 
 1. Add the Longhorn Helm repository:
@@ -51,7 +53,7 @@ In this section, you will learn how to install Longhorn with Helm.
     ```bash
     kubectl -n longhorn-system get pod
     ```
-    
+
     The result should look like the following:
 
     ```bash
