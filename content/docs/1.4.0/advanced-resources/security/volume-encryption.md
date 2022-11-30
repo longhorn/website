@@ -22,6 +22,14 @@ More information about the available template parameters can be found in the [Ku
 
 Example secret your encryption keys are specified as part of the `CRYPTO_KEY_VALUE` parameter.
 We use `stringData` as type here so we don't have to base64 encoded before submitting the secret via `kubectl create`.
+
+Besides `CRYPTO_KEY_VALUE`, parameters `CRYPTO_KEY_CIPHER`, `CRYPTO_KEY_HASH`, `CRYPTO_KEY_SIZE`, and `CRYPTO_PBKDF` provide the customization for volume encryption.
+- `CRYPTO_KEY_CIPHER`: Sets the cipher specification algorithm string. The default value is `aes-xts-plain64` for LUKS.
+- `CRYPTO_KEY_HASH`: Specifies the passphrase hash for `open`. The default value is `sha256`.
+- `CRYPTO_KEY_SIZE`: Sets the key size in bits and it must be a multiple of 8. The default value is `256`.
+- `CRYPTO_PBKDF`: Sets Password-Based Key Derivation Function (PBKDF) algorithm for LUKS keyslot. The default value is `argon2i`.
+
+For more details, you can see the Linux manual page - [crypsetup(8)](https://man7.org/linux/man-pages/man8/cryptsetup.8.html)
 ```yaml
 ---
 apiVersion: v1
@@ -32,6 +40,10 @@ metadata:
 stringData:
   CRYPTO_KEY_VALUE: "Your encryption passphrase"
   CRYPTO_KEY_PROVIDER: "secret"
+  CRYPTO_KEY_CIPHER: "aes-xts-plain64"
+  CRYPTO_KEY_HASH: "sha256"
+  CRYPTO_KEY_SIZE: "256"
+  CRYPTO_PBKDF: "argon2i"
 ```
 
 Example storage class (global key for all volumes)
