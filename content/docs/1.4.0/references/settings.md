@@ -45,6 +45,7 @@ weight: 1
   - [Backup Target Credential Secret](#backup-target-credential-secret)
   - [Backupstore Poll Interval](#backupstore-poll-interval)
   - [Failed Backup Time To Live](#failed-backup-time-to-live)
+  - [Restore Volume Recurring Jobs](#restore-volume-recurring-jobs)
 - [Scheduling](#scheduling)
   - [Allow Volume Creation with Degraded Availability](#allow-volume-creation-with-degraded-availability)
   - [Disable Scheduling On Cordoned Node](#disable-scheduling-on-cordoned-node)
@@ -357,6 +358,21 @@ For more information on how the backupstore poll interval affects the recovery t
 The interval in minutes to keep the backup resource that was failed. Set to 0 to disable the auto-deletion.
 
 Failed backups will be checked and cleaned up during backupstore polling which is controlled by **Backupstore Poll Interval** setting. Hence this value determines the minimal wait interval of the cleanup. And the actual cleanup interval is multiple of **Backupstore Poll Interval**. Disabling **Backupstore Poll Interval** also means to disable failed backup auto-deletion.
+
+#### Restore Volume Recurring Jobs
+
+> Default: `false`
+
+This setting allows restoring the recurring jobs of a backup volume from the backup target during a volume restoration if they do not exist on the cluster.
+This is also a volume-specific setting with the below options. Users can customize it for each volume to override the global setting.
+
+> Default: `ignored`
+
+- `ignored`: This is the default option that instructs Longhorn to inherit from the global setting.
+
+- `enabled`: This option instructs Longhorn to restore volume recurring jobs/groups from the backup target forcibly.
+
+- `disabled`: This option instructs Longhorn no restoring volume recurring jobs/groups should be done.
 
 ### Scheduling
 

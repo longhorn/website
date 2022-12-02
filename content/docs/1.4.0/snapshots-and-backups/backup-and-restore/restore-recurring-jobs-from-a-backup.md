@@ -5,7 +5,7 @@ weight: 5
 
 Since v1.4.0, Longhorn supports recurring jobs backup and restore along with the volume backup and restore. When restoring a backup volume, if users enable the `Restore Volume Recurring Jobs` setting, the original recurring jobs of the volume will be restored back accordingly.
 
-For more information on the setting `Restore Volume Recurring Jobs`, refer to the [settings](../../references/settings.md)
+For more information on the setting `Restore Volume Recurring Jobs`, refer to the [settings](../../../references/settings/#restore-volume-recurring-jobs) section.
 
 For more information on how volume backup works, refer to the [concepts](../../../concepts/#3-backups-and-secondary-storage) section.
 
