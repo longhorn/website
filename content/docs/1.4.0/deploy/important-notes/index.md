@@ -59,3 +59,6 @@ The CSI snapshot CRDs `v1beta1` version is being deprecated and replaced by `v1`
 please follow the instruction [Enable CSI Snapshot Support](../../snapshots-and-backups/csi-snapshot-support/enable-csi-snapshot-support) to update CSI snapshot CRDs and CSI snapshot controller.
 If you have manifests or scripts that are still using `v1beta1` version, consider upgrading them to use `v1` as well.
 
+### Add StorageClass Parameter `mkfsParams` and [`Custom mkfs.ext4 parameters`](../../references/settings/#custom-mkfsext4-parameters) Setting Deprecated
+
+The [`Custom mkfs.ext4 parameters`](../../references/settings/#custom-mkfsext4-parameters) will be deprecated and replaced by a new parameter `mkfsParams` as a per-StorageClass mkfs option (e.g., `-I 256 -b 4096 -O ^metadata_csum,^64bit`).

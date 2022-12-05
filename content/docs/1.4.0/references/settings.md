@@ -11,7 +11,6 @@ weight: 1
   - [Automatic Salvage](#automatic-salvage)
   - [Concurrent Automatic Engine Upgrade Per Node Limit](#concurrent-automatic-engine-upgrade-per-node-limit)
   - [Create Default Disk on Labeled Nodes](#create-default-disk-on-labeled-nodes)
-  - [Custom mkfs.ext4 parameters](#custom-mkfsext4-parameters)
   - [Custom Resource API Version](#custom-resource-api-version)
   - [Default Data Locality](#default-data-locality)
   - [Default Data Path](#default-data-path)
@@ -59,8 +58,8 @@ weight: 1
   - [Storage Network](#storage-network)
   - [Remove Snapshots During Filesystem Trim](#remove-snapshots-during-filesystem-trim)
 - [Deprecated](#deprecated)
-  - [Guaranteed Engine CPU](#guaranteed-engine-cpu)
   - [Disable Replica Rebuild](#disable-replica-rebuild)
+  - [Custom mkfs.ext4 parameters](#custom-mkfsext4-parameters)
 
 ### Customizing Default Settings
 
@@ -116,10 +115,6 @@ If no other disks exist, create the default disk automatically, only on nodes wi
 If disabled, the default disk will be created on all new nodes when the node is detected for the first time.
 
 This option is useful if you want to scale the cluster but don't want to use storage on the new nodes, or if you want to [customize disks for Longhorn nodes](../../advanced-resources/default-disk-and-node-config).
-
-#### Custom mkfs.ext4 parameters
-
-Allows setting additional filesystem creation parameters for ext4. For older host kernels it might be necessary to disable the optional ext4 metadata_csum feature by specifying `-O ^64bit,^metadata_csum`.
 
 #### Custom Resource API Version
 
@@ -548,14 +543,14 @@ See [Trim Filesystem](../../volumes-and-nodes/trim-filesystem) for details.
 
 ### Deprecated
 
-#### Guaranteed Engine CPU
-
-> Default:
-
-This deprecated setting is replaced by 2 new settings "Guaranteed Engine Manager CPU" and "Guaranteed Replica Manager CPU" since Longhorn version v1.1.1.
-
 #### Disable Replica Rebuild
 
 > Default: `false`
 
-This deprecated setting is replaced by the new setting 'Concurrent Replica Rebuild Per Node Limit'. Once the new setting value is 0, it means rebuilding disable.
+This deprecated setting is replaced by the new setting `Concurrent Replica Rebuild Per Node Limit`. Once the new setting value is 0, it means rebuilding disable.
+
+#### Custom mkfs.ext4 parameters
+
+Allows setting additional filesystem creation parameters for ext4. For older host kernels it might be necessary to disable the optional ext4 metadata_csum feature by specifying `-O ^64bit,^metadata_csum`.
+
+This deprecated setting is replaced by the new setting [`mkfsParams` in the StorageClass](../../volumes-and-nodes/create-volumes/#creating-longhorn-volumes-with-kubectl) and planned removed from v1.5.0. 
