@@ -29,6 +29,7 @@ weight: 1
   - [System Managed Pod Image Pull Policy](#system-managed-pod-image-pull-policy)
   - [Backing Image Cleanup Wait Interval](#backing-image-cleanup-wait-interval)
   - [Backing Image Recovery Wait Interval](#backing-image-recovery-wait-interval)
+- [Orphan](#orphan)
   - [Orphaned Data Automatic Deletion](#orphaned-data-automatic-deletion)
 - [Backups](#backups)
   - [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
@@ -243,6 +244,8 @@ The interval in seconds determines how long Longhorn will wait before re-downloa
 > **Note:**
 >  - This recovery only works for the backing image of which the creation type is `download`.
 >  - File state `unknown` means the related manager pods on the pod is not running or the node itself is down/disconnected.
+
+### Orphan
 
 #### Orphaned Data Automatic Deletion
 > Default: `false`
