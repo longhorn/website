@@ -34,6 +34,8 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
       numberOfReplicas: "3"
       staleReplicaTimeout: "2880" # 48 hours in minutes
       fromBackup: ""
+      fsType: "ext4"
+    #  mkfsParams: "-I 256 -b 4096 -O ^metadata_csum,^64bit"
     #  diskSelector: "ssd,fast"
     #  nodeSelector: "storage,fast"
     #  recurringJobSelector: '[
@@ -47,6 +49,8 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
     #   }
     #  ]'
     ```
+
+    In particular, starting with v1.4.0, the parameter `mkfsParams` can be used to specify filesystem format options for each StorageClass.
 
 2. Create a Pod that uses Longhorn volumes by running this command:
 

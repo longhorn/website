@@ -413,6 +413,7 @@ For more information about restoring to file, refer to [this section.](../../adv
       staleReplicaTimeout: "2880" # 48 hours in minutes
       fromBackup: ""
       fsType: "ext4"
+      #  mkfsParams: "-I 256 -b 4096 -O ^metadata_csum,^64bit"
       #  backingImage: "bi-test"
       #  backingImageDataSourceType: "download"
       #  backingImageDataSourceParameters: '{"url": "https://backing-image-example.s3-region.amazonaws.com/test-backing-image"}'
