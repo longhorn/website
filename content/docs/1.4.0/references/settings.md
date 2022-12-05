@@ -34,6 +34,7 @@ weight: 1
   - [Engine to Replica Timeout](#engine-to-replica-timeout)
   - [Support Bundle Manager Image](#support-bundle-manager-image)
   - [Support Bundle Failed History Limit](#support-bundle-failed-history-limit)
+  - [Fast Replica Rebuild Enabled](#fast-replica-rebuild-enabled)
 - [Backups](#backups)
   - [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
   - [Backup Target](#backup-target)
@@ -284,6 +285,12 @@ This setting specifies how many failed support bundles can exist in the cluster.
 The retained failed support bundle is for analysis purposes and needs to clean up manually.
 
 Longhorn blocks support bundle creation when reaching the upper bound of the limitation. You can set this value to **0** to have Longhorn automatically purge all failed support bundles.
+
+#### Fast Replica Rebuild Enabled
+
+> Default: `false`
+
+The setting enables fast replica rebuilding feature. It relies on the checksums of snapshot disk files, so setting the snapshot-data-integrity to **enable** or **fast-check** is a prerequisite.
 
 ### Backups
 
