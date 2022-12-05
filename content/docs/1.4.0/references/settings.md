@@ -29,11 +29,16 @@ weight: 1
   - [System Managed Pod Image Pull Policy](#system-managed-pod-image-pull-policy)
   - [Backing Image Cleanup Wait Interval](#backing-image-cleanup-wait-interval)
   - [Backing Image Recovery Wait Interval](#backing-image-recovery-wait-interval)
-  - [Orphaned Data Automatic Deletion](#orphaned-data-automatic-deletion)
   - [Engine to Replica Timeout](#engine-to-replica-timeout)
   - [Support Bundle Manager Image](#support-bundle-manager-image)
   - [Support Bundle Failed History Limit](#support-bundle-failed-history-limit)
   - [Fast Replica Rebuild Enabled](#fast-replica-rebuild-enabled)
+- [Snapshot](#snapshot)
+  - [Snapshot Data Integrity](#snapshot-data-integrity)
+  - [Immediate Snapshot Data Integrity Check After Creating a Snapshot](#immediate-snapshot-data-integrity-check-after-creating-a-snapshot)
+  - [Snapshot Data Integrity Check CronJob](#snapshot-data-integrity-check-cronjob)
+- [Orphan](#orphan)
+  - [Orphaned Data Automatic Deletion](#orphaned-data-automatic-deletion)
 - [Backups](#backups)
   - [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
   - [Backup Target](#backup-target)
@@ -252,11 +257,6 @@ The interval in seconds determines how long Longhorn will wait before re-downloa
 >  - This recovery only works for the backing image of which the creation type is `download`.
 >  - File state `unknown` means the related manager pods on the pod is not running or the node itself is down/disconnected.
 
-#### Orphaned Data Automatic Deletion
-> Default: `false`
-
-This setting allows Longhorn to automatically delete the `orphan` resource and its orphaned data like volume replica.
-
 #### Engine to Replica Timeout
 > Default: `8`
 
@@ -286,6 +286,39 @@ Longhorn blocks support bundle creation when reaching the upper bound of the lim
 > Default: `false`
 
 The setting enables fast replica rebuilding feature. It relies on the checksums of snapshot disk files, so setting the snapshot-data-integrity to **enable** or **fast-check** is a prerequisite.
+
+### Snapshot
+
+#### Snapshot Data Integrity
+
+> Default: `disabled`
+
+This setting allows users to enable or disable snapshot hashing and data integrity checking. Available options are:
+- **disabled**: Disable snapshot disk file hashing and data integrity checking.
+- **enabled**: Enables periodic snapshot disk file hashing and data integrity checking. To detect the filesystem-unaware corruption caused by bit rot or other issues in snapshot disk files, Longhorn system periodically hashes files and finds corrupted ones. Hence, the system performance will be impacted during the periodical checking.
+- **fast-check**: Enable snapshot disk file hashing and fast data integrity checking. Longhorn system only hashes snapshot disk files if their are not hashed or the modification time are changed. In this mode, filesystem-unaware corruption cannot be detected, but the impact on system performance can be minimized.
+
+#### Immediate Snapshot Data Integrity Check After Creating a Snapshot
+
+> Default: `false`
+
+Hashing snapshot disk files impacts the performance of the system. The immediate snapshot hashing and checking can be disabled to minimize the impact after creating a snapshot.
+
+#### Snapshot Data Integrity Check CronJob
+
+> Default: `0 0 */7 * *`
+
+Unix-cron string format. The setting specifies when Longhorn checks the data integrity of snapshot disk files. 
+> **Warning**
+> Hashing snapshot disk files impacts the performance of the system. It is recommended to run data integrity checks during off-peak times and to reduce the frequency of checks.
+
+
+### Orphan
+
+#### Orphaned Data Automatic Deletion
+> Default: `false`
+
+This setting allows Longhorn to automatically delete the `orphan` resource and its orphaned data like volume replica.
 
 ### Backups
 
