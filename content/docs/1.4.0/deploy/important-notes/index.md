@@ -17,7 +17,7 @@ After the upgrade, the recurring job settings of volumes will be migrated to new
 ### Backup Migration Time
 When upgrading from a Longhorn version >= 1.2.0 and <= v1.2.3 to v{{< current-version >}}, if your cluster has many backups, you may expect to have a long upgrade time (with 22000 backups, it could take a few hours). Helm upgrade may timeout and you may need to re-run the upgrade command or set a longer timeout. This is [a known issue](https://github.com/longhorn/longhorn/issues/3890).
 
-### Longhorn uninstallation
+### Longhorn Uninstallation
 To prevent Longhorn from being accidentally uninstalled (which leads to data lost),
 we introduce a new setting, [deleting-confirmation-flag](../../references/settings/#deleting-confirmation-flag).
 If this flag is **false**, the Longhorn uninstallation job will fail.
@@ -66,3 +66,7 @@ The [`Custom mkfs.ext4 parameters`](../../references/settings/#custom-mkfsext4-p
 ### Longhorn Supports Fast Replica Rebuilding, and It Is Enabled by Default
 
 Fast replica rebuilding is supported by Longhorn, and is enabled by default. The feature relies on the change timestamps and checksums of snapshot disk files, so `snapshot-data-integrity` is also set to `fast-check`. The file checksums for snapshot disks will be calculated periodically, with a default check period of 7 days. For more information, please refer to [Fast Replica Rebuild](../../advanced-resources/fast-replica-rebuild/index.html) and [Snapshot Data Integrity Check](../../advanced-resources/snapshot-data-integrity-check/index.html).
+
+### Each Kubernetes Node Must Have a Unique Hostname for RWX Volumes
+Longhorn has a dedicated recovery backend service for NFS servers in the share-manager pods used by the RWX volumes. The clients' information, including its hostname, will be stored in the recovery backend. The information will be used for connection recovery if the share-manager pod is abnormally terminated and a new one is created. The [environment check script](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh) helps users to check all nodes have unique hostnames.
+More information please refer to [ReadWriteMany (RWX) Volume](../../advanced-resources/rwx-workloads/index.html).

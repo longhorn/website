@@ -1,60 +1,75 @@
 ---
-title: Support for ReadWriteMany (RWX) workloads (Experimental Feature)
+title: ReadWriteMany (RWX) Volume
 weight: 4
 ---
 
-Longhorn natively supports RWX workloads, by exposing a regular Longhorn volume via a NFSv4 server (share-manager).
+Longhorn supports ReadWriteMany (RWX) volumes by exposing regular Longhorn volumes via NFSv4 servers that reside in share-manager pods.
 
-The following diagram shows how the RWX support works:
 
-{{< figure src="/img/diagrams/rwx/rwx-native-architecture.png" >}}
+# Introduction
 
-For each actively in use RWX volume Longhorn will create a `share-manager-<volume-name>` Pod in the `longhorn-system` namespace.
+For each actively in use RWX volume Longhorn will create a `share-manager-<volume-name>` Pod in the `longhorn-system` namespace. This Pod is responsible for exporting a Longhorn volume via a NFSv4 server that is running inside the Pod. There is also a service created for each RWX volume, and that is used as an endpoint for the actual NFSv4 client connection.
 
-This Pod is responsible for exporting a Longhorn volume via a NFSv4 server that is running inside the Pod.
-
-There is also a service created for each RWX volume, and that is used as an endpoint for the actual NFSv4 client connection.
+{{< figure src="/img/diagrams/rwx/rwx-arch.png" >}}
 
 # Requirements
 
-To be able to use RWX volumes, each client node needs to have a NFSv4 client installed.
+It is necessary to meet the following requirements in order to use RWX volumes.
 
-For Ubuntu you can install a NFSv4 client via:
+1. Each NFS client node needs to have a NFSv4 client installed.
 
-```
-apt install nfs-common
-```
+    The [environment check script](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh) helps users to check the installation of NFS client.
+     - For Debian based distros you can install a NFSv4 client via:
+        ```
+        apt install nfs-common
+        ```
 
-For RPM based distros you can install a NFSv4 client via:
+     - For RPM based distros you can install a NFSv4 client via:
+        ```
+        yum install nfs-utils
+        ```
+    - For SUSE/OpenSUSE you can install a NFSv4 client via:
+        ```
+        zypper install nfs-client
+        ```
 
-```
-yum install nfs-utils
-```
+      > **Troubleshooting:** If the NFSv4 client is not available on the node, when trying to mount the volume the below message will be part of the error:
+      > ```
+      > for several filesystems (e.g. nfs, cifs) you might need a /sbin/mount.<type> helper program.
+      > ```
 
-If the NFSv4 client is not available on the node, when trying to mount the volume the below message will be part of the error:
-```
-for several filesystems (e.g. nfs, cifs) you might need a /sbin/mount.<type> helper program.\n
-```
+2. The hostname of each node is unique in the Kubernetes cluster.
+
+    There is a dedicated recovery backend service for NFS servers in Longhorn system. When a client connects to an NFS server, the client's information, including its hostname, will be stored in the recovery backend. When a share-manager Pod or NFS server is abnormally terminated, Longhorn will create a new one. Within the 90-seconds grace period, clients will reclaim locks using the client information stored in the recovery backend.
+    
+    > **Tip:**: The [environment check script](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh) helps users to check all nodes have unique hostnames.
 
 # Creation and Usage of a RWX Volume
 
-For dynamically provisioned Longhorn volumes, the access mode is based on the PVC's access mode.
-
-For manually created Longhorn volumes (restore, DR volume) the access mode can be specified during creation in the Longhorn UI.
-
-When creating a PV/PVC for a Longhorn volume via the UI, the access mode of the PV/PVC will be based on the volume's access mode.
-
-One can change the Longhorn volume's access mode via the UI as long as the volume is not bound to a PVC.
-
-For a Longhorn volume that gets used by a RWX PVC, the volume access mode will be changed to RWX.
+1. For dynamically provisioned Longhorn volumes, the access mode is based on the PVC's access mode.
+2. For manually created Longhorn volumes (restore, DR volume) the access mode can be specified during creation in the Longhorn UI.
+3. When creating a PV/PVC for a Longhorn volume via the UI, the access mode of the PV/PVC will be based on the volume's access mode.
+4. One can change the Longhorn volume's access mode via the UI as long as the volume is not bound to a PVC.
+5. For a Longhorn volume that gets used by a RWX PVC, the volume access mode will be changed to RWX.
 
 # Failure Handling
 
-Any failure of the share-manager Pod (volume failure, node failure, etc) will lead to the Pod being recreated and the volume's `remountRequestedAt` flag to be set, which will lead to the workload Pods being deleted and Kubernetes
-recreating them. This functionality depends on the setting of [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly,](../../references/settings#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly)
-which by default is `true`. If the setting is disabled, the workload Pods might end up with `io errors` on RWX volume failures.
+1. share-manager Pod is abnormally terminated down
 
-It's recommended to enable the above settings to guarantee automatic workload failover in the case of issues with the RWX volume.
+    Client IO will be blocked until Longhorn creates a new share-manager Pod and the associated volume. Once the Pod is successfully created, the 90-seconds grace period for lock reclamation is started, and users would expect
+      - Before the grace period ends, client IO to the RWX volume will still be blocked.
+      - The server rejects READ and WRITE operations and non-reclaim locking requests with an error of NFS4ERR_GRACE.
+      - The grace period can be terminated early if all locks are successfully reclaimed.
+
+    After exiting the grace period, the IO of the clients successfully reclaiming the locks continues without stale file handle error or IO error. If a lock cannot be reclaimed within the grace period, the lock are discarded, and the server returns IO error to the client. The client re-establishes a new lock. The application should handle the IO error. Nevertheless, not all applications can handle IO errors due to their implementation. Thus, it may result in the failure of the IO operation and the data loss. Data consistency may be an issue.
+
+    Here is an example of a DaemonSet using a RWX volume.
+
+    Each Pod of the DaemonSet is writing data to the RWX volume. If the node, When the node where the share-manager Pod is running is shut down, a new share-manager Pod is created on another node. Since one of the clients located on the down node, has gone, the lock reclaim process cannot be terminated earlier than 90-second grace period, even though the remaining clients' locks have been successfully reclaimed. The IOs of these clients continue after the grace period has expired.
+
+2. If the Kubernetes DNS service goes down, share-manager Pod will not be able to communicate with longhorn-nfs-recovery-backend
+
+    The NFS-ganesha server in the share-manager Pod communicates with longhorn-nfs-recovery-backend via the service `longhorn-recovery-backend` IP. If the DNS service is unavailable, the creation and deletion of RWX volumes as well as the recovery of NFS servers will be inoperable. Thus, the high availability of the DNS services is recommended for avoiding the communication failure.
 
 # Migration from Previous External Provisioner
 
