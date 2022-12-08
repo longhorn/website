@@ -144,6 +144,9 @@ The available modes are:
 - `best-effort`. This option instructs Longhorn to try to keep a replica on the same node as the attached volume (workload).
   Longhorn will not stop the volume, even if it cannot keep a replica local to the attached volume (workload) due to environment limitation, e.g. not enough disk space, incompatible disk tags, etc.
 
+- `strict-local`: This option enforces Longhorn keep the **only one replica** on the same node as the attached volume, and therefore, it offers higher IOPS and lower latency performance.
+
+
 #### Default Data Path
 
 > Default: `/var/lib/longhorn/`
