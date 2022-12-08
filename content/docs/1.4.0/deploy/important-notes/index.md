@@ -62,3 +62,7 @@ If you have manifests or scripts that are still using `v1beta1` version, conside
 ### Add StorageClass Parameter `mkfsParams` and [`Custom mkfs.ext4 parameters`](../../references/settings/#custom-mkfsext4-parameters) Setting Deprecated
 
 The [`Custom mkfs.ext4 parameters`](../../references/settings/#custom-mkfsext4-parameters) will be deprecated and replaced by a new parameter `mkfsParams` as a per-StorageClass mkfs option (e.g., `-I 256 -b 4096 -O ^metadata_csum,^64bit`).
+
+### Longhorn Supports Fast Replica Rebuilding, and It Is Enabled by Default
+
+Fast replica rebuilding is supported by Longhorn, and is enabled by default. The feature relies on the change timestamps and checksums of snapshot disk files, so `snapshot-data-integrity` is also set to `fast-check`. The file checksums for snapshot disks will be calculated periodically, with a default check period of 7 days. For more information, please refer to [Fast Replica Rebuild](../../advanced-resources/fast-replica-rebuild/index.html) and [Snapshot Data Integrity Check](../../advanced-resources/snapshot-data-integrity-check/index.html).
