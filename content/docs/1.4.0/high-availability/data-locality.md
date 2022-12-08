@@ -15,9 +15,11 @@ When data locality is disabled, a Longhorn volume can be backed by replicas on a
 
 Longhorn currently supports two modes for data locality settings:
 
-- `disabled`. This is the default option. There may or may not be a replica on the same node as the attached volume (workload).
+- `disabled`: This is the default option. There may or may not be a replica on the same node as the attached volume (workload).
 
-- `best-effort`. This option instructs Longhorn to try to keep a replica on the same node as the attached volume (workload). Longhorn will not stop the volume, even if it cannot keep a replica local to the attached volume (workload) due to an environment limitation, e.g. not enough disk space, incompatible disk tags, etc.
+- `best-effort`: This option instructs Longhorn to try to keep a replica on the same node as the attached volume (workload). Longhorn will not stop the volume, even if it cannot keep a replica local to the attached volume (workload) due to an environment limitation, e.g. not enough disk space, incompatible disk tags, etc.
+
+- `strict-local`: This option enforces Longhorn keep the **only one replica** on the same node as the attached volume, and therefore, it offers higher IOPS and lower latency performance.
 
 
 ## How to Set Data Locality For Volumes
