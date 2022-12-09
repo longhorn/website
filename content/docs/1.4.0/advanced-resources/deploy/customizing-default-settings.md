@@ -91,6 +91,8 @@ From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Insta
         #kubernetes-cluster-autoscaler-enabled:
         #orphan-auto-deletion:
         #storage-network:
+        #recurring-successful-jobs-history-limit:
+        #recurring-failed-jobs-history-limit:
     ---
     ```
 
