@@ -45,6 +45,8 @@ weight: 1
   - [Backup Target Credential Secret](#backup-target-credential-secret)
   - [Backupstore Poll Interval](#backupstore-poll-interval)
   - [Failed Backup Time To Live](#failed-backup-time-to-live)
+  - [Cronjob Failed Jobs History Limit](#cronjob-failed-jobs-history-limit)
+  - [Cronjob Successful Jobs History Limit](#cronjob-successful-jobs-history-limit) 
   - [Restore Volume Recurring Jobs](#restore-volume-recurring-jobs)
 - [Scheduling](#scheduling)
   - [Allow Volume Creation with Degraded Availability](#allow-volume-creation-with-degraded-availability)
@@ -361,6 +363,23 @@ For more information on how the backupstore poll interval affects the recovery t
 The interval in minutes to keep the backup resource that was failed. Set to 0 to disable the auto-deletion.
 
 Failed backups will be checked and cleaned up during backupstore polling which is controlled by **Backupstore Poll Interval** setting. Hence this value determines the minimal wait interval of the cleanup. And the actual cleanup interval is multiple of **Backupstore Poll Interval**. Disabling **Backupstore Poll Interval** also means to disable failed backup auto-deletion.
+
+### Cronjob Failed Jobs History Limit
+
+> Default: `1`
+
+This setting specifies how many failed backup or snapshot job histories should be retained.
+
+History will not be retained if the value is 0.
+
+
+### Cronjob Successful Jobs History Limit
+
+> Default: `1`
+
+This setting specifies how many successful backup or snapshot job histories should be retained.
+
+History will not be retained if the value is 0.
 
 #### Restore Volume Recurring Jobs
 
