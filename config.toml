@@ -89,7 +89,7 @@ Longhorn supports complete capabilities of CSI storage driver like volume creati
 [[params.promo_features]]
 title = "Native virtual workload storage backend"
 text = """
-Longhorn provides built-in virtual disk image management and volume live-migration to support the integration with virutal workload orchestration solutions like Harvester and KubeVirt.
+Longhorn provides built-in virtual disk image management and volume live-migration to support the integration with virtual workload orchestration solutions like Harvester and KubeVirt.
 """
 
 [[params.promo_features]]

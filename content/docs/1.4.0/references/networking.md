@@ -166,5 +166,5 @@ None
 None
 
 ---
-Origional GitHub issue:
+Original GitHub issue:
 https://github.com/longhorn/longhorn/issues/1805

@@ -104,7 +104,7 @@ Below are the directories Longhorn components requiring access with root and pri
   - /: Access any data path on this node and access Longhorn engine binaries.
 - Longhorn Share Manager
   - /dev: Block devices created by Longhorn are under the `/dev` path.
-  - /lib/modules: Kernel modules requried by `cryptsetup` for volume encryption.
+  - /lib/modules: Kernel modules required by `cryptsetup` for volume encryption.
   - /proc: Find the recognized host process like container runtime, then use `nsenter` for volume encryption.
   - /sys: Support volume encryption by `cryptsetup`.
 - Longhorn CSI Plugin

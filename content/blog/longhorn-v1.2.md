@@ -158,7 +158,7 @@ Longhorn supports asynchronous backup operations by introducing backup target, b
 
 ## New Recurring job and groups
 
-Longhorn supports the concept of recurring jobs and groups by introducing the recurring job custom resource and controller. Users can create/reuse recurring jobs and organize their jobs in groups to apply to volumes. There is a migration for you when upgrading from the previous Longhorn versions. The same as above backup custom resources introduced, this is also a custom resource-based design different from the previous arbitrary recurring jobs setting in the storage class or not sharable volume-based setting.
+Longhorn supports the concept of recurring jobs and groups by introducing the recurring job custom resource and controller. Users can create/reuse recurring jobs and organize their jobs in groups to apply to volumes. There is a migration for you when upgrading from the previous Longhorn versions. The same as above backup custom resources introduced, this is also a custom resource-based design different from the previous arbitrary recurring jobs setting in the storage class or not shareable volume-based setting.
 
 1. Create a recurring job w/ groups
 

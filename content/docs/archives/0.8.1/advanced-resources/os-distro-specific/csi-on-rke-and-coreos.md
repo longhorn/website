@@ -5,14 +5,14 @@
 
 For minimalist Linux Operating systems, you'll need a little extra configuration to use Longhorn with RKE (Rancher Kubernetes Engine).  This document outlines the requirements for using RKE and CoreOS.
 
-###  Background 
+###  Background
 
 CSI doesn't work with CoreOS + RKE before Longhorn v0.4.1. The reason is that in the case of CoreOS, RKE sets the argument `root-dir=/opt/rke/var/lib/kubelet` for the kubelet , which is different from the default value `/var/lib/kubelet`.
-                                                                             
+
 **For k8s v1.12+**, the kubelet will detect the `csi.sock` according to argument `<--kubelet-registration-path>` passed in by Kubernetes CSI driver-registrar, and `<drivername>-reg.sock` (for Longhorn, it's `io.rancher.longhorn-reg.sock`) on kubelet path `<root-dir>/plugins`.
-   
+
   **For k8s v1.11,** the kubelet will find both sockets on kubelet path `/var/lib/kubelet/plugins`.
-   
+
 By default, Longhorn CSI driver creates and expose these two sock files on the host path `/var/lib/kubelet/plugins`. Then the kubelet cannot find `<drivername>-reg.sock`, so CSI driver doesn't work.
 
 Furthermore, the kubelet will instruct the CSI plugin to mount the Longhorn volume on `<root-dir>/pods/<pod-name>/volumes/kubernetes.io~csi/<volume-name>/mount`. But this path inside the CSI plugin container won't be bind mounted on the host path. And the mount operation for the Longhorn volume is meaningless.
@@ -35,7 +35,7 @@ Add extra_binds for kubelet in RKE `cluster.yml`:
 services:
   kubelet:
     extra_binds:
-    - "/opt/rke/var/lib/kubelet/plugins:/var/lib/kubelet/plugins" 
+    - "/opt/rke/var/lib/kubelet/plugins:/var/lib/kubelet/plugins"
 
 ```
 
@@ -58,7 +58,7 @@ sudo su
 systemctl start iscsid
 ```
 
-### Troublshooting
+### Troubleshooting
 
 #### Failed to get arg root-dir: Cannot get kubelet root dir, no related proc for root-dir detection ...
 
@@ -67,8 +67,8 @@ This error happens because Longhorn cannot detect the root dir setup for the kub
 You can override the root-dir detection by setting environment variable `KUBELET_ROOT_DIR` in https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/deploy/longhorn.yaml.
 
 #### How to find `root-dir`?
- 
-Run `ps aux | grep kubelet` and get the argument `--root-dir` on host node. 
+
+Run `ps aux | grep kubelet` and get the argument `--root-dir` on host node.
 
 For example,
 ```
