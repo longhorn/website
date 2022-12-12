@@ -44,7 +44,7 @@ In the example, we will explain how volume `size` and `actual size` get changed 
 
 {{< figure src="/img/screenshots/volumes-and-nodes/volume-size-illustration-fig2.png" >}}
 
-4. Then, rewrite the 4 Gi data (data#1), and the `df` command in the filesystem shows 4 Gi used space again. Howerver, the `actual size` is increased by 4 Gi and becomes 8.25Gi. See Figure 3(a) of the illustration.
+4. Then, rewrite the 4 Gi data (data#1), and the `df` command in the filesystem shows 4 Gi used space again. However, the `actual size` is increased by 4 Gi and becomes 8.25Gi. See Figure 3(a) of the illustration.
 
      > After deletion, filesystem may or maynot reuse the recently freed blocks from recently deleted files according to the filesystem design and please refer to [Block allocation strategies of various filesystems](https://www.ogris.de/blkalloc). If the volume nominal `size` is 12 Gi, the `actual size` in the end would range from 4 Gi to 8 Gi since the filesystem may or maynot reuse the freed blocks. On the other hand, if the volume nominal `size` is 6 Gi, the `actual size` at the end would range from 4 Gi to 6 Gi, because the filesystem has to reuse the freed blocks in the 2nd round of writing. See Figure 3(b) of the illustration.
      >

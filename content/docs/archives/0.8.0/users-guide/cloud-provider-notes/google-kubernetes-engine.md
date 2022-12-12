@@ -1,6 +1,6 @@
 ---
 title: Google Kubernetes Engine
-description: Addtional configuration required to operate Longhorn in Google Kubernetes Engine.
+description: Additional configuration required to operate Longhorn in Google Kubernetes Engine.
 weight: 37
 ---
 

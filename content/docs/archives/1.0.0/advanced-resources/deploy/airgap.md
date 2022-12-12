@@ -5,7 +5,7 @@ weight: 2
 
 ## Requirements:
   - Deploy Longhorn Components images to your own registry.
-  - Deploy Kuberntes CSI driver components images to your own registry.
+  - Deploy Kubernetes CSI driver components images to your own registry.
 
 #### Note:
   - CSI driver component's images, names and tags can be found [here.](../../../concepts/#13-csi-driver)
@@ -202,8 +202,8 @@ weight: 2
     ```
     defaultSettings:
       registrySecret: <SECRET_NAME>
-    
-    privateRegistry: 
+
+    privateRegistry:
         registryUrl: <REGISTRY_URL>
         registryUser: <REGISTRY_USER>
         registryPasswd: <REGISTRY_PASSWORD>
@@ -223,13 +223,13 @@ weight: 2
 
   * In `Longhorn Images Settings` section specify
     * Longhorn Manager Image Name     e.g. `<REGISTRY_URL>/longhorn-manager`
-    * Longhorn Manager Image Tag 
+    * Longhorn Manager Image Tag
     * Longhorn Engine Image Name    e.g. `<REGISTRY_URL>/longhorn-engine`
-    * Longhorn Engine Image Tag 
-    * Longhorn UI Image Name    e.g. `<REGISTRY_URL>/longhorn-ui` 
-    * Longhorn UI Image Tag 
+    * Longhorn Engine Image Tag
+    * Longhorn UI Image Name    e.g. `<REGISTRY_URL>/longhorn-ui`
+    * Longhorn UI Image Tag
     * Longhorn Instance Manager Image Name    e.g.  `<REGISTRY_URL>/longhorn-instance-manager`
-    * Longhorn Instance Manager Image Tag 
+    * Longhorn Instance Manager Image Tag
 
   * In `Longhorn CSI Driver Setting` section specify
     * Longhorn CSI Attacher Image    e.g.  `<REGISTRY_URL>/csi-attacher:<CSI_ATTACHER_IMAGE_TAG>`
@@ -237,13 +237,13 @@ weight: 2
     * Longhorn CSI Driver Registrar Image    e.g. `<REGISTRY_URL>/csi-node-driver-registrar:<CSI_NODE_DRIVER_REGISTRAR_IMAGE_TAG>`
     * Longhorn CSI Driver Resizer Image    e.g. `<REGISTRY_URL>/csi-resizer:<CSI_RESIZER_IMAGE_TAG>`
 
-  * In `Longhorn Default Settings` secton specify
-    *  Private registry secret 
+  * In `Longhorn Default Settings` section specify
+    *  Private registry secret
 
-  * In `Private Registry Settings` secton specify
-    *  Private registry URL 
-    *  Private registry user 
-    *  Private registry password 
+  * In `Private Registry Settings` section specify
+    *  Private registry URL
+    *  Private registry user
+    *  Private registry password
 
 
 ## Troubleshooting
@@ -296,7 +296,7 @@ time="2020-03-13T22:49:22Z" level=fatal msg="Error deploying driver: CSI cannot 
 
 Issue can be conformed by checking Longhorn manager log, you should be able to see the following logs:
 
-> "Dropping Longhorn node longhorn-system/**NODE_NAME** out of the queue: fail to sync node for longhorn-system/**NODE_NAME**: 
+> "Dropping Longhorn node longhorn-system/**NODE_NAME** out of the queue: fail to sync node for longhorn-system/**NODE_NAME**:
 > InstanceManager.longhorn.io \"instance-manager-e-605e9473\" is invalid: metadata.labels: Invalid value:
 > \"**PRIVATE_REGISTRY_URL**-**PREFIX**-longhorn-instance-manager-v1_20200301\": **must be no more than 63 characters**"
 
@@ -313,7 +313,7 @@ Longhorn manager would report errors in the log when this happened:
 
 Longhorn instance manager pods have labels with key `longhorn.io/instance-manager-image` and value `REGISTRY_URL-USER-IMAGE_NAME-TAG`
 
-e.g  
+e.g
 ```
 metadata:
   labels:
@@ -324,7 +324,7 @@ metadata:
   name: instance-manager-e-XXXXXXXX
 ```
 
-it's known Kubernetes limitaion that label value should be no more than 63 characters [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set)
+it's known Kubernetes limitation that label value should be no more than 63 characters [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set)
 
 ##### Recommendation:
 It's highly recommended not to manipulate image tags, especially instance manager image tags such as v1_20200301, because we intentionally use the date to avoid associating it with a Longhorn version.

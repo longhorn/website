@@ -7,7 +7,7 @@ Backups in Longhorn are off-cluster into a BackupStore. A BackupTarget
 
 To setup a BackupTarget see [Set the BackupTarget](../backupstores-and-backuptargets#set-backuptarget).
 
-For Informtion regarding BackupStores see [Setup a BackupStore](../backupstores-and-backuptargets#set-backuptarget)
+For Information regarding BackupStores see [Setup a BackupStore](../backupstores-and-backuptargets#set-backuptarget)
 
 To create a backup
 

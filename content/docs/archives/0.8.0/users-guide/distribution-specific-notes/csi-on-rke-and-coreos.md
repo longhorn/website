@@ -12,7 +12,7 @@ For minimalist Linux Operating systems, you'll need a little extra configuration
   -  Kubernetes v1.11 or higher.
   -  Longhorn v0.4.1 or higher.
 
-### For CoreOS + Kubernetes v1.11 only 
+### For CoreOS + Kubernetes v1.11 only
 
 *** The following step is not needed for Kubernetes v1.12+. ***
 
@@ -23,7 +23,7 @@ Add extra_binds for kubelet in RKE `cluster.yml`:
 services:
   kubelet:
     extra_binds:
-    - "/opt/rke/var/lib/kubelet/plugins:/var/lib/kubelet/plugins" 
+    - "/opt/rke/var/lib/kubelet/plugins:/var/lib/kubelet/plugins"
 
 ```
 
@@ -44,7 +44,7 @@ sudo su
 systemctl start iscsid
 ```
 
-## Troublshooting Common Issues
+## Troubleshooting Common Issues
 
 ### Failed to get arg root-dir: Cannot get kubelet root dir, no related proc for root-dir detection ...
 
@@ -53,8 +53,8 @@ This error is due to Longhorn cannot detect where is the root dir setup for Kube
 You can override the root-dir detection by setting argument `kubelet-root-dir` in https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/deploy/longhorn.yaml.
 
 #### How to find `root-dir`?
- 
-Run `ps aux | grep kubelet` and get argument `--root-dir` on host node. 
+
+Run `ps aux | grep kubelet` and get argument `--root-dir` on host node.
 
 e.g.
 ```
@@ -67,20 +67,20 @@ You will find `root-dir` in the cmdline of proc `kubelet`. If it's not set, the 
 
 If kubelet is using a configuration file, you would need to check the configuration file to locate the `root-dir` parameter.
 
-###  Background 
+###  Background
 
 CSI doesn't work with CoreOS + RKE before Longhorn v0.4.1. The reason is:
 
 1. RKE sets argument `root-dir=/opt/rke/var/lib/kubelet` for kubelet in the case of CoreOS, which is different from the default value `/var/lib/kubelet`.
-                                                                             
+
 2. **For k8s v1.12+**
 
      Kubelet will detect the `csi.sock` according to argument `<--kubelet-registration-path>` passed in by Kubernetes CSI driver-registrar, and `<drivername>-reg.sock` (for Longhorn, it's `io.rancher.longhorn-reg.sock`) on kubelet path `<root-dir>/plugins`.
-   
+
    **For k8s v1.11**
-   
+
      Kubelet will find both sockets on kubelet path `/var/lib/kubelet/plugins`.
-   
+
 3. By default, Longhorn CSI driver create and expose these 2 sock files on host path `/var/lib/kubelet/plugins`.
 
 4. Then kubelet cannot find `<drivername>-reg.sock`, so CSI driver doesn't work.
@@ -88,7 +88,7 @@ CSI doesn't work with CoreOS + RKE before Longhorn v0.4.1. The reason is:
 5. Furthermore, kubelet will instruct CSI plugin to mount Longhorn volume on `<root-dir>/pods/<pod-name>/volumes/kubernetes.io~csi/<volume-name>/mount`.
 
    But this path inside CSI plugin container won't be binded mount on host path. And the mount operation for Longhorn volume is meaningless.
-   
+
    Hence Kubernetes cannot connect to Longhorn using CSI driver.
 
 ## Reference

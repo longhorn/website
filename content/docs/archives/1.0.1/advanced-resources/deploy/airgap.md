@@ -5,7 +5,7 @@ weight: 2
 
 ## Requirements:
   - Deploy Longhorn Components images to your own registry.
-  - Deploy Kuberntes CSI driver components images to your own registry.
+  - Deploy Kubernetes CSI driver components images to your own registry.
 
 #### Note:
   - A full list of all needed images is in [longhorn-images.txt](https://raw.githubusercontent.com/longhorn/longhorn/v1.0.1/deploy/longhorn-images.txt). First, download the images list by running:
@@ -256,10 +256,10 @@ weight: 2
     * Longhorn CSI Driver Registrar Image    e.g. `<REGISTRY_URL>/csi-node-driver-registrar:<CSI_NODE_DRIVER_REGISTRAR_IMAGE_TAG>`
     * Longhorn CSI Driver Resizer Image    e.g. `<REGISTRY_URL>/csi-resizer:<CSI_RESIZER_IMAGE_TAG>`
 
-  * In `Longhorn Default Settings` secton specify
+  * In `Longhorn Default Settings` section specify
     *  Private registry secret
 
-  * In `Private Registry Settings` secton specify
+  * In `Private Registry Settings` section specify
     *  Private registry URL
     *  Private registry user
     *  Private registry password

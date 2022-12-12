@@ -18,7 +18,7 @@ We recommend the following setup for deploying Longhorn in production.
 - 3 nodes
 - 4 vCPUs per node
 - 4 GiB per node
-- SSD/NVMe or similiar performance block device on the node for storage
+- SSD/NVMe or similar performance block device on the node for storage
     - We don't recommend using spinning disks with Longhorn, due to low IOPS.
 
 ## Software
@@ -43,7 +43,7 @@ It's recommended to dedicate a disk for Longhorn storage for production, instead
 
 If you need to use the root disk, use the default `minimal available storage percentage` setup which is 25%, and set `overprovisioning percentage` to 200% to minimize the chance of DiskPressure.
 
-If you're using a dedicated disk for Longhorn, you can lower the setting `minimal available storage percentage` to 10%. 
+If you're using a dedicated disk for Longhorn, you can lower the setting `minimal available storage percentage` to 10%.
 
 For the Over-provisioning percentage, it depends on how much space your volume uses on average. For example, if your workload only uses half of the available volume size, you can set the Over-provisioning percentage to `200`, which means Longhorn will consider the disk to have twice the schedulable size as its full size minus the reserved space.
 

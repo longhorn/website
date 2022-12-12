@@ -69,7 +69,7 @@ status:
 
 
 #### Via Longhorn UI
-If your Kubernetes version is v1.14 or v1.15, this method is the only choice for Longhorn volume expansion. 
+If your Kubernetes version is v1.14 or v1.15, this method is the only choice for Longhorn volume expansion.
 
 Usage: On the volume page of Longhorn UI, click `Expand` for the volume.
 
@@ -80,11 +80,11 @@ Usage: On the volume page of Longhorn UI, click `Expand` for the volume.
 Longhorn will try to expand the file system only if:
 
 1. The expanded size should be greater than the current size.
-2. There is a Linux filesystem in the Longhorn volume. 
-3. The filesystem used in the Longhorn volume is one of the followings:
+2. There is a Linux filesystem in the Longhorn volume.
+3. The filesystem used in the Longhorn volume is one of the following:
     1. ext4
     2. XFS
-4. The Longhorn volume is using block device frontend. 
+4. The Longhorn volume is using block device frontend.
 
 #### Handling Volume Revert
 If users revert a volume to a snapshot with smaller size, the frontend of the volume is still holding the expanded size. But the filesystem size will be the same as that of the reverted snapshot. In this case, users need to handle the filesystem manually:
