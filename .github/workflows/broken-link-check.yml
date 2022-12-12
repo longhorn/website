@@ -3,8 +3,6 @@ on:
     - cron: 0 0 * * * # run monthly
   repository_dispatch: # run manually
     types: [check-link]
-  # push:
-  # ...
 
 name: Broken Link Check
 jobs:
