@@ -5,6 +5,8 @@ weight: 4
 
 This doc instructs how users can restore workloads with Longhorn system to a new cluster via Velero.
 
+> **Note:** Need to use [Velero CSI plugin](https://github.com/vmware-tanzu/velero-plugin-for-csi) >= 0.4 to ensure restoring PersistentVolumeClaim successfully. Visit [here](/kb/troubleshooting-restore-pvc-stuck-using-velero-csi-plugin-version-lower-than-0.4) to get more information.
+
 ## Assumptions:
 - A new cluster means there is **no Longhorn volume data** in it.
 - There is a remote backup target holds all Longhorn volume data.
