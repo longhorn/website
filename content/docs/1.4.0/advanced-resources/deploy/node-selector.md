@@ -26,6 +26,15 @@ You need to set node selector for both types of components. See more details bel
         longhornUI:
           nodeSelector:
             label-key1: "label-value1"
+        longhornConversionWebhook:
+          nodeSelector:
+            label-key1: "label-value1"
+        longhornAdmissionWebhook:
+          nodeSelector:
+            label-key1: "label-value1"
+        longhornRecoveryBackend:
+          nodeSelector:
+            label-key1: "label-value1"
       ```
    * If you install Longhorn by using `kubectl` to apply [the deployment YAML](https://raw.githubusercontent.com/longhorn/longhorn/v1.1.1/deploy/longhorn.yaml), you need to modify the node selector section for Longhorn Manager, Longhorn UI, and Longhorn Driver Deployer.
     Then apply the YAMl files.
@@ -68,6 +77,15 @@ You need to set node selector for both types of components. See more details bel
           nodeSelector:
             label-key1: "label-value1"
         longhornUI:
+          nodeSelector:
+            label-key1: "label-value1"
+        longhornConversionWebhook:
+          nodeSelector:
+            label-key1: "label-value1"
+        longhornAdmissionWebhook:
+          nodeSelector:
+            label-key1: "label-value1"
+        longhornRecoveryBackend:
           nodeSelector:
             label-key1: "label-value1"
         ```

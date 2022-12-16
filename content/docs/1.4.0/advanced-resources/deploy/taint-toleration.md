@@ -35,6 +35,24 @@ You need to set tolerations for both types of components. See more details below
            operator: "Equal"
            value: "value"
            effect: "NoSchedule"
+       longhornConversionWebhook:
+         tolerations:
+         - key: "key"
+           operator: "Equal"
+           value: "value"
+           effect: "NoSchedule"
+       longhornAdmissionWebhook:
+         tolerations:
+         - key: "key"
+           operator: "Equal"
+           value: "value"
+           effect: "NoSchedule"
+       longhornRecoveryBackend:
+         tolerations:
+         - key: "key"
+           operator: "Equal"
+           value: "value"
+           effect: "NoSchedule"
      ```
    * If you install Longhorn by using `kubectl` to apply [the deployment YAML](https://raw.githubusercontent.com/longhorn/longhorn/v1.1.1/deploy/longhorn.yaml), you need to modify the taint tolerations section for Longhorn Manager, Longhorn UI, and Longhorn Driver Deployer.
     Then apply the YAMl files.
@@ -83,6 +101,24 @@ You need to set tolerations for both types of components. See more details below
            value: "value"
            effect: "NoSchedule"
        longhornUI:
+         tolerations:
+         - key: "key"
+           operator: "Equal"
+           value: "value"
+           effect: "NoSchedule"
+       longhornConversionWebhook:
+         tolerations:
+         - key: "key"
+           operator: "Equal"
+           value: "value"
+           effect: "NoSchedule"
+       longhornAdmissionWebhook:
+         tolerations:
+         - key: "key"
+           operator: "Equal"
+           value: "value"
+           effect: "NoSchedule"
+       longhornRecoveryBackend:
          tolerations:
          - key: "key"
            operator: "Equal"
