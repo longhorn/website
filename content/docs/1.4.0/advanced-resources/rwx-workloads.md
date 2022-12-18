@@ -54,22 +54,22 @@ It is necessary to meet the following requirements in order to use RWX volumes.
 
 # Failure Handling
 
-1. share-manager Pod is abnormally terminated down
+1. share-manager Pod is abnormally terminated
 
     Client IO will be blocked until Longhorn creates a new share-manager Pod and the associated volume. Once the Pod is successfully created, the 90-seconds grace period for lock reclamation is started, and users would expect
       - Before the grace period ends, client IO to the RWX volume will still be blocked.
       - The server rejects READ and WRITE operations and non-reclaim locking requests with an error of NFS4ERR_GRACE.
       - The grace period can be terminated early if all locks are successfully reclaimed.
 
-    After exiting the grace period, the IO of the clients successfully reclaiming the locks continues without stale file handle error or IO error. If a lock cannot be reclaimed within the grace period, the lock are discarded, and the server returns IO error to the client. The client re-establishes a new lock. The application should handle the IO error. Nevertheless, not all applications can handle IO errors due to their implementation. Thus, it may result in the failure of the IO operation and the data loss. Data consistency may be an issue.
+    After exiting the grace period, IOs of the clients successfully reclaiming the locks continue without stale file handle errors or IO errors. If a lock cannot be reclaimed within the grace period, the lock is discarded, and the server returns IO error to the client. The client re-establishes a new lock. The application should handle the IO error. Nevertheless, not all applications can handle IO errors due to their implementation. Thus, it may result in the failure of the IO operation and the data loss. Data consistency may be an issue.
 
     Here is an example of a DaemonSet using a RWX volume.
 
-    Each Pod of the DaemonSet is writing data to the RWX volume. If the node, When the node where the share-manager Pod is running is shut down, a new share-manager Pod is created on another node. Since one of the clients located on the down node, has gone, the lock reclaim process cannot be terminated earlier than 90-second grace period, even though the remaining clients' locks have been successfully reclaimed. The IOs of these clients continue after the grace period has expired.
+    Each Pod of the DaemonSet is writing data to the RWX volume. If the node, where the share-manager Pod is running, is down, a new share-manager Pod is created on another node. Since one of the clients located on the down node has gone, the lock reclaim process cannot be terminated earlier than 90-second grace period, even though the remaining clients' locks have been successfully reclaimed. The IOs of these clients continue after the grace period has expired.
 
-2. If the Kubernetes DNS service goes down, share-manager Pod will not be able to communicate with longhorn-nfs-recovery-backend
+2. If the Kubernetes DNS service goes down, share-manager Pods will not be able to communicate with longhorn-nfs-recovery-backend
 
-    The NFS-ganesha server in the share-manager Pod communicates with longhorn-nfs-recovery-backend via the service `longhorn-recovery-backend` IP. If the DNS service is unavailable, the creation and deletion of RWX volumes as well as the recovery of NFS servers will be inoperable. Thus, the high availability of the DNS services is recommended for avoiding the communication failure.
+    The NFS-ganesha server in a share-manager Pod communicates with longhorn-nfs-recovery-backend via the service `longhorn-recovery-backend`'s IP. If the DNS service is out of service, the creation and deletion of RWX volumes as well as the recovery of NFS servers will be inoperable. Thus, the high availability of the DNS service is recommended for avoiding the communication failure.
 
 # Migration from Previous External Provisioner
 
