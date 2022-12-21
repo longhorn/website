@@ -10,6 +10,12 @@ weight: 3
 | longhorn_volume_capacity_bytes | Configured size in bytes for this volume | longhorn_volume_capacity_bytes{node="worker-2",volume="testvol"} 6.442450944e+09 |
 | longhorn_volume_state | State of this volume: 1=creating, 2=attached, 3=Detached, 4=Attaching, 5=Detaching, 6=Deleting | longhorn_volume_state{node="worker-2",volume="testvol"} 2 |
 | longhorn_volume_robustness | Robustness of this volume: 0=unknown, 1=healthy, 2=degraded, 3=faulted  | longhorn_volume_robustness{node="worker-2",volume="testvol"} 1 |
+| longhorn_volume_read_throughput | Read throughput of this volume (Bytes/s) | longhorn_volume_read_throughput{node="worker-2",volume="testvol"} 5120000 |
+| longhorn_volume_write_throughput | Write throughput of this volume (Bytes/s) | longhorn_volume_write_throughput{node="worker-2",volume="testvol"} 512000 |
+| longhorn_volume_read_iops | Read IOPS of this volume | longhorn_volume_read_iops{node="worker-2",volume="testvol"} 100 |
+| longhorn_volume_write_iops | Write IOPS of this volume | longhorn_volume_write_iops{node="worker-2",volume="testvol"} 100 |
+| longhorn_volume_read_latency | Read latency of this volume (ns) | longhorn_volume_read_latency{node="worker-2",volume="testvol"} 100000 |
+| longhorn_volume_write_latency | Write latency of this volume (ns) | longhorn_volume_write_latency{node="worker-2",volume="testvol"} 100000 |
 
 ## Node
 
