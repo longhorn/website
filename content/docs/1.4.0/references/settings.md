@@ -33,6 +33,7 @@ weight: 1
   - [Support Bundle Manager Image](#support-bundle-manager-image)
   - [Support Bundle Failed History Limit](#support-bundle-failed-history-limit)
   - [Fast Replica Rebuild Enabled](#fast-replica-rebuild-enabled)
+  - [Timeout of HTTP Client to Replica File Sync Server](#timeout-of-http-client-to-replica-file-sync-server)
 - [Snapshot](#snapshot)
   - [Snapshot Data Integrity](#snapshot-data-integrity)
   - [Immediate Snapshot Data Integrity Check After Creating a Snapshot](#immediate-snapshot-data-integrity-check-after-creating-a-snapshot)
@@ -46,7 +47,7 @@ weight: 1
   - [Backupstore Poll Interval](#backupstore-poll-interval)
   - [Failed Backup Time To Live](#failed-backup-time-to-live)
   - [Cronjob Failed Jobs History Limit](#cronjob-failed-jobs-history-limit)
-  - [Cronjob Successful Jobs History Limit](#cronjob-successful-jobs-history-limit) 
+  - [Cronjob Successful Jobs History Limit](#cronjob-successful-jobs-history-limit)
   - [Restore Volume Recurring Jobs](#restore-volume-recurring-jobs)
 - [Scheduling](#scheduling)
   - [Allow Volume Creation with Degraded Availability](#allow-volume-creation-with-degraded-availability)
@@ -266,7 +267,7 @@ The interval in seconds determines how long Longhorn will wait before re-downloa
 #### Engine to Replica Timeout
 > Default: `8`
 
-The value in seconds specifies the timeout of the engine to the replica(s), and the value should be between 8 to 30 seconds. The default value is 8 seconds.
+The value in seconds specifies the timeout of the engine to the replica(s), and the value should be between 8 to 30 seconds.
 
 #### Support Bundle Manager Image
 
@@ -292,6 +293,12 @@ Longhorn blocks support bundle creation when reaching the upper bound of the lim
 > Default: `false`
 
 The setting enables fast replica rebuilding feature. It relies on the checksums of snapshot disk files, so setting the snapshot-data-integrity to **enable** or **fast-check** is a prerequisite.
+
+#### Timeout of HTTP Client to Replica File Sync Server
+
+> Default: `30`
+
+The value in seconds specifies the timeout of the HTTP client to the replica's file sync server used for replica rebuilding, volume cloning, snapshot cloning, etc.
 
 ### Snapshot
 
@@ -364,7 +371,7 @@ The interval in minutes to keep the backup resource that was failed. Set to 0 to
 
 Failed backups will be checked and cleaned up during backupstore polling which is controlled by **Backupstore Poll Interval** setting. Hence this value determines the minimal wait interval of the cleanup. And the actual cleanup interval is multiple of **Backupstore Poll Interval**. Disabling **Backupstore Poll Interval** also means to disable failed backup auto-deletion.
 
-### Cronjob Failed Jobs History Limit
+#### Cronjob Failed Jobs History Limit
 
 > Default: `1`
 
@@ -373,7 +380,7 @@ This setting specifies how many failed backup or snapshot job histories should b
 History will not be retained if the value is 0.
 
 
-### Cronjob Successful Jobs History Limit
+#### Cronjob Successful Jobs History Limit
 
 > Default: `1`
 
