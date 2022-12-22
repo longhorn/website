@@ -315,7 +315,7 @@ The value in seconds specifies the timeout of the HTTP client to the replica's f
 
 #### Snapshot Data Integrity
 
-> Default: `disabled`
+> Default: `fast-check`
 
 This setting allows users to enable or disable snapshot hashing and data integrity checking. Available options are:
 - **disabled**: Disable snapshot disk file hashing and data integrity checking.
