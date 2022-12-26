@@ -18,20 +18,7 @@ It is necessary to meet the following requirements in order to use RWX volumes.
 
 1. Each NFS client node needs to have a NFSv4 client installed.
 
-    The [environment check script](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh) helps users to check the installation of NFS client.
-     - For Debian based distros you can install a NFSv4 client via:
-        ```
-        apt install nfs-common
-        ```
-
-     - For RPM based distros you can install a NFSv4 client via:
-        ```
-        yum install nfs-utils
-        ```
-    - For SUSE/OpenSUSE you can install a NFSv4 client via:
-        ```
-        zypper install nfs-client
-        ```
+    Please refer to [Installing NFSv4 client](../../deploy/install/#installing-nfsv4-client) for more installation details.
 
       > **Troubleshooting:** If the NFSv4 client is not available on the node, when trying to mount the volume the below message will be part of the error:
       > ```
@@ -42,7 +29,7 @@ It is necessary to meet the following requirements in order to use RWX volumes.
 
     There is a dedicated recovery backend service for NFS servers in Longhorn system. When a client connects to an NFS server, the client's information, including its hostname, will be stored in the recovery backend. When a share-manager Pod or NFS server is abnormally terminated, Longhorn will create a new one. Within the 90-seconds grace period, clients will reclaim locks using the client information stored in the recovery backend.
     
-    > **Tip:**: The [environment check script](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh) helps users to check all nodes have unique hostnames.
+    > **Tip:** The [environment check script](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh) helps users to check all nodes have unique hostnames.
 
 # Creation and Usage of a RWX Volume
 

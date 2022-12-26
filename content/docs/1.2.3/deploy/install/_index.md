@@ -185,19 +185,34 @@ iscsi install successfully
 
 ### Installing NFSv4 client
 
+In Longhorn system, backup feature requires NFSv4, v4.1 or v4.2, and ReadWriteMany (RWX) volume feature requires NFSv4.1. Before installing NFSv4 client userspace daemon and utilities, make sure the client kernel support is enabled on each Longhorn node.
+
+- Check `NFSv4.1` support is enabled in kernel
+  ```
+  cat /boot/config-`uname -r`| grep CONFIG_NFS_V4_1
+  ```
+
+- Check `NFSv4.2` support is enabled in kernel
+  ```
+  cat /boot/config-`uname -r`| grep CONFIG_NFS_V4_2
+  ```
+
 The command used to install a NFSv4 client differs depending on the Linux distribution.
 
-For Debian and Ubuntu, use this command:
+- For Debian and Ubuntu, use this command:
+  ```
+  apt-get install nfs-common
+  ```
 
-```
-apt-get install nfs-common
-```
+- For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`, use this command:
+  ```
+  yum install nfs-utils
+  ```
 
-For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`, use this command:
-
-```
-yum install nfs-utils
-```
+- For SUSE/OpenSUSE you can install a NFSv4 client via:
+  ```
+  zypper install nfs-client
+  ```
 
 We also provide an `nfs` installer to make it easier for users to install `nfs-client` automatically:
 ```

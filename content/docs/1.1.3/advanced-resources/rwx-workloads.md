@@ -17,19 +17,7 @@ There is also a service created for each RWX volume, and that is used as an endp
 
 # Requirements
 
-To be able to use RWX volumes, each client node needs to have a NFSv4 client installed.
-
-For Ubuntu you can install a NFSv4 client via:
-
-```
-apt install nfs-common
-```
-
-For RPM based distros you can install a NFSv4 client via:
-
-```
-yum install nfs-utils
-```
+To be able to use RWX volumes, each client node needs to have a NFSv4 client installed. Please refer to [Installing NFSv4 client](../../deploy/install/#installing-nfsv4-client) for more installation details.
 
 If the NFSv4 client is not available on the node, when trying to mount the volume the below message will be part of the error:
 ```
