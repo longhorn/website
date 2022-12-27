@@ -46,6 +46,33 @@ There are 3 options for this volume field: `ignored`, `enabled`, and `disabled`.
 
 You can directly set this field in the StoragaClasses so that the customized value can be applied to all volumes created by the StorageClasses.
 
-## Known Issues
+## Known Issues & Limitations
 
-- Volume trim is only supported for RWO volume currently. It will be enhanced for RWX volume at https://github.com/longhorn/longhorn/issues/5143.
+### RWX volumes
+- Currently, Longhorn **UI** only supports filesystem trimming for RWO volume. It will be enhanced for RWX volume at https://github.com/longhorn/longhorn/issues/5143.
+
+- If you want to trim a RWX volume manually, you can:
+    1. Figure out and enter into the share manager pod of the RWX volume, which actually contains the NFS server. The share manager pod is typically named as `share-manager-<volume name>`.
+    ```shell
+    kubectl -n longhorn-system exec -it <the share manager pod> -- bash
+    ```
+    2. Figure out the work directory of the NFS server. The work directory is typically like `/export/<volume name>`:
+    ```shell
+    mount | grep /dev/longhorn/<volume name>
+    /dev/longhorn/<volume name> on /export/<volume name> type ext4 (rw,relatime)
+    ```
+    3. Trim the work directory
+    ```shell
+    fstrim /export/<volume name>
+    ```
+
+### Encrypted volumes
+- By default, TRIM commands are not enabled by the device-mapper. You can check [this doc](https://wiki.archlinux.org/title/Dm-crypt/Specialties#Discard/TRIM_support_for_solid_state_drives_(SSD)) for details.
+
+- If you still want to trim an encrypted Longhorn volume, you can:
+    1. Enter into the node host the volume is attached to.
+    2. Enable flag `discards` for the encrypted volume. The passphrase is recorded in the corresponding secert:
+    ```shell
+    cryptsetup --allow-discards --persistent refresh <Longhorn volume name>
+    ```
+    3. Directly use Longhorn UI to trim the volume or execute `fstrim` for **the mount point** of `/dev/mapper/<volume name>` manually.
