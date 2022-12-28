@@ -3,23 +3,23 @@
   weight: 4
 ---
 
-Volumes are expanded in two stages. First, Longhorn expands the frontend (the block device), then it expands the filesystem.
+Volumes are expanded in two stages. First, Longhorn resizes the block device, then it expands the filesystem.
 
-To prevent the frontend expansion from interference by unexpected data R/W, Longhorn supports offline expansion only. The `detached` volume will be automatically attached to a random node with [maintenance mode.](../../concepts/#22-reverting-volumes-in-maintenance-mode)
-
-Rebuilding and adding replicas is not allowed during the expansion, and expansion is not allowed while replicas are rebuilding or being added.
+Since v1.4.0, Longhorn supports online expansion. Most of the time Longhorn can directly expand an attached volumes without limitations, no matter if the volume is being R/W or rebuilding.
 
 If the volume was not expanded though the CSI interface (e.g. for Kubernetes older than v1.16), the capacity of the corresponding PVC and PV won't change.
 
 ## Prerequisite
 
-- The Longhorn version must be v0.8.0 or higher.
-- The volume to be expanded must be in the `detached` state.
+- For offline expansion, the Longhorn version must be v0.8.0 or higher.
+- For online expansion, the Longhorn version must be v1.4.0 or higher.
 
 ## Expand a Longhorn volume
+
 There are two ways to expand a Longhorn volume: with a PersistentVolumeClaim (PVC) and with the Longhorn UI.
 
 #### Via PVC
+
 This method is applied only if:
 
 - The PVC is dynamically provisioned by the Kubernetes with Longhorn StorageClass.
@@ -76,10 +76,13 @@ Longhorn will try to expand the file system only if:
 - There is a Linux filesystem in the Longhorn volume.
 - The filesystem used in the Longhorn volume is one of the following:
     - ext4
-    - XFS
+    - xfs
 - The Longhorn volume is using the block device frontend.
 
+## Corner cases
+
 #### Handling Volume Revert
+
 If a volume is reverted to a snapshot with smaller size, the frontend of the volume is still holding the expanded size. But the filesystem size will be the same as that of the reverted snapshot. In this case, you will need to handle the filesystem manually:
 
 1. Attach the volume to a random node.
@@ -108,4 +111,23 @@ If a volume is reverted to a snapshot with smaller size, the frontend of the vol
     mount /dev/longhorn/<volume name> <arbitrary mount directory>
     xfs_growfs <the mount directory>
     umount /dev/longhorn/<volume name>
+    ```
+
+#### Encrypted volume
+
+Due to [the upstream limitation](https://kubernetes.io/blog/2022/09/21/kubernetes-1-25-use-secrets-while-expanding-csi-volumes-on-node-alpha/), Longhorn cannot handle **online** expansion for encrypted volumes automatically unless you enable the feature gate `CSINodeExpandSecret`.
+
+If you cannot enable it but still prefer to do online expansion, you can:
+1. Login the node host the encrypted volume is attached to.
+2. Execute `cryptsetup resize <volume name>`. The passphrase this command requires is the field `CRYPTO_KEY_VALUE` of the corresponding secret.
+3. Expand the filesystem.
+
+#### RWX volume
+
+Currently, Longhorn is unable to expand the filesystem (NFS) for RWX volumes. - If you decide to expand a RWX volume manually, you can:
+
+1. Expand the block device of the RWX volume via PVC or UI.
+2. Figure out the share manager pod of the RWX volume then execute the filesystem expansion command. The share manager pod is typically named as `share-manager-<volume name>`.
+    ```shell
+    kubectl -n longhorn-system exec -it <the share manager pod> -- resize2fs /dev/longhorn/<volume name>
     ```
