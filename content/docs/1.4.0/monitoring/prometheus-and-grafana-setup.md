@@ -392,7 +392,7 @@ See [Prometheus - Configuration](https://prometheus.io/docs/alerting/latest/conf
 
 1. Setup Longhorn dashboard.
 
-    Once inside Grafana, import the prebuilt [Longhorn example dashboard](https://grafana.com/grafana/dashboards/13032).
+    Once inside Grafana, import the prebuilt [Longhorn example dashboard](https://grafana.com/grafana/dashboards/17626).
 
     See [Grafana Lab - Export and import](https://grafana.com/docs/grafana/latest/reference/export_import/) for instructions on how to import a Grafana dashboard.
 
