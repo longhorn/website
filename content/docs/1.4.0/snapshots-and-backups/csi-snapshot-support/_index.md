@@ -9,3 +9,7 @@ weight: 3
 - [Longhorn Enhancement Proposal](https://github.com/longhorn/longhorn/blob/master/enhancements/20200904-csi-snapshot-support.md)
 
 Available since v1.1.0
+
+* [Enable CSI Snapshot Support on a Cluster](./enable-csi-snapshot-support)
+* [CSI VolumeSnapshot Associated with Longhorn Snapshot](./csi-volume-snapshot-associated-with-longhorn-snapshot)
+* [CSI VolumeSnapshot Associated with Longhorn Backup](./csi-volume-snapshot-associated-with-longhorn-backup)
