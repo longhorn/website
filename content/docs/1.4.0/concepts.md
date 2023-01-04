@@ -277,7 +277,7 @@ A backup is created using one snapshot as a source, so that it reflects the stat
 
 By contrast to a snapshot, a backup can be thought of as a flattened version of a chain of snapshots. Similar to the way that information is lost when a layered image is converted to a flat image, data is also lost when a chain of snapshots is converted to a backup. In both conversions, any overwritten data would be lost.
 
-Because backups don't contain snapshots, they don't contain the history of changes to the volume data. After you restore a volume from a backup, the volume initially contains one snapshot. This snapshot is a conflated version of all the snapshots in the original chain, and it reflects the live data of the volume at the time at the time the backup was created.
+Because backups don't contain snapshots, they don't contain the history of changes to the volume data. After you restore a volume from a backup, the volume initially contains one snapshot. This snapshot is a conflated version of all the snapshots in the original chain, and it reflects the live data of the volume at the time the backup was created.
 
 While snapshots can be hundreds of gigabytes, backups are made of 2 MB files.
 
