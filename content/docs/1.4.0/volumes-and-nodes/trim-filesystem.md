@@ -15,6 +15,7 @@ Since v1.4.0, Longhorn supports trimming filesystem inside Longhorn volumes. Tri
 - The Longhorn version must be v1.4.0 or higher.
 - There is a trimmable filesystem like EXT4 or XFS inside the Longhorn volume.
 - The volume is attached and mounted on a mount point before trimming.
+- If a volume is attached before Longhorn v1.4.0, it should be upgraded and reattached after Longhorn upgrade. This requirement applies to the corresponding option update as well.
 
 ## Trim the filesystem in a Longhorn volume
 
