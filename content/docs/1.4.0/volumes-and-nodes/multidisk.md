@@ -36,7 +36,7 @@ Nodes and disks can be excluded from future scheduling. Notice that any schedule
 
 In order to remove a disk, two conditions need to be met:
 - The scheduling for the disk must be disabled
-- There is no existing replica using the disk, including any replicas in an error state.
+- There is no existing replica using the disk, including any replicas in an error state. About how to evict replicas from disabled disks, refer to [Select Disks or Nodes for Eviction](../disks-or-nodes-eviction/#select-disks-or-nodes-for-eviction).
 
 Once those two conditions are met, you should be allowed to remove the disk.
 
