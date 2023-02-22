@@ -71,13 +71,13 @@ The following parameters should be specified for each recurring job selector:
     > **Note:** retain value has no effect for this task, Longhorn automatically mutates the `retain` value to 0.
 
   - `snapshot-delete`: periodically remove and purge all kinds of snapshots that exceed the retention count.
-     > **Note:** The `retain` value is independent of each recurring job.
-     >
-     > Using a volume with 2 recurring jobs as an example:
-     > - `snapshot` with retain value set to 5
-     > - `snapshot-delete`: with retain value set to 2
-     >
-     > Eventually, there will be 2 snapshots retained after a complete `snapshot-delete` task execution.
+    > **Note:** The `retain` value is independent of each recurring job.
+    >
+    > Using a volume with 2 recurring jobs as an example:
+    > - `snapshot` with retain value set to 5
+    > - `snapshot-delete`: with retain value set to 2
+    >
+    > Eventually, there will be 2 snapshots retained after a complete `snapshot-delete` task execution.
 
 - `cron`: Cron expression. It tells the execution time of the job.
 
