@@ -378,7 +378,7 @@ For more information about restoring to file, refer to [this section.](../../adv
           terminationGracePeriodSeconds: 10
           containers:
           - name: nginx
-            image: k8s.gcr.io/nginx-slim:0.8
+            image: registry.k8s.io/nginx-slim:0.8
             livenessProbe:
               exec:
                 command:

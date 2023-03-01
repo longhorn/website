@@ -17,7 +17,7 @@ volume entry and restore it. Name the volume something that can easily be
 referenced later for the `Persistent Volumes`.
   - Repeat this step for each volume you need restored.
   - For example, if restoring a StatefulSet with two replicas that had
-  volumes named `pvc-01a` and `pvc-02b`, the restore could look like this:  
+  volumes named `pvc-01a` and `pvc-02b`, the restore could look like this:
 
 | Backup Name | Restored Volume   |
 |-------------|-------------------|
@@ -131,7 +131,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: nginx
-        image: k8s.gcr.io/nginx-slim:0.8
+        image: registry.k8s.io/nginx-slim:0.8
         ports:
         - containerPort: 80
           name: web
