@@ -374,7 +374,7 @@ For more information about restoring to file, refer to [this section.](../../hig
           terminationGracePeriodSeconds: 10
           containers:
           - name: nginx
-            image: k8s.gcr.io/nginx-slim:0.8
+            image: registry.k8s.io/nginx-slim:0.8
             livenessProbe:
               exec:
                 command:
@@ -414,15 +414,15 @@ For more information about restoring to file, refer to [this section.](../../hig
     #  nodeSelector: "storage,fast"
     #  recurringJobs: '[
     #   {
-    #     "name":"snap", 
-    #     "task":"snapshot", 
-    #     "cron":"*/1 * * * *", 
+    #     "name":"snap",
+    #     "task":"snapshot",
+    #     "cron":"*/1 * * * *",
     #     "retain":1
     #   },
     #   {
-    #     "name":"backup", 
-    #     "task":"backup", 
-    #     "cron":"*/2 * * * *", 
+    #     "name":"backup",
+    #     "task":"backup",
+    #     "cron":"*/2 * * * *",
     #     "retain":1,
     #     "labels": {
     #       "interval":"2m"

@@ -8,7 +8,7 @@ To restore, follow the below instructions. The example below uses a StatefulSet 
 
 1. Connect to the `Longhorn UI` page in your web browser. Under the `Backup` tab, select the name of the StatefulSet volume. Click the dropdown menu of the volume entry and restore it. Name the volume something that can easily be referenced later for the `Persistent Volumes`.
     - Repeat this step for each volume you need restored.
-    - For example, if restoring a StatefulSet with two replicas that had volumes named `pvc-01a` and `pvc-02b`, the restore could look like this:  
+    - For example, if restoring a StatefulSet with two replicas that had volumes named `pvc-01a` and `pvc-02b`, the restore could look like this:
 
     | Backup Name | Restored Volume   |
     |-------------|-------------------|
@@ -116,7 +116,7 @@ To restore, follow the below instructions. The example below uses a StatefulSet 
           terminationGracePeriodSeconds: 10
           containers:
           - name: nginx
-            image: k8s.gcr.io/nginx-slim:0.8
+            image: registry.k8s.io/nginx-slim:0.8
             ports:
             - containerPort: 80
               name: web
