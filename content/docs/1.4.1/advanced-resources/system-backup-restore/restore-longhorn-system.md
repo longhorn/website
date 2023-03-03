@@ -23,6 +23,8 @@ weight: 2
 - Longhorn restores the resource from the [Longhorn System Backup Bundle](../backup-longhorn-system#longhorn-system-backup-bundle).
 - Longhorn does not restore existing `Volumes` and their associated `PersistentVolume` and `PersistentVolumeClaim`.
 - Longhorn automatically restores a `Volume` from its latest backup.
+- To prevent overwriting eligible settings, Longhorn does not restore the `ConfigMap/longhorn-default-setting`.
+- Longhorn does not restore [configurable settings](#configurable-settings).
 
 ## Limitations
 ### Restore Path
