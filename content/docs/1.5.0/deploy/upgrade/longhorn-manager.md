@@ -88,11 +88,6 @@ longhorn-csi-plugin-b2zzj                      2/2     Running   0             2
 
 Next, [upgrade Longhorn engine.](../upgrade-engine)
 
-#### Post upgrade
-
-To avoid crashing existing volumes, as well as switch from the deprecated setting `Guaranteed Engine CPU` to [the new instance manager CPU reservation mechanism](../../../best-practices/#guaranteed-instance-manager-cpu), Longhorn will automatically set `Engine Manager CPU Request` and `Replica Manager CPU Request` from each node based on the deprecated setting value during upgrade. Then, the new global instance manager CPU settings [`Guaranteed Engine Manager CPU`](../../../references/settings/#guaranteed-engine-manager-cpu) and [`Guaranteed Replica Manager CPU`](../../../references/settings/#guaranteed-replica-manager-cpu) won't take effect.
-You may need to check the new mechanism and the setting descriptions to see if you need any adjustments.
-
 ### TroubleShooting
 1. Error: `"longhorn" is invalid: provisioner: Forbidden: updates to provisioner are forbidden.`
 - This means there are some modifications applied to the default storageClass and you need to clean up the old one before upgrade.
