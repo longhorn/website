@@ -93,12 +93,10 @@ Below are the directories Longhorn components requiring access with root and pri
   - /var/lib/longhorn: The default path for storing volume data on a host.
 - Longhorn Engine Image
   - /var/lib/longhorn/engine-binaries: The default path for storing the Longhorn engine binaries.
-- Longhorn Instance Manager (Engine)
-  - /dev: Block devices created by Longhorn are under the `/dev` path.
-  - /proc: Find the recognized host process like container runtime, then use `nsenter` to manage iSCSI targets and initiators, also some file system operations like sync before snapshotting.
-  - /var/lib/longhorn/engine-binaries: The default path for storing the Longhorn engine binaries.
-- Longhorn Instance Manager (Replica)
+- Longhorn Instance Manager
   - /: Access any data path on this node and access Longhorn engine binaries.
+  - /dev: Block devices created by Longhorn are under the `/dev` path.
+  - /proc: Find the recognized host process like container runtime, then use `nsenter` to manage iSCSI targets and initiators, also some file system 
 - Longhorn Share Manager
   - /dev: Block devices created by Longhorn are under the `/dev` path.
   - /lib/modules: Kernel modules required by `cryptsetup` for volume encryption.
