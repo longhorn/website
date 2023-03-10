@@ -9,7 +9,7 @@ To create a recurring job, you can go to the `Recurring Job` page in Longhorn an
 
 You can configure,
 - Any groups that the job should belong to
-- The type of schedule, either `backup`, `backup-force-create`, `snapshot`, `snapshot-force-create`, `snapshot-cleanup` or `snapshot-delete`
+- The type of schedule, either `backup`, `backup-force-create`, `snapshot`, `snapshot-force-create`, `snapshot-cleanup`, `snapshot-delete` or `filesystem-trim`
 - The time that the backup or snapshot will be created, in the form of a [CRON expression](https://en.wikipedia.org/wiki/Cron#CRON_expression)
 - The number of backups or snapshots to retain
 - The number of jobs to run concurrently
@@ -80,6 +80,8 @@ The following parameters should be specified for each recurring job selector:
     > - `snapshot-delete`: with retain value set to 2
     >
     > Eventually, there will be 2 snapshots retained after a complete `snapshot-delete` task execution.
+
+  - `filesystem-trim`: periodically trim filesystem to reclaim disk space
 
 - `cron`: Cron expression. It tells the execution time of the job.
 
