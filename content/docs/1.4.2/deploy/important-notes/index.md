@@ -9,7 +9,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 ## Notes
 
 ### Supported Kubernetes Versions
-Please ensure your Kubernetes cluster is at least v1.21 before upgrading to Longhorn v{{< current-version >}} because the supported Kubernetes version has been updated (>= v1.21 and <= v1.26) in v{{< current-version >}}.
+Please ensure your Kubernetes cluster is at least v1.21 before upgrading to Longhorn v{{< current-version >}} because the supported Kubernetes version has been updated in v{{< current-version >}}.
 
 ### Recurring Jobs
 After the upgrade, the recurring job settings of volumes will be migrated to new recurring job resources, and the `RecurringJobs` field in the volume spec will be deprecated. [[doc](https://longhorn.io/docs/{{< current-version >}}/deploy/upgrade/#4-automatically-migrate-recurring-jobs)]
