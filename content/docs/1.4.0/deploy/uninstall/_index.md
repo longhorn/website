@@ -51,7 +51,7 @@ helm uninstall longhorn -n longhorn-system
     clusterrolebinding.rbac.authorization.k8s.io/longhorn-uninstall-bind created
     job.batch/longhorn-uninstall created
 
-    $ kubectl get job/longhorn-uninstall -n default -w
+    $ kubectl get job/longhorn-uninstall -n longhorn-system -w
     NAME                 COMPLETIONS   DURATION   AGE
     longhorn-uninstall   0/1           3s         3s
     longhorn-uninstall   1/1           20s        20s
