@@ -5,7 +5,7 @@ weight: 1
 
 - [Customizing Default Settings](#customizing-default-settings)
 - [General](#general)
-  - [Allow Node Drain with the Last Healthy Replica](#allow-node-drain-with-the-last-healthy-replica)
+  - [Node Drain Policy](#node-drain-policy)
   - [Automatically Cleanup System Generated Snapshot](#automatically-cleanup-system-generated-snapshot)
   - [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly)
   - [Automatic Salvage](#automatic-salvage)
@@ -71,6 +71,7 @@ weight: 1
 - [Deprecated](#deprecated)
   - [Disable Replica Rebuild](#disable-replica-rebuild)
   - [Custom mkfs.ext4 parameters](#custom-mkfsext4-parameters)
+  - [Allow Node Drain with the Last Healthy Replica](#allow-node-drain-with-the-last-healthy-replica)
 
 ### Customizing Default Settings
 
@@ -78,13 +79,16 @@ To configure Longhorn before installing it, see [this section](../../advanced-re
 
 ### General
 
-#### Allow Node Drain with the Last Healthy Replica
+#### Node Drain Policy
 
-> Default: `false`
+> Default: `block-if-contains-last-replica`
 
-By default, Longhorn will block `kubectl drain` action on a node if the node contains the last healthy replica of a volume.
-
-If this setting is enabled, Longhorn will not block `kubectl drain` action on a node even if the node contains the last healthy replica of a volume.
+Define the policy to use when a node with the last healthy replica of a volume is drained. Available options:
+- `block-if-contains-last-replica`: Longhorn will block the drain when the node contains the last healthy replica of a volume.
+- `allow-if-replica-is-stopped`: Longhorn will allow the drain when the node contains the last healthy replica of a volume but the replica is stopped.
+  WARNING: possible data loss if the node is removed after draining. Select this option if you want to drain the node and do in-place upgrade/maintenance.
+- `always-allow`: Longhorn will allow the drain even though the node contains the last healthy replica of a volume.
+  WARNING: possible data loss if the node is removed after draining. Also possible data corruption if the last replica was running during the draining.
 
 #### Automatically Cleanup System Generated Snapshot
 
@@ -332,7 +336,7 @@ Hashing snapshot disk files impacts the performance of the system. The immediate
 
 > Default: `0 0 */7 * *`
 
-Unix-cron string format. The setting specifies when Longhorn checks the data integrity of snapshot disk files. 
+Unix-cron string format. The setting specifies when Longhorn checks the data integrity of snapshot disk files.
 > **Warning**
 > Hashing snapshot disk files impacts the performance of the system. It is recommended to run data integrity checks during off-peak times and to reduce the frequency of checks.
 
@@ -650,4 +654,13 @@ This deprecated setting is replaced by the new setting `Concurrent Replica Rebui
 
 Allows setting additional filesystem creation parameters for ext4. For older host kernels it might be necessary to disable the optional ext4 metadata_csum feature by specifying `-O ^64bit,^metadata_csum`.
 
-This deprecated setting is replaced by the new setting [`mkfsParams` in the StorageClass](../../volumes-and-nodes/create-volumes/#creating-longhorn-volumes-with-kubectl) and planned removed from v1.5.0. 
+This deprecated setting is replaced by the new setting [`mkfsParams` in the StorageClass](../../volumes-and-nodes/create-volumes/#creating-longhorn-volumes-with-kubectl) and planned removed from v1.5.0.
+
+#### Allow Node Drain with the Last Healthy Replica
+
+> Default: `false`
+
+By default, Longhorn will block `kubectl drain` action on a node if the node contains the last healthy replica of a volume. If this setting is enabled, Longhorn will not block `kubectl drain` action on a node even if the node contains the last healthy replica of a volume.
+
+
+This deprecated setting is replaced by the new setting [Node Drain Policy](#node-drain-policy)
