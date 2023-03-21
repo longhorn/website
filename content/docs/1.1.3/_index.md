@@ -2,6 +2,10 @@
 title: The Longhorn Documentation
 description: Cloud native distributed block storage for Kubernetes
 weight: 1
+aliases:
+- /docs/1.1.2
+- /docs/1.1.1
+- /docs/1.1.0
 ---
 
 **Longhorn** is a lightweight, reliable, and powerful distributed [block storage](https://cloudacademy.com/blog/object-storage-block-storage/) system for Kubernetes.
