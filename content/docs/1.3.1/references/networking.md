@@ -28,8 +28,9 @@ From | Port | Protocol
 To | Port | Protocol
 --- | --- | ---
 `Other Longhorn Manager` | 9500 | TCP
-`Instance Manager` |  8500; 10000-30000 | TCP
-`Backing Image Manager` |  8000; 8001 | TCP
+`Instance Manager` | 8500; 8501 | TCP
+`Backing Image Manager` | 8000 | TCP
+`Backing Image Data Source` | 8000 | TCP
 `External Backupstore` | User defined | TCP
 `Kubernetes API server` | `Kubernetes API server port` | TCP
 
@@ -45,16 +46,16 @@ To | Port | Protocol
 #### ingress
 From | Port | Protocol
 --- | --- | ---
-`Longhorn Manager` | 8500; 10000-30000 | TCP
+`Longhorn Manager` | 8500; 8501 | TCP
 `Other Instance Manager` | 10000-30000 | TCP
 `Node in the Cluster` | 3260 | TCP
-`Backing Image Manager` | 10000-30000 | TCP
+`Backing Image Data Source` | 10000-30000 | TCP
 
 #### egress:
 To | Port | Protocol
 --- | --- | ---
 `Other Instance Manager` | 10000-30000 | TCP
-`Backing Image Manager` |  8002 | TCP
+`Backing Image Data Source` |  8002 | TCP
 `External Backupstore` | User defined | TCP
 
 ### Longhorn CSI plugin
@@ -114,13 +115,15 @@ To | Port | Protocol
 --- | --- | ---
 `Instance Manager` | 10000-30000 | TCP
 `Other Backing Image Manager` | 30001-31000 | TCP
+`Backing Image Data Source` | 8000 | TCP
 
 ### Backing Image Data Source
 #### ingress:
 From | Port | Protocol
 --- | --- | ---
-`Longhorn Manager` | 8001 | TCP
+`Longhorn Manager` | 8000 | TCP
 `Instance Manager` | 8002 | TCP
+`Backing Image Manager` | 8000 | TCP
 
 #### egress:
 To | Port | Protocol
