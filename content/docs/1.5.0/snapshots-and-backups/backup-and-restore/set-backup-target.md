@@ -3,7 +3,7 @@ title: Setting a Backup Target
 weight: 1
 ---
 
-A backup target is the endpoint used to access a backupstore in Longhorn. A backupstore is a NFS server or S3 compatible server that stores the backups of Longhorn volumes. The backup target can be set at `Settings/General/BackupTarget`.
+A backup target is the endpoint used to access a backupstore in Longhorn. A backupstore is a NFS server, SMB/CIFS server or S3 compatible server that stores the backups of Longhorn volumes. The backup target can be set at `Settings/General/BackupTarget`.
 
 For more information about how the backupstore works in Longhorn, see the [concepts section.](../../../concepts/#3-backups-and-secondary-storage)
 
@@ -18,6 +18,7 @@ This page covers the following topics:
 - [Using a self-signed SSL certificate for S3 communication](#using-a-self-signed-ssl-certificate-for-s3-communication)
 - [Enable virtual-hosted-style access for S3 compatible Backupstore](#enable-virtual-hosted-style-access-for-s3-compatible-backupstore)
 - [NFS Backupstore](#nfs-backupstore)
+- [SMB/CIFS Backupstore](#smbcifs-backupstore)
 
 ### Set up AWS S3 Backupstore
 
@@ -248,3 +249,49 @@ nfs://longhorn-test-nfs-svc.default:/opt/backupstore
 You can find an example NFS backupstore for testing purpose [here](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/deploy/backupstores/nfs-backupstore.yaml).
 
 **Result:** Longhorn can store backups in NFS. To create a backup, see [this section.](../create-a-backup)
+
+### SMB/CIFS Backupstore
+
+Before configuring a SMB/CIFS backupstore, a credential secret for the backupstore can be created and deployed by
+  ```
+  #!/bin/bash
+
+  USERNAME=${Username of SMB/CIFS Server}
+  PASSWORD=${Password of SMB/CIFS Server}
+
+  CIFS_USERNAME=`echo -n ${USERNAME} | base64`
+  CIFS_PASSWORD=`echo -n ${PASSWORD} | base64`
+
+  cat <<EOF >>cifs_secret.yml
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: cifs-secret
+    namespace: longhorn-system
+  type: Opaque
+  data:
+    CIFS_USERNAME: ${CIFS_USERNAME}
+    CIFS_PASSWORD: ${CIFS_PASSWORD}
+  EOF
+
+  kubectl apply -f cifs_secret.yml
+  ```
+
+Then, navigate to Longhorn UI > Setting > General > Backup
+
+1. Set **Backup Target**. The target URL should look like this:
+
+    ```
+    cifs://longhorn-test-cifs-svc.default/opt/backupstore
+    ```
+
+2. Set **Backup Target Credential Secret**
+
+    ```
+    cifs-secret
+    ```
+    This is the secret name with CIFS credentials.
+
+You can find an example CIFS backupstore for testing purpose [here](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/deploy/backupstores/cifs-backupstore.yaml).
+
+**Result:** Longhorn can store backups in CIFS. To create a backup, see [this section.](../create-a-backup)
