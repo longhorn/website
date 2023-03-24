@@ -9,11 +9,12 @@ weight: 4
 - [Backup target](#backup-target)
 - [Backup volume](#backup-volume)
 - [Block storage](#block-storage)
+- [CRD](#crd)
 - [CSI Driver](#csi-driver)
-- [Disaster recovery volumes (DR volumes)](#disaster-recovery-volumes-dr-volume)
+- [Disaster Recovery Volumes (DR volume)](#disaster-recovery-volumes-dr-volume)
 - [ext4](#ext4)
 - [Frontend expansion](#frontend-expansion)
-- [Instance manager](#instance-manager)
+- [Instance Manager](#instance-manager)
 - [Longhorn volume](#longhorn-volume)
 - [Mount](#mount)
 - [NFS](#nfs)
@@ -32,11 +33,12 @@ weight: 4
 - [Stable identity](#stable-identity)
 - [StatefulSet](#statefulset)
 - [StorageClass](#storageclass)
-- [System backup](#system-backup)
+- [System Backup](#system-backup)
 - [Thin provisioning](#thin-provisioning)
 - [Umount](#umount)
 - [Volume (Kubernetes concept)](#volume-kubernetes-concept)
 - [XFS](#xfs)
+- [SMB/CIFS](#smbcifs)
 
 ### Attach/Reattach
 
@@ -205,3 +207,7 @@ For more information, see the Kubernetes documentation on [volumes.](https://kub
 
 ### XFS
 A [file system](https://en.wikipedia.org/wiki/XFS) supported by most Linux distributions. Longhorn supports XFS for storage.
+
+### SMB/CIFS
+
+A [network file system protocol](https://en.wikipedia.org/wiki/Network_File_System) that allows you to access files over a computer network, similar to the way that local storage is accessed. Longhorn supports using SMB/CIFS as a backupstore for secondary storage.
