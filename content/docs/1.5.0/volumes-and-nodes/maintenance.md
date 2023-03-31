@@ -5,9 +5,10 @@ weight: 6
 
 This section describes how to handle planned maintenance of nodes.
 
-- [Updating Node OS or Container Runtime](#updating-the-node-os-or-container-runtime)
+- [Updating the Node OS or Container Runtime](#updating-the-node-os-or-container-runtime)
 - [Updating Kubernetes](#updating-kubernetes)
 - [Removing a Disk](#removing-a-disk)
+  - [Reusing the Node Name](#reusing-the-node-name)
 - [Removing a Node](#removing-a-node)
 
 ## Updating the Node OS or Container Runtime
@@ -16,9 +17,9 @@ This section describes how to handle planned maintenance of nodes.
 
 1. Drain the node to move the workload to somewhere else.
 
-    You will need to use `--ignore-daemonsets` and `--pod-selector='app!=csi-attacher,app!=csi-provisioner,app!=longhorn-admission-webhook,app!=longhorn-conversion-webhook,app!=longhorn-driver-deployer'` options to drain the node.
+    You will need to use `--ignore-daemonsets` and `--pod-selector='app!=csi-attacher,app!=csi-provisioner,app!=longhorn-driver-deployer'` options to drain the node.
     The `--ignore-daemonsets` is needed because Longhorn deployed some daemonsets such as `Longhorn manager`, `Longhorn CSI plugin`, `engine image`.
-    The `--pod-selector='app!=csi-attacher,app!=csi-provisioner,app!=longhorn-admission-webhook,app!=longhorn-conversion-webhook,app!=longhorn-driver-deployer'` is needed so that Longhorn can properly detaches Longhorn volumes (see the [GitHub issue](https://github.com/longhorn/longhorn/issues/3304) for more detail).
+    The `--pod-selector='app!=csi-attacher,app!=csi-provisioner,app!=longhorn-driver-deployer'` is needed so that Longhorn can properly detaches Longhorn volumes (see the [GitHub issue](https://github.com/longhorn/longhorn/issues/3304) for more detail).
 
     The replica processes on the node will be stopped at this stage. Replicas on
     the node will be shown as `Failed`.
