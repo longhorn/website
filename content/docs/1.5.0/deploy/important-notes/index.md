@@ -53,11 +53,12 @@ For example, adding the following labels to the namespace that is running Longho
         pod-security.kubernetes.io/warn-version: latest
    	```
 
-### Updating CSI Snapshot CRD `v1beta1` to `v1`, `v1beta1` Deprecated
+### Updating CSI Snapshot CRD `v1beta1` to `v1`, `v1beta1` Removed
 
-The CSI snapshot CRDs `v1beta1` version is being deprecated and replaced by `v1` version,
-please follow the instruction [Enable CSI Snapshot Support](../../snapshots-and-backups/csi-snapshot-support/enable-csi-snapshot-support) to update CSI snapshot CRDs and CSI snapshot controller.
-If you have manifests or scripts that are still using `v1beta1` version, consider upgrading them to use `v1` as well.
+Support for the `v1beta1` version of CSI snapshot CRDs was previously deprecated in favor of the `v1` version. 
+The CSI components in Longhorn v{{< current-version >}} only function with the `v1` version.
+Please follow the instructions at [Enable CSI Snapshot Support](../../snapshots-and-backups/csi-snapshot-support/enable-csi-snapshot-support) to update CSI snapshot CRDs and the CSI snapshot controller.
+If you have Longhorn volume manifests or scripts that are still using `v1beta1` version, you must upgrade them to `v1` as well.
 
 ### Add StorageClass Parameter `mkfsParams` and [`Custom mkfs.ext4 parameters`](../../references/settings/#custom-mkfsext4-parameters) Setting Deprecated
 
