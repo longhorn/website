@@ -16,9 +16,8 @@ This section describes how to handle planned node maintenance or upgrading Kuber
 
 1. Drain the node to move the workload to somewhere else.
 
-    You will need to use `--ignore-daemonsets` and `--force` to drain the node.
+    You will need to use `--ignore-daemonsets` to drain the node.
     The `--ignore-daemonsets` is needed because Longhorn deployed some daemonsets such as `Longhorn manager`, `Longhorn CSI plugin`, `engine image`.
-    The `--force` is needed because some Longhorn pods (instance manager and share manager pods) are not managed by a ReplicationController, Job, or DaemonSet.
 
     The running replicas on the node will be stopped at this stage. They will be shown as `Failed`.
 
