@@ -14,6 +14,8 @@ Please ensure your Kubernetes cluster is at least v1.21 before upgrading to Long
 ### Recurring Jobs
 After the upgrade, the recurring job settings of volumes will be migrated to new recurring job resources, and the `RecurringJobs` field in the volume spec will be deprecated. [[doc](https://longhorn.io/docs/{{< current-version >}}/deploy/upgrade/#4-automatically-migrate-recurring-jobs)]
 
+The behavior of the recurring job types `Snapshot` and `Backup` will attempt to delete old snapshots first if they exceed the retained count before creating a new snapshot. Additionally, two new recurring job types have been introduced, `Snapshot Force Create` and `Backup Force Create`. They retain the original behavior of taking a snapshot or backup first before deleting outdated snapshots.
+
 ### Backup Migration Time
 When upgrading from a Longhorn version >= 1.2.0 and <= v1.2.3 to v{{< current-version >}}, if your cluster has many backups, you may expect to have a long upgrade time (with 22000 backups, it could take a few hours). Helm upgrade may timeout and you may need to re-run the upgrade command or set a longer timeout. This is [a known issue](https://github.com/longhorn/longhorn/issues/3890).
 
