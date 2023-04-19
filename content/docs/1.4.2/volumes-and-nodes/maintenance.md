@@ -5,10 +5,13 @@ weight: 6
 
 This section describes how to handle planned node maintenance or upgrading Kubernetes version for the cluster.
 
-- [Updating Node OS or Container Runtime](#updating-the-node-os-or-container-runtime)
+- [Updating the Node OS or Container Runtime](#updating-the-node-os-or-container-runtime)
 - [Removing a Disk](#removing-a-disk)
+  - [Reusing the Node Name](#reusing-the-node-name)
 - [Removing a Node](#removing-a-node)
-- [Updating Kubernetes](#upgrading-kubernetes)
+- [Upgrading Kubernetes](#upgrading-kubernetes)
+  - [In-place Upgrade](#in-place-upgrade)
+  - [Managed Kubernetes](#managed-kubernetes)
 
 ## Updating the Node OS or Container Runtime
 

@@ -34,10 +34,6 @@ The initial settings for Longhorn can be customized by [editing the deployment c
     $ kubectl -n longhorn-system get pod
     NAME                                           READY   STATUS    RESTARTS   AGE
     longhorn-ui-b7c844b49-w25g5                    1/1     Running   0          2m41s
-    longhorn-conversion-webhook-5dc58756b6-9d5w7   1/1     Running   0          2m41s
-    longhorn-conversion-webhook-5dc58756b6-jp5fw   1/1     Running   0          2m41s
-    longhorn-admission-webhook-8b7f74576-rbvft     1/1     Running   0          2m41s
-    longhorn-admission-webhook-8b7f74576-pbxsv     1/1     Running   0          2m41s
     longhorn-manager-pzgsp                         1/1     Running   0          2m41s
     longhorn-driver-deployer-6bd59c9f76-lqczw      1/1     Running   0          2m41s
     longhorn-csi-plugin-mbwqz                      2/2     Running   0          100s
