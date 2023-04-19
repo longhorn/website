@@ -24,14 +24,14 @@ You may manually install these components by executing the following steps.
 > For example, on a vanilla Kubernetes cluster, update the namespace from `default` to `kube-system` prior to issuing the `kubectl create` command.
 
 Install the Snapshot CRDs:
-1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/v5.0.1/client/config/crd
-because Longhorn v{{< current-version >}} uses [CSI external-snapshotter](https://kubernetes-csi.github.io/docs/external-snapshotter.html) v5.0.1
+1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/v6.2.1/client/config/crd
+because Longhorn v{{< current-version >}} uses [CSI external-snapshotter](https://kubernetes-csi.github.io/docs/external-snapshotter.html) v6.2.1
 2. Run `kubectl create -f client/config/crd`.
 3. Do this once per cluster.
 
 Install the Common Snapshot Controller:
-1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/v5.0.1/deploy/kubernetes/snapshot-controller
-because Longhorn v{{< current-version >}} uses [CSI external-snapshotter](https://kubernetes-csi.github.io/docs/external-snapshotter.html) v5.0.1
+1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/v6.2.1/deploy/kubernetes/snapshot-controller
+because Longhorn v{{< current-version >}} uses [CSI external-snapshotter](https://kubernetes-csi.github.io/docs/external-snapshotter.html) v6.2.1
 2. Update the namespace to an appropriate value for your environment (e.g. `kube-system`)
 3. Run `kubectl create -f deploy/kubernetes/snapshot-controller`.
 3. Do this once per cluster.

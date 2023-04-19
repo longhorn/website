@@ -8,7 +8,6 @@ We recommend the following setup for deploying Longhorn in production.
 - [Minimum Recommended Hardware](#minimum-recommended-hardware)
 - [Architecture](#architecture)
 - [Operating System](#operating-system)
-  - [Unsupported Operating System](#unsupported-operating-system)
 - [Node and Disk Setup](#node-and-disk-setup)
   - [Use a Dedicated Disk](#use-a-dedicated-disk)
   - [Minimal Available Storage and Over-provisioning](#minimal-available-storage-and-over-provisioning)
@@ -41,21 +40,17 @@ Longhorn supports the following architectures:
 
 ## Operating System
 
-The below Linux OS distributions and versions have been verified during the v{{< current-version >}} release testing, but it does not mean Longhorn only supports them. Basically,
-Longhorn should work well on any certified Kubernetes cluster running on Linux nodes with a most general-purpose operating system as below examples.
+The following Linux OS distributions and versions have been verified during the v{{< current-version >}} release testing. However, this does not imply that Longhorn exclusively supports these distributions. Essentially, Longhorn should function well on any certified Kubernetes cluster running on Linux nodes with a wide range of general-purpose operating systems, as well as verified container-optimized operating systems like SLE Micro.
 
-| No.| OS           | Versions
-|------|--------------| --------
-|1.    | Ubuntu       | 18.04, 20.04
-|2.    | SLES         | 15 SP1, 15 SP2, 15 SP3
-|3.    | CentOS       | 7, 8
-|4.    | RHEL         | 7.9, 8.3, 8.4
-|5.    | Oracle Linux | 8.3
-|6.    | Rocky Linux  | 8.4
-
-### Unsupported Operating System
-
-Non-General Purpose OS or Container-Optimized OS due to lacking package manager or immutable system limitation.
+| No. | OS           | Versions
+|-----|--------------| --------
+| 1.  | Ubuntu       | 18.04, 20.04
+| 2.  | SLES         | 15 SP4
+| 3.  | SLE Micro    | 5.3
+| 4.  | CentOS       | 7, 8
+| 5.  | RHEL         | 7.9, 8.3, 8.4
+| 6.  | Oracle Linux | 8.3
+| 7.  | Rocky Linux  | 8.4
 
 ## Node and Disk Setup
 

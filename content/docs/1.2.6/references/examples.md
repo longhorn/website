@@ -182,9 +182,6 @@ For reference, this page provides examples of Kubernetes resources that use Long
             volumeMounts:
             - name: mysql-volume
               mountPath: /var/lib/mysql
-            env:
-            - name: MYSQL_ROOT_PASSWORD
-              value: "rancher"
           volumes:
           - name: mysql-volume
             persistentVolumeClaim:
