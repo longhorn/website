@@ -14,6 +14,8 @@ Please ensure your Kubernetes cluster is at least v1.21 before upgrading to Long
 ### Recurring Jobs
 After the upgrade, the recurring job settings of volumes will be migrated to new recurring job resources, and the `RecurringJobs` field in the volume spec will be deprecated. [[doc](https://longhorn.io/docs/{{< current-version >}}/deploy/upgrade/#4-automatically-migrate-recurring-jobs)]
 
+The behavior of the recurring job types `Snapshot` and `Backup` will attempt to delete old snapshots first if they exceed the retained count before creating a new snapshot. Additionally, two new recurring job types have been introduced, `Snapshot Force Create` and `Backup Force Create`. They retain the original behavior of taking a snapshot or backup first before deleting outdated snapshots.
+
 ### Backup Migration Time
 When upgrading from a Longhorn version >= 1.2.0 and <= v1.2.3 to v{{< current-version >}}, if your cluster has many backups, you may expect to have a long upgrade time (with 22000 backups, it could take a few hours). Helm upgrade may timeout and you may need to re-run the upgrade command or set a longer timeout. This is [a known issue](https://github.com/longhorn/longhorn/issues/3890).
 
@@ -55,7 +57,7 @@ For example, adding the following labels to the namespace that is running Longho
 
 ### Updating CSI Snapshot CRD `v1beta1` to `v1`, `v1beta1` Removed
 
-Support for the `v1beta1` version of CSI snapshot CRDs was previously deprecated in favor of the `v1` version. 
+Support for the `v1beta1` version of CSI snapshot CRDs was previously deprecated in favor of the `v1` version.
 The CSI components in Longhorn v{{< current-version >}} only function with the `v1` version.
 Please follow the instructions at [Enable CSI Snapshot Support](../../snapshots-and-backups/csi-snapshot-support/enable-csi-snapshot-support) to update CSI snapshot CRDs and the CSI snapshot controller.
 If you have Longhorn volume manifests or scripts that are still using `v1beta1` version, you must upgrade them to `v1` as well.
