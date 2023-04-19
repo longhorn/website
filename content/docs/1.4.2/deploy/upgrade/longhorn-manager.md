@@ -65,7 +65,11 @@ Then wait for all the pods to become running and Longhorn UI working. e.g.:
 $ kubectl -n longhorn-system get pod
 NAME                                           READY   STATUS    RESTARTS      AGE
 engine-image-ei-4dbdb778-nw88l                 1/1     Running   0             4m29s
+longhorn-conversion-webhook-5dc58756b6-8vf8g   1/1     Running   0             75s
+longhorn-conversion-webhook-5dc58756b6-jqq6n   1/1     Running   0             75s
 longhorn-ui-b7c844b49-jn5g6                    1/1     Running   0             75s
+longhorn-admission-webhook-8b7f74576-898c4     1/1     Running   0             75s
+longhorn-admission-webhook-8b7f74576-t7jqk     1/1     Running   0             75s
 longhorn-manager-z2p8h                         1/1     Running   0             71s
 instance-manager-r-de8337e2                    1/1     Running   0             65s
 instance-manager-e-c812d56c                    1/1     Running   0             65s
@@ -101,3 +105,20 @@ You may need to check the new mechanism and the setting descriptions to see if y
     ```
     kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/storageclass.yaml
     ```
+
+2. Error: `...proto: duplicate proto type registered: VersionResponse panic: Unrecognized command: conversion-webhook ...` in the longhorn-conversion-webhook pods in `CrashLoopBackOff` state.
+    - Check if the longhorn-conversion-webhook image tag is v{{< current-version >}} by
+        ```
+        kubectl -n longhorn-system get deployments longhorn-conversion-webhook -o yaml | grep image
+        ```
+
+    - It indicates Helm uses the previously configured image tag value if the image tag is different than expected, i.e. v{{< current-version >}}. Then, you need to reset the values by `--reset-values`.
+        - You can simply upgrade Longhorn without updating your customized default settings.
+            ```
+            helm upgrade longhorn longhorn/longhorn -n longhorn-system --reset-values
+            ```
+        - You can customize the default settings in as described in [Customize Default Settings](../../../advanced-resources/deploy/customizing-default-settings/) and then run
+            ```
+            helm upgrade longhorn longhorn/longhorn -n longhorn-system --values ./values.yaml --reset-values
+            ```
+
