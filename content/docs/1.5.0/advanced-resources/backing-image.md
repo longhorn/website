@@ -60,29 +60,46 @@ spec:
 
 #### Create and use a backing image via StorageClass and PVC
 1. In a Longhorn StorageClass.
-  1. Setting parameter `backingImageName` means asking Longhorn to use this backing image during volume creation.
-  2. If you want to create the backing image as long as it does not exist during the CSI volume creation, parameters `backingImageDataSourceType` and `backingImageDataSourceParameters` should be set as well. Similar to YAML, it's better not to create a backing image via "upload" in StorageClass.
-     e.g.:
-     ```yaml
-     kind: StorageClass
-     apiVersion: storage.k8s.io/v1
-     metadata:
-       name: longhorn-backing-image-example
-     provisioner: driver.longhorn.io
-     allowVolumeExpansion: true
-     reclaimPolicy: Delete
-     volumeBindingMode: Immediate
-     parameters:
-       numberOfReplicas: "3"
-       staleReplicaTimeout: "2880"
-       backingImage: "bi-download"
-       backingImageDataSourceType: "download"
-       backingImageDataSourceParameters: '{"url": "https://backing-image-example.s3-region.amazonaws.com/test-backing-image"}'
-       backingImageChecksum: "SHA512 checksum of the backing image"
-     ```
-     If all of these parameters are set and the backing image already exists, Longhorn will validate if the parameters matches the existing one before using it.
-2. Create a PVC with the StorageClass. Then the backing image will be created (with the Longhorn volume) if it does not exist.
-3. Longhorn starts to prepare the backing images to disks for the replicas when a volume using the backing image is attached to a node.
+2. Setting parameter `backingImageName` means asking Longhorn to use this backing image during volume creation.
+3. If you want to create the backing image as long as it does not exist during the CSI volume creation, parameters `backingImageDataSourceType` and `backingImageDataSourceParameters` should be set as well. Similar to YAML, it's better not to create a backing image via "upload" in StorageClass. Note that if all of these parameters are set and the backing image already exists, Longhorn will validate if the parameters matches the existing one before using it.
+    - For `download`:
+      ```yaml
+      kind: StorageClass
+      apiVersion: storage.k8s.io/v1
+      metadata:
+        name: longhorn-backing-image-example
+      provisioner: driver.longhorn.io
+      allowVolumeExpansion: true
+      reclaimPolicy: Delete
+      volumeBindingMode: Immediate
+      parameters:
+        numberOfReplicas: "3"
+        staleReplicaTimeout: "2880"
+        backingImage: "bi-download"
+        backingImageDataSourceType: "download"
+        backingImageDataSourceParameters: '{"url": "https://backing-image-example.s3-region.amazonaws.com/test-backing-image"}'
+        backingImageChecksum: "SHA512 checksum of the backing image"
+      ```
+    - For `export-from-volume`:
+      ```yaml
+      kind: StorageClass
+      apiVersion: storage.k8s.io/v1
+      metadata:
+        name: longhorn-backing-image-example
+      provisioner: driver.longhorn.io
+      allowVolumeExpansion: true
+      reclaimPolicy: Delete
+      volumeBindingMode: Immediate
+      parameters:
+        numberOfReplicas: "3"
+        staleReplicaTimeout: "2880"
+        backingImage: "bi-export-from-volume"
+        backingImageDataSourceType: "export-from-volume"
+        backingImageDataSourceParameters: '{"volume-name": "vol-export-src", "export-type": "qcow2"}'
+      ```
+
+4. Create a PVC with the StorageClass. Then the backing image will be created (with the Longhorn volume) if it does not exist.
+5. Longhorn starts to prepare the backing images to disks for the replicas when a volume using the backing image is attached to a node.
 
 #### Notice:
 - Please be careful of the escape character `\` when you input a download URL in a StorageClass.
