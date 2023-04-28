@@ -70,7 +70,6 @@ weight: 1
   - [Remove Snapshots During Filesystem Trim](#remove-snapshots-during-filesystem-trim)
 - [Deprecated](#deprecated)
   - [Disable Replica Rebuild](#disable-replica-rebuild)
-  - [Custom mkfs.ext4 parameters](#custom-mkfsext4-parameters)
   - [Allow Node Drain with the Last Healthy Replica](#allow-node-drain-with-the-last-healthy-replica)
 
 ### Customizing Default Settings
@@ -649,12 +648,6 @@ See [Trim Filesystem](../../volumes-and-nodes/trim-filesystem) for details.
 > Default: `false`
 
 This deprecated setting is replaced by the new setting `Concurrent Replica Rebuild Per Node Limit`. Once the new setting value is 0, it means rebuilding disable.
-
-#### Custom mkfs.ext4 parameters
-
-Allows setting additional filesystem creation parameters for ext4. For older host kernels it might be necessary to disable the optional ext4 metadata_csum feature by specifying `-O ^64bit,^metadata_csum`.
-
-This deprecated setting is replaced by the new setting [`mkfsParams` in the StorageClass](../../volumes-and-nodes/create-volumes/#creating-longhorn-volumes-with-kubectl) and planned removed from v1.5.0.
 
 #### Allow Node Drain with the Last Healthy Replica
 

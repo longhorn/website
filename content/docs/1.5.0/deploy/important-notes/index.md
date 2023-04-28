@@ -62,9 +62,9 @@ The CSI components in Longhorn v{{< current-version >}} only function with the `
 Please follow the instructions at [Enable CSI Snapshot Support](../../snapshots-and-backups/csi-snapshot-support/enable-csi-snapshot-support) to update CSI snapshot CRDs and the CSI snapshot controller.
 If you have Longhorn volume manifests or scripts that are still using `v1beta1` version, you must upgrade them to `v1` as well.
 
-### Add StorageClass Parameter `mkfsParams` and [`Custom mkfs.ext4 parameters`](../../references/settings/#custom-mkfsext4-parameters) Setting Deprecated
+### `Custom mkfs.ext4 parameters` Setting Removed
 
-The [`Custom mkfs.ext4 parameters`](../../references/settings/#custom-mkfsext4-parameters) will be deprecated and replaced by a new parameter `mkfsParams` as a per-StorageClass mkfs option (e.g., `-I 256 -b 4096 -O ^metadata_csum,^64bit`).
+The `Custom mkfs.ext4 parameters` setting was deprecated in Longhorn `v1.4.0` and is now removed. The per-StorageClass `mkfsParams` parameter should be used to specify mkfs options (e.g., `-I 256 -b 4096 -O ^metadata_csum,^64bit`) instead. See [Creating Longhorn Volumes with kubectl](../../volumes-and-nodes/create-volumes/#creating-longhorn-volumes-with-kubectl) for details.
 
 ### Longhorn Supports Fast Replica Rebuilding, and It Is Enabled by Default
 
