@@ -104,7 +104,9 @@ By deleting the pod, its controller restarts the pod and Kubernetes handles volu
 
 If disabled, Longhorn will not delete the workload pod that is managed by a controller. You will have to manually restart the pod to reattach and remount the volume.
 
-**Note:** This setting doesn't apply to the workload pods that don't have a controller. Longhorn never deletes them.
+> **Note:** This setting doesn't apply to below cases.
+> - The workload pods don't have a controller; Longhorn never deletes them.
+> - The volumes used by workloads are RWX, because the Longhorn share manager, which provides the RWX NFS service, has its own resilience mechanism to ensure availability until the volume gets reattached without relying on the pod lifecycle to trigger volume reattachment. For details, see [here](../../advanced-resources/rwx-workloads).
 
 #### Automatic Salvage
 
@@ -274,6 +276,7 @@ This interval in minutes determines how long Longhorn will wait before cleaning 
 > Default: `300`
 
 The interval in seconds determines how long Longhorn will wait before re-downloading the backing image file when all disk files of this backing image become `failed` or `unknown`.
+
 > **Note:**
 >  - This recovery only works for the backing image of which the creation type is `download`.
 >  - File state `unknown` means the related manager pods on the pod is not running or the node itself is down/disconnected.
@@ -355,7 +358,7 @@ This setting allows Longhorn to automatically delete the `orphan` resource and i
 
 If this setting is enabled, Longhorn automatically attaches the volume and takes snapshot/backup when it is the time to do recurring snapshot/backup.
 
-Note that during the time the volume was attached automatically, the volume is not ready for the workload. the workload will have to wait until the recurring job finishes.
+> **Note:** During the time the volume was attached automatically, the volume is not ready for the workload. The workload will have to wait until the recurring job finishes.
 
 #### Backup Target
 
@@ -589,9 +592,11 @@ By default, Longhorn workloads run with the same priority as other pods in the c
 
 The Priority Class setting will specify a Priority Class for the Longhorn workloads to run as. This can be used to set the priority for Longhorn workloads higher so that they will not be the first to be evicted when a node is under pressure.
 
-Longhorn system contains user deployed components (e.g, Longhorn manager, Longhorn driver, Longhorn UI) and system managed components (e.g, instance manager, engine image, CSI driver, etc.)
+Longhorn system contains user deployed components (e.g, Longhorn manager, Longhorn driver, Longhorn UI) and system managed components (e.g, instance manager, engine image, CSI driver, etc.).
+
 Note that this setting only sets Priority Class for system managed components.
 Depending on how you deployed Longhorn, you need to set Priority Class for user deployed components in Helm chart or deployment YAML file.
+
 > **Warning:** This setting should only be changed after detaching all Longhorn volumes, as the Longhorn system components will be restarted to apply the setting. The Priority Class update will take a while, and users cannot operate Longhorn system during the update. Hence, it's recommended to set the Priority Class during Longhorn deployment.
 
 See [Priority Class](../../advanced-resources/deploy/priority-class) for details.
