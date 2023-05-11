@@ -22,6 +22,7 @@ weight: 1
   - [Disable Revision Counter](#disable-revision-counter)
   - [Enable Upgrade Checker](#enable-upgrade-checker)
   - [Latest Longhorn Version](#latest-longhorn-version)
+  - [Allow Collecting Longhorn Usage Metrics](#allow-collecting-longhorn-usage-metrics)
   - [Pod Deletion Policy When Node is Down](#pod-deletion-policy-when-node-is-down)
   - [Registry Secret](#registry-secret)
   - [Replica Replenishment Wait Interval](#replica-replenishment-wait-interval)
@@ -213,7 +214,93 @@ Upgrade Checker will check for a new Longhorn version periodically. When there i
 
 The latest version of Longhorn available. Automatically updated by the Upgrade Checker.
 
-Only available if `Upgrade Checker` is enabled.
+> Only available if `Upgrade Checker` is enabled.
+
+#### Allow Collecting Longhorn Usage Metrics
+
+> Default: `true`
+
+Enabling this setting will allow Longhorn to provide valuable usage metrics to https://metrics.longhorn.io/.
+
+This information will help us gain insights how Longhorn is being used, which will ultimately contribute to future improvements.
+
+**Node Information collected from all cluster nodes includes:**
+- Number of disks of each device type (HDD, SSD, NVMe, unknown).
+  > This value may not be accurate for virtual machines.
+- Host kernel release.
+- Host operating system (OS) distribution.
+- Kubernetest node provider.
+
+**Cluster Information collected from one of the cluster nodes includes:**
+- Longhorn namespace UID.
+- Number of Longhorn nodes.
+- Number of volumes of each access mode (RWO, RWX, unknown).
+- Number of volumes of each data locality type (disabled, best_effort, strict_local, unknown).
+- Number of volumes of each frontend type (blockdev, iscsi).
+- Average volume size.
+- Average volume actual size.
+- Average number of snapshots per volume.
+- Average number of replicas per volume.
+- Average Longhorn component CPU usage (instance manager, manager)
+- Average Longhorn component memory usage (instance manager, manager)
+- Longhorn settings:
+  - Partially included:
+    - Backup Target Type/Protocol (azblob, cifs, nfs, s3, none, unknown). This is from the Backup Target setting.
+  - Included as true or false to indicate if this setting is configured:
+    - Priority Class
+    - Registry Secret
+    - Storage Network
+    - System Managed Components Node Selector
+    - Taint Toleration
+  - Included as it is:
+		- Allow Node Drain with the Last Healthy Replica
+		- Allow Recurring Job While Volume Is Detached
+		- Allow Volume Creation With Degraded Availability
+		- Automatically Cleanup System Generated Snapshot
+		- Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly
+		- Automatic Salvage
+		- Backing Image Cleanup Wait Interval
+		- Backing Image Recovery Wait Interval
+		- Backup Compression Method
+		- Backupstore Poll Interval
+		- Backup Concurrent Limit
+		- Concurrent Automatic Engine Upgrade Per Node Limit
+		- Concurrent Backup Restore Per Node Limit
+		- Concurrent Replica Rebuild Per Node Limit
+		- CRD API Version
+		- Create Default Disk Labeled Nodes
+		- Default Data Locality
+		- Default Replica Count
+		- Disable Revision Counter
+		- Disable Scheduling On Cordoned Node
+		- Engine Replica Timeout
+		- Failed Backup TTL
+		- Fast Replica Rebuild Enabled
+		- Guaranteed Instance Manager CPU
+		- Kubernetes Cluster Autoscaler Enabled
+		- Node Down Pod Deletion Policy
+		- Node Drain Policy
+		- Orphan Auto Deletion
+		- Recurring Failed Jobs History Limit
+		- Recurring Successful Jobs History Limit
+		- Remove Snapshots During Filesystem Trim
+		- Replica Auto Balance
+		- Replica File Sync HTTP Client Timeout
+		- Replica Replenishment Wait Interval
+		- Replica Soft Anti Affinity
+		- Replica Zone Soft Anti Affinity
+		- Restore Concurrent Limit
+		- Restore Volume Recurring Jobs
+		- Snapshot Data Integrity
+		- Snapshot Data Integrity CronJob
+		- Snapshot DataIntegrity Immediate Check After Snapshot Creation
+		- Storage Minimal Available Percentage
+		- Storage Over Provisioning Percentage
+		- Storage Reserved Percentage For Default Disk
+		- Support Bundle Failed History Limit
+		- System Managed Pods Image Pull Policy
+
+> The `Upgrade Checker` needs to be enabled to periodically send the collected data.
 
 #### Pod Deletion Policy When Node is Down
 
