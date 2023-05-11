@@ -69,7 +69,6 @@ weight: 1
   - [Storage Network](#storage-network)
   - [Remove Snapshots During Filesystem Trim](#remove-snapshots-during-filesystem-trim)
 - [Deprecated](#deprecated)
-  - [Disable Replica Rebuild](#disable-replica-rebuild)
   - [Allow Node Drain with the Last Healthy Replica](#allow-node-drain-with-the-last-healthy-replica)
 
 ### Customizing Default Settings
@@ -647,12 +646,6 @@ Notice that trying to trim a removed files from a valid snapshot will do nothing
 See [Trim Filesystem](../../volumes-and-nodes/trim-filesystem) for details.
 
 ### Deprecated
-
-#### Disable Replica Rebuild
-
-> Default: `false`
-
-This deprecated setting is replaced by the new setting `Concurrent Replica Rebuild Per Node Limit`. Once the new setting value is 0, it means rebuilding disable.
 
 #### Allow Node Drain with the Last Healthy Replica
 

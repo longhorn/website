@@ -62,9 +62,13 @@ The CSI components in Longhorn v{{< current-version >}} only function with the `
 Please follow the instructions at [Enable CSI Snapshot Support](../../snapshots-and-backups/csi-snapshot-support/enable-csi-snapshot-support) to update CSI snapshot CRDs and the CSI snapshot controller.
 If you have Longhorn volume manifests or scripts that are still using `v1beta1` version, you must upgrade them to `v1` as well.
 
-### `Custom mkfs.ext4 parameters` Setting Removed
+### `Custom mkfs.ext4 Parameters` Setting Removed
 
-The `Custom mkfs.ext4 parameters` setting was deprecated in Longhorn `v1.4.0` and is now removed. The per-StorageClass `mkfsParams` parameter should be used to specify mkfs options (e.g., `-I 256 -b 4096 -O ^metadata_csum,^64bit`) instead. See [Creating Longhorn Volumes with kubectl](../../volumes-and-nodes/create-volumes/#creating-longhorn-volumes-with-kubectl) for details.
+The `Custom mkfs.ext4 Parameters` setting was deprecated in Longhorn `v1.4.0` and is now removed. The per-StorageClass `mkfsParams` parameter should be used to specify mkfs options (e.g., `-I 256 -b 4096 -O ^metadata_csum,^64bit`) instead. See [Creating Longhorn Volumes with kubectl](../../volumes-and-nodes/create-volumes/#creating-longhorn-volumes-with-kubectl) for details.
+
+### `Disable Replica Rebuild` Setting Removed
+
+The `Disable Replica Rebuild` setting was deprecated and replaced by the [Concurrent Replica Rebuild Per Node Limit](../../references/settings/#concurrent-replica-rebuild-per-node-limit) setting in Longhorn `v1.2.1`. It should already have been ignored in any Longhorn deployment upgrading to Longhorn v{{< current-version >}} and is now removed. To disable replica rebuilding across the cluster, set the `Concurrent Replica Rebuild Per Node Limit` to 0.
 
 ### Longhorn Supports Fast Replica Rebuilding, and It Is Enabled by Default
 
