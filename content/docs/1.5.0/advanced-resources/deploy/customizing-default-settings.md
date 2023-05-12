@@ -85,8 +85,7 @@ From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Insta
         #concurrent-automatic-engine-upgrade-per-node-limit:
         #backing-image-cleanup-wait-interval:
         #backing-image-recovery-wait-interval:
-        #guaranteed-engine-manager-cpu:
-        #guaranteed-replica-manager-cpu:
+        #guaranteed-instance-manager-cpu:
         #kubernetes-cluster-autoscaler-enabled:
         #orphan-auto-deletion:
         #storage-network:
@@ -149,8 +148,7 @@ You can also provide a copy of the `values.yaml` file with the default settings 
       replicaZoneSoftAntiAffinity: false
       volumeAttachmentRecoveryPolicy: never
       nodeDownPodDeletionPolicy: do-nothing
-      guaranteedEngineManagerCpu: 15
-      guaranteedReplicaManagerCpu: 15
+      guaranteedInstanceManagerCpu: 15
       orphanAutoDeletion: false
     ```
 

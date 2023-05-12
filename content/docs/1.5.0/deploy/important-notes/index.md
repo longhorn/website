@@ -78,3 +78,7 @@ More information please refer to [ReadWriteMany (RWX) Volume](../../advanced-res
 ### Instance Managers Consolidated
 
 Engine instance mangers and replica instance managers has been consolidated. Previous engine/replica instance managers are now deprecated, but they will still provide service to the existing attached volumes.
+
+The `Guaranteed Engine Manager CPU` and `Guaranteed Engine Manager CPU` settings are removed and replaced by `Guaranteed Instance Manager CPU`.
+
+The `engineManagerCPURequest` and `replicaManagerCPURequest` fields in Longhorn Node custom resource spec are removed and replaced by `instanceManagerCPURequest`.
