@@ -108,8 +108,6 @@ You can also set a specific milli CPU value for instance manager pods on a parti
 
 > **Note:** This field will overwrite the above setting for the specified node.
 
-The `Guaranteed Engine Manager CPU` and `Guaranteed Replica Manager CPU` settings are now deprecated and replaced by the `Guaranteed Instance Manager CPU` setting. For a system upgraded from older versions, Longhorn v1.5.x will still include these fields to support older engine and replica instance managers serving attached volumes.
-
 Refer to [Guaranteed Instance Manager CPU](../references/settings/#guaranteed-instance-manager-cpu) for more details.
 
 ## StorageClass
