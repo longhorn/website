@@ -14,6 +14,7 @@ Longhorn also supports setting up recurring snapshot/backup jobs for volumes, vi
 This page covers the following topics:
 
 - [Set up AWS S3 Backupstore](#set-up-aws-s3-backupstore)
+- [Set up GCP Cloud Storage Backupstore](#set-up-gcp-cloud-storage-backupstore)
 - [Set up a Local Testing Backupstore](#set-up-a-local-testing-backupstore)
 - [Using a self-signed SSL certificate for S3 communication](#using-a-self-signed-ssl-certificate-for-s3-communication)
 - [Enable virtual-hosted-style access for S3 compatible Backupstore](#enable-virtual-hosted-style-access-for-s3-compatible-backupstore)
@@ -164,6 +165,62 @@ Make sure `NO_PROXY` contains the network addresses, network address ranges and 
 * 0.0.0.0
 * 10.0.0.0/8 (K8s components' IPs)
 * 192.168.0.0/16 (internal IPs in the cluster)
+
+### Set up GCP Cloud Storage Backupstore
+
+1. Create a new bucket in [Google Cloud Storage](https://console.cloud.google.com/storage/browser?referrer=search&project=elite-protocol-319303)
+2. Create a GCP serviceaccount in [IAM & Admin](https://console.cloud.google.com/iam-admin)
+3. Give the GCP serviceaccount permissions to read, write, and delete objects in the bucket.
+
+   The serviceaccount will require the `roles/storage.objectAdmin` role to read, write, and delete objects in the bucket.
+   
+   Here is a reference to the GCP IAM roles you have available for granting access to a serviceaccount https://cloud.google.com/storage/docs/access-control/iam-roles.
+
+> Note: Consider creating an IAM condition to reduce how many buckets this serviceaccount has object admin access to.
+
+4. Navigate to your [buckets in cloud storage](https://console.cloud.google.com/storage/browser) and select your newly created bucket.
+5. Go to the cloud storage's settings menu and navigate to the [interoperability tab](https://console.cloud.google.com/storage/settings;tab=interoperability)
+6. Scroll down to _Service account HMAC_ and press `+ CREATE A KEY FOR A SERVICE ACCOUNT`
+7. Select the GCP serviceaccount you created earlier and press `CREATE KEY`
+8. Save the _Access Key_ and _Secret_. 
+
+    Also note down the configured _Storage URI_ under the _Request Endpoint_ while you're in the interoperability menu.
+
+- The Access Key will be mapped to the `AWS_ACCESS_KEY_ID` field in the Kubernetes secret we create later.
+- The Secret will be mapped to the `AWS_SECRET_ACCESS_KEY` field in the Kubernetes secret we create later.
+- The Storage URI will be mapped to the `AWS_ENDPOINTS` field in the Kubernetes secret we create later.
+
+9. Go to the Longhorn UI. In the top navigation bar, click **Settings.** In the Backup section, set **Backup Target** to
+
+```
+s3://${BUCKET_NAME}@us/
+```
+
+And set **Backup Target Credential Secret** to:
+
+```
+longhorn-gcp-backups
+```
+
+10. Create a Kubernetes secret named `longhorn-gcp-backups` in the `longhorn-system` namespace with the following content:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: longhorn-gcp-backups
+  namespace: longhorn-system
+type: Opaque
+stringData:
+  AWS_ACCESS_KEY_ID: GOOG1EBYHGDE4WIGH2RDYNZWWWDZ5GMQDRMNSAOTVHRAILWAMIZ2O4URPGOOQ
+  AWS_ENDPOINTS: https://storage.googleapis.com
+  AWS_SECRET_ACCESS_KEY: BKoKpIW021s7vPtraGxDOmsJbkV/0xOVBG73m+8f
+```
+> Note: The secret can be named whatever you like as long as they match what's in longhorn's settings.
+
+Once the secret is created and Longhorn's settings are saved, navigate to the backup tab in Longhorn. If there are any issues, they should pop up as a toast notification. 
+
+If you don't get any error messages, try creating a backup and confirm the content is pushed out to your new bucket.
 
 ### Set up a Local Testing Backupstore
 We provides two testing purpose backupstore based on NFS server and MinIO S3 server for testing, in `./deploy/backupstores`.
