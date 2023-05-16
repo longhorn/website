@@ -87,6 +87,51 @@ longhorn-csi-plugin-b2zzj                             2/2     Running   0       
 
 Next, [upgrade Longhorn engine.](../upgrade-engine)
 
+### Upgrading from Unsupported Versions
+
+We only support upgrading to v{{< current-version >}} from v1.4.x. For other versions, please upgrade to v1.4.x first.
+
+If you attempt to upgrade from an unsupported version, the upgrade will fail. When encountering an upgrade failure, please consider the following scenarios to recover the state based on different upgrade methods.
+
+#### Upgrade with Kubectl
+
+When you upgrade with kubectl by running this command:
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml
+```
+
+Longhorn will block the upgrade process and provide the failure reason in the logs of the `longhorn-manager` pod.
+During the upgrade failure, the user's Longhorn system should remain intact without any impacts except `longhorn-manager` daemon set.
+
+To recover, you need to apply the manifest of the previously installed version using the following command:
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/[previous installed version]/deploy/longhorn.yaml
+```
+
+Besides, users might need to delete new components introduced by the new version manually.
+
+#### Upgrade with Helm or Rancher App Marketplace
+
+To prevent any impact caused by failed upgrades from unsupported versions, Longhorn will automatically initiate a new job (`pre-upgrade`) to verify if the upgrade path is supported before upgrading when upgrading through `Helm` or `Rancher App Marketplace`.
+
+The `pre-upgrade` job will block the upgrade process and provide the failure reason in the logs of the pod.
+During the upgrade failure, the user's Longhorn system should remain intact without any impacts.
+
+To recover, you need to run the below commands to rollback to the previously installed revision:
+
+```shell
+# get previous installed Longhorn REVISION
+helm history longhorn
+helm rollback longhorn [REVISION]
+
+# or
+helm upgrade longhorn longhorn/longhorn --namespace longhorn-system --version [previous installed version]
+```
+
+To recover, you need to upgrade to the previously installed revision at `Rancher App Marketplace` again.
+
 ### TroubleShooting
 1. Error: `"longhorn" is invalid: provisioner: Forbidden: updates to provisioner are forbidden.`
 - This means there are some modifications applied to the default storageClass and you need to clean up the old one before upgrade.
