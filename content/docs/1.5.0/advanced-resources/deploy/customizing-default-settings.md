@@ -75,7 +75,6 @@ From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Insta
         #replica-zone-soft-anti-affinity:
         #node-down-pod-deletion-policy:
         #allow-node-drain-with-last-healthy-replica:
-        #disable-replica-rebuild:
         #replica-replenishment-wait-interval:
         #concurrent-replica-rebuild-per-node-limit:
         #disable-revision-counter:
@@ -85,8 +84,7 @@ From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Insta
         #concurrent-automatic-engine-upgrade-per-node-limit:
         #backing-image-cleanup-wait-interval:
         #backing-image-recovery-wait-interval:
-        #guaranteed-engine-manager-cpu:
-        #guaranteed-replica-manager-cpu:
+        #guaranteed-instance-manager-cpu:
         #kubernetes-cluster-autoscaler-enabled:
         #orphan-auto-deletion:
         #storage-network:
@@ -149,8 +147,7 @@ You can also provide a copy of the `values.yaml` file with the default settings 
       replicaZoneSoftAntiAffinity: false
       volumeAttachmentRecoveryPolicy: never
       nodeDownPodDeletionPolicy: do-nothing
-      guaranteedEngineManagerCpu: 15
-      guaranteedReplicaManagerCpu: 15
+      guaranteedInstanceManagerCpu: 15
       orphanAutoDeletion: false
     ```
 

@@ -62,14 +62,27 @@ The CSI components in Longhorn v{{< current-version >}} only function with the `
 Please follow the instructions at [Enable CSI Snapshot Support](../../snapshots-and-backups/csi-snapshot-support/enable-csi-snapshot-support) to update CSI snapshot CRDs and the CSI snapshot controller.
 If you have Longhorn volume manifests or scripts that are still using `v1beta1` version, you must upgrade them to `v1` as well.
 
-### `Custom mkfs.ext4 parameters` Setting Removed
+### `Custom mkfs.ext4 Parameters` Setting Removed
 
-The `Custom mkfs.ext4 parameters` setting was deprecated in Longhorn `v1.4.0` and is now removed. The per-StorageClass `mkfsParams` parameter should be used to specify mkfs options (e.g., `-I 256 -b 4096 -O ^metadata_csum,^64bit`) instead. See [Creating Longhorn Volumes with kubectl](../../volumes-and-nodes/create-volumes/#creating-longhorn-volumes-with-kubectl) for details.
+The `Custom mkfs.ext4 Parameters` setting was deprecated in Longhorn `v1.4.0` and is now removed. The per-StorageClass `mkfsParams` parameter should be used to specify mkfs options (e.g., `-I 256 -b 4096 -O ^metadata_csum,^64bit`) instead. See [Creating Longhorn Volumes with kubectl](../../volumes-and-nodes/create-volumes/#creating-longhorn-volumes-with-kubectl) for details.
+
+### `Disable Replica Rebuild` Setting Removed
+
+The `Disable Replica Rebuild` setting was deprecated and replaced by the [Concurrent Replica Rebuild Per Node Limit](../../references/settings/#concurrent-replica-rebuild-per-node-limit) setting in Longhorn `v1.2.1`. It should already have been ignored in any Longhorn deployment upgrading to Longhorn v{{< current-version >}} and is now removed. To disable replica rebuilding across the cluster, set the `Concurrent Replica Rebuild Per Node Limit` to 0.
 
 ### Longhorn Supports Fast Replica Rebuilding, and It Is Enabled by Default
 
 Fast replica rebuilding is supported by Longhorn, and is enabled by default. The feature relies on the change timestamps and checksums of snapshot disk files, so `snapshot-data-integrity` is also set to `fast-check`. The file checksums for snapshot disks will be calculated periodically, with a default check period of 7 days. For more information, please refer to [Fast Replica Rebuild](../../advanced-resources/fast-replica-rebuild/index.html) and [Snapshot Data Integrity Check](../../advanced-resources/snapshot-data-integrity-check/index.html).
 
 ### Each Kubernetes Node Must Have a Unique Hostname for RWX Volumes
+
 Longhorn has a dedicated recovery backend service for NFS servers in the share-manager pods used by the RWX volumes. The clients' information, including its hostname, will be stored in the recovery backend. The information will be used for connection recovery if the share-manager pod is abnormally terminated and a new one is created. The [environment check script](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh) helps users to check all nodes have unique hostnames.
 More information please refer to [ReadWriteMany (RWX) Volume](../../advanced-resources/rwx-workloads/index.html).
+
+### Instance Managers Consolidated
+
+Engine instance mangers and replica instance managers has been consolidated. Previous engine/replica instance managers are now deprecated, but they will still provide service to the existing attached volumes.
+
+The `Guaranteed Engine Manager CPU` and `Guaranteed Engine Manager CPU` settings are removed and replaced by `Guaranteed Instance Manager CPU`.
+
+The `engineManagerCPURequest` and `replicaManagerCPURequest` fields in Longhorn Node custom resource spec are removed and replaced by `instanceManagerCPURequest`.

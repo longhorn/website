@@ -63,35 +63,29 @@ Then wait for all the pods to become running and Longhorn UI working. e.g.:
 
 ```
 $ kubectl -n longhorn-system get pod
-NAME                                           READY   STATUS    RESTARTS      AGE
-engine-image-ei-4dbdb778-nw88l                 1/1     Running   0             4m29s
-longhorn-ui-b7c844b49-jn5g6                    1/1     Running   0             75s
-longhorn-manager-z2p8h                         1/1     Running   0             71s
-instance-manager-r-de8337e2                    1/1     Running   0             65s
-instance-manager-e-c812d56c                    1/1     Running   0             65s
-longhorn-driver-deployer-6bd59c9f76-jp6pg      1/1     Running   0             75s
-engine-image-ei-df38d2e5-zccq5                 1/1     Running   0             65s
-csi-snapshotter-588457fcdf-h2lgc               1/1     Running   0             30s
-csi-resizer-6d8cf5f99f-8v4sp                   1/1     Running   1 (30s ago)   37s
-csi-snapshotter-588457fcdf-6pgf4               1/1     Running   0             30s
-csi-provisioner-869bdc4b79-7ddwd               1/1     Running   1 (30s ago)   44s
-csi-snapshotter-588457fcdf-p4kkn               1/1     Running   0             30s
-csi-attacher-7bf4b7f996-mfbdn                  1/1     Running   1 (30s ago)   50s
-csi-provisioner-869bdc4b79-4dc7n               1/1     Running   1 (30s ago)   43s
-csi-resizer-6d8cf5f99f-vnspd                   1/1     Running   1 (30s ago)   37s
-csi-attacher-7bf4b7f996-hrs7w                  1/1     Running   1 (30s ago)   50s
-csi-attacher-7bf4b7f996-rt2s9                  1/1     Running   1 (30s ago)   50s
-csi-resizer-6d8cf5f99f-7vv89                   1/1     Running   1 (30s ago)   37s
-csi-provisioner-869bdc4b79-sn6zr               1/1     Running   1 (30s ago)   43s
-longhorn-csi-plugin-b2zzj                      2/2     Running   0             24s
+NAME                                                  READY   STATUS    RESTARTS      AGE
+engine-image-ei-4dbdb778-nw88l                        1/1     Running   0             4m29s
+longhorn-ui-b7c844b49-jn5g6                           1/1     Running   0             75s
+longhorn-manager-z2p8h                                1/1     Running   0             71s
+instance-manager-b34d5db1fe1e2d52bcfb308be3166cfc     1/1     Running   0             65s
+longhorn-driver-deployer-6bd59c9f76-jp6pg             1/1     Running   0             75s
+engine-image-ei-df38d2e5-zccq5                        1/1     Running   0             65s
+csi-snapshotter-588457fcdf-h2lgc                      1/1     Running   0             30s
+csi-resizer-6d8cf5f99f-8v4sp                          1/1     Running   1 (30s ago)   37s
+csi-snapshotter-588457fcdf-6pgf4                      1/1     Running   0             30s
+csi-provisioner-869bdc4b79-7ddwd                      1/1     Running   1 (30s ago)   44s
+csi-snapshotter-588457fcdf-p4kkn                      1/1     Running   0             30s
+csi-attacher-7bf4b7f996-mfbdn                         1/1     Running   1 (30s ago)   50s
+csi-provisioner-869bdc4b79-4dc7n                      1/1     Running   1 (30s ago)   43s
+csi-resizer-6d8cf5f99f-vnspd                          1/1     Running   1 (30s ago)   37s
+csi-attacher-7bf4b7f996-hrs7w                         1/1     Running   1 (30s ago)   50s
+csi-attacher-7bf4b7f996-rt2s9                         1/1     Running   1 (30s ago)   50s
+csi-resizer-6d8cf5f99f-7vv89                          1/1     Running   1 (30s ago)   37s
+csi-provisioner-869bdc4b79-sn6zr                      1/1     Running   1 (30s ago)   43s
+longhorn-csi-plugin-b2zzj                             2/2     Running   0             24s
 ```
 
 Next, [upgrade Longhorn engine.](../upgrade-engine)
-
-#### Post upgrade
-
-To avoid crashing existing volumes, as well as switch from the deprecated setting `Guaranteed Engine CPU` to [the new instance manager CPU reservation mechanism](../../../best-practices/#guaranteed-instance-manager-cpu), Longhorn will automatically set `Engine Manager CPU Request` and `Replica Manager CPU Request` from each node based on the deprecated setting value during upgrade. Then, the new global instance manager CPU settings [`Guaranteed Engine Manager CPU`](../../../references/settings/#guaranteed-engine-manager-cpu) and [`Guaranteed Replica Manager CPU`](../../../references/settings/#guaranteed-replica-manager-cpu) won't take effect.
-You may need to check the new mechanism and the setting descriptions to see if you need any adjustments.
 
 ### TroubleShooting
 1. Error: `"longhorn" is invalid: provisioner: Forbidden: updates to provisioner are forbidden.`

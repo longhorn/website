@@ -31,7 +31,7 @@ Make use of the Longhorn UI is a good start for the troubleshooting. For example
 Also, the event logs in the UI dashboard provides some information of probably issues. Check for the event logs in `Warning` level.
 
 ### Manager and Engines
-You can get the logs from the Longhorn Manager and Engines to help with troubleshooting. The most useful logs are the ones from `longhorn-manager-xxx`, and the logs inside Longhorn instance managers, e.g. `instance-manager-e-xxxx` and `instance-manager-r-xxxx`.
+You can get the logs from the Longhorn Manager and Engines to help with troubleshooting. The most useful logs are the ones from `longhorn-manager-xxx`, and the logs inside Longhorn instance managers, e.g. `instance-manager-xxxx`, `instance-manager-e-xxxx` and `instance-manager-r-xxxx`.
 
 Since normally there are multiple Longhorn Managers running at the same time, we recommend using [kubetail,](https://github.com/johanhaleby/kubetail) which is a great tool to keep track of the logs of multiple pods. To track the manager logs in real time, you can use:
 

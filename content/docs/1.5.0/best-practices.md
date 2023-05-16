@@ -100,15 +100,15 @@ Longhorn system will create snapshots automatically when rebuilding a replica. R
 
 ## Guaranteed Instance Manager CPU
 
-We recommend allowing Longhorn to have CPU requests set for engine/replica manager pods.
+We recommend setting the CPU request for Longhorn instance manager pods.
 
-To be precise, you can set the percentage of a node total allocatable CPU reserved for all engine/replica manager pods by modifying settings `Guaranteed Engine Manager CPU` and `Guaranteed Replica Manager CPU`.
+The `Guaranteed Instance Manager CPU` setting allows you to reserve a percentage of a node's total allocatable CPU for all instance manager pods.
 
-If you want to set a concrete value (milli CPU amount) for engine/replica manager pods on a specific node, you can update the fields `Engine Manager CPU Request` or  `Replica Manager CPU Request` of the node. Notice that these 2 fields will overwrite the above settings for the specific node.
+You can also set a specific milli CPU value for instance manager pods on a particular node by updating the node's `Instance Manager CPU Request` field.
 
-The setting `Guarantee Engine CPU` is deprecated. For the system upgraded from old versions, Longhorn v1.1.1 will set the node fields mentioned above automatically to the same value as the deprecated setting then clean up the setting.
+> **Note:** This field will overwrite the above setting for the specified node.
 
-For details, refer to the settings references [`Guaranteed Engine Manager CPU`](../references/settings/#guaranteed-engine-manager-cpu) and [`Guaranteed Replica Manager CPU`](../references/settings/#guaranteed-replica-manager-cpu).
+Refer to [Guaranteed Instance Manager CPU](../references/settings/#guaranteed-instance-manager-cpu) for more details.
 
 ## StorageClass
 
