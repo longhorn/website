@@ -16,10 +16,8 @@ weight: 1
   - [Default Data Locality](#default-data-locality)
   - [Default Data Path](#default-data-path)
   - [Default Engine Image](#default-engine-image)
-  - [Default Instance Manager Image](#default-instance-manager-image)
   - [Default Longhorn Static StorageClass Name](#default-longhorn-static-storageclass-name)
   - [Default Replica Count](#default-replica-count)
-  - [Default Share Manager Image](#default-share-manager-image)
   - [Deleting Confirmation Flag](#deleting-confirmation-flag)
   - [Disable Revision Counter](#disable-revision-counter)
   - [Enable Upgrade Checker](#enable-upgrade-checker)
@@ -178,10 +176,6 @@ The default engine image used by the manager. Can be changed on the manager star
 
 Every Longhorn release will ship with a new Longhorn engine image. If the current Longhorn volumes are not using the default engine, a green arrow will show up, indicate this volume needs to be upgraded to use the default engine.
 
-#### Default Instance Manager Image
-
-The default instance manager image used by the manager. Can be changed on the manager starting command line only.
-
 #### Default Longhorn Static StorageClass Name
 
 > Default: `longhorn-static`
@@ -195,10 +189,6 @@ The `storageClassName` is for persistent volumes (PVs) and persistent volume cla
 The default number of replicas when creating the volume from Longhorn UI. For Kubernetes, update the `numberOfReplicas` in the StorageClass
 
 The recommended way of choosing the default replica count is: if you have three or more nodes for storage, use 3; otherwise use 2. Using a single replica on a single node cluster is also OK, but the high availability functionality wouldn't be available. You can still take snapshots/backups of the volume.
-
-#### Default Share Manager Image
-
-The default instance manager image used by the manager. Can be changed on the manager starting command line only.
 
 #### Deleting Confirmation Flag
 This flag protects Longhorn from unexpected uninstallation which leads to data loss.
