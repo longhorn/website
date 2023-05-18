@@ -423,7 +423,7 @@ Then, navigate to Longhorn UI > Setting > General > Backup
     ```
 
    - If you've not set `<endpoint-suffix>` in the URL, default endpoint suffix will be `core.windows.net`.
-   - If you've set `AZBLOB_ENDPOINT` in the Kubernetes secret for the backup target credential, Longhorn will use `AZBLOB_ENDPOINT` as your Azure server URL and `<endpoint-suffix>` will not be used even you've set it specifically.
+   - If you set `AZBLOB_ENDPOINT` in the secret, Longhorn will use `AZBLOB_ENDPOINT` as your storage URL, and `<endpoint-suffix>` will not be used even if it has been set. 
 
 2. Set **Backup Target Credential Secret**
 
