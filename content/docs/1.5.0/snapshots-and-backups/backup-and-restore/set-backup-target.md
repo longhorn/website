@@ -431,6 +431,5 @@ Then, navigate to Longhorn UI > Setting > General > Backup
     azblob-secret
     ```
 
-  This is the Kubernetes secret name with Azure Blob Storage credentials.
 
 After configuring the above settings, you can manage backups on Azure Blob storage. See [how to create backup](../create-a-backup) for details.
