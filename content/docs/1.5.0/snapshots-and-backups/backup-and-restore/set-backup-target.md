@@ -422,7 +422,7 @@ Then, navigate to Longhorn UI > Setting > General > Backup
     azblob://[your-container-name]@[endpoint-suffix]/my-path/
     ```
 
-   - If you've not set `<endpoint-suffix>` in the URL, default endpoint suffix will be `core.windows.net`.
+   - If you set `<endpoint-suffix>` in the URL, the default endpoint suffix will be `core.windows.net`.
    - If you set `AZBLOB_ENDPOINT` in the secret, Longhorn will use `AZBLOB_ENDPOINT` as your storage URL, and `<endpoint-suffix>` will not be used even if it has been set. 
 
 2. Set **Backup Target Credential Secret**
