@@ -362,7 +362,7 @@ You can find an example CIFS backupstore for testing purpose [here](https://gith
 
   - The Account Name will be mapped to the `AZBLOB_ACCOUNT_NAME` field in the Kubernetes secret we create later.
   - The Account Secret Key will be mapped to the `AZBLOB_ACCOUNT_KEY` field in the Kubernetes secret we create later.
-  - The Storage URI will be mapped to the `AZBLOB_ENDPOINT` field if you set in the Kubernetes secret we create later.
+  - The Storage URI will be the `AZBLOB_ENDPOINT` field in the secret.
 
   - By a manifest:
     ```shell
