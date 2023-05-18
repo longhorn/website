@@ -360,7 +360,7 @@ You can find an example CIFS backupstore for testing purpose [here](https://gith
 
 2. Before configuring a Azure Blob Storage backupstore, create a Kubernetes secret with a name such as `azblob-secret` in the namespace where Longhorn is placed (`longhorn-system` by default). The secret must be created in the `longhorn-system` namespace for Longhorn to access it.
 
-  - The Account Name will be mapped to the `AZBLOB_ACCOUNT_NAME` field in the Kubernetes secret we create later.
+  - The Account Name will be the `AZBLOB_ACCOUNT_NAME` field in the secret.
   - The Account Secret Key will be the `AZBLOB_ACCOUNT_KEY` field in the secret.
   - The Storage URI will be the `AZBLOB_ENDPOINT` field in the secret.
 
