@@ -38,8 +38,8 @@ So, Longhorn leaves it to you to decide when it is the good time to manually upg
 At this time, Longhorn will automatically do offline upgrade for the volume similar to the detached volume case.
 
 #### 3. What Happened If The Upgrade Fails?
-If a volume failed to upgrade its engine, the engine image in volume's spec will remain to be different than the engine image in the volume's status.
-Longhorn will continuously retry to upgrade until it succeeds.
+If a volume's engine fails to upgrade, the volume's status won't change. 
+Because the status will remain different from the spec, Longhorn will retry the upgrade until it succeeds.
 
 If there are too many volumes that fail to upgrade per node (i.e., more than the `concurrent automatic engine upgrade per node limit` setting),
-Longhorn will stop upgrading volume on that node.
+Longhorn will stop upgrading volumes on that node.
