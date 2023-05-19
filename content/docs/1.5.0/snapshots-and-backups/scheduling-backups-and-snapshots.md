@@ -26,7 +26,7 @@ To add a recurring job to a volume, you will go to the volume detail view in Lon
 Then Longhorn will automatically create snapshots or backups for the volume at the recurring job scheduled time, as long as the volume is attached to a node.
 If you want to set up recurring snapshots and backups even when the volumes are detached, see the section [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
 
-Recurring jobs can be added to a volume using the Longhorn UI, `kubectl` or by using a Kubernetes [StorageClass.](https://kubernetes.io/docs/concepts/storage/storage-classes/)
+You can set recurring jobs on a Longhorn Volume, Kubernetes Persistent Volume Claim (PVC), or Kubernetes StorageClass. When a recurring job is set on the Volume, it will synchronize with its associated PersistentVolumeClaim, and vice versa.
 
 For more information on how snapshots and backups work, refer to the [concepts](../../concepts) section.
 
@@ -134,6 +134,32 @@ kubectl -n longhorn-system label volume/<VOLUME-NAME> <RECURRING-JOB-LABEL>-
 
 # Example:
 # kubectl -n longhorn-system label volume/pvc-8b9cd514-4572-4eb2-836a-ed311e804d2f recurring-job.longhorn.io/backup-
+```
+
+## With PersistentVolumeClam Using the `kubectl` command
+
+Add recurring job group:
+```
+kubectl -n <NAMESPACE> label pvc/<PVC-NAME> recurring-job-group.longhorn.io/<RECURRING-JOB-GROUP-NAME>=enabled
+
+# Example:
+# kubectl -n default label pvc/sample recurring-job-group.longhorn.io/default=enabled
+```
+
+Add recurring job:
+```
+kubectl -n <NAMESPACE> label pvc/<PVC-NAME> recurring-job.longhorn.io/<RECURRING-JOB-NAME>=enabled
+
+# Example:
+# kubectl -n default label pvc/sample recurring-job.longhorn.io/backup=enabled
+```
+
+Remove recurring job:
+```
+kubectl -n <NAMESPACE> label pvc/<PVC-NAME> <RECURRING-JOB-LABEL>-
+
+# Example:
+# kubectl -n default label pvc/sample recurring-job.longhorn.io/backup-
 ```
 
 ## With StorageClass parameters
