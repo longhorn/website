@@ -34,13 +34,15 @@ For more information on how snapshots and backups work, refer to the [concepts](
 > 1. Recurring backup job only takes a new backup when the volume has new data since the last backup.
 > 1. Recurring snapshot job only takes a new snapshot when the volume has new data in the volume head (the live data).
 
-## Set up Recurring Jobs using the Longhorn UI
+## Set up Recurring Jobs
+
+### Using the Longhorn UI
 
 Recurring snapshots and backups can be configured from the `Recurring Job` page or the volume detail page.
 
-## Set up Recurring Jobs using a Longhorn RecurringJob
+### Using the manifest
 
-Recurring jobs can also be set up by using a Longhorn `RecurringJob`.
+You can also configure the recurring job by directly interacting with the Longhorn RecurringJob custom resource.
 ```yaml
 apiVersion: longhorn.io/v1beta1
 kind: RecurringJob
@@ -95,34 +97,46 @@ Optional parameters can be specified:
 
 - `labels`: Any labels that should be applied to the backup or snapshot.
 
-## Set up Recurring Jobs to be the Default
+## Add Recurring Jobs to the Default group
 
 Default recurring jobs can be set by tick the checkbox `default` using UI or adding `default` to the recurring job `groups`.
 
 Longhorn will automatically add a volume to the `default` group when the volume has no recurring job.
 
-## Recurring Jobs Assignment using the Longhorn UI
+
+## Apply Recurring Job to Longhorn Volume
+
+### Using the Longhorn UI
 
 The recurring job can be assigned on the volume detail page. To navigate to the volume detail page, click **Volume** then click the name of the volume.
 
-## Recurring job Assignment using the `kubectl label` command
+## Using the `kubectl` command
 
-Label recurring job group with `kubectl -n longhorn-system label volume/<VOLUME-NAME> recurring-job-group.longhorn.io/<RECURRING-JOB-GROUP-NAME>=enabled`
+Add recurring job group:
 ```
-kubectl -n longhorn-system label volume/pvc-8b9cd514-4572-4eb2-836a-ed311e804d2f recurring-job-group.longhorn.io/default=enabled
-```
+kubectl -n longhorn-system label volume/<VOLUME-NAME> recurring-job-group.longhorn.io/<RECURRING-JOB-GROUP-NAME>=enabled
 
-Label recurring job with `kubectl -n longhorn-system label volume/<VOLUME-NAME> recurring-job.longhorn.io/<RECURRING-JOB-NAME>=enabled`
-```
-kubectl -n longhorn-system label volume/pvc-8b9cd514-4572-4eb2-836a-ed311e804d2f recurring-job.longhorn.io/backup1=enabled
+# Example:
+# kubectl -n longhorn-system label volume/pvc-8b9cd514-4572-4eb2-836a-ed311e804d2f recurring-job-group.longhorn.io/default=enabled
 ```
 
-Remove recurring job labels with `kubectl -n longhorn-system label volume/<VOLUME-NAME> <RECURRING-JOB-LABEL>-`
+Add recurring job:
 ```
-kubectl -n longhorn-system label volume/pvc-8b9cd514-4572-4eb2-836a-ed311e804d2f recurring-job.longhorn.io/backup1-
+kubectl -n longhorn-system label volume/<VOLUME-NAME> recurring-job.longhorn.io/<RECURRING-JOB-NAME>=enabled
+
+# Example:
+# kubectl -n longhorn-system label volume/pvc-8b9cd514-4572-4eb2-836a-ed311e804d2f recurring-job.longhorn.io/backup=enabled
 ```
 
-## Recurring Jobs Assignment using a StorageClass
+Remove recurring job:
+```
+kubectl -n longhorn-system label volume/<VOLUME-NAME> <RECURRING-JOB-LABEL>-
+
+# Example:
+# kubectl -n longhorn-system label volume/pvc-8b9cd514-4572-4eb2-836a-ed311e804d2f recurring-job.longhorn.io/backup-
+```
+
+## With StorageClass parameters
 
 Recurring job assignment can be configured in the `recurringJobSelector` parameters in a StorageClass.
 
