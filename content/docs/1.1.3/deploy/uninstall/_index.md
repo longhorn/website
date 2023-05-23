@@ -81,6 +81,9 @@ for crd in $(kubectl get crd -o jsonpath={.items[*].metadata.name} | tr ' ' '\n'
   kubectl -n ${NAMESPACE} delete $crd --all
   kubectl delete crd/$crd
 done
+# Delete webhooks
+kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io/longhorn-webhook-validator
+kubectl delete mutatingwebhookconfigurations.admissionregistration.k8s.io/longhorn-webhook-mutator
 ```
 
 #### Volume can be attached/detached from UI, but Kubernetes Pod/StatefulSet etc cannot use it
