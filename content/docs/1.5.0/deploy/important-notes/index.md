@@ -90,3 +90,7 @@ Engine instance mangers and replica instance managers has been consolidated. Pre
 The `Guaranteed Engine Manager CPU` and `Guaranteed Engine Manager CPU` settings are removed and replaced by `Guaranteed Instance Manager CPU`.
 
 The `engineManagerCPURequest` and `replicaManagerCPURequest` fields in Longhorn Node custom resource spec are removed and replaced by `instanceManagerCPURequest`.
+
+### Volume `recurringJob` Field Removed
+
+Since `v1.2.0`, the Volume recurringJob field has been deprecated and replaced with the RecurringJob custom resource. Starting from `v1.5.0`, this field will be removed.
