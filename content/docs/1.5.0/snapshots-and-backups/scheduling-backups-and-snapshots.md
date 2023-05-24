@@ -26,7 +26,8 @@ To add a recurring job to a volume, you will go to the volume detail view in Lon
 Then Longhorn will automatically create snapshots or backups for the volume at the recurring job scheduled time, as long as the volume is attached to a node.
 If you want to set up recurring snapshots and backups even when the volumes are detached, see the section [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
 
-You can set recurring jobs on a Longhorn Volume, Kubernetes Persistent Volume Claim (PVC), or Kubernetes StorageClass. When a recurring job is set on the Volume, it will synchronize with its associated PersistentVolumeClaim, and vice versa.
+You can set recurring jobs on a Longhorn Volume, Kubernetes Persistent Volume Claim (PVC), or Kubernetes StorageClass.
+> Note: When the PVC has recurring job labels, they will override all recurring job labels of the associated Volume.
 
 For more information on how snapshots and backups work, refer to the [concepts](../../concepts) section.
 
@@ -103,6 +104,9 @@ Default recurring jobs can be set by tick the checkbox `default` using UI or add
 
 Longhorn will automatically add a volume to the `default` group when the volume has no recurring job.
 
+## Delete Recurring Jobs
+
+Longhorn automatically removes Volume and PVC recurring job labels when a corresponding RecurringJob custom resource is deleted. However, if a recurring job label is added without an existing RecurringJob custom resource, Longhorn does not perform the cleanup process for that label.
 
 ## Apply Recurring Job to Longhorn Volume
 
@@ -137,6 +141,16 @@ kubectl -n longhorn-system label volume/<VOLUME-NAME> <RECURRING-JOB-LABEL>-
 ```
 
 ## With PersistentVolumeClam Using the `kubectl` command
+
+By default, applying a recurring job to a Persistent Volume Claim (PVC) does not have any effect. You can enable or disable this feature using the recurring job source label.
+
+Once the PVC is labeled as the source, any recurring job labels added or removed from the PVC will be periodically synchronized by Longhorn to the associated Volume.
+```
+kubectl -n <NAMESPACE> label pvc/<PVC-NAME> recurring-job.longhorn.io/source=enabled
+
+# Example:
+# kubectl -n default label pvc/sample recurring-job-group.longhorn.io/source=enabled
+```
 
 Add recurring job group:
 ```
