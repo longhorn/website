@@ -6,6 +6,7 @@ weight: 1
 - [What is in the Longhorn system backup bundle](#longhorn-system-backup-bundle)
 - [How to create a Longhorn system backup](#create-longhorn-system-backup)
     - [Prerequisite](#prerequisite)
+    - [Configuration](#configuration)
     - [Using Longhorn UI](#using-longhorn-ui)
     - [Using kubectl command](#using-kubectl-command)
 - [How to delete Longhorn system backup](#delete-longhorn-system-backup)
@@ -56,16 +57,25 @@ You can create a Longhorn system backup using the Longhorn UI. Or with the `kube
 
 - Create a backup for all volumes (optional).
 
-  > **Note:** Longhorn system restores volume with the latest backup. The system backup does not trigger volume backup. We suggest updating all volumes' last backup. Taking volume backups ensures the data is up-to-date with the system backup.
+  > **Note:** Longhorn system restores volume with the latest backup. We recommend updating the last backup for all volumes. By taking volume backups, you ensure that the data is up-to-date with the system backup. For more information, please refer to the [Configuration - Volume Backup Policy](#volume-backup-policy) section.
+
+### Configuration
+
+#### Volume Backup Policy
+The Longhorn system backup offers the following volume backup policies:
+ - `if-not-present`: Longhorn will create a backup for volumes that currently lack a backup.
+ - `always`: Longhorn will create a backup for all volumes, regardless of their existing backups.
+ - `disabled`: Longhorn will not create any backups for volumes.
 
 ### Using Longhorn UI
 
 1. Go to the `System Backup` page in the `Setting` drop-down list.
 1. Click `Create` under `System Backup`.
 1. Give a `Name` for the system backup.
+1. Select a `Volume Backup Policy` for the system backup.
 1. The system backup will be ready to use when the state changes to `Ready`.
 
-## Using `kubectl` Command
+### Using `kubectl` Command
 
 1. Execute `kubectl create` to create a Longhorn `SystemBackup` custom resource.
    ```yaml
@@ -74,6 +84,8 @@ You can create a Longhorn system backup using the Longhorn UI. Or with the `kube
    metadata:
      name: demo
      namespace: longhorn-system
+   spec:
+     volumeBackupPolicy: if-not-present
    ```
 1. The system backup will be ready to use when the state changes to `Ready`.
    ```
