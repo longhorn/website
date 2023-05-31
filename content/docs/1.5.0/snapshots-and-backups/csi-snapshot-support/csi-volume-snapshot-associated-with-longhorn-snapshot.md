@@ -84,7 +84,3 @@ spec:
       storage: 5Gi
 ```
 Note that the `spec.resources.requests.storage` value must be the same as the size of `VolumeSnapshot` object.
-
-
-## Current Limitation
-* Longhorn volume must be in the attached state to create/restore snapshot using CSI VolumeSnapshot mechanism.
