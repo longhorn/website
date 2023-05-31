@@ -91,6 +91,17 @@ The `Guaranteed Engine Manager CPU` and `Guaranteed Replica Manager CPU` setting
 
 The `engineManagerCPURequest` and `replicaManagerCPURequest` fields in Longhorn Node custom resource spec are removed and replaced by `instanceManagerCPURequest`.
 
-### Volume `recurringJob` Field Removed
+### Custom Resource Fields Removed
 
-Since `v1.2.0`, the Volume recurringJob field has been deprecated and replaced with the RecurringJob custom resource. Starting from `v1.5.0`, this field will be removed.
+Starting from `v1.5.0`, the following deprecated custom resource fields will be removed:
+- Volume.spec.recurringJob
+- Volume.spec.baseImage
+- Replica.spec.baseImage
+- Replica.spec.dataPath
+- InstanceManager.spec.engineImage
+- BackingImage.spec.imageURL
+- BackingImage.status.diskDownloadProgressMap
+- BackingImage.status.diskDownloadStateMap
+- BackingImageManager.status.backingImageFileMap.directory
+- BackingImageManager.status.backingImageFileMap.downloadProgress
+- BackingImageManager.status.backingImageFileMap.url
