@@ -14,6 +14,11 @@ During support bundle generation, Longhorn will create a Deployment for the supp
 With the support bundle, you can simulate a mocked Kubernetes cluster that is interactable with the `kubectl` command. See [simulator command](https://github.com/rancher/support-bundle-kit#simulator-command) for more details.
 
 
+## Limitations
+
+Longhorn currently does not support concurrent generation of multiple support bundles. We recommend waiting until the completion of the ongoing support bundle before initiating a new one. If a new support bundle is created while another one is still in progress, Longhorn will overwrite the older support bundle.
+
+
 ## History
 [Original Feature Request](https://github.com/longhorn/longhorn/issues/2759)
 
