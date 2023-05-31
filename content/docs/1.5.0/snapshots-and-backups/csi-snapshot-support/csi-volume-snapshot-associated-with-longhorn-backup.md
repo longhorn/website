@@ -137,7 +137,3 @@ spec:
 
 Now you can create a `PerstistantVolumeClaim` object that refers to the newly created `VolumeSnapshot` object.
 For an example see [Restore PVC from CSI VolumeSnapshot Associated With Longhorn Backup](#restore-pvc-from-csi-volumesnapshot-associated-with-longhorn-backup) above.
-
-## Current Limitation
-
-* Longhorn volume must be in the attached state to create/restore snapshot using CSI VolumeSnapshot mechanism.
