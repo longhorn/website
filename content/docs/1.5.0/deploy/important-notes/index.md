@@ -11,13 +11,17 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 ### Supported Kubernetes Versions
 Please ensure your Kubernetes cluster is at least v1.21 before upgrading to Longhorn v{{< current-version >}} because this is the minimum version Longhorn v{{< current-version >}} supports.
 
+### Attachment/Detachment Refactoring Side Effect On The Upgrade Process
+In Longhorn v1.5.0, we refactored the internal volume attach/detach mechanism.
+As a side effect, when you are upgrading from v1.4.x to v1.5.x, if there are in-progress operations such as volume cloning, backing image export from volume, and volume offline expansion, these operations will fail.
+You will have to retry them manually.
+To avoid this issue, please don't perform these operations during the upgrade.
+Ref: https://github.com/longhorn/longhorn/issues/3715#issuecomment-1562305097
+
 ### Recurring Jobs
 After the upgrade, the recurring job settings of volumes will be migrated to new recurring job resources, and the `RecurringJobs` field in the volume spec will be deprecated. [[doc](https://longhorn.io/docs/{{< current-version >}}/deploy/upgrade/#4-automatically-migrate-recurring-jobs)]
 
 The behavior of the recurring job types `Snapshot` and `Backup` will attempt to delete old snapshots first if they exceed the retained count before creating a new snapshot. Additionally, two new recurring job types have been introduced, `Snapshot Force Create` and `Backup Force Create`. They retain the original behavior of taking a snapshot or backup first before deleting outdated snapshots.
-
-### Backup Migration Time
-When upgrading from a Longhorn version >= 1.2.0 and <= v1.2.3 to v{{< current-version >}}, if your cluster has many backups, you may expect to have a long upgrade time (with 22000 backups, it could take a few hours). Helm upgrade may timeout and you may need to re-run the upgrade command or set a longer timeout. This is [a known issue](https://github.com/longhorn/longhorn/issues/3890).
 
 ### Longhorn Uninstallation
 To prevent Longhorn from being accidentally uninstalled (which leads to data lost),
