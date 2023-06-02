@@ -49,6 +49,9 @@ weight: 1
   - [Cronjob Failed Jobs History Limit](#cronjob-failed-jobs-history-limit)
   - [Cronjob Successful Jobs History Limit](#cronjob-successful-jobs-history-limit)
   - [Restore Volume Recurring Jobs](#restore-volume-recurring-jobs)
+  - [Backup Compression Method](#backup-compression-method)
+  - [Backup Concurrent Limit Per Backup](#backup-concurrent-limit-per-backup)
+  - [Restore Concurrent Limit Per Backup](#restore-concurrent-limit-per-backup)
 - [Scheduling](#scheduling)
   - [Allow Volume Creation with Degraded Availability](#allow-volume-creation-with-degraded-availability)
   - [Disable Scheduling On Cordoned Node](#disable-scheduling-on-cordoned-node)
@@ -491,6 +494,30 @@ This is also a volume-specific setting with the below options. Users can customi
 - `enabled`: This option instructs Longhorn to restore volume recurring jobs/groups from the backup target forcibly.
 
 - `disabled`: This option instructs Longhorn no restoring volume recurring jobs/groups should be done.
+
+#### Backup Compression Method
+
+> Default: `lz4`
+
+This setting allows users to specify backup compression method.
+
+- `none`: Disable the compression method. Suitable for multimedia data such as encoded images and videos.
+
+- `lz4`: Fast compression method. Suitable for flat files.
+
+- `gzip`: A bit of higher compression ratio but relatively slow.
+
+#### Backup Concurrent Limit Per Backup
+
+> Default: `5`
+
+This setting controls how many worker threads per backup concurrently.
+
+#### Restore Concurrent Limit Per Backup
+
+> Default: `5`
+
+This setting controls how many worker threads per restore concurrently.
 
 ### Scheduling
 
