@@ -19,3 +19,12 @@ If the icon representing the disaster volume is gray, it means the volume is res
 1. In the cluster A, make sure the original volume X has a backup created or has recurring backups scheduled.
 2. In backup page of cluster B, choose the backup volume X, then create disaster recovery volume Y. It's highly recommended to use the backup volume name as the disaster volume name.
 3. Longhorn will automatically attach the DR volume Y to a random node. Then Longhorn will start polling for the last backup of volume X, and incrementally restore it to the volume Y.
+
+## Activating DR Volumes {#activating}
+
+Longhorn supports activating a disaster recovery (DR) volume under the following conditions:
+
+- The volume is healthy, indicating that all replicas are in a healthy state.
+- When the global setting [`Allow Volume Creation with Degraded Availability`](../../references/settings/#allow-volume-creation-with-degraded-availability) is enabled, the volume is degraded, indicating some replicas are unhealthy.
+
+When the setting `Allow Volume Creation with Degraded Availability` is disabled, attempting to activate a degraded DR volume will cause the volume to become stuck in the attached state. However, after enabling the setting, the DR volume will be activated and converted into a normal volume, remaining in the detached state.
