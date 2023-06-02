@@ -34,6 +34,7 @@ weight: 1
   - [Support Bundle Failed History Limit](#support-bundle-failed-history-limit)
   - [Fast Replica Rebuild Enabled](#fast-replica-rebuild-enabled)
   - [Timeout of HTTP Client to Replica File Sync Server](#timeout-of-http-client-to-replica-file-sync-server)
+  - [Enable SPDK Data Engine (Preview Feature)](#enable-spdk-data-engine-preview-feature)
 - [Snapshot](#snapshot)
   - [Snapshot Data Integrity](#snapshot-data-integrity)
   - [Immediate Snapshot Data Integrity Check After Creating a Snapshot](#immediate-snapshot-data-integrity-check-after-creating-a-snapshot)
@@ -69,6 +70,7 @@ weight: 1
   - [Storage Network](#storage-network)
   - [Remove Snapshots During Filesystem Trim](#remove-snapshots-during-filesystem-trim)
   - [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu)
+
 
 ### Customizing Default Settings
 
@@ -391,6 +393,12 @@ The setting enables fast replica rebuilding feature. It relies on the checksums 
 > Default: `30`
 
 The value in seconds specifies the timeout of the HTTP client to the replica's file sync server used for replica rebuilding, volume cloning, snapshot cloning, etc.
+
+#### Enable SPDK Data Engine (Preview Feature)
+
+> Default: `false`
+
+This allows users to activate the SPDK data engine. Currently, it is in the preview phase and should not be utilized in a production environment.
 
 ### Snapshot
 
