@@ -30,8 +30,6 @@ This section describes how to handle planned node maintenance or upgrading Kuber
    > operation, to protect the last replica and prevent the disruption of the
    > workload. You can control this behavior in the setting [Node Drain Policy](../../references/settings#node-drain-policy), or [evict
    > the replica to other nodes before draining](../disks-or-nodes-eviction).
-   >
-   > In the past, we had the setting [Allow Node Drain with the Last Healthy Replica](../../references/settings#allow-node-drain-with-the-last-healthy-replica), but it is deprecated and replaced by the setting [Node Drain Policy](../../references/settings#node-drain-policy)
 
     The engine processes on the node will be migrated with the Pod to other nodes.
    > **Note:** For volumes that are not attached through the CSI flow on the node (for example, manually attached using UI),

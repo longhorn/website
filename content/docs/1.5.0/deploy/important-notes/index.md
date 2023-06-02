@@ -78,6 +78,10 @@ The `Disable Replica Rebuild` setting was deprecated and replaced by the [Concur
 
 The `Default Backing Image Manager Image`, `Default Instance Manager Image` and `Default Share Manager Image` settings were deprecated and removed from `v1.5.0`. These default manager image settings can be changed on the manager starting command line only. They should be modified in the Longhorn deploying manifest or `values.yaml` in Longhorn chart.
 
+### `Allow Node Drain with the Last Healthy Replica` Settings Removed
+The `Allow Node Drain with the Last Healthy Replica` setting was deprecated in Longhorn v1.4.2  and is now removed.
+Please use the new setting [Node Drain Policy](../../references/settings#node-drain-policy) instead.
+
 ### Longhorn Supports Fast Replica Rebuilding, and It Is Enabled by Default
 
 Fast replica rebuilding is supported by Longhorn, and is enabled by default. The feature relies on the change timestamps and checksums of snapshot disk files, so `snapshot-data-integrity` is also set to `fast-check`. The file checksums for snapshot disks will be calculated periodically, with a default check period of 7 days. For more information, please refer to [Fast Replica Rebuild](../../advanced-resources/fast-replica-rebuild/index.html) and [Snapshot Data Integrity Check](../../advanced-resources/snapshot-data-integrity-check/index.html).
