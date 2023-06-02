@@ -240,12 +240,12 @@ This information will help us gain insights how Longhorn is being used, which wi
 - Number of volumes of each access mode (RWO, RWX, unknown).
 - Number of volumes of each data locality type (disabled, best_effort, strict_local, unknown).
 - Number of volumes of each frontend type (blockdev, iscsi).
-- Average volume size.
-- Average volume actual size.
+- Average volume size in 100 GiB ranges.
+- Average volume actual size in 100 GiB ranges.
 - Average number of snapshots per volume.
 - Average number of replicas per volume.
-- Average Longhorn component CPU usage (instance manager, manager)
-- Average Longhorn component memory usage (instance manager, manager)
+- Average Longhorn component CPU usage (instance manager, manager) in 50 millicpu ranges.
+- Average Longhorn component memory usage (instance manager, manager) in 50 MiB ranges.
 - Longhorn settings:
   - Partially included:
     - Backup Target Type/Protocol (azblob, cifs, nfs, s3, none, unknown). This is from the Backup Target setting.
