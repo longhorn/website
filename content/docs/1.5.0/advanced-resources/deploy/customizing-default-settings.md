@@ -74,7 +74,7 @@ From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Insta
         #disable-scheduling-on-cordoned-node:
         #replica-zone-soft-anti-affinity:
         #node-down-pod-deletion-policy:
-        #allow-node-drain-with-last-healthy-replica:
+        #node-drain-policy:
         #replica-replenishment-wait-interval:
         #concurrent-replica-rebuild-per-node-limit:
         #disable-revision-counter:

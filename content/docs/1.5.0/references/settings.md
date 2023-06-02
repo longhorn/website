@@ -66,8 +66,6 @@ weight: 1
   - [Storage Network](#storage-network)
   - [Remove Snapshots During Filesystem Trim](#remove-snapshots-during-filesystem-trim)
   - [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu)
-- [Deprecated](#deprecated)
-  - [Allow Node Drain with the Last Healthy Replica](#allow-node-drain-with-the-last-healthy-replica)
 
 ### Customizing Default Settings
 
@@ -253,7 +251,6 @@ This information will help us gain insights how Longhorn is being used, which wi
     - System Managed Components Node Selector
     - Taint Toleration
   - Included as it is:
-		- Allow Node Drain with the Last Healthy Replica
 		- Allow Recurring Job While Volume Is Detached
 		- Allow Volume Creation With Degraded Availability
 		- Automatically Cleanup System Generated Snapshot
@@ -698,15 +695,3 @@ If it's hard to estimate the usage now, you can leave it with the default value,
 >  - One more set of instance manager pods may need to be deployed when the Longhorn system is upgraded. If current available CPUs of the nodes are not enough for the new instance manager pods, you need to detach the volumes using the oldest instance manager pods so that Longhorn can clean up the old pods automatically and release the CPU resources. And the new pods with the latest instance manager image will be launched then.
 >  - This global setting will be ignored for a node if the field "InstanceManagerCPURequest" on the node is set.
 >  - After this setting is changed, all instance manager pods using this global setting on all the nodes will be automatically restarted. In other words, DO NOT CHANGE THIS SETTING WITH ATTACHED VOLUMES.
-
-
-### Deprecated
-
-#### Allow Node Drain with the Last Healthy Replica
-
-> Default: `false`
-
-By default, Longhorn will block `kubectl drain` action on a node if the node contains the last healthy replica of a volume. If this setting is enabled, Longhorn will not block `kubectl drain` action on a node even if the node contains the last healthy replica of a volume.
-
-
-This deprecated setting is replaced by the new setting [Node Drain Policy](#node-drain-policy)
