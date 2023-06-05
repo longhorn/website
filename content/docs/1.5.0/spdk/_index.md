@@ -15,6 +15,8 @@ Currently, SPDK Data Engine only supports `x86_64` platform.
 - Block disk management
 - Orphaned replica management
 
+In addition to the features mentioned above, additional functionalities such as replica number adjustment, online replica rebuilding, snapshot, backup, restore and so on will be introduced in future versions.
+
 ## Prerequisites
 
 - x86-64 CPU with SSE4.2 instruction support
