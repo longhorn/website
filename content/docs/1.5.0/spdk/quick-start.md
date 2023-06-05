@@ -61,7 +61,7 @@ Or, you can manually install them.
 
   For Debian and Ubuntu, use this command:
   ```
-  zypper install nvme-cli
+  apt install nvme-cli
   ```
 
   For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`, use this command:
@@ -114,7 +114,7 @@ Unlike `filesystem-type` disks that are designed for legacy volumes, volumes usi
 
 If there are no additional disks available on the worker nodes, you can create loop block devices to test the feature. To accomplish this, execute the following command on each worker node to create a 10 GiB block device.
 ```
-dd if=/dev/zero of=blockfile bs=1M count=102400
+dd if=/dev/zero of=blockfile bs=1M count=10240
 losetup -f blockfile
 ```
 
