@@ -52,15 +52,19 @@ Or, users can install them manually by following these steps.
 
 ### Install NVMe Userspace Tool and Load `nvme-tcp` Kernel Module
 
-> Make sure the version of nvme-cli is equal to or greater than version `1.12`.
+> **NOTICE:**
+> 
+> Make sure that the version of `nvme-cli` is between `1.12` and `1.16` inclusively.
+> 
+> If the version of `nvme-cli` installed by the below steps outside the range of `1.12` to `1.16`, you will need to compile the utility from the [source codes](https://github.com/linux-nvme/nvme-cli) and install it on each Longhorn node by manual.
 
-We also provide a manifest that helps you finish the deployment on each Longhorn node.
+We provide a manifest that helps you finish the deployment on each Longhorn node.
 ```
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/prerequisite/longhorn-nvme-cli-installation.yaml
 ```
 
 Or, you can manually install them.
-- Install nvme-cli on each node and make sure that the version of `nvme-cli` is **equal to or greater than version `1.12`**.
+- Install nvme-cli on each node and make sure that the version of `nvme-cli` is between `1.12` and `1.16` inclusively.
 
   For SUSE/OpenSUSE you can install it use this command:
   ```
