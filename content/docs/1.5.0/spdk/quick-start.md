@@ -22,17 +22,23 @@ This tutorial will guide you through the process of configuring the environment 
 
 ### Configure Kernel Modules and Huge Pages
 
+For Debian and Ubuntu, please install Linux kernel extra modules before loading the kernel modules
+```
+apt install -y linux-modules-extra-`uname -r`
+```
+
 We provide a manifest that helps you configure the kernel modules and huge pages automatically, making it easier to set up.
 ```
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/prerequisite/longhorn-spdk-setup.yaml
 ```
 
- can install them manually by following these steps.
+Or, users can install them manually by following these steps.
 - Load the kernel modules on the each Longhorn node
   ```
   modprobe uio
   modprobe uio_pci_generic
   ```
+
 - Configure huge pages
   2MiB-sized huge pages must be enabled on each Longhorn node. 512 pages (i.e. 1 GiB total) must be available on each Longhorn node. To allocate the huge pages, run the following commands on each node.
   ```
@@ -84,6 +90,11 @@ Or, you can manually install them.
 ### Load Kernel Modules Automatically on Boot
 
 Rather than manually loading kernel modules `uio`, `uio_pci_generic` and `nvme-tcp` each time after reboot, you can streamline the process by configuring automatic module loading during the boot sequence. For detailed instructions, please consult the manual provided by your operating system.
+
+Reference:
+- [SUSE/OpenSUSE: Loading kernel modules automatically on boot](https://documentation.suse.com/sles/15-SP4/html/SLES-all/cha-mod.html#sec-mod-modprobe-d)
+- [Ubuntu: Configure kernel modules to load at boot](https://manpages.ubuntu.com/manpages/jammy/man5/modules-load.d.5.html)
+- [RHEL: Loading kernel modules automatically at system boot time](https://access.redhat.com/documentation/zh-tw/red_hat_enterprise_linux/8/html/managing_monitoring_and_updating_the_kernel/managing-kernel-modules_managing-monitoring-and-updating-the-kernel)
 
 ### Restart `kubelet`
 
