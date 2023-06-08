@@ -11,15 +11,15 @@ categories:
 ---
 
 ## Applicable versions
-All Longhorn versions. 
+All Longhorn versions.
 
 ## Likely environment
 Commonly seen in Fedora downstream distributions (e.g. Fedora, RHEL, Rocky, CentOS, etc.) when `container-selinux` is
 updated beyond version `2.189.0`. This can happen unexpectedly and can catch administrators off guard.
 
 ## Symptoms
-Symptoms are the same as those discussed in a [previous KB article that focused on 
-OKD](./troubleshooting-volumes-stuck-in-attach-detach-loop-when-using-longhorn-on-okd/).
+Symptoms are the same as those discussed in a [previous KB article that focused on
+OKD](../troubleshooting-volumes-stuck-in-attach-detach-loop-when-using-longhorn-on-okd/).
 
 All volumes are stuck in an attach/detach loop. `dmesg` and `ausearch` on storage nodes reveal SELinux issues:
 ```
@@ -43,15 +43,15 @@ type=AVC msg=audit(1686166397.967:2849): avc:  denied  { dac_override } for  pid
 
 ## Reason
 
-The root cause is the same as was discussed in a [previous KB article that focused on 
-OKD](./troubleshooting-volumes-stuck-in-attach-detach-loop-when-using-longhorn-on-okd/). A permissions issue in
+The root cause is the same as was discussed in a [previous KB article that focused on
+OKD](../troubleshooting-volumes-stuck-in-attach-detach-loop-when-using-longhorn-on-okd/). A permissions issue in
 `open-iscsi` causes `iscsiadm` to create directories under `/var/lib/iscsi` without the execute bit. When it later
 needs to access these directories, it cannot do so without the `dac_override` capability. Updated versions of
 `container-selinux` do not grant `iscsiadm` this capability when run from a container.
 
-This issue was fixed in `open-iscsi` 
-[v2.1.4](https://github.com/open-iscsi/open-iscsi/pull/244/commits/6df400925cfa9e723375c6f61524473703054220), but a 
-patch used to build the `iscsi-initiator-utils` RPM overrode the change in a couple of lines, leaving Fedora 
+This issue was fixed in `open-iscsi`
+[v2.1.4](https://github.com/open-iscsi/open-iscsi/pull/244/commits/6df400925cfa9e723375c6f61524473703054220), but a
+patch used to build the `iscsi-initiator-utils` RPM overrode the change in a couple of lines, leaving Fedora
 downstream distributions affected. Now that many of these distributions are running with an updated `container-selinux`
 package, a workaround is required.
 
@@ -60,23 +60,23 @@ package, a workaround is required.
 
 ### Short term
 
-It is generally not recommended (and difficult) to install an out-of-band version of `open-iscsi` not provided by your 
-distribution maintainers. Instead, the `dac_override` permission must be provided to `iscsid_t`. This can be done by 
+It is generally not recommended (and difficult) to install an out-of-band version of `open-iscsi` not provided by your
+distribution maintainers. Instead, the `dac_override` permission must be provided to `iscsid_t`. This can be done by
 running the following command (or similar) on all nodes before using Longhorn.
 
 ```
 echo '(allow iscsid_t self (capability (dac_override)))' > local_longhorn.cil && semodule -vi local_longhorn.cil
 ```
 
-While it is not ideal to have to grant the `dac_override` capability, it is important to recognize that affected 
-versions of `iscsi-initiator-utils` cannot run without it, even outside of Longhorn. Usually, `iscsiadm` is executed 
+While it is not ideal to have to grant the `dac_override` capability, it is important to recognize that affected
+versions of `iscsi-initiator-utils` cannot run without it, even outside of Longhorn. Usually, `iscsiadm` is executed
 by an unconfined `root` user, and uses this capability implicitly.
 
 Multiple Kubernetes distributions already apply this fix by default:
 - https://github.com/openshift/okd-machine-os/blob/master/overlay.d/99okd/usr/lib/okd/selinux-fixes.cil
 - https://github.com/rancher/rke2-selinux/blob/master/policy/centos9/rke2.te
 
-If you are running an affected OS with an up-to-date `container-selinux` and your Kubernetes distribution doesn't 
+If you are running an affected OS with an up-to-date `container-selinux` and your Kubernetes distribution doesn't
 already apply the fix for you, we provide a DaemonSet that can make the necessary change on all nodes.
 
 ```

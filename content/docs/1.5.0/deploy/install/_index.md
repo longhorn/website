@@ -96,7 +96,7 @@ Below are the directories Longhorn components requiring access with root and pri
 - Longhorn Instance Manager
   - /: Access any data path on this node and access Longhorn engine binaries.
   - /dev: Block devices created by Longhorn are under the `/dev` path.
-  - /proc: Find the recognized host process like container runtime, then use `nsenter` to manage iSCSI targets and initiators, also some file system 
+  - /proc: Find the recognized host process like container runtime, then use `nsenter` to manage iSCSI targets and initiators, also some file system
 - Longhorn Share Manager
   - /dev: Block devices created by Longhorn are under the `/dev` path.
   - /lib/modules: Kernel modules required by `cryptsetup` for volume encryption.
@@ -180,9 +180,9 @@ Created symlink from /etc/systemd/system/multi-user.target.wants/iscsid.service 
 iscsi install successfully
 ```
 
-In rare cases, it may be required to modify the installed SELinux policy to get Longhorn working. If you are running 
-an up-to-date version of a Fedora downstream distribution (e.g. Fedora, RHEL, Rocky, CentOS, etc.) and plan to leave 
-SELinux enabled, see [the KB](../../../kb/troubleshooting-volume-attachment-fails-due-to-selinux-denials) for details.
+In rare cases, it may be required to modify the installed SELinux policy to get Longhorn working. If you are running
+an up-to-date version of a Fedora downstream distribution (e.g. Fedora, RHEL, Rocky, CentOS, etc.) and plan to leave
+SELinux enabled, see [the KB](../../../../kb/troubleshooting-volume-attachment-fails-due-to-selinux-denials) for details.
 
 ### Installing NFSv4 client
 
