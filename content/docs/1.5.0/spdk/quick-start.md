@@ -29,7 +29,7 @@ apt install -y linux-modules-extra-`uname -r`
 
 We provide a manifest that helps you configure the kernel modules and huge pages automatically, making it easier to set up.
 ```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/prerequisite/longhorn-spdk-setup.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}//deploy/prerequisite/longhorn-spdk-setup.yaml
 ```
 
 Or, users can install them manually by following these steps.
@@ -54,17 +54,35 @@ Or, users can install them manually by following these steps.
 
 > **NOTICE:**
 > 
-> Make sure that the version of `nvme-cli` is between `1.12` and `1.16` inclusively.
+> Make sure that the version of `nvme-cli` is equal to or greater than `1.12`.
 > 
-> If the version of `nvme-cli` installed by the below steps outside the range of `1.12` to `1.16`, you will need to compile the utility from the [source codes](https://github.com/linux-nvme/nvme-cli) and install it on each Longhorn node by manual.
+> If the version of `nvme-cli` installed by the below steps is not equal to or greater than `1.12`., you will need to compile the utility from the [source codes](https://github.com/linux-nvme/nvme-cli) and install it on each Longhorn node by manual.
+> 
+> Also, install the **uuid development library** before compiling to support the `show-hostnqn` subcommand.
+> 
+> For SUSE/OpenSUSE you can install it use this command:
+> ```
+> zypper install uuid-devel
+> ```
+>
+> For Debian and Ubuntu, use this command:
+> ```
+> apt install uuid-dev
+> ```
+>
+> For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`, use this command:
+> ```
+> yum install uuid-devel
+> ```
+>
 
 We provide a manifest that helps you finish the deployment on each Longhorn node.
 ```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/prerequisite/longhorn-nvme-cli-installation.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}//deploy/prerequisite/longhorn-nvme-cli-installation.yaml
 ```
 
 Or, you can manually install them.
-- Install nvme-cli on each node and make sure that the version of `nvme-cli` is between `1.12` and `1.16` inclusively.
+- Install nvme-cli on each node and make sure that the version of `nvme-cli` is equal to or greater than `1.12`.
 
   For SUSE/OpenSUSE you can install it use this command:
   ```
@@ -108,7 +126,7 @@ After finishing the above steps, restart kubelet on each node.
 
 Make sure everything is correctly configured and installed by
 ```
-bash -c "$(curl -sfL https://raw.githubusercontent.com/longhorn/longhorn/master/scripts/environment_check.sh)" -s -s
+bash -c "$(curl -sfL https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}//scripts/environment_check.sh)" -s -s
 ```
 
 ## Installation
@@ -170,14 +188,14 @@ After the installation and configuration, we can dyamically provision a Persiste
 
 Use following command to create a StorageClass called `longhorn-spdk`. Set `parameters.backendStoreDriver`  to `spdk` to utilize SPDK Data Engine.
 ```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/examples/spdk/storageclass.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}//examples/spdk/storageclass.yaml
 ```
 
 ### Create Longhorn Volumes
 
 Create a Pod that uses Longhorn volumes using SPDK Data Engine by running this command:
 ```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/examples/spdk/pod_with_pvc.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}//examples/spdk/pod_with_pvc.yaml
 ```
 
 Or, if you are creating a volume on Longhorn UI, please specify the `Backend Data Engine` as `SPDK`.
