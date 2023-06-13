@@ -1,6 +1,6 @@
 ---
   title: Performance Benchmark
-  weight: 2
+  weight: 3
 ---
 
 ## Environment
