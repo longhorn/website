@@ -256,51 +256,51 @@ This information will help us gain insights how Longhorn is being used, which wi
     - System Managed Components Node Selector
     - Taint Toleration
   - Included as it is:
-		- Allow Recurring Job While Volume Is Detached
-		- Allow Volume Creation With Degraded Availability
-		- Automatically Cleanup System Generated Snapshot
-		- Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly
-		- Automatic Salvage
-		- Backing Image Cleanup Wait Interval
-		- Backing Image Recovery Wait Interval
-		- Backup Compression Method
-		- Backupstore Poll Interval
-		- Backup Concurrent Limit
-		- Concurrent Automatic Engine Upgrade Per Node Limit
-		- Concurrent Backup Restore Per Node Limit
-		- Concurrent Replica Rebuild Per Node Limit
-		- CRD API Version
-		- Create Default Disk Labeled Nodes
-		- Default Data Locality
-		- Default Replica Count
-		- Disable Revision Counter
-		- Disable Scheduling On Cordoned Node
-		- Engine Replica Timeout
-		- Failed Backup TTL
-		- Fast Replica Rebuild Enabled
-		- Guaranteed Instance Manager CPU
-		- Kubernetes Cluster Autoscaler Enabled
-		- Node Down Pod Deletion Policy
-		- Node Drain Policy
-		- Orphan Auto Deletion
-		- Recurring Failed Jobs History Limit
-		- Recurring Successful Jobs History Limit
-		- Remove Snapshots During Filesystem Trim
-		- Replica Auto Balance
-		- Replica File Sync HTTP Client Timeout
-		- Replica Replenishment Wait Interval
-		- Replica Soft Anti Affinity
-		- Replica Zone Soft Anti Affinity
-		- Restore Concurrent Limit
-		- Restore Volume Recurring Jobs
-		- Snapshot Data Integrity
-		- Snapshot Data Integrity CronJob
-		- Snapshot DataIntegrity Immediate Check After Snapshot Creation
-		- Storage Minimal Available Percentage
-		- Storage Over Provisioning Percentage
-		- Storage Reserved Percentage For Default Disk
-		- Support Bundle Failed History Limit
-		- System Managed Pods Image Pull Policy
+    - Allow Recurring Job While Volume Is Detached
+    - Allow Volume Creation With Degraded Availability
+    - Automatically Cleanup System Generated Snapshot
+    - Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly
+    - Automatic Salvage
+    - Backing Image Cleanup Wait Interval
+    - Backing Image Recovery Wait Interval
+    - Backup Compression Method
+    - Backupstore Poll Interval
+    - Backup Concurrent Limit
+    - Concurrent Automatic Engine Upgrade Per Node Limit
+    - Concurrent Backup Restore Per Node Limit
+    - Concurrent Replica Rebuild Per Node Limit
+    - CRD API Version
+    - Create Default Disk Labeled Nodes
+    - Default Data Locality
+    - Default Replica Count
+    - Disable Revision Counter
+    - Disable Scheduling On Cordoned Node
+    - Engine Replica Timeout
+    - Failed Backup TTL
+    - Fast Replica Rebuild Enabled
+    - Guaranteed Instance Manager CPU
+    - Kubernetes Cluster Autoscaler Enabled
+    - Node Down Pod Deletion Policy
+    - Node Drain Policy
+    - Orphan Auto Deletion
+    - Recurring Failed Jobs History Limit
+    - Recurring Successful Jobs History Limit
+    - Remove Snapshots During Filesystem Trim
+    - Replica Auto Balance
+    - Replica File Sync HTTP Client Timeout
+    - Replica Replenishment Wait Interval
+    - Replica Soft Anti Affinity
+    - Replica Zone Soft Anti Affinity
+    - Restore Concurrent Limit
+    - Restore Volume Recurring Jobs
+    - Snapshot Data Integrity
+    - Snapshot Data Integrity CronJob
+    - Snapshot DataIntegrity Immediate Check After Snapshot Creation
+    - Storage Minimal Available Percentage
+    - Storage Over Provisioning Percentage
+    - Storage Reserved Percentage For Default Disk
+    - Support Bundle Failed History Limit
+    - System Managed Pods Image Pull Policy
 
 > The `Upgrade Checker` needs to be enabled to periodically send the collected data.
 
