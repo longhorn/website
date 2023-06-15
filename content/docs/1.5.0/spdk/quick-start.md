@@ -12,7 +12,7 @@
   - [Check Environment](#check-environment)
 - [Installation](#installation)
   - [Install Longhorn System](#install-longhorn-system)
-  - [Enable SPDK Data Engine](#enable-spdk-data-engine)
+  - [Enable V2 Data Engine](#enable-v2-data-engine)
   - [CPU and Memory Usage](#cpu-and-memory-usage)
   - [Add `block-type` Disks in Longhorn Nodes](#add-block-type-disks-in-longhorn-nodes)
     - [Prepare disks](#prepare-disks)
@@ -23,9 +23,9 @@
 
 ---
 
-Longhorn's SPDK Data Engine harnesses the power of the Storage Performance Development Kit (SPDK) to elevate its overall performance. The integration significantly reduces I/O latency while simultaneously boosting IOPS and throughput. The enhancement provides a high-performance storage solution capable of meeting diverse workload demands.
+Longhorn's V2 Data Engine harnesses the power of the Storage Performance Development Kit (SPDK) to elevate its overall performance. The integration significantly reduces I/O latency while simultaneously boosting IOPS and throughput. The enhancement provides a high-performance storage solution capable of meeting diverse workload demands.
 
-**SPDK Data Engine is currently a PREVIEW feature and should NOT be utilized in a production environment.** At present, a volume with SPDK Data Engine only supports
+**V2 Data Engine is currently a PREVIEW feature and should NOT be utilized in a production environment.** At present, a volume with V2 Data Engine only supports
 
 - Volume lifecycle (creation, attachment, detachment and deletion)
 - Degraded volume
@@ -35,7 +35,7 @@ Longhorn's SPDK Data Engine harnesses the power of the Storage Performance Devel
 
 In addition to the features mentioned above, additional functionalities such as replica number adjustment, online replica rebuilding, snapshot, backup, restore and so on will be introduced in future versions.
 
-This tutorial will guide you through the process of configuring the environment and create Kubernetes persistent storage resources of persistent volumes (PVs) and persistent volume claims (PVCs) that correspond to Longhorn volumes using SPDK Data Engine.
+This tutorial will guide you through the process of configuring the environment and create Kubernetes persistent storage resources of persistent volumes (PVs) and persistent volume claims (PVCs) that correspond to Longhorn volumes using V2 Data Engine.
 
 ## Prerequisites
 
@@ -166,15 +166,15 @@ bash -c "$(curl -sfL https://raw.githubusercontent.com/longhorn/longhorn/v{{< cu
 
 Follow the steps in Quick Installation to install Longhorn system.
 
-### Enable SPDK Data Engine
+### Enable V2 Data Engine
 
-Enable the SPDK Data Engine by changing the `spdk` setting to `true` after installation. Following this, the instance-manager pods will be automatically restarted.
+Enable the V2 Data Engine by changing the `v2-data-engine` setting to `true` after installation. Following this, the instance-manager pods will be automatically restarted.
 
-Or, you can enable it in `Setting > General > Enable SPDK Data Engine (Preview Feature)`. 
+Or, you can enable it in `Setting > General > V2 Data Engine`. 
 
 ### CPU and Memory Usage
 
-When the SPDK Data Engine is enabled, each instance-manager pod utilizes 1 CPU core. This high CPU usage is attributed to the `spdk_tgt` process running within each instance-manager pod. The spdk_tgt process is responsible for handling input/output (IO) operations and requires intensive polling. As a result, it consumes 100% of a dedicated CPU core to efficiently manage and process the IO requests, ensuring optimal performance and responsiveness for storage operations.
+When the V2 Data Engine is enabled, each instance-manager pod utilizes 1 CPU core. This high CPU usage is attributed to the `spdk_tgt` process running within each instance-manager pod. The spdk_tgt process is responsible for handling input/output (IO) operations and requires intensive polling. As a result, it consumes 100% of a dedicated CPU core to efficiently manage and process the IO requests, ensuring optimal performance and responsiveness for storage operations.
 
 ```
 NAME                                                CPU(cores)   MEMORY(bytes)
@@ -230,7 +230,7 @@ status:
 
 ### Add `block-type` Disks in Longhorn Nodes
 
-Unlike `filesystem-type` disks that are designed for legacy volumes, volumes using SPDK Data Engine are persistent on `block-type` disks. Therefore, it is necessary to equip Longhorn nodes with `block-type` disks.
+Unlike `filesystem-type` disks that are designed for legacy volumes, volumes using V2 Data Engine are persistent on `block-type` disks. Therefore, it is necessary to equip Longhorn nodes with `block-type` disks.
 
 #### Prepare disks
 
@@ -269,20 +269,20 @@ Wait for a while, you will see the disk is displayed in the `Status.DiskStatus`.
 
 ## Application Deployment
 
-After the installation and configuration, we can dyamically provision a Persistent Volume using SPDK Data Engine as the following steps.
+After the installation and configuration, we can dyamically provision a Persistent Volume using V2 Data Engine as the following steps.
 
 ### Create a StorageClass
 
-Use following command to create a StorageClass called `longhorn-spdk`. Set `parameters.backendStoreDriver`  to `spdk` to utilize SPDK Data Engine.
+Use following command to create a StorageClass called `longhorn-spdk`. Set `parameters.backendStoreDriver`  to `spdk` to utilize V2 Data Engine.
 ```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/spdk/storageclass.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/v2/storageclass.yaml
 ```
 
 ### Create Longhorn Volumes
 
-Create a Pod that uses Longhorn volumes using SPDK Data Engine by running this command:
+Create a Pod that uses Longhorn volumes using V2 Data Engine by running this command:
 ```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/spdk/pod_with_pvc.yaml
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/v2/pod_with_pvc.yaml
 ```
 
-Or, if you are creating a volume on Longhorn UI, please specify the `Backend Data Engine` as `SPDK`.
+Or, if you are creating a volume on Longhorn UI, please specify the `Backend Data Engine` as `v2`.
