@@ -15,7 +15,7 @@
 
 ## Benchmarking Tools
 
-- Utilize [kbench](https://github.com/yasker/kbench) a the benchmarking tool.
+- Utilize [kbench](https://github.com/yasker/kbench) as the benchmarking tool.
 
 ## Result
 
