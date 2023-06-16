@@ -78,8 +78,8 @@ To restore, follow the below instructions. The example below uses a StatefulSet 
       resources:
         requests:
           storage: 2Gi # must match size from earlier
-    storageClassName: longhorn # must match name from earlier
-    volumeName: statefulset-vol-0 # must reference Persistent Volume
+      storageClassName: longhorn # must match name from earlier
+      volumeName: statefulset-vol-0 # must reference Persistent Volume
     ---
     apiVersion: v1
     kind: PersistentVolumeClaim
@@ -91,8 +91,8 @@ To restore, follow the below instructions. The example below uses a StatefulSet 
       resources:
         requests:
           storage: 2Gi # must match size from earlier
-    storageClassName: longhorn # must match name from earlier
-    volumeName: statefulset-vol-1 # must reference Persistent Volume
+      storageClassName: longhorn # must match name from earlier
+      volumeName: statefulset-vol-1 # must reference Persistent Volume
     ```
 
 4. Create the `StatefulSet`:
