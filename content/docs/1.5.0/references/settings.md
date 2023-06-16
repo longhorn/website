@@ -536,13 +536,13 @@ This setting allows users to specify backup compression method.
 
 #### Backup Concurrent Limit Per Backup
 
-> Default: `5`
+> Default: `2`
 
 This setting controls how many worker threads per backup concurrently.
 
 #### Restore Concurrent Limit Per Backup
 
-> Default: `5`
+> Default: `2`
 
 This setting controls how many worker threads per restore concurrently.
 
