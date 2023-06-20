@@ -401,19 +401,21 @@ The value in seconds specifies the timeout of the HTTP client to the replica's f
 
 > Default: `false`
 
-This allows users to activate the v2 data engine based on SPDK. Currently, it is in the preview phase and should not be utilized in a production environment.
+This allows users to activate the v2 data engine based on SPDK. Currently, it is in the preview phase and should not be utilized in a production environment. For more information, please refer to [V2 Data Engine (Preview Feature)](../../spdk).
 
 > **Warning**
 > 
 > - DO NOT CHANGE THIS SETTING WITH ATTACHED VOLUMES. Longhorn will block this setting update when there are attached volumes.
 > 
 > - When applying the setting, Longhorn will restart all instance-manager pods.
+>
+> - When the V2 Data Engine is enabled, each instance-manager pod utilizes 1 CPU core. This high CPU usage is attributed to the spdk_tgt process running within each instance-manager pod. The spdk_tgt process is responsible for handling input/output (IO) operations and requires intensive polling. As a result, it consumes 100% of a dedicated CPU core to efficiently manage and process the IO requests, ensuring optimal performance and responsiveness for storage operations.
 
 #### Offline Replica Rebuilding
 
 > Default: `enabled`
 
-This setting allows users to enable the offline replica rebuilding for volumes using v2 data engine.
+This setting allows users to enable the offline replica rebuilding for volumes using v2 data engine. For more information, please refer to [Automatic Offline Replica Rebuilding](../../spdk/automatic-offline-replica-rebuilding).
 
 Here are the available options:
 - `enabled`
