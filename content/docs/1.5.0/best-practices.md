@@ -42,6 +42,8 @@ Longhorn supports the following architectures:
 
 ## Operating System
 
+> **Note:** CentOS Linux has been removed from the verified OS list below, as it has been discontinued in favor of CentOS Stream [[ref](https://www.redhat.com/en/blog/faq-centos-stream-updates#Q5)], a rolling-release Linux distribution. Our focus for verifying RHEL-based downstream open source distributions will be enterprise-grade, such as Rocky and Oracle Linux.
+
 The following Linux OS distributions and versions have been verified during the v{{< current-version >}} release testing. However, this does not imply that Longhorn exclusively supports these distributions. Essentially, Longhorn should function well on any certified Kubernetes cluster running on Linux nodes with a wide range of general-purpose operating systems, as well as verified container-optimized operating systems like SLE Micro.
 
 | No. | OS           | Versions
@@ -49,10 +51,9 @@ The following Linux OS distributions and versions have been verified during the 
 | 1.  | Ubuntu       | 20.04, 22.04
 | 2.  | SLES         | 15 SP4
 | 3.  | SLE Micro    | 5.3
-| 4.  | CentOS       | 8.4
-| 5.  | RHEL         | 8.6
-| 6.  | Oracle Linux | 8.6
-| 7.  | Rocky Linux  | 8.6
+| 4.  | RHEL         | 8.6
+| 5.  | Oracle Linux | 8.6
+| 6.  | Rocky Linux  | 8.6
 
 ## Node and Disk Setup
 
