@@ -9,9 +9,11 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 ## Notes
 
 ### Supported Kubernetes Versions
+
 Please ensure your Kubernetes cluster is at least v1.21 before upgrading to Longhorn v{{< current-version >}} because this is the minimum version Longhorn v{{< current-version >}} supports.
 
 ### Attachment/Detachment Refactoring Side Effect On The Upgrade Process
+
 In Longhorn v1.5.0, we refactored the internal volume attach/detach mechanism.
 As a side effect, when you are upgrading from v1.4.x to v1.5.x, if there are in-progress operations such as volume cloning, backing image export from volume, and volume offline expansion, these operations will fail.
 You will have to retry them manually.
@@ -19,11 +21,11 @@ To avoid this issue, please don't perform these operations during the upgrade.
 Ref: https://github.com/longhorn/longhorn/issues/3715#issuecomment-1562305097
 
 ### Recurring Jobs
-After the upgrade, the recurring job settings of volumes will be migrated to new recurring job resources, and the `RecurringJobs` field in the volume spec will be deprecated. [[doc](https://longhorn.io/docs/{{< current-version >}}/deploy/upgrade/#4-automatically-migrate-recurring-jobs)]
 
 The behavior of the recurring job types `Snapshot` and `Backup` will attempt to delete old snapshots first if they exceed the retained count before creating a new snapshot. Additionally, two new recurring job types have been introduced, `Snapshot Force Create` and `Backup Force Create`. They retain the original behavior of taking a snapshot or backup first before deleting outdated snapshots.
 
 ### Longhorn Uninstallation
+
 To prevent Longhorn from being accidentally uninstalled (which leads to data lost),
 we introduce a new setting, [deleting-confirmation-flag](../../references/settings/#deleting-confirmation-flag).
 If this flag is **false**, the Longhorn uninstallation job will fail.
@@ -81,15 +83,6 @@ The `Default Backing Image Manager Image`, `Default Instance Manager Image` and 
 ### `Allow Node Drain with the Last Healthy Replica` Settings Removed
 The `Allow Node Drain with the Last Healthy Replica` setting was deprecated in Longhorn v1.4.2  and is now removed.
 Please use the new setting [Node Drain Policy](../../references/settings#node-drain-policy) instead.
-
-### Longhorn Supports Fast Replica Rebuilding, and It Is Enabled by Default
-
-Fast replica rebuilding is supported by Longhorn, and is enabled by default. The feature relies on the change timestamps and checksums of snapshot disk files, so `snapshot-data-integrity` is also set to `fast-check`. The file checksums for snapshot disks will be calculated periodically, with a default check period of 7 days. For more information, please refer to [Fast Replica Rebuild](../../advanced-resources/fast-replica-rebuild/index.html) and [Snapshot Data Integrity Check](../../advanced-resources/snapshot-data-integrity-check/index.html).
-
-### Each Kubernetes Node Must Have a Unique Hostname for RWX Volumes
-
-Longhorn has a dedicated recovery backend service for NFS servers in the share-manager pods used by the RWX volumes. The clients' information, including its hostname, will be stored in the recovery backend. The information will be used for connection recovery if the share-manager pod is abnormally terminated and a new one is created. The [environment check script](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh) helps users to check all nodes have unique hostnames.
-More information please refer to [ReadWriteMany (RWX) Volume](../../advanced-resources/rwx-workloads/index.html).
 
 ### Instance Managers Consolidated
 
