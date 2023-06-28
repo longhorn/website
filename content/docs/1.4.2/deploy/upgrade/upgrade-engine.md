@@ -13,7 +13,7 @@ Upgrade the Longhorn manager before upgrading the Longhorn engine.
 
 ### Offline Upgrade
 
-Follow these steps if the live upgrade is not available, or if the volume is stuck in degraded state:
+Follow these steps if the live upgrade is not available, or if the volume is stuck in a degraded state:
 
 1. Follow [the detach procedure for relevant workloads](../../../volumes-and-nodes/detaching-volumes).
 2. Select all the volumes using batch selection. Click the batch operation button **Upgrade Engine**, and choose the engine image available in the list. It's the default engine shipped with the manager for this release.
@@ -28,15 +28,15 @@ The `iSCSI` frontend does not support live upgrades.
 Live upgrade should only be done with healthy volumes.
 
 1. Select the volume you want to upgrade.
-2. Click `Upgrade Engine` in the drop down.
+2. Click `Upgrade Engine` in the drop-down.
 3. Select the engine image you want to upgrade to.
-    1. Normally it's the only engine image in the list, since the UI exclude the current image from the list.
+    1. Normally it's the only engine image in the list, since the UI excludes the current image from the list.
 4. Click OK.
 
-During the live upgrade, the user will see double number of the replicas temporarily. After upgrade complete, the user should see the same number of the replicas as before, and the `Engine Image` field of the volume should be updated.
+During the live upgrade, the user will see double the number of replicas temporarily. After the upgrade is complete, the user should see the same number of replicas as before, and the `Engine Image` field of the volume should be updated.
 
-Notice after the live upgrade, Rancher or Kubernetes would still show the old version of image for the engine, and new version for the replicas. It's expected. The upgrade is success if you see the new version of image listed as the volume image in the Volume Detail page.
+Notice after the live upgrade, Rancher or Kubernetes would still show the old version of image for the engine, and new version for the replicas. It's expected. The upgrade is successful if you see the new version of image listed as the volume image in the Volume Detail page. In order to clear out the old instance manager engine pod for a volume that was upgraded, the volume needs to be detached and reattached by scaling the workload down and then scaling it back up.
 
 ### Clean up the old image
 
-After you've done upgrade for all the images, select `Settings/Engine Image` from Longhorn UI. Now you should able to remove the non-default image.
+After you've upgraded for all the images, select `Settings/Engine Image` from Longhorn UI. Now you should able to remove the non-default image.
