@@ -18,7 +18,7 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
 1. Use following command to create a StorageClass called `longhorn`:
 
     ```
-    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/storageclass.yaml
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/storageclass.yaml    # This code creates a storage class that is called 'longhorn-test' but the code below says 'longhorn', which is the default stroage class when you install longhorn. The below example needs to be changed to say longhorn-test
     ```
 
     The following example StorageClass is created:
@@ -27,11 +27,11 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
     kind: StorageClass
     apiVersion: storage.k8s.io/v1
     metadata:
-      name: longhorn
+      name: longhorn <--- CHange to longhorn-test
     provisioner: driver.longhorn.io
     allowVolumeExpansion: true
     parameters:
-      numberOfReplicas: "3"
+      numberOfReplicas: "1"   # For testing purposes,this should be one on single node cluster (k3s FOR EXAMPLE) will send the volume into degraded due to resources
       staleReplicaTimeout: "2880" # 48 hours in minutes
       fromBackup: ""
       fsType: "ext4"
@@ -55,7 +55,7 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
 2. Create a Pod that uses Longhorn volumes by running this command:
 
     ```
-    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/pod_with_pvc.yaml
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/pod_with_pvc.yaml   # This code when created is specifing a storage class name 'longhorn' which is the default but the above made a storage class named 'longhorn-test'. So this code needs to be changed to say longhorn-test and not longhorn else the above step will be pointless :)
     ```
 
     A Pod named `volume-test` is launched, along with a PersistentVolumeClaim named `longhorn-volv-pvc`. The PersistentVolumeClaim references the Longhorn StorageClass:
@@ -68,7 +68,7 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
     spec:
       accessModes:
         - ReadWriteOnce
-      storageClassName: longhorn
+      storageClassName: longhorn  <-- Change to longhorn-test here and in the actual yaml provided
       resources:
         requests:
           storage: 2Gi
