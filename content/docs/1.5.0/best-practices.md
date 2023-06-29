@@ -48,12 +48,12 @@ The following Linux OS distributions and versions have been verified during the 
 
 | No. | OS           | Versions
 |-----|--------------| --------
-| 1.  | Ubuntu       | 20.04, 22.04
+| 1.  | Ubuntu       | 22.04
 | 2.  | SLES         | 15 SP4
 | 3.  | SLE Micro    | 5.3
-| 4.  | RHEL         | 8.6
-| 5.  | Oracle Linux | 8.6
-| 6.  | Rocky Linux  | 8.6
+| 4.  | RHEL         | 9.1
+| 5.  | Oracle Linux | 9.1
+| 6.  | Rocky Linux  | 9.2
 
 ## Node and Disk Setup
 
