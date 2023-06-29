@@ -5,11 +5,19 @@ weight: 2
 
 ## Prerequisites
 
+Longhorn nodes must meet the following requirements:
+
 - x86-64 CPU with SSE4.2 instruction support
-  > NOTICE
+  > **NOTICE**
+  >
   > Currently, V2 Data Engine only supports `x86_64` platform.
 
-- Required linux kernel modules
+- Linux kernel
+
+  5.13 or later is required for NVMe over TCP support
+
+
+- Linux kernel modules
   - uio
   - uio_pci_generic
   - nvme-tcp
