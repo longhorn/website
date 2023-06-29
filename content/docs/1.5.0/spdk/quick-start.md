@@ -76,25 +76,6 @@ Or, you can install them manually by following these steps.
   echo "vm.nr_hugepages=512" >> /etc/sysctl.conf
   ```
 
-**Note**:
-For Debian machines, when you encounter errors similar to the below, you need to find an available version in the pkg collection websites like [this](https://pkgs.org/search/?q=linux-modules-extra) rather than directly relying on `uname -r` instead:
-```log
-apt install -y linux-modules-extra-`uname -r`
-Reading package lists... Done
-Building dependency tree... Done
-Reading state information... Done
-Package linux-modules-extra-5.15.0-67-generic is not available, but is referred to by another package.
-This may mean that the package is missing, has been obsoleted, or
-is only available from another source
-
-E: Package 'linux-modules-extra-5.15.0-67-generic' has no installation candidate
-```
-For example, for Ubuntu 22.04, one valid version is `linux-modules-extra-5.15.0-76-generic`:
-```shell
-apt update -y
-apt install -y linux-modules-extra-5.15.0-76-generic
-```
-
 ### Install NVMe Userspace Tool and Load `nvme-tcp` Kernel Module
 
 > **NOTICE:**
