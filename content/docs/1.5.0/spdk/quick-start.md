@@ -76,16 +76,35 @@ Or, you can install them manually by following these steps.
   echo "vm.nr_hugepages=512" >> /etc/sysctl.conf
   ```
 
+**Note**:
+For Debian machines, when you encounter errors similar to the below, you need to find an available version in the pkg collection websites like [this](https://pkgs.org/search/?q=linux-modules-extra) rather than directly relying on `uname -r` instead:
+```log
+apt install -y linux-modules-extra-`uname -r`
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Package linux-modules-extra-5.15.0-67-generic is not available, but is referred to by another package.
+This may mean that the package is missing, has been obsoleted, or
+is only available from another source
+
+E: Package 'linux-modules-extra-5.15.0-67-generic' has no installation candidate
+```
+For example, for Ubuntu 22.04, one valid version is `linux-modules-extra-5.15.0-76-generic`:
+```shell
+apt update -y
+apt install -y linux-modules-extra-5.15.0-76-generic
+```
+
 ### Install NVMe Userspace Tool and Load `nvme-tcp` Kernel Module
 
 > **NOTICE:**
-> 
+>
 > Make sure that the version of `nvme-cli` is equal to or greater than `1.12`.
-> 
+>
 > If the version of `nvme-cli` installed by the below steps is not equal to or greater than `1.12`., you will need to compile the utility from the [source codes](https://github.com/linux-nvme/nvme-cli) and install it on each Longhorn node by manual.
-> 
+>
 > Also, install the **uuid development library** before compiling to support the `show-hostnqn` subcommand.
-> 
+>
 > For SUSE/OpenSUSE you can install it use this command:
 > ```
 > zypper install uuid-devel
@@ -170,7 +189,7 @@ Follow the steps in Quick Installation to install Longhorn system.
 
 Enable the V2 Data Engine by changing the `v2-data-engine` setting to `true` after installation. Following this, the instance-manager pods will be automatically restarted.
 
-Or, you can enable it in `Setting > General > V2 Data Engine`. 
+Or, you can enable it in `Setting > General > V2 Data Engine`.
 
 ### CPU and Memory Usage
 
@@ -249,7 +268,7 @@ losetup -j blockfile
 
 You can add the disk by navigating to the Node UI page and specify the `Disk Type` as `Block`. Next, provide the block device's path in the `Path` field.
 
-Or, edit the `node.longhorn.io` resource. 
+Or, edit the `node.longhorn.io` resource.
 ```
 kubectl -n longhorn-system edit node.longhorn.io <NODE NAME>
 ```
