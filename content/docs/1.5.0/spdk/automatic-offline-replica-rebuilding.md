@@ -1,6 +1,6 @@
 ---
   title: Automatic Offline Replica Rebuilding
-  weight: 2
+  weight: 4
 ---
 
 ## Introduction

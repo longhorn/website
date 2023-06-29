@@ -1,6 +1,6 @@
 ---
   title: Quick Start
-  weight: 1
+  weight: 3
 ---
 
 **Table of Contents**
