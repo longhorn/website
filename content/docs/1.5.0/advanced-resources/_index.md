@@ -1,4 +1,4 @@
 ---
 title: Advanced Resources
-weight: 70
+weight: 6
 ---
