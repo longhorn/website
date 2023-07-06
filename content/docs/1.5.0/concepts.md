@@ -263,7 +263,7 @@ Longhorn runs the sync command automatically before creating a snapshot.
 
 # 3. Backups and Secondary Storage
 
-A backup is an object in the backupstore, which is an S3, NFS or CIFS compatible object store external to the Kubernetes cluster. Backups provide a form of secondary storage so that even if your Kubernetes cluster becomes unavailable, your data can still be retrieved.
+A backup is an object in the backupstore, which is an S3 compatible object store, Azure Blob Storage, NFS or CIFS  external to the Kubernetes cluster. Backups provide a form of secondary storage so that even if your Kubernetes cluster becomes unavailable, your data can still be retrieved.
 
 Because the volume replication is synchronized, and because of network latency, it is hard to do cross-region replication. The backupstore is also used as a medium to address this problem.
 
