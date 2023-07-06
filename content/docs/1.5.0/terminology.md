@@ -52,11 +52,11 @@ A backup is an object in the backupstore. The backupstore may contain volume bac
 
 ### Backupstore
 
-Longhorn backups are saved to the backupstore, which is external to the Kubernetes cluster. The backupstore can be either an S3 compatible server, a NFS share or a CIFS share.
+Longhorn backups are saved to the backupstore, which is external to the Kubernetes cluster. The backupstore can be either an S3 compatible server, Azure Blob Storage compatible server, a NFS share or a CIFS share.
 
 Longhorn accesses the backupstore at the endpoint configured in the backuptarget.
 
-### Backup target 
+### Backup target
 
 A backup target is the endpoint used to access a backupstore in Longhorn.
 
@@ -165,7 +165,7 @@ When salvaging a volume, Longhorn will try to figure out which replica(s) are us
 
 ### Secondary backups
 
-Backups external to the Kubernetes cluster, on S3, NFS or CIFS.
+Backups external to the Kubernetes cluster, on S3, Azure Blob Storage, NFS or CIFS.
 
 ### Snapshot
 
