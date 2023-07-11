@@ -63,6 +63,7 @@ weight: 1
   - [Replica Auto Balance](#replica-auto-balance)
   - [Storage Minimal Available Percentage](#storage-minimal-available-percentage)
   - [Storage Over Provisioning Percentage](#storage-over-provisioning-percentage)
+  - [Storage Reserved Percentage For Default Disk](#storage-reserved-percentage-for-default-disk)
 - [Danger Zone](#danger-zone)
   - [Concurrent Replica Rebuild Per Node Limit](#concurrent-replica-rebuild-per-node-limit)
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
@@ -404,9 +405,9 @@ The value in seconds specifies the timeout of the HTTP client to the replica's f
 This allows users to activate the v2 data engine based on SPDK. Currently, it is in the preview phase and should not be utilized in a production environment. For more information, please refer to [V2 Data Engine (Preview Feature)](../../spdk).
 
 > **Warning**
-> 
+>
 > - DO NOT CHANGE THIS SETTING WITH ATTACHED VOLUMES. Longhorn will block this setting update when there are attached volumes.
-> 
+>
 > - When applying the setting, Longhorn will restart all instance-manager pods.
 >
 > - When the V2 Data Engine is enabled, each instance-manager pod utilizes 1 CPU core. This high CPU usage is attributed to the spdk_tgt process running within each instance-manager pod. The spdk_tgt process is responsible for handling input/output (IO) operations and requires intensive polling. As a result, it consumes 100% of a dedicated CPU core to efficiently manage and process the IO requests, ensuring optimal performance and responsiveness for storage operations.
@@ -633,6 +634,14 @@ The over-provisioning percentage defines the amount of storage that can be alloc
 By increase this setting, the Longhorn Manager will allow scheduling new replicas only after the amount of disk space has been added to the used disk space (**storage scheduled**), and the used disk space (**Storage Maximum** - **Storage Reserved**) is not over the over-provisioning percentage of the actual usable disk capacity.
 
 It's worth noting that a volume replica may require more storage space than the volume's actual size, as the snapshots also require storage. You can regain space by deleting unnecessary snapshots.
+
+#### Storage Reserved Percentage For Default Disk
+
+> Default: `30`
+
+The reserved percentage specifies the percentage of disk space that will not be allocated to the default disk on each new Longhorn node.
+
+This setting only affects the default disk of a new adding node or nodes when installing Longhorn.
 
 ### Danger Zone
 
