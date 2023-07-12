@@ -55,6 +55,8 @@ The following Linux OS distributions and versions have been verified during the 
 | 5.  | Oracle Linux | 9.1
 | 6.  | Rocky Linux  | 9.2
 
+Note: It's recommended to guarantee that the kernel version is at least 5.8 as there is filesystem optimization/improvement since this version. See [this issue](https://github.com/longhorn/longhorn/issues/2507#issuecomment-857195496) for details.
+
 ## Node and Disk Setup
 
 We recommend the following setup for nodes and disks.
