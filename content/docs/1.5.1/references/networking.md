@@ -25,6 +25,9 @@ From | Port | Protocol
 `Longhorn CSI plugin` | 9500 | TCP
 `Backup/Snapshot Recurring Job Pod` | 9500 | TCP
 `Longhorn Driver Deployer` | 9500 | TCP
+`Conversion Webhook Server` | 9501 | TCP
+`Admission Webhook Server` | 9502 | TCP
+`Recovery Backend Server` | 9503 | TCP
 
 #### Egress:
 To | Port | Protocol
@@ -92,24 +95,6 @@ To | Port | Protocol
 --- | --- | ---
 `Longhorn Manager` | 9500 | TCP
 `Kubernetes API server` | `Kubernetes API server port` | TCP
-
-### Conversion Webhook Server
-#### ingress:
-From | Port | Protocol
---- | --- | ---
-`Webhook Server` | 9501 | TCP
-
-### Admission Webhook Server
-#### ingress:
-From | Port | Protocol
---- | --- | ---
-`Webhook Server` | 9502 | TCP
-
-### NFS Recovery Backend Server
-#### ingress:
-From | Port | Protocol
---- | --- | ---
-`Recovery Backend Server` | 9503 | TCP
 
 ### Engine Image
 #### ingress:
