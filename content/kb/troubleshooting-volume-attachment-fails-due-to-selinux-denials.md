@@ -98,7 +98,7 @@ If it is accepted, additional capabilities will no longer be required as downstr
   https://github.com/longhorn/longhorn/issues/5627#issuecomment-1577498183
 - Original `open-iscsi` fix:
   https://github.com/open-iscsi/open-iscsi/pull/244/commits/6df400925cfa9e723375c6f61524473703054220
-- Testing for the workaround DaemonSet
+- Testing for the workaround DaemonSet:
   https://github.com/longhorn/longhorn/pull/6082#issuecomment-1581142425
 - Fedora Project PR:
   https://src.fedoraproject.org/rpms/iscsi-initiator-utils/pull-request/13
