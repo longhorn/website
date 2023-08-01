@@ -147,4 +147,4 @@ Longhorn will not create an `orphan` resource for an orphaned directory when
   - The volume volume.meta file is missing.
 - The orphaned replica directory is on an evicted node.
 - The orphaned replica directory is in an evicted disk.
-- The orphaned data cleanup mechanism does not clean up a stable replica, also known as an error replica. Instead, the stale replica is cleaned up according to the [staleReplicaTimeout](../../volumes-and-nodes/create-volumes/#creating-longhorn-volumes-with-kubectl) setting.
+- The orphaned data cleanup mechanism does not clean up a stale replica, also known as an error replica. Instead, the stale replica is cleaned up according to the [staleReplicaTimeout](../../volumes-and-nodes/create-volumes/#creating-longhorn-volumes-with-kubectl) setting.
