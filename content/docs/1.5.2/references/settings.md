@@ -255,6 +255,7 @@ This information will help us gain insights how Longhorn is being used, which wi
   - Included as true or false to indicate if this setting is configured:
     - Priority Class
     - Registry Secret
+    - Snapshot Data Integrity CronJob
     - Storage Network
     - System Managed Components Node Selector
     - Taint Toleration
@@ -297,7 +298,6 @@ This information will help us gain insights how Longhorn is being used, which wi
     - Restore Concurrent Limit
     - Restore Volume Recurring Jobs
     - Snapshot Data Integrity
-    - Snapshot Data Integrity CronJob
     - Snapshot DataIntegrity Immediate Check After Snapshot Creation
     - Storage Minimal Available Percentage
     - Storage Over Provisioning Percentage
