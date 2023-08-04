@@ -79,7 +79,7 @@ Allows for a Longhorn volume to be live migrated from one node to another.  Usef
 	  
 #### Encrypted
 > Default: `false`  
-> More details in [Encrypted Volumes](../../advanced-resources/security/volume-encryptiom)
+> More details in [Encrypted Volumes](../../advanced-resources/security/volume-encryption)
 
 #### Data Locality
 > Default: `disabled`  
@@ -125,19 +125,19 @@ A list of recurring jobs that are to be run on a volume.
 	
 #### Backing Image Name
 > Default: `""`  
-> See [Backing Images](../../advanced-resources/backing-images#create-and-use-a-backing-image-via-storageclass-and-pvc)
+> See [Backing Image](../../advanced-resources/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Backing Image Checksum
 > Default: `""`  
-> See [Backing Images](../../advanced-resources/backing-images#create-and-use-a-backing-image-via-storageclass-and-pvc)
+> See [Backing Image](../../advanced-resources/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Backing Image Data Source Type
 > Default: `""`  
-> See [Backing Images](../../advanced-resources/backing-images#create-and-use-a-backing-image-via-storageclass-and-pvc)
+> See [Backing Image](../../advanced-resources/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Backing Image Data Source Parameters
 > Default: `""`  
-> See [Backing Images](../../advanced-resources/backing-images#create-and-use-a-backing-image-via-storageclass-and-pvc)
+> See [Backing Image](../../advanced-resources/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Remove Snapshots During Filesystem Trim
 > Default: `ignored`  
