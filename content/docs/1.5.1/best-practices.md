@@ -50,7 +50,7 @@ The following Linux OS distributions and versions have been verified during the 
 |-----|--------------| --------
 | 1.  | Ubuntu       | 22.04
 | 2.  | SLES         | 15 SP4
-| 3.  | SLE Micro    | 5.3
+| 3.  | SLE Micro    | 5.4
 | 4.  | RHEL         | 9.1
 | 5.  | Oracle Linux | 9.1
 | 6.  | Rocky Linux  | 9.2
