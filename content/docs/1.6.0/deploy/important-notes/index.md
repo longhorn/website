@@ -91,3 +91,28 @@ Support for the `v1beta1` version of CSI snapshot CRDs was previously deprecated
 The CSI components in Longhorn v{{< current-version >}} only function with the `v1` version.
 Please follow the instructions at [Enable CSI Snapshot Support](../../snapshots-and-backups/csi-snapshot-support/enable-csi-snapshot-support) to update CSI snapshot CRDs and the CSI snapshot controller.
 If you have Longhorn volume manifests or scripts that are still using `v1beta1` version, you must upgrade them to `v1` as well.
+
+### Engine Upgrade Enforcement
+
+Beginning with version v1.6.0, Longhorn is implementing mandatory engine upgrades. See the [release note](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}) for information about the minimum supported engine image version.
+
+When upgrading through Helm, a component compatibility check is automatically performed. If the new Longhorn is not compatible with the engine images that are currently in use, the upgrade path is blocked through a pre-hook mechanism.
+
+If you installed Longhorn using the manifests, engine upgrades are enforced by the Longhorn Manager. Attempts to upgrade Longhorn Manager may cause unsuccessful pod launches and generate corresponding error logs, although it poses no harm. If you encounter such errors, you must revert to the previous Longhorn version and then upgrade the engines that are using the incompatible engine images before the next upgrade.
+
+You can determine the versions of engine images that are currently in use with the following script:
+```bash
+#!/bin/bash
+
+namespace="longhorn-system"
+
+engine_images=$(kubectl -n $namespace get engineimage -o=jsonpath='{.items[*].metadata.name}')
+
+for engine_image in $engine_images; do
+    cli_api_version=$(kubectl -n $namespace get engineimage $engine_image -o=jsonpath='{.status.cliAPIVersion}')
+    controller_api_version=$(kubectl -n $namespace get engineimage $engine_image -o=jsonpath='{.status.controllerAPIVersion}')
+    echo "EngineImage: $engine_image | cliAPIVersion: $cli_api_version | controllerAPIVersion: $controller_api_version"
+done
+```
+
+Once you successfully upgrade to version v1.6.0, you will be able to view information about engine image versions on the UI.
