@@ -70,7 +70,7 @@ These fields will be applied for new volume creation only.  If a StorageClass is
 
 The desired number of copies (replicas) for redundancy.  
   - Must be between 1 and 20.  
-  - Replicas will be placed across the widest possible set of zones, nodes, and disks in a cluster, subject to other constraints, such as [Node Selector](#node-selector).  
+  - Replicas will be placed across the widest possible set of zones, nodes, and disks in a cluster, subject to other constraints, such as NodeSelector.
 
 > Global setting: [Default Replica Count](../settings#default-replica-count).
 
@@ -182,7 +182,7 @@ A list of recurring jobs that are to be run on a volume.
   - Other values are "enabled" and "disabled".  
 
 > Global setting: [Replica Node Level Soft Anti-Affinity](../settings#replica-node-level-soft-anti-affinity).  
-> More details in [Scheduling](../../volumes-and-nodes/scheduling) and [Best Practices](../best-practices#replica-node-level-soft-anti-affinity).
+> More details in [Scheduling](../../volumes-and-nodes/scheduling) and [Best Practices](../../best-practices#replica-node-level-soft-anti-affinity).
 
 #### Replica Zone Soft Anti-Affinity *(field: `parameters.replicaZoneSoftAntiAffinity`)*
 > Default: `ignored`  
@@ -199,7 +199,7 @@ A list of recurring jobs that are to be run on a volume.
   - "ignored" means use the global setting.  
   - Other values are "enabled" and "disabled".  
 
-> Global setting: [Replica Disk Level Soft Anti-Affinity](../settings#replica-disk-level-soft-anti-affinity).  
+> Global setting: TBA.
 > More details in [Scheduling](../../volumes-and-nodes/scheduling).
 
 #### Backend Store Driver *(field: `parameters.backendStoreDriver`)*
