@@ -37,8 +37,6 @@ parameters:
 #  disableRevisionCounter: false
 #  replicaSoftAntiAffinity: "ignored"
 #  replicaZoneSoftAntiAffinity: "ignored"
-#  replicaDiskSoftAntiAffinity: "ignored"
-#  backendStoreDriver: ""
 ```
 
 ## Built-in Fields
@@ -70,7 +68,7 @@ These fields will be applied for new volume creation only.  If a StorageClass is
 
 The desired number of copies (replicas) for redundancy.  
   - Must be between 1 and 20.  
-  - Replicas will be placed across the widest possible set of zones, nodes, and disks in a cluster, subject to other constraints, such as NodeSelector.
+  - Replicas will be placed across the widest possible set of zones and nodes in a cluster, subject to other constraints, such as NodeSelector.
 
 > Global setting: [Default Replica Count](../settings#default-replica-count).
 
@@ -192,23 +190,6 @@ A list of recurring jobs that are to be run on a volume.
 
 > Global setting: [Replica Zone Level Soft Anti-Affinity](../settings#replica-zone-level-soft-anti-affinity).  
 > More details in [Scheduling](../../volumes-and-nodes/scheduling).
-
-#### Replica Disk Soft Anti-Affinity *(field: `parameters.replicaDiskSoftAntiAffinity`)*
-> Default: `ignored`  
-
-  - "ignored" means use the global setting.  
-  - Other values are "enabled" and "disabled".  
-
-> Global setting: TBA.
-> More details in [Scheduling](../../volumes-and-nodes/scheduling).
-
-#### Backend Store Driver *(field: `parameters.backendStoreDriver`)*
-> Default: `""`  
-
-  - Use "spdk" to run the v2 SPDK-based engine.
-
-> Global setting: [V2 Data Engine](../settings#v2-data-engine).  
-> More details in [V2 Data Engine Quick Start](../../spdk/quick-start#create-a-storageclass).
 
 ## Helm Installs
 
