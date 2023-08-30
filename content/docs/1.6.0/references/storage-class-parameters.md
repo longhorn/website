@@ -199,7 +199,7 @@ A list of recurring jobs that are to be run on a volume.
   - "ignored" means use the global setting.  
   - Other values are "enabled" and "disabled".  
 
-> Global setting: TBA.
+> Global setting: [Replica Disk Level Soft Anti-Affinity](../settings#replica-disk-level-soft-anti-affinity).  
 > More details in [Scheduling](../../volumes-and-nodes/scheduling).
 
 #### Backend Store Driver *(field: `parameters.backendStoreDriver`)*

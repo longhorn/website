@@ -60,6 +60,7 @@ weight: 1
   - [Disable Scheduling On Cordoned Node](#disable-scheduling-on-cordoned-node)
   - [Replica Node Level Soft Anti-Affinity](#replica-node-level-soft-anti-affinity)
   - [Replica Zone Level Soft Anti-Affinity](#replica-zone-level-soft-anti-affinity)
+  - [Replica Disk Level Soft Anti-Affinity](#replica-disk-level-soft-anti-affinity)
   - [Replica Auto Balance](#replica-auto-balance)
   - [Storage Minimal Available Percentage](#storage-minimal-available-percentage)
   - [Storage Over Provisioning Percentage](#storage-over-provisioning-percentage)
@@ -297,6 +298,7 @@ This information will help us gain insights how Longhorn is being used, which wi
     - Replica Replenishment Wait Interval
     - Replica Soft Anti Affinity
     - Replica Zone Soft Anti Affinity
+    - Replica Disk Soft Anti Affinity
     - Restore Concurrent Limit
     - Restore Volume Recurring Jobs
     - Snapshot Data Integrity
@@ -588,6 +590,17 @@ When this setting is un-checked, Longhorn Manager will not allow scheduling new 
 > **Note:**
 >   - Nodes that don't belong to any zone will be treated as if they belong to the same zone.
 >   - Longhorn relies on label `topology.kubernetes.io/zone=<Zone name of the node>` in the Kubernetes node object to identify the zone.
+
+#### Replica Disk Level Soft Anti-Affinity
+
+> Default: `true`
+
+When this setting is checked, the Longhorn Manager will allow scheduling new replicas of a volume to the same disks as existing healthy replicas.
+
+When this setting is un-checked, Longhorn Manager will not allow scheduling new replicas of a volume to the same disks as existing healthy replicas.
+
+> **Note:**
+>   - Even if the setting is "true" and disk sharing is allowed, Longhorn will seek to use a different disk if possible, even if on the same node.
 
 #### Replica Auto Balance
 
