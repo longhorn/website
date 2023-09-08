@@ -12,6 +12,17 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 
 Please ensure your Kubernetes cluster is at least v1.21 before upgrading to Longhorn v{{< current-version >}} because this is the minimum version Longhorn v{{< current-version >}} supports.
 
+### Offline Upgrade Required To Fully Prevent Unexpected Replica Expansion
+
+Longhorn v1.6.0 introduces a new mechanism to prevent [unexpected replica
+expansion](../../../../kb/troubleshooting-unexpected-expansion-leads-to-degredation-or-attach-failure). This
+mechanism is entirely transparent. However, a volume is only protected if it is running a new version of longhorn-engine
+inside a new version of longhorn-instance-manager and managed by a new version of longhorn-manager. The [live upgrade
+process](../../deploy/upgrade/upgrade-engine#live-upgrade) results in a volume running a new version of longhorn-engine
+in an old version of longhorn-instance-manager until it is detached (by scaling its consuming workload down) and
+reattached (by scaling its consuming workload up). Consider scaling workloads down and back up again as soon as possible
+after upgrading from a version without this mechanism (v1.5.1 or older) to v{{< current-version >}}.
+
 ### Attachment/Detachment Refactoring Side Effect On The Upgrade Process
 
 In Longhorn v1.5.0, we refactored the internal volume attach/detach mechanism.

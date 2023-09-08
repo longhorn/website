@@ -65,6 +65,8 @@ weight: 1
   - [Storage Minimal Available Percentage](#storage-minimal-available-percentage)
   - [Storage Over Provisioning Percentage](#storage-over-provisioning-percentage)
   - [Storage Reserved Percentage For Default Disk](#storage-reserved-percentage-for-default-disk)
+  - [Allow Empty Node Selector Volume](#allow-empty-node-selector-volume)
+  - [Allow Empty Disk Selector Volume](#allow-empty-disk-selector-volume)
 - [Danger Zone](#danger-zone)
   - [Concurrent Replica Rebuild Per Node Limit](#concurrent-replica-rebuild-per-node-limit)
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
@@ -655,6 +657,18 @@ It's worth noting that a volume replica may require more storage space than the 
 The reserved percentage specifies the percentage of disk space that will not be allocated to the default disk on each new Longhorn node.
 
 This setting only affects the default disk of a new adding node or nodes when installing Longhorn.
+
+#### Allow Empty Node Selector Volume
+
+> Default: `true`
+
+This setting allows replica of the volume without node selector to be scheduled on node with tags.
+
+#### Allow Empty Disk Selector Volume
+
+> Default: `true`
+
+This setting allows replica of the volume without disk selector to be scheduled on disk with tags.
 
 ### Danger Zone
 
