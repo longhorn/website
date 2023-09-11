@@ -13,7 +13,7 @@ There are no deprecated or incompatible changes introduced in v{{< current-versi
 
 Since Longhorn v1.5.0, Longhorn only allows upgrades from supported versions. If upgrading from any unsupported version, the upgrade will fail. However, users can revert to the previous state without any service interruption or downtime.
 
-In addition, Longhorn disallows downgrading to any previous version to prevent unexpected system statuses caused by potential function incompatibility, deprecation, or removal. Please refer to the following matrix to understand the supported upgrade versions:
+In addition, Longhorn disallows downgrading to any previous version to prevent unexpected system statuses caused by potential function incompatibility, deprecation, or removal. Please refer to the following matrix to understand the supported upgrade versions and there is an example for each upgrade path:
 
   |  Current version |  Upgrading version |  Allow | Example |
   |    :-:      |    :-:      |   :-:  |    :-:    |

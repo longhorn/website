@@ -13,16 +13,16 @@ There are no deprecated or incompatible changes introduced in v{{< current-versi
 
 Since Longhorn v1.5.0, Longhorn only allows upgrades from supported versions. If upgrading from any unsupported version, the upgrade will fail. However, users can revert to the previous state without any service interruption or downtime.
 
-In addition, Longhorn disallows downgrading to any previous version to prevent unexpected system statuses caused by potential function incompatibility, deprecation, or removal. Please refer to the following matrix to understand the supported upgrade versions:
+In addition, Longhorn disallows downgrading to any previous version to prevent unexpected system statuses caused by potential function incompatibility, deprecation, or removal. Please refer to the following matrix to understand the supported upgrade versions and there is an example for each upgrade path:
 
   |  Current version |  Upgrading version |  Allow | Example |
   |    :-:      |    :-:      |   :-:  |    :-:    |
-  |  x.y.*      |  x.(y+1).*  |   ✓    |  v1.4.2  to  v1.5.0  |
+  |  x.y.*      |  x.(y+1).*  |   ✓    |  v1.4.2  to  v1.5.1  |
   |  x.y.*      |  x.y.(*+n)  |   ✓    |  v1.5.0  to  v1.5.1  |
   |  x.y[^lastMinorVersion].*      |  (x+1).y.*  |   ✓    |  v1.30.0 to  v2.0.0  |
-  |  x.(y-1).*  |  x.(y+1).*  |   X    |  v1.3.3  to  v1.5.0  |
-  |  x.(y-2).*  |  x.(y+1).*  |   X    |  v1.2.6  to  v1.5.0  |
-  |  x.y.*      |  x.(y-1).*  |   X    |  v1.6.0  to  v1.5.0  |
+  |  x.(y-1).*  |  x.(y+1).*  |   X    |  v1.3.3  to  v1.5.1  |
+  |  x.(y-2).*  |  x.(y+1).*  |   X    |  v1.2.6  to  v1.5.1  |
+  |  x.y.*      |  x.(y-1).*  |   X    |  v1.6.0  to  v1.5.1  |
   |  x.y.*      |  x.y.(*-1)  |   X    |  v1.5.1  to  v1.5.0  |
 
 [^lastMinorVersion]: Longhorn only allows upgrades from any patch version of the last minor release before the new major version. (For example, v1.30.* is allowed to upgrade to v2.0.*, given that v1.30 is the last minor release branch before 2.0.)
