@@ -577,7 +577,10 @@ When this setting is un-checked, the Longhorn Manager will schedule replicas on 
 
 When this setting is checked, the Longhorn Manager will allow scheduling on nodes with existing healthy replicas of the same volume.
 
-When this setting is un-checked, the Longhorn Manager will not allow scheduling on nodes with existing healthy replicas of the same volume.
+When this setting is un-checked, Longhorn Manager will forbid scheduling on nodes with existing healthy replicas of the same volume.
+
+> **Note:**
+>   - This setting is superseded if replicas are forbidden to share a zone by the Replica Zone Level Anti-Affinity setting.
 
 #### Replica Zone Level Soft Anti-Affinity
 
@@ -585,7 +588,7 @@ When this setting is un-checked, the Longhorn Manager will not allow scheduling 
 
 When this setting is checked, the Longhorn Manager will allow scheduling new replicas of a volume to the nodes in the same zone as existing healthy replicas.
 
-When this setting is un-checked, Longhorn Manager will not allow scheduling new replicas of a volume to the nodes in the same zone as existing healthy replicas.
+When this setting is un-checked, Longhorn Manager will forbid scheduling new replicas of a volume to the nodes in the same zone as existing healthy replicas.
 
 > **Note:**
 >   - Nodes that don't belong to any zone will be treated as if they belong to the same zone.
@@ -597,10 +600,11 @@ When this setting is un-checked, Longhorn Manager will not allow scheduling new 
 
 When this setting is checked, the Longhorn Manager will allow scheduling new replicas of a volume to the same disks as existing healthy replicas.
 
-When this setting is un-checked, Longhorn Manager will not allow scheduling new replicas of a volume to the same disks as existing healthy replicas.
+When this setting is un-checked, Longhorn Manager will forbid scheduling new replicas of a volume to the same disks as existing healthy replicas.
 
 > **Note:**
 >   - Even if the setting is "true" and disk sharing is allowed, Longhorn will seek to use a different disk if possible, even if on the same node.
+>   - This setting is superseded if replicas are forbidden to share a zone or a node by either of the other Soft Anti-Affinity settings.
 
 #### Replica Auto Balance
 

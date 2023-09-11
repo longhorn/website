@@ -203,9 +203,9 @@ A list of recurring jobs that are to be run on a volume.
 > More details in [Scheduling](../../volumes-and-nodes/scheduling).
 
 #### Backend Store Driver *(field: `parameters.backendStoreDriver`)*
-> Default: `""`  
+> Default: `"v1"`  
 
-  - Use "spdk" to run the v2 SPDK-based engine.
+  - Use "v2" to run the v2 SPDK-based engine (experimental in 1.6.)  If empty, "v1" is assumed.
 
 > Global setting: [V2 Data Engine](../settings#v2-data-engine).  
 > More details in [V2 Data Engine Quick Start](../../spdk/quick-start#create-a-storageclass).
