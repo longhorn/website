@@ -340,7 +340,7 @@ Then, navigate to Longhorn UI > Setting > General > Backup
 1. Set **Backup Target**. The target URL should look like this:
 
     ```
-    cifs://longhorn-test-cifs-svc.default/opt/backupstore
+    cifs://longhorn-test-cifs-svc.default/backupstore
     ```
 
 2. Set **Backup Target Credential Secret**
