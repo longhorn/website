@@ -3,9 +3,7 @@ title: Volume Encryption
 weight: 2
 ---
 
-Longhorn supports encrypted volumes by utilizing the linux kernel module `dm_crypt` via `cryptsetup` for the encryption.
-Further we use the Kubernetes secret mechanism for key storage, which can be further encrypted and guarded via appropriate permissions.
-An encrypted volume results in your data being encrypted while in transit as well as at rest, this also means that any backups taken from that volume are also encrypted.
+Longhorn supports volume encryption at the storage class level, which means that volumes in both `Filesystem` and `Block` mode can be encrypted while in transit and at rest. Moreover, backups taken from encrypted volumes are also encrypted. This is all accomplished through the Linux kernel module `dm_crypt`, the command-line utility `cryptsetup`, and Kubernetes Secrets. `dm_crypt` and `cryptsetup` handle the creation and management of encrypted devices, while Secrets (and related permissions) facilitate secure storage of encryption keys.
 
 # Requirements
 
@@ -104,4 +102,6 @@ transparently used so no additional actions are needed from the user.
 Longhorn supports offline [expansion](../../../volumes-and-nodes/expansion) for encrypted volumes.
 
 # History
-Available since v1.2.0 [#1859](https://github.com/longhorn/longhorn/issues/1859)
+- Encryption of volumes in `Filesystem` mode available starting v1.2.0 ([#1859](https://github.com/longhorn/longhorn/issues/1859))
+
+- Encryption of volumes in `Block` mode available starting v1.6.0 ([#4883](https://github.com/longhorn/longhorn/issues/4883))
