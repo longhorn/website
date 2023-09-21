@@ -39,7 +39,7 @@ To mitigate the issue,
 
 - For existing volumes
 
-  Due to the immutability of `persistentvolume.spec.csi.volumeAttributes`, making adjustments to the `nfsOptions` within this field is prohibited. To address this issue, upgrading to `v1.4.4` or a newer version is required. After upgrading the Longhorn system, the `softerr` or `soft` will be automatically applied when reattaching RWX volumes.
+  Due to the immutability of `persistentvolume.spec.csi.volumeAttributes`, making adjustments to the `nfsOptions` within this field is prohibited. To address this issue, upgrading to `v1.5.2` or a newer version is required. After upgrading the Longhorn system, the `softerr` or `soft` will be automatically applied when reattaching RWX volumes.
 
 - For new volumes
 
