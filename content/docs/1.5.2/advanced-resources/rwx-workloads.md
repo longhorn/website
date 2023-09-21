@@ -8,7 +8,7 @@ Longhorn supports ReadWriteMany (RWX) volumes by exposing regular Longhorn volum
 
 # Introduction
 
-For each actively in use RWX volume Longhorn will create a `share-manager-<volume-name>` Pod in the `longhorn-system` namespace. This Pod is responsible for exporting a Longhorn volume via a NFSv4 server that is running inside the Pod. There is also a service created for each RWX volume, and that is used as an endpoint for the actual NFSv4 client connection.
+Longhorn creates a dedicated `share-manager-<volume-name>` Pod within the `longhorn-system` namespace for each RWX volume that is currently in active use. The Pod facilitate the export of Longhorn volume via an internally hosted NFSv4 server. Additionally, a corresponding Service is created for each RWX volume, serving as the designated endpoint for actual NFSv4 client connections.
 
 {{< figure src="/img/diagrams/rwx/rwx-arch.png" >}}
 
@@ -30,6 +30,14 @@ It is necessary to meet the following requirements in order to use RWX volumes.
     There is a dedicated recovery backend service for NFS servers in Longhorn system. When a client connects to an NFS server, the client's information, including its hostname, will be stored in the recovery backend. When a share-manager Pod or NFS server is abnormally terminated, Longhorn will create a new one. Within the 90-seconds grace period, clients will reclaim locks using the client information stored in the recovery backend.
     
     > **Tip:** The [environment check script](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh) helps users to check all nodes have unique hostnames.
+
+# Notice
+
+In versions 1.4.0 to 1.4.3 and 1.5.0 to 1.5.1 of Longhorn, Longhorn CSI plugin `hard` mounts a Longhorn volume exported by a NFS server located within a share-manager Pod in the `NodeStageVolume`. The `hard` mount allows NFS requests to persistently retry without termination, ensuring that IOs do not fail. When the server is back online or a replacement server is recreated, the IOs resume seamlessly, thus guaranteeing data integrity. However, to maintain file system stability, the Linux kernel will not permit unmounting a file system until all pending IOs are written back to storage, and the system cannot undergo shutdown until all file systems are unmounted. If the NFS server fails to recover successfully, the client nodes must undergo a forced reboot.
+
+To address this stability problem, Longhorn switches to adopt the use of a `softerr` mount with a `timeo` value of 600 and a `retrans` value of 5 as default options since v1.4.4, 1.5.2 and 1.6.0. When the NFS server becomes unreachable due to factors such as node power outages, network partitions and so on, NFS clients will fail an NFS request after the specified number of retransmissions, resulting in an NFS `ETIMEDOUT` error being returned to the calling application and potential data loss. If `softerr` is not supported, Longhorn will automatically revert to using the `soft` option instead.
+
+Please refer to [#6655](https://github.com/longhorn/longhorn/issues/6655) for more information.
 
 # Creation and Usage of a RWX Volume
 
