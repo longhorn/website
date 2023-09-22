@@ -38,6 +38,7 @@ parameters:
 #  replicaSoftAntiAffinity: "ignored"
 #  replicaZoneSoftAntiAffinity: "ignored"
 #  replicaDiskSoftAntiAffinity: "ignored"
+#  nfsOptions: "soft,timeo=150,retrans=3"
 #  backendStoreDriver: ""
 ```
 
@@ -56,6 +57,10 @@ Specifies the plugin that will be used for dynamic creation of persistent volume
 #### Reclaim Policy *(field: `reclaimPolicy`)*
 > Default: `Delete`  
 > See [Kubernetes Storage Class: Reclaim Policy](https://kubernetes.io/docs/concepts/storage/storage-classes/#reclaim-policy).  
+
+#### Mount Options *(field: `mountOptions`)*
+> Default `[]`  
+> See [Kubernetes Storage Class: Mount Options](https://kubernetes.io/docs/concepts/storage/storage-classes/#mount-options).  
 
 #### Volume Binding Mode *(field: `volumeBindingMode`)*
 > Default `Immediate`  
@@ -201,6 +206,15 @@ A list of recurring jobs that are to be run on a volume.
 
 > Global setting: [Replica Disk Level Soft Anti-Affinity](../settings#replica-disk-level-soft-anti-affinity).  
 > More details in [Scheduling](../../volumes-and-nodes/scheduling).
+
+#### NFS Options *(field: `parameters.nfsOptions`)*
+> Default: `""`
+> Example: `"hard,sync"`  
+
+  - Overrides for NFS mount of RWX volumes to the share-manager.  Use this field with caution.  
+  - Note:  Built-in options vary by release.  Check your release details before setting this.
+  
+> More details in [RWX Workloads](../../advanced-resources/rwx-workloads/#notice)
 
 #### Backend Store Driver *(field: `parameters.backendStoreDriver`)*
 > Default: `"v1"`  
