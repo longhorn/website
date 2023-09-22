@@ -95,7 +95,7 @@ If you're using `ext4` as the filesystem of the volume, we recommend adding a li
 
 ## Volume Maintenance
 
-We highly recommend using the built-in backup feature of Longhorn.
+Using Longhorn's built-in backup feature is highly recommended. You can save backups to an object store such as S3 or to an NFS server. Saving to an object store is preferable because it generally offers better reliability.  Another advantage is that you do not need to mount and unmount the target, which can complicate failover and upgrades.
 
 For each volume, schedule at least one recurring backup. If you must run Longhorn in production without a backupstore, then schedule at least one recurring snapshot for each volume.
 
