@@ -221,7 +221,7 @@ After the installation and configuration, we can dyamically provision a Persiste
 
 ### Create a StorageClass
 
-Use following command to create a StorageClass called `longhorn-spdk`. Set `parameters.backendStoreDriver`  to `spdk` to utilize V2 Data Engine.
+Use following command to create a StorageClass called `longhorn-spdk`. Set `parameters.backendStoreDriver`  to `v2` to utilize V2 Data Engine.
 ```
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/v2/storageclass.yaml
 ```
