@@ -86,7 +86,7 @@ Please use the new setting [Node Drain Policy](../../references/settings#node-dr
 
 ### Instance Managers Consolidated
 
-Engine instance mangers and replica instance managers has been consolidated. Previous engine/replica instance managers are now deprecated, but they will still provide service to the existing attached volumes.
+Engine instance managers and replica instance managers has been consolidated. Previous engine/replica instance managers are now deprecated, but they will still provide service to the existing attached volumes.
 
 The `Guaranteed Engine Manager CPU` and `Guaranteed Replica Manager CPU` settings are removed and replaced by `Guaranteed Instance Manager CPU`.
 
