@@ -73,6 +73,7 @@ From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Insta
         #auto-delete-pod-when-volume-detached-unexpectedly:
         #disable-scheduling-on-cordoned-node:
         #replica-zone-soft-anti-affinity:
+        #replica-disk-soft-anti-affinity:
         #node-down-pod-deletion-policy:
         #node-drain-policy:
         #replica-replenishment-wait-interval:
@@ -145,6 +146,7 @@ You can also provide a copy of the `values.yaml` file with the default settings 
       autoSalvage: false
       disableSchedulingOnCordonedNode: false
       replicaZoneSoftAntiAffinity: false
+      replicaDiskSoftAntiAffinity: false
       volumeAttachmentRecoveryPolicy: never
       nodeDownPodDeletionPolicy: do-nothing
       guaranteedInstanceManagerCpu: 15
