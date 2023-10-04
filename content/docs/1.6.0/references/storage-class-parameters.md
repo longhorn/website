@@ -116,7 +116,7 @@ If enabled, try to keep the data on the same node as the workload for better per
   - If "strict-local" is not possible for whatever other reason, volume creation will be failed.  A "strict-local" replica that becomes displaced from its workload will be marked as "Stopped".  
 
 >  Global setting: [Default Data Locality](../settings#default-data-locality)  
->  More defails in [Data Locality](../../high-availability/data-locality).
+>  More details in [Data Locality](../../high-availability/data-locality).
 
 #### Replica Auto-Balance *(field: `parameters.replicaAutoBalance`)*
 > Default: `ignored`  

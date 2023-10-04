@@ -83,7 +83,7 @@ Now set `Settings/General/BackupTarget` to
 ```
 s3://backupbucket@us-east-1/
 ```
-And `Setttings/General/BackupTargetSecret` to
+And `Settings/General/BackupTargetSecret` to
 ```
 minio-secret
 ```

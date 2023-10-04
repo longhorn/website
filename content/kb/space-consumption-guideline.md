@@ -34,5 +34,5 @@ In this case, the node is probably marked as NotReady due to the disk pressure. 
 To do recover nodes and disk, we would recommend directly removing some redundant replica directories for the full disk. Here redundant replicas means that the corresponding volumes have healthy replicas in other disks. Later on Longhorn will automatically rebuild new replicas in other disks if possible.
 Besides, users may need to expand the existing disks or add more disks to avoid future disk exhaustion issues.
 
-Notice that the disk exhausion may be caused by replicas being unevenly scheduled. Users can check [setting Replica Auto Balance](../../docs/1.5.1/high-availability/auto-balance-replicas) for this scenario.
+Notice that the disk exhaustion may be caused by replicas being unevenly scheduled. Users can check [setting Replica Auto Balance](../../docs/1.5.1/high-availability/auto-balance-replicas) for this scenario.
 
