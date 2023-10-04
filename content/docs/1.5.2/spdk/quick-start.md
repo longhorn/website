@@ -6,7 +6,7 @@
 **Table of Contents**
 - [Prerequisites](#prerequisites)
   - [Configure Kernel Modules and Huge Pages](#configure-kernel-modules-and-huge-pages)
-  - [Install NVMe Userspace Tool and Load `nvme-tcp` Kernel Module](#install-nvme-userspace-tool-and-load-nvme-tcp-kernel-module)
+  - [Load `nvme-tcp` Kernel Module](#load-nvme-tcp-kernel-module)
   - [Load Kernel Modules Automatically on Boot](#load-kernel-modules-automatically-on-boot)
   - [Restart `kubelet`](#restart-kubelet)
   - [Check Environment](#check-environment)
@@ -76,66 +76,14 @@ Or, you can install them manually by following these steps.
   echo "vm.nr_hugepages=512" >> /etc/sysctl.conf
   ```
 
-### Install NVMe Userspace Tool and Load `nvme-tcp` Kernel Module
-
-> **NOTICE:**
->
-> Make sure that the version of `nvme-cli` is equal to or greater than `1.12`.
->
-> If the version of `nvme-cli` installed by the below steps is not equal to or greater than `1.12`., you will need to compile the utility from the [source codes](https://github.com/linux-nvme/nvme-cli) and install it on each Longhorn node by manual.
->
-> Also, install the **uuid development library** before compiling to support the `show-hostnqn` subcommand.
->
-> For SUSE/OpenSUSE you can install it use this command:
-> ```
-> zypper install uuid-devel
-> ```
->
-> For Debian and Ubuntu, use this command:
-> ```
-> apt install uuid-dev
-> ```
->
-> For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`, use this command:
-> ```
-> yum install uuid-devel
-> ```
->
-
-And also can check the log with the following command to see the installation result
-```
-nvme-cli install successfully
-```
+### Load `nvme-tcp` Kernel Module
 
 We provide a manifest that helps you finish the deployment on each Longhorn node.
 ```
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/prerequisite/longhorn-nvme-cli-installation.yaml
 ```
 
-Or, you can manually install them.
-- Install nvme-cli on each node and make sure that the version of `nvme-cli` is equal to or greater than `1.12`.
-
-  For SUSE/OpenSUSE you can install it use this command:
-  ```
-  zypper install nvme-cli
-  ```
-
-  For Debian and Ubuntu, use this command:
-  ```
-  apt install nvme-cli
-  ```
-
-  For RHEL, CentOS, and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`, use this command:
-  ```
-  yum install nvme-cli
-  ```
-
-  To check the version of nvme-cli, execute the following command.
-  ```
-  nvme version
-  ```
-
-- Load `nvme-tcp` kernel module on the each Longhorn node
+Or, you can manually load `nvme-tcp` kernel module on the each Longhorn node
   ```
   modprobe nvme-tcp
   ```
