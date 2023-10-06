@@ -29,7 +29,10 @@ Longhorn cannot remount the volume when the Longhorn volume has a corrupted file
 
 Longhorn cannot fix this automatically. You will need to resolve this manually when this happens.
 
-#### Solution
+## Solution
+
+### For most Linux distribution versions
+
 1. Look for indications:
   - Check if the volume is in an error state from the  Longhorn UI.
   - Check Longhorn manager pods log for system corruption error messages.
@@ -48,3 +51,36 @@ Longhorn cannot fix this automatically. You will need to resolve this manually w
 7. Detach the volume from the UI.
 8. Scale up the workload.
 
+### For some older Linux distribution versions and Longhorn volumes with ext4 filesystems
+
+In the CSI flow, the Longhorn CSI plugin creates a file system on a new volume using a `mkfs.ext4` built into its
+container. The `fsck.ext4` available in some older Linux distributions may not support all features this filesystem is
+created with, resulting in the following error:
+
+```
+-> fsck.ext4 /dev/longhorn/pvc-c7152ef5-55c7-43ce-a35e-dac69d2be591 
+e2fsck 1.42.9 (28-Dec-2013)
+/dev/longhorn/pvc-c7152ef5-55c7-43ce-a35e-dac69d2be591 has unsupported feature(s): metadata_csum
+e2fsck: Get a newer version of e2fsck!
+```
+
+If possible, upgrade your `e2fsprogs` to a later version. If not possible (e.g. on CentOS 7 or RHEL 7), the
+`instance-manager` or `instance-manager-e` container has an updated `fsck.ext4` built in and has access to attached
+Longhorn volumes.
+
+Follow steps 1-3 from above.
+
+4. Exec into the `instance-manager` or `instance-manager-e` pod running on the node the volume is attached to.  
+   `kubectl exec -it -n longhorn-system instance-manager-<additional-characters> -- bash`
+
+Follow steps 5-8 from above.
+
+Example output using Longhorn v1.4.0 (with e2fsprogs v1.46.4) and CentOS 7.9 (with e2fsprogs v1.42.9) :
+
+```
+-> kl exec -it instance-manager-e-545c3360290f259fb0fe5638303b8f9a bash
+
+instance-manager-e-545c3360290f259fb0fe5638303b8f9a:/ # fsck.ext4 /dev/longhorn/pvc-c7152ef5-55c7-43ce-a35e-dac69d2be591 
+e2fsck 1.46.4 (18-Aug-2021)
+/dev/longhorn/pvc-c7152ef5-55c7-43ce-a35e-dac69d2be591: clean, 11/131072 files, 26156/524288 blocks
+```
