@@ -245,6 +245,6 @@ The target URL should look like this:
 nfs://longhorn-test-nfs-svc.default:/opt/backupstore
 ```
 
-You can find an example NFS backupstore for testing purpose [here](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/deploy/backupstores/nfs-backupstore.yaml).
+You can find an example NFS backupstore for testing purpose [here](https://github.com/longhorn/longhorn/blob/master/deploy/backupstores/nfs-backupstore.yaml).
 
 **Result:** Longhorn can store backups in NFS. To create a backup, see [this section.](../create-a-backup)
