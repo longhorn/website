@@ -33,29 +33,33 @@ Longhorn cannot fix this automatically. You will need to resolve this manually w
 
 ### For most Linux distribution versions
 
-1. Look for indications:
-  - Check if the volume is in an error state from the  Longhorn UI.
-  - Check Longhorn manager pods log for system corruption error messages.
-  > If the volume is not in an error state then the file system inside Longhorn volume may be corrupted by an external reason.
+1. Search for error indicators:
+   - Check if the volume is in an error state from the Longhorn UI.
+   - Check Longhorn manager pods log for system corruption error messages.
+   - If the volume is not in an error state then the file system inside Longhorn volume may be corrupted by an external
+     reason.
 2. Scale down the workload.
 3. Attach the volume to any node from the UI.
 
 > **Warning**
->  When a file system check tool fixes errors, it modifies the filesystem metadata and brings the filesystem to a consistent state. However, an incorrect fix might lead to unexpected data loss or more serious filesystem corruption. To mitigate the potential risk, we highly suggest that users take a snapshot or a backup of the corrupted filesystem before attempting any fix. In case of an accident, users can recover the volume.
+> When a file system check tool fixes errors, it modifies the filesystem metadata and brings the filesystem to a
+  consistent state. However, an incorrect fix might lead to unexpected data loss or more serious filesystem corruption.
+  To mitigate the potential risk, we highly suggest that users take a snapshot or a backup of the corrupted filesystem
+  before attempting any fix. In case of an accident, users can recover the volume.
 
 4. SSH into the node.
 5. Find the block device corresponding to the Longhorn volume under `/dev/longhorn/<volume-name>`.
-6. Use a filesystem check tool to repair the filesystem, for example,
+6. Use a filesystem check tool to repair the filesystem. For example:
    - Fix an `ext4` filesystem using [`fsck`](https://man7.org/linux/man-pages/man8/fsck.8.html).
    - Fix an `xfs` filesystem using [`xfs_repair`](https://man7.org/linux/man-pages/man8/xfs_repair.8.html).
-7. Detach the volume from the UI.
+7. On the Longhorn UI, detach the volume.
 8. Scale up the workload.
 
 ### For some older Linux distribution versions and Longhorn volumes with ext4 filesystems
 
-In the CSI flow, the Longhorn CSI plugin creates a file system on a new volume using a `mkfs.ext4` built into its
-container. The `fsck.ext4` available in some older Linux distributions may not support all features this filesystem is
-created with, resulting in the following error:
+In the CSI flow, the Longhorn CSI plugin creates a file system on a new volume using the `mke2fs` utility (command:
+`mkfs.ext4`) built into its container. The `e2fsck` utility (command: `fsck.ext4`) available in some older Linux
+distributions may not support all features this file system is created with, resulting in the following error:
 
 ```
 -> fsck.ext4 /dev/longhorn/pvc-c7152ef5-55c7-43ce-a35e-dac69d2be591 
@@ -64,16 +68,33 @@ e2fsck 1.42.9 (28-Dec-2013)
 e2fsck: Get a newer version of e2fsck!
 ```
 
-If possible, upgrade your `e2fsprogs` to a later version. If not possible (e.g. on CentOS 7 or RHEL 7), the
-`instance-manager` or `instance-manager-e` container has an updated `fsck.ext4` built in and has access to attached
-Longhorn volumes.
+If possible, upgrade your `e2fsprogs` (Ext2/3/4 Filesystem Utilities) to a later version. If upgrading is not possible
+(for example, you are running CentOS 7 or RHEL 7), you can access attached Longhorn volumes using the updated `e2fsck`
+that is built into the `instance-manager` or `instance-manager-e` container.
 
-Follow steps 1-3 from above.
+1. Search for error indicators:
+   - Check if the volume is in an error state from the Longhorn UI.
+   - Check Longhorn manager pods log for system corruption error messages.
+   - If the volume is not in an error state then the file system inside Longhorn volume may be corrupted by an external
+     reason.
+2. Scale down the workload.
+3. Attach the volume to any node from the UI.
 
-4. Exec into the `instance-manager` or `instance-manager-e` pod running on the node the volume is attached to.  
+> **Warning**
+> When a file system check tool fixes errors, it modifies the filesystem metadata and brings the filesystem to a
+  consistent state. However, an incorrect fix might lead to unexpected data loss or more serious filesystem corruption.
+  To mitigate the potential risk, we highly suggest that users take a snapshot or a backup of the corrupted filesystem
+  before attempting any fix. In case of an accident, users can recover the volume.
+
+4. Open a shell inside the `instance-manager` or `instance-manager-e` pod running on the node that the volume is
+   attached to:  
    `kubectl exec -it -n longhorn-system instance-manager-<additional-characters> -- bash`
-
-Follow steps 5-8 from above.
+5. Find the block device corresponding to the Longhorn volume under `/dev/longhorn/<volume-name>`.
+6. Use a filesystem check tool to repair the filesystem. For example,
+   - Fix an `ext4` filesystem using [`fsck`](https://man7.org/linux/man-pages/man8/fsck.8.html).
+   - Fix an `xfs` filesystem using [`xfs_repair`](https://man7.org/linux/man-pages/man8/xfs_repair.8.html).
+7. On the Longhorn UI, detach the volume.
+8. Scale up the workload.
 
 Example output using Longhorn v1.4.0 (with e2fsprogs v1.46.4) and CentOS 7.9 (with e2fsprogs v1.42.9) :
 
