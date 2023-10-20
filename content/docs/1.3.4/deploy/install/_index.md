@@ -61,10 +61,12 @@ curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-vers
 Example result:
 
 ```shell
-[INFO]  Required dependencies are installed.
+[INFO]  Required dependencies 'kubectl jq mktemp' are installed.
+[INFO]  Hostname uniqueness check is passed.
 [INFO]  Waiting for longhorn-environment-check pods to become ready (0/3)...
 [INFO]  All longhorn-environment-check pods are ready (3/3).
 [INFO]  Required packages are installed.
+[INFO]  MountPropagation is enabled.
 [INFO]  Cleaning up longhorn-environment-check pods...
 [INFO]  Cleanup completed.
 ```
