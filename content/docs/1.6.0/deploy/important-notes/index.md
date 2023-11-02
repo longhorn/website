@@ -91,10 +91,6 @@ The `Disable Replica Rebuild` setting was deprecated and replaced by the [Concur
 
 The `Default Backing Image Manager Image`, `Default Instance Manager Image` and `Default Share Manager Image` settings were deprecated and removed from `v1.5.0`. These default manager image settings can be changed on the manager starting command line only. They should be modified in the Longhorn deploying manifest or `values.yaml` in Longhorn chart.
 
-### `Allow Node Drain with the Last Healthy Replica` Settings Removed
-The `Allow Node Drain with the Last Healthy Replica` setting was deprecated in Longhorn v1.4.2  and is now removed.
-Please use the new setting [Node Drain Policy](../../references/settings#node-drain-policy) instead.
-
 ### Instance Managers Consolidated
 
 Engine instance managers and replica instance managers has been consolidated. Previous engine/replica instance managers are now deprecated, but they will still provide service to the existing attached volumes.
@@ -103,17 +99,18 @@ The `Guaranteed Engine Manager CPU` and `Guaranteed Replica Manager CPU` setting
 
 The `engineManagerCPURequest` and `replicaManagerCPURequest` fields in Longhorn Node custom resource spec are removed and replaced by `instanceManagerCPURequest`.
 
-### Custom Resource Fields Removed
+### New Node Drain Policies Added
 
-Starting from `v1.5.0`, the following deprecated custom resource fields will be removed:
-- Volume.spec.recurringJob
-- Volume.spec.baseImage
-- Replica.spec.baseImage
-- Replica.spec.dataPath
-- InstanceManager.spec.engineImage
-- BackingImage.spec.imageURL
-- BackingImage.status.diskDownloadProgressMap
-- BackingImage.status.diskDownloadStateMap
-- BackingImageManager.status.backingImageFileMap.directory
-- BackingImageManager.status.backingImageFileMap.downloadProgress
-- BackingImageManager.status.backingImageFileMap.url
+There are two new options for the [Node Drain Policy](../../references/settings#node-drain-policy) setting. Both `Block
+For Eviction` and `Block for Eviction If Contains Last Replica` automatically evict replicas from draining nodes in
+addition to preventing drain completion until volume data is sufficiently protected. `Block for Eviction` maintains
+maximum data redundancy during maintenance operations, and both new options enable automated cluster upgrades when some
+volumes have only one replica. See the new [Node Drain Policy
+Recommendations](../../volumes-and-nodes/maintenance/#node-drain-policy-recommendations) section for help deciding which
+policy to use.
+
+### Custom Resource Fields Deprecated
+
+Starting in `v1.6.0`, the following custom resource fields are deprecated. They will be removed in `v1.7.0`:
+
+- Volume.status.evictionRequested
