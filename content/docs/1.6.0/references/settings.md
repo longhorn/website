@@ -90,11 +90,24 @@ To configure Longhorn before installing it, see [this section](../../advanced-re
 > Default: `block-if-contains-last-replica`
 
 Define the policy to use when a node with the last healthy replica of a volume is drained. Available options:
-- `block-if-contains-last-replica`: Longhorn will block the drain when the node contains the last healthy replica of a volume.
-- `allow-if-replica-is-stopped`: Longhorn will allow the drain when the node contains the last healthy replica of a volume but the replica is stopped.
-  WARNING: possible data loss if the node is removed after draining. Select this option if you want to drain the node and do in-place upgrade/maintenance.
-- `always-allow`: Longhorn will allow the drain even though the node contains the last healthy replica of a volume.
-  WARNING: possible data loss if the node is removed after draining. Also possible data corruption if the last replica was running during the draining.
+
+- `block-if-contains-last-replica`: Longhorn will block the drain when the node contains the last healthy replica of a
+  volume.
+- `allow-if-replica-is-stopped`: Longhorn will allow the drain when the node contains the last healthy replica of a
+  volume but the replica is stopped.  
+  WARNING: possible data loss if the node is removed after draining.
+- `always-allow`: Longhorn will allow the drain even though the node contains the last healthy replica of a volume.  
+  WARNING: possible data loss if the node is removed after draining. Also possible data corruption if the last replica
+  was running during the draining.
+- `block-for-eviction`: Longhorn will automatically evict all replicas and block the drain until eviction is complete.  
+  WARNING: Can result in slow drains and extra data movement associated with replica rebuilding.
+- `block-for-eviction-if-contains-last-replica`: Longhorn will automatically evict any replicas that don't have a
+  healthy counterpart and block the drain until eviction is complete.  
+  WARNING: Can result in slow drains and extra data movement associated with replica rebuilding.
+
+Each option has benefits and drawbacks. See [Node Drain Policy
+Recommendations](../../volumes-and-nodes/maintenance/#node-drain-policy-recommendations) for help deciding which is most
+appropriate in your environment.
 
 #### Detach Manually Attached Volumes When Cordoned
 
