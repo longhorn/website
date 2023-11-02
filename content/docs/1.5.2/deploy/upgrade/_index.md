@@ -56,6 +56,11 @@ During the upgrade, Longhorn will automatically:
 
 Visit [Recurring Snapshots and Backups](../../snapshots-and-backups/scheduling-backups-and-snapshots) for more information about the new `Recurring Job` feature.
 
+## 5. Detach All V2 Volumes Before Upgrade
+
+Please note that Longhorn does not support the upgrade when v2 volumes are attached. Prior to initiating the upgrade process, ensure that all v2 volumes are detached. 
+
+
 # Extended Reading
 
 Visit [Some old instance manager pods are still running after upgrade](https://longhorn.io/kb/troubleshooting-some-old-instance-manager-pods-are-still-running-after-upgrade) for more information about the cleanup strategy of instance manager pods during upgrade.
