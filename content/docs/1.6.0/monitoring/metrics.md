@@ -6,16 +6,16 @@ weight: 3
 
 | Name | Description  | Example |
 |---|---|---|
-| longhorn_volume_actual_size_bytes | Actual space used by each replica of the volume on the corresponding node | longhorn_volume_actual_size_bytes{namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 1.1917312e+08 |
-| longhorn_volume_capacity_bytes | Configured size in bytes for this volume | longhorn_volume_capacity_bytes{namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 6.442450944e+09 |
-| longhorn_volume_state | State of this volume: 1=creating, 2=attached, 3=Detached, 4=Attaching, 5=Detaching, 6=Deleting | longhorn_volume_state{namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 2 |
-| longhorn_volume_robustness | Robustness of this volume: 0=unknown, 1=healthy, 2=degraded, 3=faulted  | longhorn_volume_robustness{namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 1 |
-| longhorn_volume_read_throughput | Read throughput of this volume (Bytes/s) | longhorn_volume_read_throughput{namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 5120000 |
-| longhorn_volume_write_throughput | Write throughput of this volume (Bytes/s) | longhorn_volume_write_throughput{namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 512000 |
-| longhorn_volume_read_iops | Read IOPS of this volume | longhorn_volume_read_iops{namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 100 |
-| longhorn_volume_write_iops | Write IOPS of this volume | longhorn_volume_write_iops{namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 100 |
-| longhorn_volume_read_latency | Read latency of this volume (ns) | longhorn_volume_read_latency{namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 100000 |
-| longhorn_volume_write_latency | Write latency of this volume (ns) | longhorn_volume_write_latency{namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 100000 |
+| longhorn_volume_actual_size_bytes | Actual space used by each replica of the volume on the corresponding node | longhorn_volume_actual_size_bytes{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 1.1917312e+08 |
+| longhorn_volume_capacity_bytes | Configured size in bytes for this volume | longhorn_volume_capacity_bytes{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 6.442450944e+09 |
+| longhorn_volume_state | State of this volume: 1=creating, 2=attached, 3=Detached, 4=Attaching, 5=Detaching, 6=Deleting | longhorn_volume_state{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 2 |
+| longhorn_volume_robustness | Robustness of this volume: 0=unknown, 1=healthy, 2=degraded, 3=faulted  | longhorn_volume_robustness{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 1 |
+| longhorn_volume_read_throughput | Read throughput of this volume (Bytes/s) | longhorn_volume_read_throughput{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 5120000 |
+| longhorn_volume_write_throughput | Write throughput of this volume (Bytes/s) | longhorn_volume_write_throughput{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 512000 |
+| longhorn_volume_read_iops | Read IOPS of this volume | longhorn_volume_read_iops{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 100 |
+| longhorn_volume_write_iops | Write IOPS of this volume | longhorn_volume_write_iops{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 100 |
+| longhorn_volume_read_latency | Read latency of this volume (ns) | longhorn_volume_read_latency{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 100000 |
+| longhorn_volume_write_latency | Write latency of this volume (ns) | longhorn_volume_write_latency{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 100000 |
 
 ## Node
 
