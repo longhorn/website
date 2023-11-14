@@ -56,10 +56,9 @@ During the upgrade, Longhorn will automatically:
 
 Visit [Recurring Snapshots and Backups](../../snapshots-and-backups/scheduling-backups-and-snapshots) for more information about the new `Recurring Job` feature.
 
-## 5. Detach All V2 Volumes Before Upgrade
+## 5. Detach All V1 and V2 Volumes When v2-data-engine is Enabled Before Upgrade
 
-Please note that Longhorn does not support the upgrade when v2 volumes are attached. Prior to initiating the upgrade process, ensure that all v2 volumes are detached. 
-
+Longhorn does not support upgrading with v1 or v2 volumes attached when the V2 Data Engine is enabled. Detach all volumes before upgrading.
 
 # Extended Reading
 

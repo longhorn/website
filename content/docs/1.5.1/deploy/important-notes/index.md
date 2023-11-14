@@ -12,9 +12,9 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 
 Please ensure your Kubernetes cluster is at least v1.21 before upgrading to Longhorn v{{< current-version >}} because this is the minimum version Longhorn v{{< current-version >}} supports.
 
-### Detach All V2 Volumes Before Upgrade
+### Detach All V1 and V2 Volumes When v2-data-engine is Enabled Before Upgrade
 
-Please note that Longhorn does not support the upgrade when v2 volumes are attached. Prior to initiating the upgrade process, ensure that all v2 volumes are detached.
+Longhorn does not support upgrading with v1 or v2 volumes attached when the V2 Data Engine is enabled. Detach all volumes before upgrading.
 
 ### Attachment/Detachment Refactoring Side Effect On The Upgrade Process
 
