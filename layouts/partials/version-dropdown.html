@@ -1,4 +1,5 @@
 {{ $versions := site.Params.versions }}
+{{ $archivedVersions := site.Params.archived_versions }}
 {{ $latest   := index $versions 0 }}
 {{ $docsUrl  := printf "docs/%s" $latest | relURL }}
 <nav class="navbar" role="navigation" aria-label="dropdown navigation">
@@ -29,6 +30,27 @@
       {{ $isLatest := eq . $latest }}
       <a class="navbar-item" href="{{ $link }}">
         {{ . }}{{ if $isLatest }} (<strong>latest</strong>){{ end }}
+      </a>
+      {{ end }}
+    </div>
+  </div>
+  <div class="navbar-item has-dropdown is-hoverable">
+    <a class="navbar-link is-arrowless" href="{{ $docsUrl }}">
+      <span class="has-text-weight-bold">
+        Archived Docs
+      </span>
+      <span class="icon has-text-secondary">
+        <ion-icon name="chevron-down-outline"></ion-icon>
+      </span>
+    </a>
+
+    <div class="navbar-dropdown">
+      {{ $devVersionCount := 0 }}
+      {{ range $archivedVersions }}
+
+      {{ $link := printf "docs/archives/%s" . | relURL }}
+      <a class="navbar-item" href="{{ $link }}">
+        {{ . }}
       </a>
       {{ end }}
     </div>
