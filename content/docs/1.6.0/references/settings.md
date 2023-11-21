@@ -481,9 +481,12 @@ If this setting is enabled, Longhorn automatically attaches the volume and takes
 
 #### Backup Target
 
-> Example: `s3://backupbucket@us-east-1/backupstore`
+> Examples:  
+> `s3://backupbucket@us-east-1/backupstore`  
+> `nfs://longhorn-test-nfs-svc.default:/opt/backupstore`  
+> `nfs://longhorn-test-nfs-svc.default:/opt/backupstore?nfsOptions=soft,timeo=330,retrans=3`  
 
-The target used for backup. NFS and S3 are supported. See [Setting a Backup Target](../../snapshots-and-backups/backup-and-restore/set-backup-target) for details.
+Endpoint used to access a backupstore.   Longhorn supports AWS S3, Azure, GCP, CIFS and NFS.  See [Setting a Backup Target](../../snapshots-and-backups/backup-and-restore/set-backup-target) for details.
 
 #### Backup Target Credential Secret
 
