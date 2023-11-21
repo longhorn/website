@@ -149,7 +149,7 @@ Once the PVC is labeled as the source, any recurring job labels added or removed
 kubectl -n <NAMESPACE> label pvc/<PVC-NAME> recurring-job.longhorn.io/source=enabled
 
 # Example:
-# kubectl -n default label pvc/sample recurring-job-group.longhorn.io/source=enabled
+# kubectl -n default label pvc/sample recurring-job.longhorn.io/source=enabled
 ```
 
 Add recurring job group:
