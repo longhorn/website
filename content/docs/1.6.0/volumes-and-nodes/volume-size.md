@@ -133,7 +133,7 @@ Here we summarize the important things related to disk space usage we have in th
                     - The 2nd `1` means the extra snapshot created by the recurring job. Since the recurring job always creates a new snapshot then deletes the oldest snapshot when the current snapshots created by itself exceeds the retention number. Before the deletion starts, there is one extra snapshot that can take extra disk space.
                     - The 3rd `1` is the system snapshot. If the rebuilding is triggered or the expansion is issued, Longhorn will create a system snapshot before starting the operations. And this system snapshot may not be able to get cleaned up immediately.
                     - The 4th `1` is for the temporary space that may be required by snapshot deletion/purge.
-            - Users don't want snapshot at all. Neither (manually created) snapshot nor recurring job will be launched. Assume [setting _Automatically Cleanup System Generated Snapshot_](../../references/settings/#automatically-cleanup-system-generated-snapshot) is enabled, then formula would become:
+            - Users don't want snapshot at all. Neither (manually created) snapshot nor recurring job will be launched. Assume [setting _Automatically Cleanup System Generated Snapshot_](../../references/settings/#automatically-clean-up-system-generated-snapshot) is enabled, then formula would become:
 
                 ```
                 (1 + 1 + 1) x head/snapshot average actual size
