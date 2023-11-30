@@ -1,7 +1,10 @@
 {{ $title   := .Title }}
 {{ $desc    := .Params.description }}
-{{ $version := index (split .File.Path "/") 1 }}
+{{ $version := index (split (replace .File.Path "/archives" "") "/") 1 }}
 {{ $isMain  := eq .File.Path "docs/_index.md" }}
+
+{{ $archivedVersions := site.Params.archived_versions }}
+{{ $isArchived       := in $archivedVersions $version }}
 
 <div class="canvas" id="canvas" x-data="{ drawer: false }">
   {{ partial "navbar.html" . }}
@@ -14,7 +17,7 @@
     {{ partial "footer.html" . }}
     {{ else }}
     <div class="dashboard-panel sidebar is-hidden-touch">
-      {{ partial "docs/nav.html" (dict "drawer" false "here" .RelPermalink "version" $version) }}
+      {{ partial "docs/nav.html" (dict "drawer" false "here" .RelPermalink "version" $version "isArchived" $isArchived) }}
     </div>
 
     <div class="dashboard-panel main">

@@ -1,1 +1,1 @@
-{{- index (split .Page.File.Dir "/") 1 -}}
+{{- index (split (replace .Page.RelPermalink "/archives" "") "/") 2 -}}
