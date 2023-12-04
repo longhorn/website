@@ -68,6 +68,7 @@ weight: 1
   - [Kubernetes Cluster Autoscaler Enabled (Experimental)](#kubernetes-cluster-autoscaler-enabled-experimental)
   - [Storage Network](#storage-network)
   - [Remove Snapshots During Filesystem Trim](#remove-snapshots-during-filesystem-trim)
+  - [Disable Snapshot Purge](#disable-snapshot-purge)
 - [Deprecated](#deprecated)
   - [Disable Replica Rebuild](#disable-replica-rebuild)
   - [Custom mkfs.ext4 parameters](#custom-mkfsext4-parameters)
@@ -646,6 +647,19 @@ Since Longhorn filesystem trim feature can be applied to the volume head and the
 Notice that trying to trim a removed files from a valid snapshot will do nothing but the filesystem will discard this kind of in-memory trimmable file info. Later on if you mark the snapshot as removed and want to retry the trim, you may need to unmount and remount the filesystem so that the filesystem can recollect the trimmable file info.
 
 See [Trim Filesystem](../../volumes-and-nodes/trim-filesystem) for details.
+
+#### Disable Snapshot Purge
+
+> Default: `false`
+
+When set to true, temporarily prevent all attempts to purge volume snapshots.
+
+Longhorn typically purges snapshots during replica rebuilding and user-initiated snapshot deletion. While purging,
+Longhorn coalesces unnecessary snapshots into their newer counterparts, freeing space consumed by historical data.
+
+Allowing snapshot purging during normal operations is ideal, but this process temporarily consumes additional disk
+space. If insufficient disk space prevents the process from continuing, consider temporarily disabling purging while
+data is moved to other disks.
 
 ### Deprecated
 
