@@ -57,6 +57,18 @@ The following Linux OS distributions and versions have been verified during the 
 
 Note: It's recommended to guarantee that the kernel version is at least 5.8 as there is filesystem optimization/improvement since this version. See [this issue](https://github.com/longhorn/longhorn/issues/2507#issuecomment-857195496) for details.
 
+## Kubernetes Version
+
+We recommend running your Kubernetes cluster on one of the following versions. These versions are the active supported versions prior to the Longhorn release, and have been tested with Longhorn v{{< current-version >}}.
+
+| Release | Released     | End-of-life
+|---------|--------------| -----------
+| 1.28    | 15 Aug 2023  | 28 Oct 2024
+| 1.27    | 11 Apr 2023  | 28 Jun 2024
+| 1.26    | 08 Dec 2022  | 28 Feb 2024
+
+Referenced to https://endoflife.date/kubernetes.
+
 ## Node and Disk Setup
 
 We recommend the following setup for nodes and disks.
