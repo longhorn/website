@@ -265,6 +265,7 @@ This information will help us gain insights how Longhorn is being used, which wi
 **Node Information collected from all cluster nodes includes:**
 - Number of disks of each device type (HDD, SSD, NVMe, unknown).
   > This value may not be accurate for virtual machines.
+- Number of disks for each Longhorn disk type (block, filesystem).
 - Host kernel release.
 - Host operating system (OS) distribution.
 - Kubernetest node provider.
