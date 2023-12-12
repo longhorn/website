@@ -3,9 +3,6 @@
 {{ $yearString  := cond (eq $firstYear $currentYear) $firstYear (printf "%d-%d" $firstYear $currentYear) }}
 {{ $project_k3s := index site.Params.project_icons 0 }}
 {{ $project_harvester := index site.Params.project_icons 1 }}
-{{ $project_kubewarden := index site.Params.project_icons 2 }}
-{{ $project_epinio := index site.Params.project_icons 3 }}
-{{ $project_rd := index site.Params.project_icons 4 }}
 <section class="hero">
   <div class="hero-body">
     <div class="container">
@@ -19,30 +16,6 @@
         please see our <a href="https://www.linuxfoundation.org/trademark-usage/" target="_blank">Trademark Usage</a> page.
       </p>
       <br/>
-      <span class="icon-text has-text-success is-pulled-right mx-3">
-        <a href="{{$project_rd.url}}" target="_blank">
-          <span class="icon">
-            <img src="{{$project_rd.src}}" title="{{$project_rd.text}}"/>
-          </span>
-        </a>
-      </span>
-
-      <span class="icon-text has-text-success is-pulled-right mx-3">
-        <a href="{{$project_epinio.url}}" target="_blank">
-          <span class="icon">
-            <img src="{{$project_epinio.src}}" title="{{$project_epinio.text}}"/>
-          </span>
-        </a>
-      </span>
-
-      <span class="icon-text has-text-success is-pulled-right mx-3">
-        <a href="{{$project_kubewarden.url}}" target="_blank">
-          <span class="icon">
-            <img src="{{$project_kubewarden.src}}" title="{{$project_kubewarden.text}}"/>
-          </span>
-        </a>
-      </span>
-
       <span class="icon-text has-text-info is-pulled-right mx-3">
         <a href="{{$project_k3s.url}}" target="_blank">
           <span class="icon">

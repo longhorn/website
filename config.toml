@@ -143,21 +143,6 @@ text = "Harvester"
 src = "/img/project-icons/icon-harvester.svg"
 url = "https://harvesterhci.io/"
 
-[[params.project_icons]]
-text = "Kubewarden"
-src = "/img/project-icons/icon-kubewarden.svg"
-url = "https://www.kubewarden.io/"
-
-[[params.project_icons]]
-text = "Epinio"
-src = "/img/project-icons/icon-epinio.svg"
-url = "https://epinio.io/"
-
-[[params.project_icons]]
-text = "Rancher Desktop"
-src = "/img/project-icons/icon-rd.svg"
-url = "https://rancherdesktop.io/"
-
 [[menu.main]]
 name = "Blog"
 url = "/blog"
