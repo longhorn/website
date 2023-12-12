@@ -96,6 +96,13 @@ Define the policy to use when a node with the last healthy replica of a volume i
 - `always-allow`: Longhorn will allow the drain even though the node contains the last healthy replica of a volume.
   WARNING: possible data loss if the node is removed after draining. Also possible data corruption if the last replica was running during the draining.
 
+#### Detach Manually Attached Volumes When Cordoned
+
+> Default: `false`
+
+Longhorn will automatically detach volumes that are manually attached to the nodes which are cordoned. 
+This prevent the draining process stuck by the PDB of instance-manager which still has running engine on the node.
+
 #### Automatically Clean up System Generated Snapshot
 
 > Default: `true`
