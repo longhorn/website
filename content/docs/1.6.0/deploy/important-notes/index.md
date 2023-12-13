@@ -23,6 +23,20 @@ in an old version of longhorn-instance-manager until it is detached (by scaling 
 reattached (by scaling its consuming workload up). Consider scaling workloads down and back up again as soon as possible
 after upgrading from a version without this mechanism (v1.5.1 or older) to v{{< current-version >}}.
 
+### Default Priority Class
+
+Longhorn v1.6.0 introduces the default Priority Class `longhorn-critical`, which has the highest value and ensures that Longhorn pods are not evicted by kube-scheduler when system resources are low.
+
+During upgrades, Longhorn applies the default Priority Class to components depending on specific settings.
+
+- When all volumes are detached and the Priority Class default setting is not customized, the default Priority Class is applied to all Longhorn components. The default Priority Class setting `priority-class` is updated.
+- When all volumes are detached and you have specified a value for the Priority Class default setting, the default Priority Class is applied only to user-deployed components. The default Priority Class setting `priority-class` is not updated.
+- When one or more volumes are attached, the default Priority Class is applied only to user-deployed components only if they haven't been set. The default Priority Class setting `priority-class` is not updated.
+
+If you want to apply the default Priority Class to system-managed components, you must detach all volumes and change the Priority Class default setting value after the upgrade is successfully completed.
+
+You can change these behaviors by modifying the parameters `defaultSetting.priorityClass` or `priorityClass` of user-deployed components in the [Longhorn Helm chart](https://github.com/longhorn/longhorn/blob/master/chart/) `values.yaml` file or the config map in [longhorn/deploy/longhorn.yaml](https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml) before starting the upgrade process.
+
 ### New Node Drain Policies Added
 
 There are two new options for the [Node Drain Policy](../../references/settings#node-drain-policy) setting. Both `Block
