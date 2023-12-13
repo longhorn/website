@@ -18,7 +18,7 @@ Since v1.4.0, Longhorn supports trimming filesystem inside Longhorn volumes. Tri
 
 ## Trim the filesystem in a Longhorn volume
 
-There are two ways to do trim for a Longhorn volume: with the Longhorn UI and directly via cmd.
+You can trim a Longhorn volume using either the Longhorn UI or the `fstrim` command.
 
 #### Via Longhorn UI
 
@@ -26,9 +26,27 @@ You can directly click volume operation `Trim Filesystem` for attached volumes.
 
 Then Longhorn will **try its best** to figure out the mount point and execute `fstrim <the mount point>`.  If something is wrong or the filesystem does not exist, the UI will return an error.
 
-#### Via cmd
+#### Via shell command
 
-Users need to figure out the mount point of the volume then manually execute `fstrim <the mount point>`.
+When using `fstrim`, you must identify the mount point of the volume and then run the command `fstrim <the mount point>`.
+
+- RWO volume: The mount point is either a pod of the workload or the node to which the volume was manually attached.
+- RWX volume: The mount point is the share manager pod of the volume. The share manager pod contains the NFS server and is typically named `share-manager-<volume name>`.
+
+To trim an RWX volume, perform the following steps:
+1. Identify and then open a shell inside the share manager pod of the volume.
+    ```
+    kubectl -n longhorn-system exec -it <the share manager pod> -- bash
+    ```
+1. Identify the work directory of the NFS server (for example, `/export/<volume name>`).
+    ```
+    mount | grep <volume name>
+    /dev/longhorn/<volume name> on /export/<volume name> type ext4 (rw,relatime)
+    ```
+1. Trim the work directory.
+    ```
+    fstrim /export/<volume name>
+    ```
 
 ## Automatically Remove Snapshots During Filesystem Trim
 
@@ -47,24 +65,6 @@ There are 3 options for this volume field: `ignored`, `enabled`, and `disabled`.
 You can directly set this field in the StoragaClasses so that the customized value can be applied to all volumes created by the StorageClasses.
 
 ## Known Issues & Limitations
-
-### RWX volumes
-- Currently, Longhorn **UI** only supports filesystem trimming for RWO volume. It will be enhanced for RWX volume at https://github.com/longhorn/longhorn/issues/5143.
-
-- If you want to trim a RWX volume manually, you can:
-    1. Figure out and enter into the share manager pod of the RWX volume, which actually contains the NFS server. The share manager pod is typically named as `share-manager-<volume name>`.
-    ```shell
-    kubectl -n longhorn-system exec -it <the share manager pod> -- bash
-    ```
-    2. Figure out the work directory of the NFS server. The work directory is typically like `/export/<volume name>`:
-    ```shell
-    mount | grep /dev/longhorn/<volume name>
-    /dev/longhorn/<volume name> on /export/<volume name> type ext4 (rw,relatime)
-    ```
-    3. Trim the work directory
-    ```shell
-    fstrim /export/<volume name>
-    ```
 
 ### Encrypted volumes
 - By default, TRIM commands are not enabled by the device-mapper. You can check [this doc](https://wiki.archlinux.org/title/Dm-crypt/Specialties#Discard/TRIM_support_for_solid_state_drives_(SSD)) for details.
