@@ -43,8 +43,8 @@ Once those two conditions are met, you should be allowed to remove the disk.
 ## Configuration
 There are two global settings affect the scheduling of the volume.
 
-- `StorageOverProvisioningPercentage` defines the upper bound of `ScheduledStorage / (MaximumStorage - ReservedStorage)`. The default value is `100` (%). That means we can schedule a total of 150 GiB Longhorn volumes on a 200 GiB disk with 50G reserved for the root file system. Because normally people won't use that large amount of data in the volume, and we store the volumes as sparse files.
-- `StorageMinimalAvailablePercentage` defines when a disk cannot be scheduled with more volumes. The default value is `10` (%). The bigger value between `MaximumStorage * StorageMinimalAvailablePercentage / 100` and `MaximumStorage - ReservedStorage` will be used to determine if a disk is running low and cannot be scheduled with more volumes.
+- `StorageOverProvisioningPercentage` defines the upper bound of `ScheduledStorage / (MaximumStorage - ReservedStorage)`. The default value is `100` (%). This translates to 150 GiB for Longhorn volumes that can be scheduled on a 200 GiB disk with 50 GiB reserved for the root file system.  A workload typically does not fill a volume completely, and Longhorn stores the volume contents as sparse files, so users might find that this setting can be increased.
+- `StorageMinimalAvailablePercentage` defines the lower bound of `AvailableStorage / MaximumStorage`.  The default value is `25` (%).  A volume cannot be scheduled on a disk if the volume's specified size would cause the available storage to fall below the threshold.
 
 Notice that currently there is no guarantee that the space volumes use won't exceed the `StorageMinimalAvailablePercentage`, because:
 1. Longhorn volumes can be bigger than the specified size, due to fact that the snapshot contains the old state of the volume.
