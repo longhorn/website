@@ -79,7 +79,7 @@ It's recommended to dedicate a disk for Longhorn storage for production, instead
 
 ### Minimal Available Storage and Over-provisioning
 
-If you need to use the root disk, use the default `minimal available storage percentage` setup which is 25%, and set `overprovisioning percentage` to 200% to minimize the chance of DiskPressure.
+If you need to use the root disk, use the default `minimal available storage percentage` setup which is 25%, and set `overprovisioning percentage` to 100% to minimize the chance of DiskPressure.
 
 If you're using a dedicated disk for Longhorn, you can lower the setting `minimal available storage percentage` to 10%.
 
