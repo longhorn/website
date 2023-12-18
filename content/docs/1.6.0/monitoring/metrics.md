@@ -63,3 +63,9 @@ weight: 3
 |---|---|---|
 | longhorn_backup_actual_size_bytes | Actual size of this backup | longhorn_backup_actual_size_bytes{backup="backup-4ab66eca0d60473e",volume="testvol"} 6.291456e+07 |
 | longhorn_backup_state | State of this backup: 0=New, 1=Pending, 2=InProgress, 3=Completed, 4=Error, 5=Unknown | longhorn_backup_state{backup="backup-4ab66eca0d60473e",volume="testvol"} 3 |
+
+## Snapshot
+
+| Name | Description  | Example |
+|---|---|---|
+| longhorn_snapshot_actual_size_bytes | Actual size of this snapshot | longhorn_snapshot_actual_size_bytes{user_created="false",volume="testvol"} 1.048576e+07 |
