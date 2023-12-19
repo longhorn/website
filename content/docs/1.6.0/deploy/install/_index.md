@@ -14,6 +14,7 @@ Longhorn can be installed on a Kubernetes cluster in several ways:
 - [Helm](./install-with-helm/)
 - [Fleet](./install-with-fleet/)
 - [Flux](./install-with-flux/)
+- [ArgoCD](./install-with-argocd/)
 
 To install Longhorn in an air gapped environment, refer to [this section.](../../advanced-resources/deploy/airgap)
 
