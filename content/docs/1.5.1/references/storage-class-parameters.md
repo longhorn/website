@@ -43,37 +43,37 @@ parameters:
 
 ## Built-in Fields
 Some fields are common to all Kubernetes storage classes.
-See also [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes).  
+See also [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes).
 
 #### Provisioner *(field: `provisioner`)*
 Specifies the plugin that will be used for dynamic creation of persistent volumes.  For Longhorn, that is always "driver.longhorn.io".
-> See [Kubernetes Storage Class: Provisioner](https://kubernetes.io/docs/concepts/storage/storage-classes/#provisioner).  
+> See [Kubernetes Storage Class: Provisioner](https://kubernetes.io/docs/concepts/storage/storage-classes/#provisioner).
 
 #### Allow Volume Expansion *(field: `allowVolumeExpansion`)*
-> Default: `true`  
-> See [Kubernetes Storage Class: Allow Volume Expansion](https://kubernetes.io/docs/concepts/storage/storage-classes/#allow-volume-expansion).  
+> Default: `true`
+> See [Kubernetes Storage Class: Allow Volume Expansion](https://kubernetes.io/docs/concepts/storage/storage-classes/#allow-volume-expansion).
 
 #### Reclaim Policy *(field: `reclaimPolicy`)*
-> Default: `Delete`  
-> See [Kubernetes Storage Class: Reclaim Policy](https://kubernetes.io/docs/concepts/storage/storage-classes/#reclaim-policy).  
+> Default: `Delete`
+> See [Kubernetes Storage Class: Reclaim Policy](https://kubernetes.io/docs/concepts/storage/storage-classes/#reclaim-policy).
 
 #### Mount Options *(field: `mountOptions`)*
-> Default `[]`  
-> See [Kubernetes Storage Class: Mount Options](https://kubernetes.io/docs/concepts/storage/storage-classes/#mount-options).  
+> Default `[]`
+> See [Kubernetes Storage Class: Mount Options](https://kubernetes.io/docs/concepts/storage/storage-classes/#mount-options).
 
 #### Volume Binding Mode *(field: `volumeBindingMode`)*
-> Default `Immediate`  
-> See [Kubernetes Storage Class: Volume Binding Mode](https://kubernetes.io/docs/concepts/storage/storage-classes/#volume-binding-mode).  
+> Default `Immediate`
+> See [Kubernetes Storage Class: Volume Binding Mode](https://kubernetes.io/docs/concepts/storage/storage-classes/#volume-binding-mode).
 
 ## Longhorn-specific Parameters
-Note that some of these parameters also exist and may be specified in global settings.  When a volume is provisioned with Kubernetes against a particular StorageClass, StorageClass parameters override the global settings.  
+Note that some of these parameters also exist and may be specified in global settings.  When a volume is provisioned with Kubernetes against a particular StorageClass, StorageClass parameters override the global settings.
 These fields will be applied for new volume creation only.  If a StorageClass is modified, neither Longhorn nor Kubernetes is responsible for propagating changes to its parameters back to volumes previously created with it.
 
 #### Number Of Replicas *(field: `parameters.numberOfReplicas`)*
-> Default: `3`  
+> Default: `3`
 
-The desired number of copies (replicas) for redundancy.  
-  - Must be between 1 and 20.  
+The desired number of copies (replicas) for redundancy.
+  - Must be between 1 and 20.
   - Replicas will be placed across the widest possible set of zones and nodes in a cluster, subject to other constraints, such as NodeSelector.
 
 > Global setting: [Default Replica Count](../settings#default-replica-count).
@@ -84,134 +84,134 @@ The desired number of copies (replicas) for redundancy.
 Minutes after a replica is marked unhealthy before it is deemed useless for rebuilds and is just deleted.
 
 #### From Backup *(field: `parameters.fromBackup`)*
-> Default: `""`  
+> Default: `""`
 > Example: `"s3://backupbucket@us-east-1?volume=minio-vol01&backup=backup-eeb2782d5b2f42bb"`
 
 URL of a backup to be restored from.
 
 #### FS Type *(field: `parameters.fsType`)*
-> Default: `ext4`  
+> Default: `ext4`
 > For more details, see [Creating Longhorn Volumes with Kubernetes](../../volumes-and-nodes/create-volumes#creating-longhorn-volumes-with-kubectl)
 
 #### Mkfs Params *(field: `parameters.mkfsParams`)*
-> Default: `""`  
+> Default: `""`
 > For more details, see [Creating Longhorn Volumes with Kubernetes](../../volumes-and-nodes/create-volumes#creating-longhorn-volumes-with-kubectl)
 
 #### Migratable *(field: `parameters.migratable`)*
-> Default: `false`  
+> Default: `false`
 
 Allows for a Longhorn volume to be live migrated from one node to another.  Useful for volumes used by Harvester.
-	  
+
 #### Encrypted *(field: `parameters.encrypted`)*
-> Default: `false`  
+> Default: `false`
 > More details in [Encrypted Volumes](../../advanced-resources/security/volume-encryption)
 
 #### Data Locality *(field: `parameters.dataLocality`)*
-> Default: `disabled`  
+> Default: `disabled`
 
-If enabled, try to keep the data on the same node as the workload for better performance.  
-  - For "best-effort", a replica will be co-located if possible, but is permitted to find another node if not.  
-  - For "strict-local" the Replica count should be 1, or volume creation will fail with a parameter validation error.  
-  - If "strict-local" is not possible for whatever other reason, volume creation will be failed.  A "strict-local" replica that becomes displaced from its workload will be marked as "Stopped".  
+If enabled, try to keep the data on the same node as the workload for better performance.
+  - For "best-effort", a replica will be co-located if possible, but is permitted to find another node if not.
+  - For "strict-local" the Replica count should be 1, or volume creation will fail with a parameter validation error.
+  - If "strict-local" is not possible for whatever other reason, volume creation will be failed.  A "strict-local" replica that becomes displaced from its workload will be marked as "Stopped".
 
->  Global setting: [Default Data Locality](../settings#default-data-locality)  
+>  Global setting: [Default Data Locality](../settings#default-data-locality)
 >  More details in [Data Locality](../../high-availability/data-locality).
 
 #### Replica Auto-Balance *(field: `parameters.replicaAutoBalance`)*
-> Default: `ignored`  
+> Default: `ignored`
 
-If enabled, move replicas to more lightly-loaded nodes.  
-  - "ignored" means use the global setting.  
-  - Other options are "disabled", "least-effort", "best-effort".  
+If enabled, move replicas to more lightly-loaded nodes.
+  - "ignored" means use the global setting.
+  - Other options are "disabled", "least-effort", "best-effort".
 
-> Global setting: [Replica Auto Balance](../settings#replica-auto-balance)  
+> Global setting: [Replica Auto Balance](../settings#replica-auto-balance)
 > More details in [Auto Balance Replicas](../../high-availability/auto-balance-replicas).
 
 #### Disk Selector *(field: `parameters.diskSelector`)*
-> Default: `""`  
-> Example: `"ssd,fast"`  
+> Default: `""`
+> Example: `"ssd,fast"`
 
-A list of tags to select which disks are candidates for replica placement.  
+A list of tags to select which disks are candidates for replica placement.
 > More details in [Storage Tags](../../volumes-and-nodes/storage-tags)
 
 #### Node Selector *(field: `parameters.nodeSelector`)*
-> Default: `""`  
-> Example: `"storage,fast"`  
+> Default: `""`
+> Example: `"storage,fast"`
 
-A list of tags to select which nodes are candidates for replica placement.  
+A list of tags to select which nodes are candidates for replica placement.
 > More details in [Storage Tags](../../volumes-and-nodes/storage-tags)
 
 #### Recurring Jobs Selector *(field: `parameters.recurringJobsSelector`)*
-> Default: `""`  
-> Example:  `[{"name":"backup", "isGroup":true}]`  
+> Default: `""`
+> Example:  `[{"name":"backup", "isGroup":true}]`
 
-A list of recurring jobs that are to be run on a volume.  
->  More details in [Recurring Snapshots and Backups](../../snapshots-and-backups/scheduling-backups-and-snapshots) 
-	
+A list of recurring jobs that are to be run on a volume.
+>  More details in [Recurring Snapshots and Backups](../../snapshots-and-backups/scheduling-backups-and-snapshots)
+
 #### Backing Image Name *(field: `parameters.backingImageName`)*
-> Default: `""`  
+> Default: `""`
 > See [Backing Image](../../advanced-resources/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Backing Image Checksum *(field: `parameters.backingImageChecksum`)*
-> Default: `""`  
+> Default: `""`
 > See [Backing Image](../../advanced-resources/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Backing Image Data Source Type *(field: `parameters.backingImageDataSourceType`)*
-> Default: `""`  
+> Default: `""`
 > See [Backing Image](../../advanced-resources/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Backing Image Data Source Parameters *(field: `parameters.backingImageDataSourceParameters`)*
-> Default: `""`  
+> Default: `""`
 > See [Backing Image](../../advanced-resources/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Unmap Mark Snap Chain Removed *(field: `parameters.unmapMarkSnapChainRemoved`)*
-> Default: `ignored`  
+> Default: `ignored`
 
-  - "ignored" means use the global setting.  
-  - Other values are "enabled" and "disabled".  
+  - "ignored" means use the global setting.
+  - Other values are "enabled" and "disabled".
 
-> Global setting: [Remove Snapshots During Filesystem Trim](../settings#remove-snapshots-during-filesystem-trim).  
+> Global setting: [Remove Snapshots During Filesystem Trim](../settings#remove-snapshots-during-filesystem-trim).
 > More details in [Trim Filesystem](../../volumes-and-nodes/trim-filesystem).
 
 #### Disable Revision Counter *(field: `parameters.disableRevisionCounter`)*
-> Default: `false`  
+> Default: `false`
 
-> Global setting: [Disable Revision Counter](../settings#disable-revision-counter).  
-> More details in [Revision Counter](../../advanced-resources/deploy/revision_counter).  
+> Global setting: [Disable Revision Counter](../settings#disable-revision-counter).
+> More details in [Revision Counter](../../advanced-resources/deploy/revision_counter).
 
 #### Replica Soft Anti-Affinity *(field: `parameters.replicaSoftAntiAffinity`)*
-> Default: `ignored`  
+> Default: `ignored`
 
-  - "ignored" means use the global setting.  
-  - Other values are "enabled" and "disabled".  
+  - "ignored" means use the global setting.
+  - Other values are "enabled" and "disabled".
 
-> Global setting: [Replica Node Level Soft Anti-Affinity](../settings#replica-node-level-soft-anti-affinity).  
+> Global setting: [Replica Node Level Soft Anti-Affinity](../settings#replica-node-level-soft-anti-affinity).
 > More details in [Scheduling](../../volumes-and-nodes/scheduling) and [Best Practices](../../best-practices#replica-node-level-soft-anti-affinity).
 
 #### Replica Zone Soft Anti-Affinity *(field: `parameters.replicaZoneSoftAntiAffinity`)*
-> Default: `ignored`  
+> Default: `ignored`
 
-  - "ignored" means use the global setting.  
-  - Other values are "enabled" and "disabled".  
+  - "ignored" means use the global setting.
+  - Other values are "enabled" and "disabled".
 
-> Global setting: [Replica Zone Level Soft Anti-Affinity](../settings#replica-zone-level-soft-anti-affinity).  
+> Global setting: [Replica Zone Level Soft Anti-Affinity](../settings#replica-zone-level-soft-anti-affinity).
 > More details in [Scheduling](../../volumes-and-nodes/scheduling).
 
 #### NFS Options *(field: `parameters.nfsOptions`)*
 > Default: `""`
-> Example: `"hard,sync"`  
+> Example: `"hard,sync"`
 
-  - Overrides for NFS mount of RWX volumes to the share-manager.  Use this field with caution.  
+  - Overrides for NFS mount of RWX volumes to the share-manager.  Use this field with caution.
   - Note:  Built-in options vary by release.  Check your release details before setting this.
-  
+
 > More details in [RWX Workloads](../../advanced-resources/rwx-workloads/#notice)
 
 #### Backend Store Driver *(field: `parameters.backendStoreDriver`)*
-> Default: `"v1"`  
+> Default: `"v1"`
 
   - Use "v2" to run the v2 SPDK-based engine (experimental in 1.5.)  If empty, "v1" is assumed.
 
-> Global setting: [V2 Data Engine](../settings#v2-data-engine).  
+> Global setting: [V2 Data Engine](../settings#v2-data-engine).
 > More details in [V2 Data Engine Quick Start](../../spdk/quick-start#create-a-storageclass).
 
 ## Helm Installs
