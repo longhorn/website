@@ -68,4 +68,4 @@ weight: 3
 
 | Name | Description  | Example |
 |---|---|---|
-| longhorn_snapshot_actual_size_bytes | Actual size of this snapshot | longhorn_snapshot_actual_size_bytes{user_created="false",volume="testvol"} 1.048576e+07 |
+| longhorn_snapshot_actual_size_bytes | Actual size of this snapshot | longhorn_snapshot_actual_size_bytes{snapshot="f4468111-2efa-45f5-aef6-63109e30d92c",user_created="false",volume="testvol"} 1.048576e+07 |
