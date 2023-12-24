@@ -96,23 +96,18 @@ From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Insta
 
 ### Using Helm
 
+> **NOTE:**
+> Helm 2 is not supported, [ref](https://helm.sh/blog/helm-2-becomes-unsupported/).
+> Please use Helm 3 for Longhorn installation and upgrade.
+
 Use the Helm command with the `--set` flag to modify the default settings. For example:
 
-- Helm 2
-  ```shell
-  helm install longhorn/longhorn \
-    --name longhorn \
-    --namespace longhorn-system \
-    --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
-  ```
-
-- Helm 3
-  ```shell
-  helm install longhorn longhorn/longhorn \
-    --namespace longhorn-system \
-    --create-namespace \
-    --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
-  ```
+```shell
+helm install longhorn longhorn/longhorn \
+  --namespace longhorn-system \
+  --create-namespace \
+  --set defaultSettings.taintToleration="key1=value1:NoSchedule; key2:NoExecute"
+```
 
 You can also provide a copy of the `values.yaml` file with the default settings modified to the `--values` flag when running the Helm command:
 
@@ -154,20 +149,13 @@ You can also provide a copy of the `values.yaml` file with the default settings 
     ```
 
 3. Run Helm with `values.yaml`:
-  - Helm 2
-     ```shell
-     helm install longhorn/longhorn \
-       --name longhorn \
-       --namespace longhorn-system \
-       --values values.yaml
-     ```
-  - Helm 3
-     ```shell
-     helm install longhorn longhorn/longhorn \
-       --namespace longhorn-system \
-       --create-namespace \
-       --values values.yaml
-     ```
+
+   ```shell
+   helm install longhorn longhorn/longhorn \
+     --namespace longhorn-system \
+     --create-namespace \
+     --values values.yaml
+   ```
 
 For more info about using helm, see the section about
 [installing Longhorn with Helm](../../../deploy/install/install-with-helm)
