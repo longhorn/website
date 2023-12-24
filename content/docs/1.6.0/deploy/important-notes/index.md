@@ -23,25 +23,21 @@ in an old version of longhorn-instance-manager until it is detached (by scaling 
 reattached (by scaling its consuming workload up). Consider scaling workloads down and back up again as soon as possible
 after upgrading from a version without this mechanism (v1.5.1 or older) to v{{< current-version >}}.
 
-### Attachment/Detachment Refactoring Side Effect On The Upgrade Process
+### New Node Drain Policies Added
 
-In Longhorn v1.5.0, we refactored the internal volume attach/detach mechanism.
-As a side effect, when you are upgrading from v1.4.x to v1.5.x, if there are in-progress operations such as volume cloning, backing image export from volume, and volume offline expansion, these operations will fail.
-You will have to retry them manually.
-To avoid this issue, please don't perform these operations during the upgrade.
-Ref: https://github.com/longhorn/longhorn/issues/3715#issuecomment-1562305097
+There are two new options for the [Node Drain Policy](../../references/settings#node-drain-policy) setting. Both `Block
+For Eviction` and `Block for Eviction If Contains Last Replica` automatically evict replicas from draining nodes in
+addition to preventing drain completion until volume data is sufficiently protected. `Block for Eviction` maintains
+maximum data redundancy during maintenance operations, and both new options enable automated cluster upgrades when some
+volumes have only one replica. See the new [Node Drain Policy
+Recommendations](../../volumes-and-nodes/maintenance/#node-drain-policy-recommendations) section for help deciding which
+policy to use.
 
-### Recurring Jobs
+### Custom Resource Fields Deprecated
 
-The behavior of the recurring job types `Snapshot` and `Backup` will attempt to delete old snapshots first if they exceed the retained count before creating a new snapshot. Additionally, two new recurring job types have been introduced, `Snapshot Force Create` and `Backup Force Create`. They retain the original behavior of taking a snapshot or backup first before deleting outdated snapshots.
+Starting in `v1.6.0`, the following custom resource fields are deprecated. They will be removed in `v1.7.0`:
 
-### Longhorn Uninstallation
-
-To prevent Longhorn from being accidentally uninstalled (which leads to data lost),
-we introduce a new setting, [deleting-confirmation-flag](../../references/settings/#deleting-confirmation-flag).
-If this flag is **false**, the Longhorn uninstallation job will fail.
-Set this flag to **true** to allow Longhorn uninstallation.
-See more in the [uninstall](../uninstall) section.
+- Volume.status.evictionRequested
 
 ### Pod Security Policies Disabled & Pod Security Admission Introduction
 
@@ -78,39 +74,3 @@ Support for the `v1beta1` version of CSI snapshot CRDs was previously deprecated
 The CSI components in Longhorn v{{< current-version >}} only function with the `v1` version.
 Please follow the instructions at [Enable CSI Snapshot Support](../../snapshots-and-backups/csi-snapshot-support/enable-csi-snapshot-support) to update CSI snapshot CRDs and the CSI snapshot controller.
 If you have Longhorn volume manifests or scripts that are still using `v1beta1` version, you must upgrade them to `v1` as well.
-
-### `Custom mkfs.ext4 Parameters` Setting Removed
-
-The `Custom mkfs.ext4 Parameters` setting was deprecated in Longhorn `v1.4.0` and is now removed. The per-StorageClass `mkfsParams` parameter should be used to specify mkfs options (e.g., `-I 256 -b 4096 -O ^metadata_csum,^64bit`) instead. See [Creating Longhorn Volumes with kubectl](../../volumes-and-nodes/create-volumes/#creating-longhorn-volumes-with-kubectl) for details.
-
-### `Disable Replica Rebuild` Setting Removed
-
-The `Disable Replica Rebuild` setting was deprecated and replaced by the [Concurrent Replica Rebuild Per Node Limit](../../references/settings/#concurrent-replica-rebuild-per-node-limit) setting in Longhorn `v1.2.1`. It should already have been ignored in any Longhorn deployment upgrading to Longhorn v{{< current-version >}} and is now removed. To disable replica rebuilding across the cluster, set the `Concurrent Replica Rebuild Per Node Limit` to 0.
-
-### `Default Manager Image` Settings Removed
-
-The `Default Backing Image Manager Image`, `Default Instance Manager Image` and `Default Share Manager Image` settings were deprecated and removed from `v1.5.0`. These default manager image settings can be changed on the manager starting command line only. They should be modified in the Longhorn deploying manifest or `values.yaml` in Longhorn chart.
-
-### Instance Managers Consolidated
-
-Engine instance managers and replica instance managers has been consolidated. Previous engine/replica instance managers are now deprecated, but they will still provide service to the existing attached volumes.
-
-The `Guaranteed Engine Manager CPU` and `Guaranteed Replica Manager CPU` settings are removed and replaced by `Guaranteed Instance Manager CPU`.
-
-The `engineManagerCPURequest` and `replicaManagerCPURequest` fields in Longhorn Node custom resource spec are removed and replaced by `instanceManagerCPURequest`.
-
-### New Node Drain Policies Added
-
-There are two new options for the [Node Drain Policy](../../references/settings#node-drain-policy) setting. Both `Block
-For Eviction` and `Block for Eviction If Contains Last Replica` automatically evict replicas from draining nodes in
-addition to preventing drain completion until volume data is sufficiently protected. `Block for Eviction` maintains
-maximum data redundancy during maintenance operations, and both new options enable automated cluster upgrades when some
-volumes have only one replica. See the new [Node Drain Policy
-Recommendations](../../volumes-and-nodes/maintenance/#node-drain-policy-recommendations) section for help deciding which
-policy to use.
-
-### Custom Resource Fields Deprecated
-
-Starting in `v1.6.0`, the following custom resource fields are deprecated. They will be removed in `v1.7.0`:
-
-- Volume.status.evictionRequested
