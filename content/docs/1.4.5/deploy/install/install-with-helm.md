@@ -7,10 +7,8 @@ In this section, you will learn how to install Longhorn with Helm.
 
 ### Prerequisites
 
-- Each node in the Kubernetes cluster where Longhorn will be installed must fulfill [these requirements.](../#installation-requirements)
-- Helm v2.0+ must be installed on your workstation.
-  - 1. Refer to the official documentation for help installing Helm.
-  - 2. If you're using a Helm version prior to version 3.0, you need to [install Tiller in your Kubernetes cluster with role-based access control (RBAC)](https://v2.helm.sh/docs/using_helm/#tiller-namespaces-and-rbac).
+- Kubernetes cluster: Ensure that each node fulfills the [installation requirements](../#installation-requirements).
+- Your workstation: Install [Helm](https://helm.sh/docs/) v3.0 or later.
 
 > [This script](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/scripts/environment_check.sh) can be used to check the Longhorn environment for potential issues.
 
@@ -35,14 +33,6 @@ In this section, you will learn how to install Longhorn with Helm.
     ```
 
 3. Install Longhorn in the `longhorn-system` namespace.
-
-    To install Longhorn with Helm 2, use the command:
-
-    ```shell
-    helm install longhorn/longhorn --name longhorn --namespace longhorn-system --version {{< current-version >}}
-    ```
-
-    To install Longhorn with Helm 3, use the commands:
 
     ```shell
     helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --version {{< current-version >}}

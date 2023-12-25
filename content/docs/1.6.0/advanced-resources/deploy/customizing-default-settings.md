@@ -97,8 +97,7 @@ From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Insta
 ### Using Helm
 
 > **NOTE:**
-> Helm 2 is not supported, [ref](https://helm.sh/blog/helm-2-becomes-unsupported/).
-> Please use Helm 3 for Longhorn installation and upgrade.
+> Use Helm 3 when installing and upgrading Longhorn. Helm 2 is [no longer supported](https://helm.sh/blog/helm-2-becomes-unsupported/).
 
 Use the Helm command with the `--set` flag to modify the default settings. For example:
 
