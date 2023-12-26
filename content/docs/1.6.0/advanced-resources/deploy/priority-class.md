@@ -7,10 +7,14 @@ The Priority Class setting can be used to set a higher priority on Longhorn work
 For more information on how pod priority works, refer to the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/).
 
 # Setting Priority Class
+
 Longhorn system contains user deployed components (e.g, Longhorn manager, Longhorn driver, Longhorn UI) and system managed components (e.g, instance manager, engine image, CSI driver, etc.)
 You need to set Priority Class for both types of components. See more details below.
 
 ### Setting Priority Class During Longhorn Installation
+
+Longhorn creates a Priority Class `longhorn-critical` and sets it as default for its user deployed or system managed components if the following actions are not taken.
+
 1. Set taint Priority Class for system managed components: follow the [Customize default settings](../customizing-default-settings/) to set Priority Class by changing the value for the `priority-class` default setting
 1. Set taint Priority Class for user deployed components: modify the Helm chart or deployment YAML file depending on how you deploy Longhorn.
 
@@ -37,6 +41,7 @@ Don't operate the Longhorn system after modifying the Priority Class setting, as
 Do not delete the Priority Class in use by Longhorn, as this can cause new Longhorn workloads to fail to come online.
 
 ## History
+
 [Original Feature Request](https://github.com/longhorn/longhorn/issues/1487)
 
 Available since v1.0.1
