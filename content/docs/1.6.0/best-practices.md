@@ -8,6 +8,7 @@ We recommend the following setup for deploying Longhorn in production.
 - [Minimum Recommended Hardware](#minimum-recommended-hardware)
 - [Architecture](#architecture)
 - [Operating System](#operating-system)
+- [Kubernetes Version](#kubernetes-version)
 - [Node and Disk Setup](#node-and-disk-setup)
   - [Use a Dedicated Disk](#use-a-dedicated-disk)
   - [Minimal Available Storage and Over-provisioning](#minimal-available-storage-and-over-provisioning)
@@ -17,6 +18,8 @@ We recommend the following setup for deploying Longhorn in production.
 - [Deploying Workloads](#deploying-workloads)
 - [Volume Maintenance](#volume-maintenance)
 - [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu)
+  - [V1 Data Engine](#v1-data-engine)
+  - [V2 Data Engine](#v2-data-engine)
 - [StorageClass](#storageclass)
 - [Scheduling Settings](#scheduling-settings)
   - [Replica Node Level Soft Anti-Affinity](#replica-node-level-soft-anti-affinity)
@@ -117,13 +120,19 @@ Longhorn system will create snapshots automatically when rebuilding a replica. R
 
 We recommend setting the CPU request for Longhorn instance manager pods.
 
-The `Guaranteed Instance Manager CPU` setting allows you to reserve a percentage of a node's total allocatable CPU for all instance manager pods.
+### V1 Data Engine
+
+The `Guaranteed Instance Manager CPU` setting allows you to reserve a percentage of the total allocatable CPU resources on each node for each instance manager pod when the V1 Data Engine is enabled. The default value is 12.
 
 You can also set a specific milli CPU value for instance manager pods on a particular node by updating the node's `Instance Manager CPU Request` field.
 
 > **Note:** This field will overwrite the above setting for the specified node.
 
 Refer to [Guaranteed Instance Manager CPU](../references/settings/#guaranteed-instance-manager-cpu) for more details.
+
+### V2 Data Engine
+
+The `Guaranteed Instance Manager CPU for V2 Data Engine` setting allows you to reserve a specific number of millicpus on each node for each instance manager pod when the V2 Data Engine is enabled. By default, the Storage Performance Development Kit (SPDK) target daemon within each instance manager pod uses 1 CPU core. Configuring a minimum CPU usage value is essential for maintaining engine and replica stability, especially during periods of high node workload. The default value is 1250.
 
 ## StorageClass
 

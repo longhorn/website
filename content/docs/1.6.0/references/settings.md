@@ -6,6 +6,7 @@ weight: 1
 - [Customizing Default Settings](#customizing-default-settings)
 - [General](#general)
   - [Node Drain Policy](#node-drain-policy)
+  - [Detach Manually Attached Volumes When Cordoned](#detach-manually-attached-volumes-when-cordoned)
   - [Automatically Clean up System Generated Snapshot](#automatically-clean-up-system-generated-snapshot)
   - [Automatically Clean up Outdated Snapshots of Recurring Backup Jobs](#automatically-clean-up-outdated-snapshots-of-recurring-backup-jobs)
   - [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly)
@@ -35,8 +36,10 @@ weight: 1
   - [Support Bundle Failed History Limit](#support-bundle-failed-history-limit)
   - [Fast Replica Rebuild Enabled](#fast-replica-rebuild-enabled)
   - [Timeout of HTTP Client to Replica File Sync Server](#timeout-of-http-client-to-replica-file-sync-server)
+  - [V1 Data Engine](#v1-data-engine)
 - [V2 Data Engine (Preview Feature)](#v2-data-engine-preview-feature)
   - [V2 Data Engine](#v2-data-engine)
+  - [Guaranteed Instance Manager CPU for V2 Data Engine](#guaranteed-instance-manager-cpu-for-v2-data-engine)
   - [Offline Replica Rebuilding](#offline-replica-rebuilding)
 - [Snapshot](#snapshot)
   - [Snapshot Data Integrity](#snapshot-data-integrity)
@@ -433,6 +436,12 @@ The setting enables fast replica rebuilding feature. It relies on the checksums 
 
 The value in seconds specifies the timeout of the HTTP client to the replica's file sync server used for replica rebuilding, volume cloning, snapshot cloning, etc.
 
+#### V1 Data Engine
+
+> Default: `true`
+
+Setting that allows you to enable the V1 Data Engine.
+
 ### V2 Data Engine (Preview Feature)
 #### V2 Data Engine
 
@@ -447,6 +456,16 @@ This allows users to activate the v2 data engine based on SPDK. Currently, it is
 > - When applying the setting, Longhorn will restart all instance-manager pods.
 >
 > - When the V2 Data Engine is enabled, each instance-manager pod utilizes 1 CPU core. This high CPU usage is attributed to the spdk_tgt process running within each instance-manager pod. The spdk_tgt process is responsible for handling input/output (IO) operations and requires intensive polling. As a result, it consumes 100% of a dedicated CPU core to efficiently manage and process the IO requests, ensuring optimal performance and responsiveness for storage operations.
+
+#### Guaranteed Instance Manager CPU for V2 Data Engine
+
+> Default: `1250`
+
+Number of millicpus on each node to be reserved for each instance manager pod when the V2 Data Engine is enabled. By default, the Storage Performance Development Kit (SPDK) target daemon within each instance manager pod uses 1 CPU core. Configuring a minimum CPU usage value is essential for maintaining engine and replica stability, especially during periods of high node workload.
+
+> **Warning:**
+>  - Specifying a value of 0 disables CPU requests for instance manager pods. You must specify an integer between 1000 and 8000. 
+>  - This is a global setting. Modifying the value triggers an automatic restart of the instance manager pods. Do not modify the value while volumes are still attached.
 
 #### Offline Replica Rebuilding
 
@@ -810,7 +829,7 @@ See [Trim Filesystem](../../volumes-and-nodes/trim-filesystem) for details.
 
 > Default: `12`
 
-This integer value indicates how many percentage of the total allocatable CPU on each node will be reserved for each instance manager Pod. For example, 10 means 10% of the total CPU on a node will be allocated to each instance manager pod on this node. This will help maintain engine and replica stability during high node workload.
+Percentage of the total allocatable CPU resources on each node to be reserved for each instance manager pod when the V1 Data Engine is enabled. For example, Longhorn reserves 10% of the total allocatable CPU resources if you specify a value of 10. This setting is essential for maintaining engine and replica stability, especially during periods of high node workload.
 
 In order to prevent an unexpected volume instance (engine/replica) crash as well as guarantee a relatively acceptable I/O performance, you can use the following formula to calculate a value for this setting:
 
