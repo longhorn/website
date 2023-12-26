@@ -29,13 +29,16 @@ Longhorn v1.6.0 introduces the default Priority Class `longhorn-critical`, which
 
 During upgrades, Longhorn applies the default Priority Class to components depending on specific settings.
 
-- When all volumes are detached and the Priority Class default setting is not customized, the default Priority Class is applied to all Longhorn components. The default Priority Class setting `priority-class` is updated.
-- When all volumes are detached and you have specified a value for the Priority Class default setting, the default Priority Class is applied only to user-deployed components. The default Priority Class setting `priority-class` is not updated.
-- When one or more volumes are attached, the default Priority Class is applied only to user-deployed components only if they haven't been set. The default Priority Class setting `priority-class` is not updated.
+- When all volumes are detached and you did not specify a value for the global Priority Class setting `priority-class`, the default Priority Class is applied to all Longhorn components. `priority-class` is updated.
+- When all volumes are detached and you specified a value for the global Priority Class setting `priority-class`, the default Priority Class is applied only to user-deployed components. `priority-class` is not updated.
+- When one or more volumes are attached and you did not specify a value for `PriorityClass` in the `chart/value.yaml` or `longhorn/deploy/longhorn.yaml`, the default Priority Class is applied only to user-deployed components. `priority-class` is not updated.
 
 If you want to apply the default Priority Class to system-managed components, you must detach all volumes and change the Priority Class default setting value after the upgrade is successfully completed.
 
-You can change these behaviors by modifying the parameters `defaultSetting.priorityClass` or `priorityClass` of user-deployed components in the [Longhorn Helm chart](https://github.com/longhorn/longhorn/blob/master/chart/) `values.yaml` file or the config map in [longhorn/deploy/longhorn.yaml](https://raw.githubusercontent.com/longhorn/longhorn/v1.6.0/deploy/longhorn.yaml) before starting the upgrade process.
+You can change these behaviors by customizing the following before starting the upgrade process:
+
+- For user deployed components: `priorityClass` parameters for each component in the `values.yaml` file of the [Longhorn Helm chart](https://github.com/longhorn/longhorn/blob/v1.6.0/chart/values.yaml)
+- For system managed components: `defaultSetting.priorityClass` in the `values.yaml` file of the [Longhorn Helm chart](https://github.com/longhorn/longhorn/blob/v1.6.0/chart/values.yaml)
 
 ### New Node Drain Policies Added
 

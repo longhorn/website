@@ -746,7 +746,7 @@ Multiple tolerations can be set here, and these tolerations are separated by sem
 
 #### Priority Class
 
-> Example: `high-priority`
+> Default: `longhorn-critical`
 
 By default, Longhorn workloads run with the same priority as other pods in the cluster, meaning in cases of node pressure, such as a node running out of memory, Longhorn workloads will be at the same priority as other Pods for eviction.
 
