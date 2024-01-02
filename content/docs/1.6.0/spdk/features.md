@@ -3,7 +3,7 @@ title: Features
 weight: 1
 ---
 
-- Support `amd64` and `arm64` platforms
+- Support for AMD64 and ARM64 platforms
 - Volume lifecycle (creation, attachment, detachment and deletion)
 - Degraded volume
 - Offline replica rebuilding
