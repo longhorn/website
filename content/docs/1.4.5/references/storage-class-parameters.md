@@ -100,7 +100,7 @@ URL of a backup to be restored from.
 > Default: `false`  
 
 Allows for a Longhorn volume to be live migrated from one node to another.  Useful for volumes used by Harvester.
-	  
+
 #### Encrypted *(field: `parameters.encrypted`)*
 > Default: `false`  
 > More details in [Encrypted Volumes](../../advanced-resources/security/volume-encryption)
@@ -146,7 +146,7 @@ A list of tags to select which nodes are candidates for replica placement.
 
 A list of recurring jobs that are to be run on a volume.  
 >  More details in [Recurring Snapshots and Backups](../../snapshots-and-backups/scheduling-backups-and-snapshots) 
-	
+
 #### Backing Image Name *(field: `parameters.backingImageName`)*
 > Default: `""`  
 > See [Backing Image](../../advanced-resources/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
@@ -201,8 +201,8 @@ A list of recurring jobs that are to be run on a volume.
 > Example: `"hard,sync"`  
 
   - Overrides for NFS mount of RWX volumes to the share-manager.  Use this field with caution.  
-  - Note:  Built-in options vary by release.  Check your release details before setting this.
-  
+  - Note:  Built-in options vary by release.  Check your release details before setting this.  
+ 
 > More details in [RWX Workloads](../../advanced-resources/rwx-workloads/#notice)
 
 ## Helm Installs
