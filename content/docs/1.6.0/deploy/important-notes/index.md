@@ -119,3 +119,11 @@ done
 ```
 
 Once you successfully upgrade to version v1.6.0, you will be able to view information about engine image versions on the UI.
+
+### V2 Volume Support for ARM64 Platform
+
+As of Longhorn v1.6.0, volumes using the V2 Data Engine support the ARM64 platform. For more information, see [Prerequisites](../../spdk/prerequisites/).
+
+### Upgrading Longhorn Systems with V2 Volumes
+
+Longhorn currently does not support live upgrading of V2 volumes. Ensure that all V2 volumes are detached before initiating the upgrade process.
