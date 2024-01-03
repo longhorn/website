@@ -77,6 +77,7 @@ Longhorn will try to expand the file system only if:
 - The filesystem used in the Longhorn volume is one of the following:
     - ext4
     - xfs
+- The expanded size must be less than the maximum file size allowed by the file system (for example, 16TiB for `ext4`).
 - The Longhorn volume is using the block device frontend.
 
 ## Corner cases

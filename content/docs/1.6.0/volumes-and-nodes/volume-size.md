@@ -12,6 +12,7 @@ In this section, you'll have a better understanding of concepts related to volum
 - The reason we call this field as "nominal size" is that Longhorn replicas are using [sparse files](https://wiki.archlinux.org/index.php/Sparse_file) to store data and this value is the apparent size of the sparse files (the maximum size to which they may expand). The actual size used by each replica is not equal to this nominal size.
 - Based on this nominal size, the replicas will be scheduled to those nodes that have enough allocatable space during the volume creation. (See [this doc](../node-space-usage) for more info about node allocation size.)
 - The value of nominal size determines the max available space when the volume is in use. In other words, the current active data size hold by a volume cannot be greater than its nominal size.
+- The maximum volume size is based on the disk's file system (for example, 16383 GiB for `ext4`).
 
 ## Volume `Actual Size`
 {{< figure src="/img/screenshots/volumes-and-nodes/volume-size-actual-size.png" >}}
