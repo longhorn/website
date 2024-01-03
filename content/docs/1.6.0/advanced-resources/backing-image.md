@@ -12,10 +12,11 @@ A QCOW2 or RAW image can be set as the backing/base image of a Longhorn volume, 
 ### Parameters during creation
 
 #### The data source of a backing image
-There are 3 kinds of data sources. Or in other words, there are 3 ways to prepare a backing image file data:
-1. Download a file from a URL as a backing image.
-2. Upload a local file as a backing image. This is almost exclusive for UI.
+You can prepare a backing image using four different kinds of data sources.
+1. Download a backing image file (using a URL).
+2. Upload a file from your local machine. This option is available to Longhorn UI users.
 3. Export an existing in-cluster volume as a backing image.
+4. Restore a backing image from the backupstore, For more information, see [Backing Image Backup](../backing-image-backup).
 
 #### The checksum of a backing image
 - The checksum of a backing image is **the SHA512 checksum** of the whole backing image **file** rather than that of the actual content.
