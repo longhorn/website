@@ -100,6 +100,9 @@ When upgrading through Helm, a component compatibility check is automatically pe
 
 If you installed Longhorn using the manifests, engine upgrades are enforced by the Longhorn Manager. Attempts to upgrade Longhorn Manager may cause unsuccessful pod launches and generate corresponding error logs, although it poses no harm. If you encounter such errors, you must revert to the previous Longhorn version and then upgrade the engines that are using the incompatible engine images before the next upgrade.
 
+> **Warning:**
+> Whenever engine upgrade enforcement causes upgrade failure, Longhorn allows you to revert to the previous version because Longhorn Manager will block the entire upgrade. However, Longhorn prohibits downgrading when an upgrade is successful. For more information, see [Upgrade Path Enforcement](../../deploy/upgrade/#upgrade-path-enforcement).
+
 You can determine the versions of engine images that are currently in use with the following script:
 ```bash
 #!/bin/bash
@@ -116,3 +119,11 @@ done
 ```
 
 Once you successfully upgrade to version v1.6.0, you will be able to view information about engine image versions on the UI.
+
+### V2 Volume Support for ARM64 Platform
+
+As of Longhorn v1.6.0, volumes using the V2 Data Engine support the ARM64 platform. For more information, see [Prerequisites](../../spdk/prerequisites/).
+
+### Upgrading Longhorn Systems with V2 Volumes
+
+Longhorn currently does not support live upgrading of V2 volumes. Ensure that all V2 volumes are detached before initiating the upgrade process.

@@ -7,10 +7,10 @@ weight: 2
 
 Longhorn nodes must meet the following requirements:
 
-- x86-64 CPU with SSE4.2 instruction support
+- AMD64 or ARM64 CPU
   > **NOTICE**
   >
-  > Currently, V2 Data Engine only supports `x86_64` platform.
+  >  ARM64 CPUs require SSE4.2 instruction support.
 
 - Linux kernel
 

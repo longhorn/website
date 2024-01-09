@@ -45,10 +45,13 @@ For the minimum recommended hardware, refer to the [best practices guide.](../..
 
 ### OS/Distro Specific Configuration
 
-- **Google Kubernetes Engine (GKE)** requires some additional setup for Longhorn to function properly. If you're a GKE user, refer to [this section](../../advanced-resources/os-distro-specific/csi-on-gke) for details.
-- **K3s clusters** require some extra setup. Refer to [this section](../../advanced-resources/os-distro-specific/csi-on-k3s)
-- **RKE clusters with CoreOS** need [this configuration.](../../advanced-resources/os-distro-specific/csi-on-rke-and-coreos)
-- **OCP/OKD clusters** require some extra setup. Refer to [this section](../../advanced-resources/os-distro-specific/okd-support)
+You must perform additional setups before using Longhorn with certain operating systems and distributions.
+
+- Google Kubernetes Engine (GKE): See [Longhorn CSI on GKE](../../advanced-resources/os-distro-specific/csi-on-gke).
+- K3s clusters: See [Longhorn CSI on K3s](../../advanced-resources/os-distro-specific/csi-on-k3s).
+- RKE clusters with CoreOS: See [Longhorn CSI on RKE and CoreOS](../../advanced-resources/os-distro-specific/csi-on-rke-and-coreos).
+- OCP/OKD clusters: See [OKD Support](../../advanced-resources/os-distro-specific/okd-support).
+- Talos Linux clusters: See [Talos Linux Support](../../advanced-resources/os-distro-specific/talos-linux-support).
 
 ### Using the Environment Check Script
 
@@ -138,26 +141,25 @@ For GKE, we recommend using Ubuntu as the guest OS image since it contains`open-
 
 You may need to edit the cluster security group to allow SSH access.
 
-For SUSE and openSUSE, use this command:
+- SUSE and openSUSE: Run the following command:
+  ```
+  zypper install open-iscsi
+  ```
 
-```
-zypper install open-iscsi
-```
+- Debian and Ubuntu: Run the following command:
+  ```
+  apt-get install open-iscsi
+  ```
 
-For Debian and Ubuntu, use this command:
+- RHEL, CentOS, and EKS *(EKS Kubernetes Worker AMI with AmazonLinux2 image)*: Run the following commands:
+  ```
+  yum --setopt=tsflags=noscripts install iscsi-initiator-utils
+  echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi
+  systemctl enable iscsid
+  systemctl start iscsid
+  ```
 
-```
-apt-get install open-iscsi
-```
-
-For RHEL, CentOS, and EKS with EKS Kubernetes Worker AMI with AmazonLinux2 image, use below commands:
-
-```
-yum --setopt=tsflags=noscripts install iscsi-initiator-utils
-echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi
-systemctl enable iscsid
-systemctl start iscsid
-```
+- Talos Linux: See [Talos Linux Support](../../advanced-resources/os-distro-specific/talos-linux-support).
 
 Please ensure iscsi_tcp module has been loaded before iscsid service starts. Generally, it should be automatically loaded along with the package installation.
 
@@ -225,6 +227,8 @@ The command used to install a NFSv4 client differs depending on the Linux distri
   ```
   zypper install nfs-client
   ```
+
+- For Talos Linux, [the NFS client is part of the `kubelet` image maintained by the Talos team](https://www.talos.dev/v1.6/kubernetes-guides/configuration/storage/#nfs).
 
 We also provide an `nfs` installer to make it easier for users to install `nfs-client` automatically:
 ```

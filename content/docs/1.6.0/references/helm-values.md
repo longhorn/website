@@ -28,6 +28,7 @@ The `values.yaml` file contains items used to tweak a deployment of this chart.
 ### Image Settings
 
 | Key | Type | Default | Description |
+
 |-----|------|---------|-------------|
 | image.csi.attacher.repository | string | `"longhornio/csi-attacher"` | Repository for CSI attacher images. When unspecified, Longhorn uses the default value. |
 | image.csi.attacher.tag | string | `"v4.4.2"` | Tag for CSI attacher images. When unspecified, Longhorn uses the default value. |
@@ -176,9 +177,9 @@ Please also refer to this document [ocp-readme](https://github.com/longhorn/long
 
 | Key | Default | Description |
 |-----|---------|-------------|
-| annotations | `{}` | Annotation for the Longhorn Manager DaemonSet pods. This setting is optional. |
-| enableGoCoverDir | `false` | Setting that allows Longhorn to generate code coverage profiles. |
-| enablePSP | `false` | Setting that allows you to enable pod security policies (PSPs) that allow privileged Longhorn pods to start. This setting applies only to clusters running Kubernetes 1.25 and earlier, and with the built-in Pod Security admission controller enabled. |
+| annotations | `{}` | Annotations to add to the Longhorn Manager DaemonSet Pods. Optional. |
+| enableGoCoverDir | `false` | Enable this to allow Longhorn to generate code coverage profiles |
+| enablePSP | `false` | For Kubernetes < v1.25, if your cluster enables Pod Security Policy admission controller, set this to `true` to ship longhorn-psp which allow privileged Longhorn pods to start |
 | metrics.serviceMonitor.enabled | `false` | Setting that allows the creation of a Prometheus ServiceMonitor resource for Longhorn Manager components. |
 | preUpgradeChecker.jobEnabled | `true` | Setting that allows Longhorn to perform pre-upgrade checks. Disable this setting when installing Longhorn using Argo CD or other GitOps solutions. |
 | preUpgradeChecker.upgradeVersionCheck | `true` | Setting that allows Longhorn to perform upgrade version checks. Disabling this setting also disables `preUpgradeChecker.jobEnabled`. |
