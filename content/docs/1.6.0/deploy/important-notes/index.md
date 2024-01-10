@@ -127,3 +127,7 @@ As of Longhorn v1.6.0, volumes using the V2 Data Engine support the ARM64 platfo
 ### Upgrading Longhorn Systems with V2 Volumes
 
 Longhorn currently does not support live upgrading of V2 volumes. Ensure that all V2 volumes are detached before initiating the upgrade process.
+
+### Increase Default HugePage Size for V2 Data Engine to 2 GiB
+
+To increase the quantity of v2 volumes and enhance user experience, the default HugePage Size for the V2 Data Engine has been raised to 2 GiB. Prior to the upgrade, ensure the configuration of the HugePage size to 2 GiB on each node.
