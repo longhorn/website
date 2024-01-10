@@ -6,7 +6,22 @@ weight: 4
 This page lists important notes for Longhorn v{{< current-version >}}.
 Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}) for the full release note.
 
-## Notes
+- [General](#general)
+  - [Supported Kubernetes Versions](#supported-kubernetes-versions)
+  - [Offline Upgrade Required To Fully Prevent Unexpected Replica Expansion](#offline-upgrade-required-to-fully-prevent-unexpected-replica-expansion)
+  - [Default Priority Class](#default-priority-class)
+  - [New Node Drain Policies Added](#new-node-drain-policies-added)
+  - [Custom Resource Fields Deprecated](#custom-resource-fields-deprecated)
+  - [Pod Security Policies Disabled \& Pod Security Admission Introduction](#pod-security-policies-disabled--pod-security-admission-introduction)
+  - [Updating CSI Snapshot CRD `v1beta1` to `v1`, `v1beta1` Removed](#updating-csi-snapshot-crd-v1beta1-to-v1-v1beta1-removed)
+  - [Engine Upgrade Enforcement](#engine-upgrade-enforcement)
+- [V2 Data Engine](#v2-data-engine)
+  - [Support for ARM64 Platform](#support-for-arm64-platform)
+  - [Upgrading Longhorn Systems](#upgrading-longhorn-systems)
+  - [Increase Default HugePage Size to 2 GiB](#increase-default-hugepage-size-to-2-gib)
+
+
+## General
 
 ### Supported Kubernetes Versions
 
@@ -120,14 +135,16 @@ done
 
 Once you successfully upgrade to version v1.6.0, you will be able to view information about engine image versions on the UI.
 
-### V2 Volume Support for ARM64 Platform
+## V2 Data Engine
+
+### Support for ARM64 Platform
 
 As of Longhorn v1.6.0, volumes using the V2 Data Engine support the ARM64 platform. For more information, see [Prerequisites](../../spdk/prerequisites/).
 
-### Upgrading Longhorn Systems with V2 Volumes
+### Upgrading Longhorn Systems
 
 Longhorn currently does not support live upgrading of V2 volumes. Ensure that all V2 volumes are detached before initiating the upgrade process.
 
-### Increase Default HugePage Size for V2 Data Engine to 2 GiB
+### Increase Default HugePage Size to 2 GiB
 
 To increase the quantity of v2 volumes and enhance user experience, the default HugePage Size for the V2 Data Engine has been raised to 2 GiB. Prior to the upgrade, ensure the configuration of the HugePage size to 2 GiB on each node.
