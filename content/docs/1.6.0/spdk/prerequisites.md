@@ -23,7 +23,7 @@ Longhorn nodes must meet the following requirements:
   - nvme-tcp
 
 - HugePage support
-  - 1 GiB of 2 MiB-sized pages
+  - 2 GiB of 2 MiB-sized pages
 
 ## Notice
 
@@ -33,7 +33,7 @@ When the V2 Data Engine is enabled, each instance-manager pod utilizes **1 CPU c
 
 ### Memory
 
-SPDK utilizes huge pages to enhance performance and minimize memory overhead. To enable the usage of huge pages, it is necessary to configure 2MiB-sized huge pages on each Longhorn node. Specifically, **512 pages (equivalent to a total of 1 GiB)** need to be available on each Longhorn node.
+SPDK utilizes huge pages to enhance performance and minimize memory overhead. To enable the usage of huge pages, it is necessary to configure 2MiB-sized huge pages on each Longhorn node. Specifically, **1024 pages (equivalent to a total of 2 GiB)** need to be available on each Longhorn node.
 
 
 ### Disk
