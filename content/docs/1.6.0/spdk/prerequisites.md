@@ -33,7 +33,7 @@ When the V2 Data Engine is enabled, each instance-manager pod utilizes **1 CPU c
 
 ### Memory
 
-SPDK utilizes huge pages to enhance performance and minimize memory overhead. To enable the usage of huge pages, it is necessary to configure 2MiB-sized huge pages on each Longhorn node. Specifically, **1024 pages (equivalent to a total of 2 GiB)** need to be available on each Longhorn node.
+SPDK leverages huge pages for enhancing performance and minimizing memory overhead. You must configure 2 MiB-sized huge pages on each Longhorn node to enable usage of huge pages. Specifically, 1024 pages (equivalent to a total of 2 GiB) must be available on each Longhorn node.
 
 
 ### Disk
