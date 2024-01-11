@@ -66,7 +66,9 @@ Or, you can install them manually by following these steps.
   ```
 
 - Configure huge pages
-  SPDK utilizes huge pages to enhance performance and minimize memory overhead. To enable the usage of huge pages, it is necessary to configure 2MiB-sized huge pages on each Longhorn node. Specifically, 1024 pages (equivalent to a total of 2 GiB) need to be available on each Longhorn node. To allocate the huge pages, run the following commands on each node.
+SPDK leverages huge pages for enhancing performance and minimizing memory overhead. You must configure 2 MiB-sized huge pages on each Longhorn node to enable usage of huge pages. Specifically, 1024 pages (equivalent to a total of 2 GiB) must be available on each Longhorn node.
+
+To allocate huge pages, run the following commands on each node.
   ```
   echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
   ```
