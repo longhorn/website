@@ -462,7 +462,7 @@ This allows users to activate the v2 data engine based on SPDK. Currently, it is
 
 > Default: `2048`
 
-This allows users to configure HugePage size in MiB for v2 data engine.
+Maximum huge page size (in MiB) for the V2 Data Engine.
 
 #### Guaranteed Instance Manager CPU for V2 Data Engine
 
