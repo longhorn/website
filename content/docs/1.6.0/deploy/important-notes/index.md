@@ -152,4 +152,4 @@ As of Longhorn v1.6.0, volumes using the V2 Data Engine support the ARM64 platfo
 
 ### Replacing `backendStoreDriver` with `dataEngine`
 
- The attribute `backendStoreDriver` within the parameters of StorageClass and Longhorn resources, including `volume`, `engine` and `replica`, has been replaced with `dataEngine`. Please remove existing StorageClass for v2 volume and recreate them utilizing the updated attribute.
+The attribute `backendStoreDriver`, which is defined in the parameters of StorageClasses and other Longhorn resources (for example, volumes, engines, and replicas), has been replaced with `dataEngine`. You must remove the existing StorageClasses for V2 volumes and create new ones that use `dataEngine`.
