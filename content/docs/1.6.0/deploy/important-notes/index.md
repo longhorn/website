@@ -144,7 +144,7 @@ Longhorn currently does not support live upgrading of V2 volumes. Ensure that al
 
 ### Changing Default Huge Page Size to 2 GiB
 
-To increase the quantity of v2 volumes and enhance user experience, the default huge page Size for the V2 Data Engine has been raised to 2 GiB. Prior to the upgrade, ensure the configuration of the huge page size to 2 GiB on each node.
+The default huge page size for the V2 Data Engine has been raised to 2 GiB, allowing the creation of more V2 volumes and enhancing the overall user experience. Before upgrading to v1.6.0, ensure that the configured huge page size on each node is 2 GiB.
 
 ### Support for ARM64 Platform
 
