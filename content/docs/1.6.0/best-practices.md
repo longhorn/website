@@ -99,6 +99,46 @@ Any extra disks must be written in the `/etc/fstab` file to allow automatic moun
 
 Don't use a symbolic link for the extra disks. Use `mount --bind` instead of `ln -s` and make sure it's in the `fstab` file. For details, see [the section about multiple disk support.](../volumes-and-nodes/multidisk/#use-an-alternative-path-for-a-disk-on-the-node)
 
+### Disk Performance Optimization  
+
+Before configuring workloads, ensure that you have set up the following basic requirements for optimal disk performance.  
+
+- SATA/NVMe SSDs or disk drives with similar performance  
+- 10 Gbps network bandwidth between nodes  
+- Dedicated Priority Classes for system-managed and user-deployed Longhorn components  
+
+The following sections outline other recommendations for production environments.  
+
+#### IO Performance  
+
+- **Storage network**: Use a [dedicated storage network](https://longhorn.io/docs/1.6.0/advanced-resources/deploy/storage-network/#setting-storage-network) to improve IO performance and stability.  
+
+- **Longhorn disk**: Use a [dedicated disk](https://longhorn.io/docs/1.6.0/volumes-and-nodes/multidisk/#add-a-disk) for Longhorn storage instead of using the root disk.  
+
+- **Replica count**: Set the [default replica count](https://longhorn.io/docs/1.6.0/references/settings/#default-replica-count) to "2" to achieve data availability with better disk space usage or less impact to system performance. This practice is especially beneficial to data-intensive applications.  
+
+- **Storage tag**: Use [storage tags](https://longhorn.io/docs/1.6.0/volumes-and-nodes/storage-tags/) to define storage tiering for data-intensive applications. For example, only high-performance disks can be used for storing performance-sensitive data.  
+
+- **Data locality**: Use `best-effort` as the default [data locality](https://longhorn.io/docs/1.6.0/high-availability/data-locality/) of Longhorn StorageClasses.  
+
+  For applications that support data replication (for example, a distributed database), you can use the `strict-local` option to ensure that only one replica is created for each volume. This practice prevents the extra disk space usage and IO performance overhead associated with volume replication.  
+
+  For data-intensive applications, you can use pod scheduling functions such as node selector or taint toleration. These functions allow you to schedule the workload to a specific storage-tagged node together with one replica.  
+
+#### Space Efficiency  
+
+- **Recurring snapshots**: Periodically clean up system-generated snapshots and retain only the number of snapshots that makes sense for your implementation.  
+
+  For applications with replication capability, periodically [delete all types of snapshots](https://longhorn.io/docs/1.6.0/concepts/#243-deleting-snapshots).  
+
+- **Recurring filesystem trim**: Periodically [trim the filesystem](https://longhorn.io/docs/1.6.0/volumes-and-nodes/trim-filesystem/) inside volumes to reclaim disk space.  
+
+#### Disaster Recovery
+
+- **Recurring backups**: Create [recurring backup jobs](https://longhorn.io/docs/1.6.0/volumes-and-nodes/trim-filesystem/) for mission-critical application volumes.  
+
+- **System backup**: Create periodic [system backups](https://longhorn.io/docs/1.6.0/advanced-resources/system-backup-restore/backup-longhorn-system/#create-longhorn-system-backup).  
+
 ## Configuring Default Disks Before and After Installation
 
 To use a directory other than the default `/var/lib/longhorn` for storage, the `Default Data Path` setting can be changed before installing the system. For details on changing pre-installation settings, refer to [this section.](../advanced-resources/deploy/customizing-default-settings)
