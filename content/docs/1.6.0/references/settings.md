@@ -39,7 +39,7 @@ weight: 1
   - [V1 Data Engine](#v1-data-engine)
 - [V2 Data Engine (Preview Feature)](#v2-data-engine-preview-feature)
   - [V2 Data Engine](#v2-data-engine)
-  - [V2 Data Engine HugePage Limit](#v2-data-engine-hugepage-limit)
+  - [V2 Data Engine Huge Page Limit](#v2-data-engine-huge-page-limit)
   - [Guaranteed Instance Manager CPU for V2 Data Engine](#guaranteed-instance-manager-cpu-for-v2-data-engine)
   - [Offline Replica Rebuilding](#offline-replica-rebuilding)
 - [Snapshot](#snapshot)
@@ -458,7 +458,7 @@ This allows users to activate the v2 data engine based on SPDK. Currently, it is
 >
 > - When the V2 Data Engine is enabled, each instance-manager pod utilizes 1 CPU core. This high CPU usage is attributed to the spdk_tgt process running within each instance-manager pod. The spdk_tgt process is responsible for handling input/output (IO) operations and requires intensive polling. As a result, it consumes 100% of a dedicated CPU core to efficiently manage and process the IO requests, ensuring optimal performance and responsiveness for storage operations.
 
-#### V2 Data Engine HugePage Limit
+#### V2 Data Engine Huge Page Limit
 
 > Default: `2048`
 

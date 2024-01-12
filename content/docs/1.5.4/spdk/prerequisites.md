@@ -22,7 +22,7 @@ Longhorn nodes must meet the following requirements:
   - uio_pci_generic
   - nvme-tcp
 
-- HugePage support
+- Huge page support
   - 1 GiB of 2 MiB-sized pages
 
 ## Notice
