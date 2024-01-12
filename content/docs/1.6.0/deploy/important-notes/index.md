@@ -16,9 +16,10 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Updating CSI Snapshot CRD `v1beta1` to `v1`, `v1beta1` Removed](#updating-csi-snapshot-crd-v1beta1-to-v1-v1beta1-removed)
   - [Engine Upgrade Enforcement](#engine-upgrade-enforcement)
 - [V2 Data Engine](#v2-data-engine)
+  - [Longhorn System Upgrade](#longhorn-system-upgrade)
+  - [Changing Default Huge Page Size to 2 GiB](#changing-default-huge-page-size-to-2-gib)
   - [Support for ARM64 Platform](#support-for-arm64-platform)
-  - [Upgrading Longhorn Systems](#upgrading-longhorn-systems)
-  - [Increase Default HugePage Size to 2 GiB](#increase-default-hugepage-size-to-2-gib)
+  - [Replacing `backendStoreDriver` with `dataEngine`](#replacing-backendstoredriver-with-dataengine)
 
 
 ## General
@@ -137,14 +138,18 @@ Once you successfully upgrade to version v1.6.0, you will be able to view inform
 
 ## V2 Data Engine
 
+### Longhorn System Upgrade
+
+Longhorn currently does not support live upgrading of V2 volumes. Ensure that all V2 volumes are detached before initiating the upgrade process.
+
+### Changing Default Huge Page Size to 2 GiB
+
+To increase the quantity of v2 volumes and enhance user experience, the default huge page Size for the V2 Data Engine has been raised to 2 GiB. Prior to the upgrade, ensure the configuration of the huge page size to 2 GiB on each node.
+
 ### Support for ARM64 Platform
 
 As of Longhorn v1.6.0, volumes using the V2 Data Engine support the ARM64 platform. For more information, see [Prerequisites](../../spdk/prerequisites/).
 
-### Upgrading Longhorn Systems
+### Replacing `backendStoreDriver` with `dataEngine`
 
-Longhorn currently does not support live upgrading of V2 volumes. Ensure that all V2 volumes are detached before initiating the upgrade process.
-
-### Increase Default HugePage Size to 2 GiB
-
-The default huge page size for the V2 Data Engine has been raised to 2 GiB, allowing the creation of more V2 volumes and enhancing the overall user experience. Before upgrading to v1.6.0, ensure that the configured huge page size on each node is 2 GiB.
+ The attribute `backendStoreDriver` within the parameters of StorageClass and Longhorn resources, including `volume`, `engine` and `replica`, has been replaced with `dataEngine`. Please remove existing StorageClass for v2 volume and recreate them utilizing the updated attribute.
