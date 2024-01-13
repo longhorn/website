@@ -18,7 +18,7 @@ There are normally two steps in the upgrade process: first upgrade Longhorn mana
 After Longhorn Manager is upgraded, Longhorn Engine also needs to be upgraded [using the Longhorn UI.](./upgrade-engine)
 
 ### 3. Automatically Upgrade Longhorn Engine
-Since Longhorn v1.1.1, we provide an option to help you [automatically upgrade engines](./auto-uprade-engine)
+Since Longhorn v1.1.1, we provide an option to help you [automatically upgrade engines](./auto-upgrade-engine)
 
 > **Note:**
 > There is a bug in the instance manager image `v1_20201216` shipped in Longhorn v1.1.0 and v1.1.1

@@ -10,7 +10,7 @@ Longhorn nodes must meet the following requirements:
 - AMD64 or ARM64 CPU
   > **NOTICE**
   >
-  >  ARM64 CPUs require SSE4.2 instruction support.
+  >  AMD64 CPUs require SSE4.2 instruction support.
 
 - Linux kernel
 

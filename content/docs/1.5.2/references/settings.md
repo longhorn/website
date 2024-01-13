@@ -235,7 +235,7 @@ This information will help us gain insights how Longhorn is being used, which wi
   > This value may not be accurate for virtual machines.
 - Host kernel release.
 - Host operating system (OS) distribution.
-- Kubernetest node provider.
+- Kubernetes node provider.
 
 **Cluster Information collected from one of the cluster nodes includes:**
 - Longhorn namespace UID.

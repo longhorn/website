@@ -57,7 +57,7 @@ Longhorn cannot fix this automatically. You will need to resolve this manually w
 
 ### For some older Linux distribution versions and Longhorn volumes with ext4 filesystems
 
-In the CSI flow, the Longhorn CSI plugin creates a file system on a new volume using the `mke2fs` utility (command:
+In the CSI flow, the Longhorn CSI plugin creates a file system on a new volume using the `make2fs` utility (command:
 `mkfs.ext4`) built into its container. The `e2fsck` utility (command: `fsck.ext4`) available in some older Linux
 distributions may not support all features this file system is created with, resulting in the following error:
 

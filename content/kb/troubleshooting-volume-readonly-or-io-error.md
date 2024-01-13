@@ -32,7 +32,7 @@ When running the `dmesg` in the related pod or the node host, the following mess
 
 When checking the event using `kubectl -n longhorn-system get event | grep <volume name>`, an event like the following is shown:
 ```
-2m26s       Warning   DetachedUnexpectly       volume/pvc-342edde0-d3f4-47c6-abf6-bf8eeda3c32c               Engine of volume pvc-342edde0-d3f4-47c6-abf6-bf8eeda3c32c dead unexpectedly, reattach the volume
+2m26s       Warning   DetachedUnexpectedly       volume/pvc-342edde0-d3f4-47c6-abf6-bf8eeda3c32c               Engine of volume pvc-342edde0-d3f4-47c6-abf6-bf8eeda3c32c dead unexpectedly, reattach the volume
 ```
 
 When checking for logs of the Longhorn manager pods on the node the workload is running on by running `kubectl -n longhorn-system logs <longhorn manager pod name> | grep <volume name>`, the following message is shown:
@@ -43,7 +43,7 @@ time="2021-01-05T11:20:46Z" level=warning msg="Instance pvc-342edde0-d3f4-47c6-a
 ......
 time="2021-01-05T11:20:46Z" level=warning msg="Engine of volume dead unexpectedly, reattach the volume" accessMode=rwo controller=longhorn-volume frontend=blockdev node=shuo-cluster-0-worker-3 owner=shuo-cluster-0-worker-3 state=attached volume=pvc-342edde0-d3f4-47c6-abf6-bf8eeda3c32c
 ......
-time="2021-01-05T11:20:46Z" level=info msg="Event(v1.ObjectReference{Kind:\"Volume\", Namespace:\"longhorn-system\", Name:\"pvc-342edde0-d3f4-47c6-abf6-bf8eeda3c32c\", UID:\"69bb0f94-da48-4d15-b861-add435f25d00\", APIVersion:\"longhorn.io/v1beta1\", ResourceVersion:\"7466467\", FieldPath:\"\"}): type: 'Warning' reason: 'DetachedUnexpectly' Engine of volume pvc-342edde0-d3f4-47c6-abf6-bf8eeda3c32c dead unexpectedly, reattach the volume"
+time="2021-01-05T11:20:46Z" level=info msg="Event(v1.ObjectReference{Kind:\"Volume\", Namespace:\"longhorn-system\", Name:\"pvc-342edde0-d3f4-47c6-abf6-bf8eeda3c32c\", UID:\"69bb0f94-da48-4d15-b861-add435f25d00\", APIVersion:\"longhorn.io/v1beta1\", ResourceVersion:\"7466467\", FieldPath:\"\"}): type: 'Warning' reason: 'DetachedUnexpectedly' Engine of volume pvc-342edde0-d3f4-47c6-abf6-bf8eeda3c32c dead unexpectedly, reattach the volume"
 ```
 
 ### Reason for failure
