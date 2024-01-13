@@ -219,7 +219,7 @@ Wait for a while, you will see the disk is displayed in the `Status.DiskStatus`.
 
 ## Application Deployment
 
-After the installation and configuration, we can dyamically provision a Persistent Volume using V2 Data Engine as the following steps.
+After the installation and configuration, we can dynamically provision a Persistent Volume using V2 Data Engine as the following steps.
 
 ### Create a StorageClass
 
@@ -235,4 +235,4 @@ Create a Pod that uses Longhorn volumes using V2 Data Engine by running this com
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/v2/pod_with_pvc.yaml
 ```
 
-Or, if you are creating a volume on Longhorn UI, please specify the `Backend Data Engine` as `v2`.
+Or, if you are creating a volume on Longhorn UI, please specify the `Data Engine` as `v2`.

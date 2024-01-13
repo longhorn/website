@@ -217,7 +217,7 @@ Wait for a while, you will see the disk is displayed in the `Status.DiskStatus`.
 
 ## Application Deployment
 
-After the installation and configuration, we can dyamically provision a Persistent Volume using V2 Data Engine as the following steps.
+After the installation and configuration, we can dynamically provision a Persistent Volume using V2 Data Engine as the following steps.
 
 ### Create a StorageClass
 

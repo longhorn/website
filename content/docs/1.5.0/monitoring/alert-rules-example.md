@@ -78,7 +78,7 @@ spec:
       labels:
         issue: There are {{$value}} Longhorn nodes are offline
         severity: critical
-    - alert: LonghornIntanceManagerCPUUsageWarning
+    - alert: LonghornInstanceManagerCPUUsageWarning
       annotations:
         description: Longhorn instance manager {{$labels.instance_manager}} on {{$labels.node}} has CPU Usage / CPU request is {{$value}}% for
           more than 5 minutes.
