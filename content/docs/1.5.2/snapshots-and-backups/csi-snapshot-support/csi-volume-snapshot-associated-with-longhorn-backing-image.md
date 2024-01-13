@@ -91,7 +91,7 @@ spec:
 You can use the CSI mechanism to restore Longhorn BackingImage that has not been created via the CSI mechanism.
 To restore Longhorn BackingImage that has not been created via the CSI mechanism, you have to first manually create a `VolumeSnapshot` and `VolumeSnapshotContent` object for the BackingImage.
 
-Create a `VolumeSnapshotContent` object with the `snapshotHandle` field set to `bi://backing?backingImageDataSourceType=${TYPE}&backingImage=${BACKINGIMAGE_NAME}&backingImageChecksum=${backingImageChecksum}&${OTHER_PARAMETES}` which point to an existing BackingImage.
+Create a `VolumeSnapshotContent` object with the `snapshotHandle` field set to `bi://backing?backingImageDataSourceType=${TYPE}&backingImage=${BACKINGIMAGE_NAME}&backingImageChecksum=${backingImageChecksum}&${OTHER_PARAMETERS}` which point to an existing BackingImage.
 
 - Users need to provide following query parameters in `snapshotHandle` for validation purpose:
     - `backingImageDataSourceType`: `sourceType` of existing BackingImage, e.g. `export-from-volume`, `download`

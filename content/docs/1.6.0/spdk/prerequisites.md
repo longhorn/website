@@ -10,7 +10,7 @@ Longhorn nodes must meet the following requirements:
 - AMD64 or ARM64 CPU
   > **NOTICE**
   >
-  >  ARM64 CPUs require SSE4.2 instruction support.
+  >  AMD64 CPUs require SSE4.2 instruction support.
 
 - Linux kernel
 
@@ -22,8 +22,8 @@ Longhorn nodes must meet the following requirements:
   - uio_pci_generic
   - nvme-tcp
 
-- HugePage support
-  - 1 GiB of 2 MiB-sized pages
+- Huge page support
+  - 2 GiB of 2 MiB-sized pages
 
 ## Notice
 
@@ -33,7 +33,7 @@ When the V2 Data Engine is enabled, each instance-manager pod utilizes **1 CPU c
 
 ### Memory
 
-SPDK utilizes huge pages to enhance performance and minimize memory overhead. To enable the usage of huge pages, it is necessary to configure 2MiB-sized huge pages on each Longhorn node. Specifically, **512 pages (equivalent to a total of 1 GiB)** need to be available on each Longhorn node.
+SPDK leverages huge pages for enhancing performance and minimizing memory overhead. You must configure 2 MiB-sized huge pages on each Longhorn node to enable usage of huge pages. Specifically, 1024 pages (equivalent to a total of 2 GiB) must be available on each Longhorn node.
 
 
 ### Disk

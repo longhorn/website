@@ -19,7 +19,7 @@ Longhorn does not support upgrading with v1 or v2 volumes attached when the V2 D
 ### Offline Upgrade Required To Fully Prevent Unexpected Replica Expansion
 
 Longhorn v1.5.2 introduces a new mechanism to prevent [unexpected replica
-expansion](../../../../kb/troubleshooting-unexpected-expansion-leads-to-degredation-or-attach-failure). This
+expansion](../../../../kb/troubleshooting-unexpected-expansion-leads-to-degradation-or-attach-failure). This
 mechanism is entirely transparent. However, a volume is only protected if it is running a new version of longhorn-engine
 inside a new version of longhorn-instance-manager and managed by a new version of longhorn-manager. The [live upgrade
 process](../../deploy/upgrade/upgrade-engine#live-upgrade) results in a volume running a new version of longhorn-engine

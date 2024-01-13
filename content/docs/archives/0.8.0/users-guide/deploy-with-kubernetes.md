@@ -93,7 +93,7 @@ The following CustomResourceDefinitions will be installed
 - The longhorn-manager DaemonSet
 - The longhorn-backend service exposing the longhorn-manager DaemonSet internally to Kubernetes
 - The longhorn-ui Deployment
-- The longhorn-fronend service exposing the longhorn-ui internally to Kubernetes
+- The longhorn-frontend service exposing the longhorn-ui internally to Kubernetes
 - The longhorn-driver-deployer that deploys the CSI driver 
 - The longhorn StorageClass
 

@@ -54,7 +54,7 @@ kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< curren
 And also can check the log with the following command to see the installation result.
 ```
 Cloning into '/tmp/spdk'...
-INFO: Requested 512 hugepages but 512 already allocated on node0
+INFO: Requested 1024 hugepages but 1024 already allocated on node0
 SPDK environment is configured successfully
 ```
 
@@ -66,14 +66,16 @@ Or, you can install them manually by following these steps.
   ```
 
 - Configure huge pages
-  SPDK utilizes huge pages to enhance performance and minimize memory overhead. To enable the usage of huge pages, it is necessary to configure 2MiB-sized huge pages on each Longhorn node. Specifically, 512 pages (equivalent to a total of 1 GiB) need to be available on each Longhorn node. To allocate the huge pages, run the following commands on each node.
+SPDK leverages huge pages for enhancing performance and minimizing memory overhead. You must configure 2 MiB-sized huge pages on each Longhorn node to enable usage of huge pages. Specifically, 1024 pages (equivalent to a total of 2 GiB) must be available on each Longhorn node.
+
+To allocate huge pages, run the following commands on each node.
   ```
-  echo 512 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+  echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
   ```
 
   To make the change permanent, add the following line to the file /etc/sysctl.conf.
   ```
-  echo "vm.nr_hugepages=512" >> /etc/sysctl.conf
+  echo "vm.nr_hugepages=1024" >> /etc/sysctl.conf
   ```
 
 ### Load `nvme-tcp` Kernel Module
@@ -217,7 +219,7 @@ Wait for a while, you will see the disk is displayed in the `Status.DiskStatus`.
 
 ## Application Deployment
 
-After the installation and configuration, we can dyamically provision a Persistent Volume using V2 Data Engine as the following steps.
+After the installation and configuration, we can dynamically provision a Persistent Volume using V2 Data Engine as the following steps.
 
 ### Create a StorageClass
 
@@ -233,4 +235,4 @@ Create a Pod that uses Longhorn volumes using V2 Data Engine by running this com
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/v2/pod_with_pvc.yaml
 ```
 
-Or, if you are creating a volume on Longhorn UI, please specify the `Backend Data Engine` as `v2`.
+Or, if you are creating a volume on Longhorn UI, please specify the `Data Engine` as `v2`.

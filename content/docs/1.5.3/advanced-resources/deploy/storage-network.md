@@ -7,7 +7,7 @@ By Default, Longhorn uses the default Kubernetes cluster CNI network that is lim
 
 The Storage Network setting takes Multus NetworkAttachmentDefinition in `<NAMESPACE>/<NAME>` format.
 
-You can refer to [Comprehensive Document](https://github.com/k8snetworkplumbingwg/multus-cni#comprehensive-documentation) for how to install and set up Multus NetworkAttachmentDefintion.
+You can refer to [Comprehensive Document](https://github.com/k8snetworkplumbingwg/multus-cni#comprehensive-documentation) for how to install and set up Multus NetworkAttachmentDefinition.
 
 Applying the setting will add `k8s.v1.cni.cncf.io/networks` annotation and recreate all existing instance-manager, and backing-image-manager pods.
 Longhorn will apply the same annotation to any new instance-manager, backing-image-manager, and backing-image-data-source pods.
@@ -29,7 +29,7 @@ Follow the [Customize default settings](../customizing-default-settings/) to set
 
 > **Warning:** Longhorn instance-manager will not start if the Storage Network setting is invalid.
 >
-> You can check the events of the instance-manager Pod to see if it is related to an invalid NetworkAttachmentDefintion with `kubectl -n longhorn-system describe pods -l longhorn.io/component=instance-manager`.
+> You can check the events of the instance-manager Pod to see if it is related to an invalid NetworkAttachmentDefinition with `kubectl -n longhorn-system describe pods -l longhorn.io/component=instance-manager`.
 >
 > If this is the case, provide a valid `NetworkAttachmentDefinition` and re-run Longhorn install.
 

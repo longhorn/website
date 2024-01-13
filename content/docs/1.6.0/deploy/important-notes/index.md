@@ -6,7 +6,23 @@ weight: 4
 This page lists important notes for Longhorn v{{< current-version >}}.
 Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}) for the full release note.
 
-## Notes
+- [General](#general)
+  - [Supported Kubernetes Versions](#supported-kubernetes-versions)
+  - [Offline Upgrade Required To Fully Prevent Unexpected Replica Expansion](#offline-upgrade-required-to-fully-prevent-unexpected-replica-expansion)
+  - [Default Priority Class](#default-priority-class)
+  - [New Node Drain Policies Added](#new-node-drain-policies-added)
+  - [Custom Resource Fields Deprecated](#custom-resource-fields-deprecated)
+  - [Pod Security Policies Disabled \& Pod Security Admission Introduction](#pod-security-policies-disabled--pod-security-admission-introduction)
+  - [Updating CSI Snapshot CRD `v1beta1` to `v1`, `v1beta1` Removed](#updating-csi-snapshot-crd-v1beta1-to-v1-v1beta1-removed)
+  - [Engine Upgrade Enforcement](#engine-upgrade-enforcement)
+- [V2 Data Engine](#v2-data-engine)
+  - [Longhorn System Upgrade](#longhorn-system-upgrade)
+  - [Changing Default Huge Page Size to 2 GiB](#changing-default-huge-page-size-to-2-gib)
+  - [Support for ARM64 Platform](#support-for-arm64-platform)
+  - [Replacing `backendStoreDriver` with `dataEngine`](#replacing-backendstoredriver-with-dataengine)
+
+
+## General
 
 ### Supported Kubernetes Versions
 
@@ -15,7 +31,7 @@ Please ensure your Kubernetes cluster is at least v1.21 before upgrading to Long
 ### Offline Upgrade Required To Fully Prevent Unexpected Replica Expansion
 
 Longhorn v1.6.0 introduces a new mechanism to prevent [unexpected replica
-expansion](../../../../kb/troubleshooting-unexpected-expansion-leads-to-degredation-or-attach-failure). This
+expansion](../../../../kb/troubleshooting-unexpected-expansion-leads-to-degradation-or-attach-failure). This
 mechanism is entirely transparent. However, a volume is only protected if it is running a new version of longhorn-engine
 inside a new version of longhorn-instance-manager and managed by a new version of longhorn-manager. The [live upgrade
 process](../../deploy/upgrade/upgrade-engine#live-upgrade) results in a volume running a new version of longhorn-engine
@@ -120,10 +136,20 @@ done
 
 Once you successfully upgrade to version v1.6.0, you will be able to view information about engine image versions on the UI.
 
-### V2 Volume Support for ARM64 Platform
+## V2 Data Engine
+
+### Longhorn System Upgrade
+
+Longhorn currently does not support live upgrading of V2 volumes. Ensure that all V2 volumes are detached before initiating the upgrade process.
+
+### Changing Default Huge Page Size to 2 GiB
+
+The default huge page size for the V2 Data Engine has been raised to 2 GiB, allowing the creation of more V2 volumes and enhancing the overall user experience. Before upgrading to v1.6.0, ensure that the configured huge page size on each node is 2 GiB.
+
+### Support for ARM64 Platform
 
 As of Longhorn v1.6.0, volumes using the V2 Data Engine support the ARM64 platform. For more information, see [Prerequisites](../../spdk/prerequisites/).
 
-### Upgrading Longhorn Systems with V2 Volumes
+### Replacing `backendStoreDriver` with `dataEngine`
 
-Longhorn currently does not support live upgrading of V2 volumes. Ensure that all V2 volumes are detached before initiating the upgrade process.
+The attribute `backendStoreDriver`, which is defined in the parameters of StorageClasses and other Longhorn resources (for example, volumes, engines, and replicas), has been replaced with `dataEngine`. You must remove the existing StorageClasses for V2 volumes and create new ones that use `dataEngine`.
