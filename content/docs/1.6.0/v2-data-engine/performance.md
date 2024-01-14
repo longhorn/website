@@ -1,6 +1,6 @@
 ---
-  title: Performance Benchmark
-  weight: 5
+title: Performance
+weight: 3
 ---
 
 ## Benchmarking Tool
@@ -22,11 +22,11 @@ The baseline of the data disk was also measured using [rancher/local-path-provis
 - Storage: 1 SSD (Micron_5300_MTFD)
 - Network throughput between nodes (tested by iperf over 60 seconds): 15.0 Gbits/sec
 
-{{< figure src="/img/diagrams/spdk/equinix-iops.svg" >}}
+{{< figure src="/img/diagrams/v2-data-engine/equinix-iops.svg" >}}
 
-{{< figure src="/img/diagrams/spdk/equinix-bw.svg" >}}
+{{< figure src="/img/diagrams/v2-data-engine/equinix-bw.svg" >}}
 
-{{< figure src="/img/diagrams/spdk/equinix-latency.svg" >}}
+{{< figure src="/img/diagrams/v2-data-engine/equinix-latency.svg" >}}
 
 # AWS EC2 (c5d.xlarge)
 
@@ -39,8 +39,8 @@ The baseline of the data disk was also measured using [rancher/local-path-provis
 - Storage: 1 SSD (Amazon EC2 NVMe Instance Storage/Local NVMe Storage)
 - Network throughput between nodes (tested by iperf over 60 seconds): 7.9 Gbits/sec
 
-{{< figure src="/img/diagrams/spdk/aws-c5d-xlarge-iops.svg" >}}
+{{< figure src="/img/diagrams/v2-data-engine/aws-c5d-xlarge-iops.svg" >}}
 
-{{< figure src="/img/diagrams/spdk/aws-c5d-xlarge-bw.svg" >}}
+{{< figure src="/img/diagrams/v2-data-engine/aws-c5d-xlarge-bw.svg" >}}
 
-{{< figure src="/img/diagrams/spdk/aws-c5d-xlarge-latency.svg" >}}
+{{< figure src="/img/diagrams/v2-data-engine/aws-c5d-xlarge-latency.svg" >}}
