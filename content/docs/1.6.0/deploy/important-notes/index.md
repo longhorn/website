@@ -148,7 +148,7 @@ The default huge page size for the V2 Data Engine has been raised to 2 GiB, allo
 
 ### Support for ARM64 Platform
 
-As of Longhorn v1.6.0, volumes using the V2 Data Engine support the ARM64 platform. For more information, see [Prerequisites](../../spdk/prerequisites/).
+As of Longhorn v1.6.0, volumes using the V2 Data Engine support the ARM64 platform. For more information, see [Prerequisites](../../v2-data-engine/prerequisites/).
 
 ### Replacing `backendStoreDriver` with `dataEngine`
 

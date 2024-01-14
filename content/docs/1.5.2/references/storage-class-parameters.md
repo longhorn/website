@@ -212,7 +212,7 @@ A list of recurring jobs that are to be run on a volume.
   - Use "v2" to run the v2 SPDK-based engine (experimental in 1.5.)  If empty, "v1" is assumed.
 
 > Global setting: [V2 Data Engine](../settings#v2-data-engine).  
-> More details in [V2 Data Engine Quick Start](../../spdk/quick-start#create-a-storageclass).
+> More details in [V2 Data Engine Quick Start](../../v2-data-engine/quick-start#create-a-storageclass).
 
 ## Helm Installs
 

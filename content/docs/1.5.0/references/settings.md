@@ -402,7 +402,7 @@ The value in seconds specifies the timeout of the HTTP client to the replica's f
 
 > Default: `false`
 
-This allows users to activate the v2 data engine based on SPDK. Currently, it is in the preview phase and should not be utilized in a production environment. For more information, please refer to [V2 Data Engine (Preview Feature)](../../spdk).
+This allows users to activate the v2 data engine based on SPDK. Currently, it is in the preview phase and should not be utilized in a production environment. For more information, please refer to [V2 Data Engine (Preview Feature)](../../v2-data-engine).
 
 > **Warning**
 >
@@ -416,7 +416,7 @@ This allows users to activate the v2 data engine based on SPDK. Currently, it is
 
 > Default: `enabled`
 
-This setting allows users to enable the offline replica rebuilding for volumes using v2 data engine. For more information, please refer to [Automatic Offline Replica Rebuilding](../../spdk/automatic-offline-replica-rebuilding).
+This setting allows users to enable the offline replica rebuilding for volumes using v2 data engine. For more information, please refer to [Automatic Offline Replica Rebuilding](../../v2-data-engine/automatic-offline-replica-rebuilding).
 
 Here are the available options:
 - `enabled`
