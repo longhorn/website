@@ -124,33 +124,30 @@ Or, you can enable it in `Setting > General > V2 Data Engine`.
 
 ### CPU and Memory Usage
 
-When the V2 Data Engine is enabled, each instance-manager pod utilizes 1 CPU core. This high CPU usage is attributed to the `spdk_tgt` process running within each instance-manager pod. The spdk_tgt process is responsible for handling input/output (IO) operations and requires intensive polling. As a result, it consumes 100% of a dedicated CPU core to efficiently manage and process the IO requests, ensuring optimal performance and responsiveness for storage operations.
+When the V2 Data Engine is enabled, each instance-manager pod for V2 Data Engine utilizes 1 CPU core. This high CPU usage is attributed to the `spdk_tgt` process running within each instance-manager pod. spdk_tgt process is responsible for handling input/output (IO) operations and requires intensive polling. As a result, it consumes 100% of a dedicated CPU core to efficiently manage and process the IO requests, ensuring optimal performance and responsiveness for storage operations.
 
 ```
 NAME                                                CPU(cores)   MEMORY(bytes)
-csi-attacher-6488f75fb4-48pnb                       1m           19Mi
-csi-attacher-6488f75fb4-94m6r                       1m           16Mi
-csi-attacher-6488f75fb4-zmwfm                       1m           15Mi
-csi-provisioner-6785d78459-6tps7                    1m           18Mi
-csi-provisioner-6785d78459-bj89g                    1m           23Mi
-csi-provisioner-6785d78459-c5dzt                    1m           17Mi
-csi-resizer-d9bb7b7fc-25m8b                         1m           17Mi
-csi-resizer-d9bb7b7fc-fncjf                         1m           15Mi
-csi-resizer-d9bb7b7fc-t5dw7                         1m           17Mi
-csi-snapshotter-5b89555c8f-76ptq                    1m           15Mi
-csi-snapshotter-5b89555c8f-7vgtv                    1m           19Mi
-csi-snapshotter-5b89555c8f-vkhd8                    1m           17Mi
-engine-image-ei-b907910b-5vp8h                      12m          15Mi
-engine-image-ei-b907910b-9krcz                      17m          15Mi
-instance-manager-b3735b3e6d0a9e27d1464f548bdda5ec   1000m        29Mi
-instance-manager-cbe60909512c58798690f692b883e5a9   1001m        27Mi
-longhorn-csi-plugin-qf9kt                           1m           61Mi
-longhorn-csi-plugin-zk6sm                           1m           60Mi
-longhorn-driver-deployer-7d46fd5945-8tfmk           1m           24Mi
-longhorn-manager-nm925                              6m           137Mi
-longhorn-manager-np849                              6m           126Mi
-longhorn-ui-54df99bfc-2lc8w                         0m           2Mi
-longhorn-ui-54df99bfc-w6dts                         0m           2Mi
+csi-attacher-57c5fd5bdf-jsfs4                       1m           7Mi
+csi-attacher-57c5fd5bdf-kb6dv                       1m           9Mi
+csi-attacher-57c5fd5bdf-s7fb6                       1m           7Mi
+csi-provisioner-7b95bf4b87-8xr6f                    1m           11Mi
+csi-provisioner-7b95bf4b87-v4gwb                    1m           9Mi
+csi-provisioner-7b95bf4b87-vnt58                    1m           9Mi
+csi-resizer-6df9886858-6v2ds                        1m           8Mi
+csi-resizer-6df9886858-b6mns                        1m           9Mi
+csi-resizer-6df9886858-l4vmj                        1m           8Mi
+csi-snapshotter-5d84585dd4-4dwkz                    1m           7Mi
+csi-snapshotter-5d84585dd4-km8bc                    1m           9Mi
+csi-snapshotter-5d84585dd4-kzh6w                    1m           7Mi
+engine-image-ei-b907910b-79k2s                      3m           19Mi
+instance-manager-214803c4f23376af5a75418299b12ad6   1015m        133Mi (for V2 Data Engine)
+instance-manager-4550bbc4938ff1266584f42943b511ad   4m           15Mi  (for V1 Data Engine)
+longhorn-csi-plugin-nz94f                           1m           26Mi
+longhorn-driver-deployer-556955d47f-h5672           1m           12Mi
+longhorn-manager-2n9hd                              4m           42Mi
+longhorn-ui-58db78b68-bzzz8                         0m           2Mi
+longhorn-ui-58db78b68-ffbxr                         0m           2Mi
 ```
 
 
@@ -165,14 +162,14 @@ status:
     cpu: "8"
     ephemeral-storage: "203978054087"
     hugepages-1Gi: "0"
-    hugepages-2Mi: 1Gi
+    hugepages-2Mi: 2Gi
     memory: 31813168Ki
     pods: "110"
   capacity:
     cpu: "8"
     ephemeral-storage: 209681388Ki
     hugepages-1Gi: "0"
-    hugepages-2Mi: 1Gi
+    hugepages-2Mi: 2Gi
     memory: 32861744Ki
     pods: "110"
 ...
