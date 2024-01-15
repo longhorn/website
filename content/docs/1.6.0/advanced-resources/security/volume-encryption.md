@@ -43,7 +43,7 @@ For more details, you can refer to the Linux manual page [crypsetup(8)](https://
     CRYPTO_PBKDF: "argon2i"
   ```
 
-- Example StorageClass for global key for all volumes
+- Example of a StorageClass with a global Secret:
   ```yaml
   kind: StorageClass
   apiVersion: storage.k8s.io/v1
