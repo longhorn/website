@@ -15,6 +15,10 @@ We recommend the following setup for deploying Longhorn in production.
   - [Disk Space Management](#disk-space-management)
   - [Setting up Extra Disks](#setting-up-extra-disks)
 - [Configuring Default Disks Before and After Installation](#configuring-default-disks-before-and-after-installation)
+- [Volume Performance Optimization](#volume-performance-optimization)
+  - [IO Performance](#io-performance)
+  - [Space Efficiency](#space-efficiency)
+  - [Disaster Recovery](#disaster-recovery)
 - [Deploying Workloads](#deploying-workloads)
 - [Volume Maintenance](#volume-maintenance)
 - [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu)
@@ -99,17 +103,23 @@ Any extra disks must be written in the `/etc/fstab` file to allow automatic moun
 
 Don't use a symbolic link for the extra disks. Use `mount --bind` instead of `ln -s` and make sure it's in the `fstab` file. For details, see [the section about multiple disk support.](../volumes-and-nodes/multidisk/#use-an-alternative-path-for-a-disk-on-the-node)
 
-### Disk Performance Optimization  
+## Configuring Default Disks Before and After Installation
+
+To use a directory other than the default `/var/lib/longhorn` for storage, the `Default Data Path` setting can be changed before installing the system. For details on changing pre-installation settings, refer to [this section.](../advanced-resources/deploy/customizing-default-settings)
+
+The [Default node/disk configuration](../advanced-resources/default-disk-and-node-config) feature can be used to customize the default disk after installation. Customizing the default configurations for disks and nodes is useful for scaling the cluster because it eliminates the need to configure Longhorn manually for each new node if the node contains more than one disk, or if the disk configuration is different for new nodes. Remember to enable `Create default disk only on labeled node` if applicable.
+
+## Volume Performance Optimization  
 
 Before configuring workloads, ensure that you have set up the following basic requirements for optimal disk performance.  
 
 - SATA/NVMe SSDs or disk drives with similar performance  
 - 10 Gbps network bandwidth between nodes  
-- Dedicated Priority Classes for system-managed and user-deployed Longhorn components  
+- Dedicated Priority Class for system-managed and user-deployed Longhorn components. By default, Longhorn installs the default Priority Class `longhorn-critical`.
 
 The following sections outline other recommendations for production environments.  
 
-#### IO Performance  
+### IO Performance  
 
 - **Storage network**: Use a [dedicated storage network](https://longhorn.io/docs/1.6.0/advanced-resources/deploy/storage-network/#setting-storage-network) to improve IO performance and stability.  
 
@@ -125,7 +135,7 @@ The following sections outline other recommendations for production environments
 
   For data-intensive applications, you can use pod scheduling functions such as node selector or taint toleration. These functions allow you to schedule the workload to a specific storage-tagged node together with one replica.  
 
-#### Space Efficiency  
+### Space Efficiency  
 
 - **Recurring snapshots**: Periodically clean up system-generated snapshots and retain only the number of snapshots that makes sense for your implementation.  
 
@@ -133,17 +143,13 @@ The following sections outline other recommendations for production environments
 
 - **Recurring filesystem trim**: Periodically [trim the filesystem](https://longhorn.io/docs/1.6.0/volumes-and-nodes/trim-filesystem/) inside volumes to reclaim disk space.  
 
-#### Disaster Recovery
+- **Snapshot space management**: [Configure global and volume-specific settings](https://longhorn.io/docs/1.6.0/advanced-resources/snapshot-space-management/) to prevent unexpected disk space exhaustion.
+
+### Disaster Recovery
 
 - **Recurring backups**: Create [recurring backup jobs](https://longhorn.io/docs/1.6.0/volumes-and-nodes/trim-filesystem/) for mission-critical application volumes.  
 
 - **System backup**: Create periodic [system backups](https://longhorn.io/docs/1.6.0/advanced-resources/system-backup-restore/backup-longhorn-system/#create-longhorn-system-backup).  
-
-## Configuring Default Disks Before and After Installation
-
-To use a directory other than the default `/var/lib/longhorn` for storage, the `Default Data Path` setting can be changed before installing the system. For details on changing pre-installation settings, refer to [this section.](../advanced-resources/deploy/customizing-default-settings)
-
-The [Default node/disk configuration](../advanced-resources/default-disk-and-node-config) feature can be used to customize the default disk after installation. Customizing the default configurations for disks and nodes is useful for scaling the cluster because it eliminates the need to configure Longhorn manually for each new node if the node contains more than one disk, or if the disk configuration is different for new nodes. Remember to enable `Create default disk only on labeled node` if applicable.
 
 ## Deploying Workloads
 
