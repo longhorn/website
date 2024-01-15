@@ -9,7 +9,7 @@ Volume encryption is made possible by the Linux kernel module `dm_crypt`, the co
 
 # Requirements
 
-For the utilization of encrypted volumes, it is essential to have the `dm_crypt` kernel module loaded and ensure the installation of `cryptsetup` on your worker nodes.
+To use encrypted volumes, ensure that the `dm_crypt` kernel module is loaded and that `cryptsetup` is installed on your worker nodes.
 
 # Setting up Kubernetes Secrets and StorageClasses
 
