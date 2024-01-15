@@ -25,7 +25,7 @@ Besides `CRYPTO_KEY_VALUE`, parameters `CRYPTO_KEY_CIPHER`, `CRYPTO_KEY_HASH`, `
 - `CRYPTO_KEY_SIZE`: Sets the key size in bits and it must be a multiple of 8. The default value is `256`.
 - `CRYPTO_PBKDF`: Sets Password-Based Key Derivation Function (PBKDF) algorithm for LUKS keyslot. The default value is `argon2i`.
 
-For more details, you can refer to the Linux manual page [crypsetup(8)](https://man7.org/linux/man-pages/man8/cryptsetup.8.html).
+For more information, see [cryptsetup(8)](https://man7.org/linux/man-pages/man8/cryptsetup.8.html) in the Linux man pages.
 
 - Example of a Secret:
   ```yaml
