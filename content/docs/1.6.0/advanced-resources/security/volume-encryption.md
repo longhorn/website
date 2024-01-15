@@ -65,7 +65,7 @@ For more details, you can refer to the Linux manual page [crypsetup(8)](https://
     csi.storage.k8s.io/node-stage-secret-namespace: "longhorn-system"
   ```
 
-- Example StorageClass for per-volume key
+- Example of a StorageClass with a volume-specific Secret:
   ```yaml
   kind: StorageClass
   apiVersion: storage.k8s.io/v1
