@@ -92,7 +92,7 @@ For more details, you can refer to the Linux manual page [crypsetup(8)](https://
 To create an encrypted volume, you just create a PVC utilizing a StorageClass that has been configured for encryption. The above StorageClass examples can be used as a starting point.
 
 After creation of the PVC it will remain in `Pending` state till the associated secret has been created and can be retrieved
-by the csi `external-provisioner` sidecar. Afterwards the regular volume creation flow will take over and the encryption will be transparently used so no additional actions are needed from the user.
+A newly-created PVC remains in the `Pending` state until the associated Secret is created and can be retrieved by the csi `external-provisioner` sidecar. Afterwards, the regular volume creation process continues with encryption taking effect.
 
 # Filesystem Expansion
 
