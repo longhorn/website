@@ -27,7 +27,7 @@ Besides `CRYPTO_KEY_VALUE`, parameters `CRYPTO_KEY_CIPHER`, `CRYPTO_KEY_HASH`, `
 
 For more details, you can refer to the Linux manual page [crypsetup(8)](https://man7.org/linux/man-pages/man8/cryptsetup.8.html).
 
-- Example Secret
+- Example of a Secret:
   ```yaml
   apiVersion: v1
   kind: Secret
