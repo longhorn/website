@@ -111,11 +111,11 @@ The [Default node/disk configuration](../advanced-resources/default-disk-and-nod
 
 ## Volume Performance Optimization  
 
-Before configuring workloads, ensure that you have set up the following basic requirements for optimal disk performance.  
+Before configuring workloads, ensure that you have set up the following basic requirements for optimal volume performance.  
 
 - SATA/NVMe SSDs or disk drives with similar performance  
 - 10 Gbps network bandwidth between nodes  
-- Dedicated Priority Class for system-managed and user-deployed Longhorn components. By default, Longhorn installs the default Priority Class `longhorn-critical`.
+- Dedicated Priority Class for system-managed and user-deployed Longhorn components. By default, Longhorn installs the default Priority Class `longhorn-critical`.  
 
 The following sections outline other recommendations for production environments.  
 
