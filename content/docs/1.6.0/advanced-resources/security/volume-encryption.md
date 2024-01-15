@@ -5,7 +5,7 @@ weight: 2
 
 Longhorn supports volume encryption in both `Filesystem` and `Block` modes, providing protection against unauthorized access, data breaches, and compliance violations. Backups created from encrypted volumes are also encrypted.
 
-This robust encryption is achieved through the integration of the Linux kernel module `dm_crypt`, the command-line utility `cryptsetup`, and the utilization of Kubernetes Secrets. The combination of `dm_crypt` and `cryptsetup` oversees the seamless creation and management of encrypted devices, while Secrets, along with associated permissions, ensures the secure storage of encryption keys.
+Volume encryption is made possible by the Linux kernel module `dm_crypt`, the command-line utility `cryptsetup`, and Kubernetes Secrets. `dm_crypt` and `cryptsetup` handle the creation and management of encrypted devices, while Secrets (and related permissions) facilitate secure storage of encryption keys.
 
 # Requirements
 
