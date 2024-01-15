@@ -13,7 +13,7 @@ For the utilization of encrypted volumes, it is essential to have the `dm_crypt`
 
 # Setting up Kubernetes Secrets and StorageClasses
 
-Volume encryption utilizes Kubernetes Secrets for encryption key storage. To configure the Secret that will be used for an encrypted volume, you will need to specify the Secret as part of the parameters of a StorageClass. This mechanism is provided by Kubernetes and allows the usage of some template parameters that will be resolved as part of volume creation.
+Longhorn uses Kubernetes Secrets for secure storage of encryption keys. Kubernetes allows usage of template parameters that are resolved during volume creation. To use a Secret with an encrypted volume, you must configure the Secret as a StorageClass parameter.
 
 The template parameters can be useful in the case where you want to use a per-volume Secret or a group Secret for a specific collection of volumes. More information about the available template parameters can be found in the [Kubernetes documentation](https://kubernetes-csi.github.io/docs/secrets-and-credentials-storage-class.html).
 
