@@ -17,7 +17,7 @@ Longhorn uses Kubernetes Secrets for secure storage of encryption keys. Kubernet
 
 Template parameters allow you to use Secrets with individual volumes or with a collection of volumes. For more information about template parameters, see [StorageClass Secrets](https://kubernetes-csi.github.io/docs/secrets-and-credentials-storage-class.html) in the Kubernetes CSI Developer Documentation.
 
-In an example, your encryption keys are specified as part of the `CRYPTO_KEY_VALUE` parameter within the Secret. We use `stringData` as the type here so that there is no need for base64 encoding before submitting the Secret via kubectl create.
+In the following example, the encryption key is specified as string data in the `CRYPTO_KEY_VALUE` parameter of the Secret. Using string data eliminates the need for Base64 encoding before the Secret is submitted via kubectl create.
 
 Besides `CRYPTO_KEY_VALUE`, parameters `CRYPTO_KEY_CIPHER`, `CRYPTO_KEY_HASH`, `CRYPTO_KEY_SIZE`, and `CRYPTO_PBKDF` provide the customization for volume encryption.
 - `CRYPTO_KEY_CIPHER`: Sets the cipher specification algorithm string. The default value is `aes-xts-plain64` for LUKS.
