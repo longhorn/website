@@ -3,7 +3,7 @@ title: Selective V2 Data Engine Activation
 weight: 20
 ---
 
-Starting from version 1.6.0, Longhorn provides the capability to enable or disable the V2 Data Engine on specified nodes within a cluster, in contrast to version 1.5, which activates the V2 Data Engine on all nodes. This feature is beneficial for clusters with a mix of powerful and low-powered nodes, as it allows you to only run V2 Data Engine on the more powerful nodes.
+Starting with v1.6.0, Longhorn allows you to enable or disable the V2 Data Engine on specific cluster nodes. You can choose to enable the V2 Data Engine only on powerful nodes in a cluster with varied power states. This is not possible in v1.5.0, which enables the V2 Data Engine on all nodes.
 
 ## Configuration
 
