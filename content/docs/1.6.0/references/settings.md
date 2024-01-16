@@ -476,7 +476,7 @@ Number of millicpus on each node to be reserved for each instance manager pod wh
 
 > Default: `enabled`
 
-This setting allows users to enable the offline replica rebuilding for volumes using v2 data engine. For more information, please refer to [Automatic Offline Replica Rebuilding](../../v2-data-engine/features/automatic-offline-replica-rebuilding).
+Setting that allows rebuilding of offline replicas for volumes using the V2 Data Engine. For more information, see [Automatic Offline Replica Rebuilding](../../v2-data-engine/features/automatic-offline-replica-rebuilding).
 
 Here are the available options:
 - `enabled`
