@@ -7,13 +7,15 @@ Starting with v1.6.0, Longhorn allows you to enable or disable the V2 Data Engin
 
 ## Disabling the V2 Data Engine on Specific Nodes
 
-1. Identify the nodes that you want to disable V2 Data Engine.
+1. Identify the nodes that should not run the V2 Data Engine.
 
-2. Add the label `node.longhorn.io/disable-v2-data-engine: "true"` to the chosen Kubernetes nodes.
+1. Add the label `node.longhorn.io/disable-v2-data-engine: "true"` to the selected nodes.
 
-3. Activate the `v2-data-engine` setting globally. Then,
-   - Instance-manager pods for V2 Data Engine are only spawned on nodes without the aforementioned label.
-   - V2 Data Engine functionality remains available exclusively on nodes lacking the label.
+1. Enable the global setting `v2-data-engine`.
+
+As a result, the following occur only on *nodes without the label*:
+- Instance Manager pods for the V2 Data Engine are spawned.
+- V2 Data Engine functionality remains available.
 
 ## Notice
 
