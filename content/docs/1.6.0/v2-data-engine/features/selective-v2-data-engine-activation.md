@@ -23,4 +23,4 @@ Please be aware that V2 volumes can only be created on nodes that enable the V2 
 
 ## Reference
 
-Please refer to [[FEATURE] Selective V2 Data Engine Activation](https://github.com/longhorn/longhorn/issues/7015) for more information.
+For more information, see [[FEATURE] Selective V2 Data Engine Activation](https://github.com/longhorn/longhorn/issues/7015).
