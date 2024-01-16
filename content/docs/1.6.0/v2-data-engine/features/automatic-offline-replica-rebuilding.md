@@ -17,4 +17,4 @@ Longhorn currently does not support online replica rebuilding for volumes that u
 
 ## Notice
 
-During the offline replica rebuilding process, it is important to note that interruptions are possible. In the case where a volume, which is undergoing rebuilding, is about to be attached by an application, the offline replica rebuilding task will be cancelled to prioritize the high-priority task. This mechanism ensures that critical tasks take precedence over the rebuilding process.
+Interruptions are possible during offline replica rebuilding because Longhorn ensures that critical tasks take precedence. When an application attempts to attach a volume that is undergoing rebuilding, the rebuilding task is canceled to make way for the higher-priority task. 
