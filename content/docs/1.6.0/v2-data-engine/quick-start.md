@@ -124,7 +124,7 @@ Or, you can enable it in `Setting > General > V2 Data Engine`.
 
 ### CPU and Memory Usage
 
-When the V2 Data Engine is enabled, each instance-manager pod for V2 Data Engine utilizes 1 CPU core. This high CPU usage is attributed to the `spdk_tgt` process running within each instance-manager pod. spdk_tgt process is responsible for handling input/output (IO) operations and requires intensive polling. As a result, it consumes 100% of a dedicated CPU core to efficiently manage and process the IO requests, ensuring optimal performance and responsiveness for storage operations.
+When the V2 Data Engine is enabled, each Instance Manager pod for the V2 Data Engine uses 1 CPU core. The high CPU usage is caused by `spdk_tgt`, a process running in each Instance Manager pod that handles input/output (IO) operations and requires intensive polling. `spdk_tgt` consumes 100% of a dedicated CPU core to efficiently manage and process the IO requests, ensuring optimal performance and responsiveness for storage operations.
 
 ```
 NAME                                                CPU(cores)   MEMORY(bytes)
