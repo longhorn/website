@@ -3,7 +3,7 @@ title: Automatic Offline Replica Rebuilding
 weight: 10
 ---
 
-Currently, Longhorn does not support online replica rebuilding for volumes that use the V2 Data Engine. To overcome this limitation, an automatic offline replica rebuilding mechanism has been implemented. When a degraded volume is detached, this mechanism attaches the volume in maintenance mode, and initiates the rebuilding process. Once the rebuilding is completed, the volume is detached as per the user's expectation.
+Longhorn currently does not support online replica rebuilding for volumes that use the V2 Data Engine. To overcome this limitation, an automatic offline replica rebuilding mechanism has been implemented. When a degraded volume is detached, Longhorn attaches the volume in maintenance mode and then initiates the rebuilding process. The volume is detached again once rebuilding is completed.
 
 ## Settings
 
