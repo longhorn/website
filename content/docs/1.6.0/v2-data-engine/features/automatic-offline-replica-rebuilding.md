@@ -13,7 +13,7 @@ Longhorn currently does not support online replica rebuilding for volumes that u
 
 ### Volume-Specific Settings
 
-Longhorn also supports the per-volume setting by configuring `Volume.Spec.OfflineReplicaRebuilding`. The value is `ignored` by default, so data integrity check is determined by the global setting `offline-replica-rebuilding`. `Volume.Spec.OfflineReplicaRebuilding` supports **ignored**, **disabled** and **enabled**. Each volume can have its offline replica rebuilding customized.
+- **Volume.Spec.OfflineReplicaRebuilding**: Setting that allows rebuilding of offline replicas for a specific volume. The default value is "ignored", which allows Longhorn to apply the value of the global setting `offline-replica-rebuilding`. (Options: "ignored", "disabled", "enabled")
 
 ## Notice
 
