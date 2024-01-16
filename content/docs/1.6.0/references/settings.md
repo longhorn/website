@@ -448,7 +448,7 @@ Setting that allows you to enable the V1 Data Engine.
 
 > Default: `false`
 
-This allows users to activate the v2 data engine based on SPDK. Currently, it is in the preview phase and should not be utilized in a production environment. For more information, please refer to [V2 Data Engine (Preview Feature)](../../v2-data-engine).
+Setting that allows you to enable the V2 Data Engine, which is based on the Storage Performance Development Kit (SPDK). The V2 Data Engine is a preview feature and should not be used in production environments. For more information, see [V2 Data Engine (Preview Feature)](../../v2-data-engine).
 
 > **Warning**
 >
