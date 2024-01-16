@@ -47,6 +47,22 @@ If this flag is **false**, the Longhorn uninstallation job will fail.
 Set this flag to **true** to allow Longhorn uninstallation.
 See more in the [uninstall](../uninstall) section.
 
+### New Node Drain Policies Added
+
+There are two new options for the [Node Drain Policy](../../references/settings#node-drain-policy) setting. Both `Block
+For Eviction` and `Block for Eviction If Contains Last Replica` automatically evict replicas from draining nodes in
+addition to preventing drain completion until volume data is sufficiently protected. `Block for Eviction` maintains
+maximum data redundancy during maintenance operations, and both new options enable automated cluster upgrades when some
+volumes have only one replica. See the new [Node Drain Policy
+Recommendations](../../volumes-and-nodes/maintenance/#node-drain-policy-recommendations) section for help deciding which
+policy to use.
+
+### Custom Resource Fields Deprecated
+
+Starting in `v1.5.4`, the following custom resource fields are deprecated. They will be removed in `v1.7.0`:
+
+- Volume.status.evictionRequested
+
 ### Pod Security Policies Disabled & Pod Security Admission Introduction
 
 - Longhorn pods require privileged access to manage nodes' storage. In Longhorn `v1.3.x` or older, Longhorn was shipping some Pod Security Policies by default, (e.g., [link](https://github.com/longhorn/longhorn/blob/4ba39a989b4b482d51fd4bc651f61f2b419428bd/chart/values.yaml#L260)).
