@@ -19,7 +19,7 @@ As a result, the following occur only on *nodes without the label*:
 
 ## Notice
 
-Please be aware that V2 volumes can only be created on nodes that enable the V2 Data Engine. Ensure to schedule workloads using v2 volumes on the nodes where V2 Data Engine is enabled.
+V2 volume creation is possible only on nodes where the V2 Data Engine is enabled. You must schedule workloads that use V2 volumes on such nodes.
 
 ## Reference
 
