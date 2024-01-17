@@ -12,8 +12,6 @@ weight: 70
 * [Use Longhorn Volume as an iSCSI Target](./iscsi)
 * [Migrating from the Flexvolume Driver to CSI](./migrating-flexvolume)
 * [Configuring Defaults for Nodes and Disks](./default-disk-and-node-config)
-* [Troubleshooting](./troubleshooting)
-* [Support Bundle](./support-bundle)
 * [Deploy](./deploy)
 * [OS/Distro Specific Configuration](./os-distro-specific)
 * [Data Recovery](./data-recovery)
