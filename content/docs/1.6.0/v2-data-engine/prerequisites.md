@@ -17,7 +17,7 @@ Longhorn nodes must meet the following requirements:
   5.19 or later is required for NVMe over TCP support
   > **NOTICE**
   >
- > Host machines with Linux kernel 5.15 may unexpectedly reboot when volume-related IO errors occur. Update the Linux kernel on Longhorn nodes to version 5.19 or later to prevent such issues.
+  > Host machines with Linux kernel 5.15 may unexpectedly reboot when volume-related IO errors occur. Update the Linux kernel on Longhorn nodes to version 5.19 or later to prevent such issues.
 
 - Linux kernel modules
   - uio
