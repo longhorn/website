@@ -215,7 +215,7 @@ A list of recurring jobs that are to be run on a volume.
   - Overrides for NFS mount of RWX volumes to the share-manager.  Use this field with caution.  
   - Note:  Built-in options vary by release.  Check your release details before setting this.  
  
-> More details in [RWX Workloads](../../nodes-and-volumes/volumes/rwx-volumes/#notice)
+> More details in [RWX Workloads](../../nodes-and-volumes/volumes/rwx-volumes#configuring-volume-mount-options)
 
 #### Data Engine *(field: `parameters.dataEngine`)*
 > Default: `"v1"`  

@@ -204,7 +204,7 @@ A list of recurring jobs that are to be run on a volume.
   - Overrides for NFS mount of RWX volumes to the share-manager.  Use this field with caution.  
   - Note:  Built-in options vary by release.  Check your release details before setting this.  
 
-> More details in [RWX Workloads](../../advanced-resources/rwx-workloads/#notice)
+> More details in [RWX Workloads](../../advanced-resources/rwx-workloads/#configuring-volume-mount-options)
 
 #### Backend Store Driver *(field: `parameters.backendStoreDriver`)*
 > Default: `"v1"`  
