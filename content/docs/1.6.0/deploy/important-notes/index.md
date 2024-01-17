@@ -20,7 +20,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Changing Default Huge Page Size to 2 GiB](#changing-default-huge-page-size-to-2-gib)
   - [Support for ARM64 Platform](#support-for-arm64-platform)
   - [Replacing `backendStoreDriver` with `dataEngine`](#replacing-backendstoredriver-with-dataengine)
-
+  - [Updating the Linux Kernel on Longhorn Nodes](#updating-the-linux-kernel-on-longhorn-nodes)
 
 ## General
 
@@ -153,3 +153,7 @@ As of Longhorn v1.6.0, volumes using the V2 Data Engine support the ARM64 platfo
 ### Replacing `backendStoreDriver` with `dataEngine`
 
 The attribute `backendStoreDriver`, which is defined in the parameters of StorageClasses and other Longhorn resources (for example, volumes, engines, and replicas), has been replaced with `dataEngine`. You must remove the existing StorageClasses for V2 volumes and create new ones that use `dataEngine`.
+
+### Updating the Linux Kernel on Longhorn Nodes
+
+Host machines with Linux kernel 5.15 may unexpectedly reboot when volume-related IO errors occur. Update the Linux kernel on Longhorn nodes to version 5.19 or later to prevent such issues. For more information, see [Prerequisites](../../v2-data-engine/prerequisites/).
