@@ -3,13 +3,9 @@
   weight: 5
 ---
 
-## Benchmarking Tool
-
-Utilize [kbench](https://github.com/yasker/kbench) as the benchmarking tool.
-
-## Baseline
-
-The baseline of the data disk was also measured using [rancher/local-path-provisioner](https://github.com/rancher/local-path-provisioner).
+## Performance Measurement Tools
+- [KBench](https://github.com/yasker/kbench): Used to benchmark cluster storage performance
+- [Local Path Provisioner](https://github.com/rancher/local-path-provisioner): Used to measure the baseline performance of the data disk
 
 ## Equinix (m3.small.x86)
 
