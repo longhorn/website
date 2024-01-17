@@ -31,21 +31,62 @@ It is necessary to meet the following requirements in order to use RWX volumes.
     
     > **Tip:** The [environment check script](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh) helps users to check all nodes have unique hostnames.
 
-# Notice
-
-In versions 1.4.0 to 1.4.3 and 1.5.0 to 1.5.1 of Longhorn, Longhorn CSI plugin `hard` mounts a Longhorn volume exported by a NFS server located within a share-manager Pod in the `NodeStageVolume`. The `hard` mount allows NFS requests to persistently retry without termination, ensuring that IOs do not fail. When the server is back online or a replacement server is recreated, the IOs resume seamlessly, thus guaranteeing data integrity. However, to maintain file system stability, the Linux kernel will not permit unmounting a file system until all pending IOs are written back to storage, and the system cannot undergo shutdown until all file systems are unmounted. If the NFS server fails to recover successfully, the client nodes must undergo a forced reboot.
-
-To address this stability problem, Longhorn switches to adopt the use of a `softerr` mount with a `timeo` value of 600 and a `retrans` value of 5 as default options since v1.4.4, 1.5.2 and 1.6.0. When the NFS server becomes unreachable due to factors such as node power outages, network partitions and so on, NFS clients will fail an NFS request after the specified number of retransmissions, resulting in an NFS `ETIMEDOUT` error being returned to the calling application and potential data loss. If `softerr` is not supported, Longhorn will automatically revert to using the `soft` option instead.
-
-Please refer to [#6655](https://github.com/longhorn/longhorn/issues/6655) for more information.
-
 # Creation and Usage of a RWX Volume
+
+> **Notice**  
+> An RWX volume must have the access mode set to `ReadWriteMany` and the "migratable" flag disabled (*parameters.migratable: `false`*).
 
 1. For dynamically provisioned Longhorn volumes, the access mode is based on the PVC's access mode.
 2. For manually created Longhorn volumes (restore, DR volume) the access mode can be specified during creation in the Longhorn UI.
 3. When creating a PV/PVC for a Longhorn volume via the UI, the access mode of the PV/PVC will be based on the volume's access mode.
 4. One can change the Longhorn volume's access mode via the UI as long as the volume is not bound to a PVC.
 5. For a Longhorn volume that gets used by a RWX PVC, the volume access mode will be changed to RWX.
+
+## Configuring Volume Mount Options
+
+An RWX volume is accessible only when mounted via NFS. By default Longhorn uses NFS version 4.1 with the `softerr` mount option, a `timeo` value of "600", and a `retrans` value of "5".
+
+If the NFS server becomes inaccessible, requests from NFS clients are retried according to the configured `retrans` value. Longer-duration events such as power outages and factors such as network partitions cause the requests to eventually fail. An NFS error (`ETIMEDOUT` for the `softerr` mount option) is returned to the calling application and data loss may occur. If `softerr` is not supported, Longhorn automatically uses the `soft` mount option instead, which returns an `EIO` as the error.
+
+You can use specific mount options for new volumes. First, create a customized StorageClass with an `nfsOptions` parameter, and then create PVCs for RWX volumes using that specific StorageClass.
+
+Example:
+
+  ```yaml
+  kind: StorageClass
+  apiVersion: storage.k8s.io/v1
+  metadata:
+    name: longhorn-test
+  provisioner: driver.longhorn.io
+  allowVolumeExpansion: true
+  reclaimPolicy: Delete
+  volumeBindingMode: Immediate
+  parameters:
+    numberOfReplicas: "3"
+    staleReplicaTimeout: "2880"
+    fromBackup: ""
+    fsType: "ext4"
+    nfsOptions: "vers=4.1,noresvport,softerr,timeo=600,retrans=5"
+  ```
+
+> **Important:**
+> To create PVCs for RWX volumes using the sample StorageClass, replace the `nfsOptions` string with a customized comma-separated list of legal options.
+
+### Notes
+
+1. You must provide the complete set of desired options. Any options not supplied will use the NFS-server side defaults, not Longhorn's own.
+
+2. Longhorn does not validate the `nfsOptions` string, so erroneous values and typographical errors are not flagged. When the string is invalid, the mount is rejected by the NFS server and the volume is not created nor attached.
+
+3. In Longhorn v1.4.0 to 1.4.3 and v1.5.0 to v1.5.1, volumes within a share manager pod (specifically, in the `NodeStageVolume` step) are hard mounted by default by the Longhorn CSI plugin. Hard mounting allows Longhorn to persistently retry sending NFS requests, ensuring that IOs do not fail even when the NFS server becomes inaccessible for some time. IOs resume seamlessly when the server regains connectivity or a replacement server is created.
+
+   This mechanism for guaranteeing data integrity, however, comes with some risk. To maintain stability, the Linux kernel does not allow unmounting of a file system until all pending IOs are completed. This is a concern because the system cannot shut down until all file systems are unmounted. If the NFS server is unable to recover, the client nodes must undergo a forced reboot.
+
+   To mitigate the issue, upgrade to v1.4.4, v1.5.2, or a later version. After upgrading, either `softerr` or `soft` is automatically applied to the `nfsOptions` parameter whenever RWX volumes are reattached (if the default settings are not overridden).
+
+4. You can still use the `hard` mount option (via the `nfsOptions` override mechanism), but hard-mounted volumes are subject to the outlined risks.
+
+For more information, see [#6655](https://github.com/longhorn/longhorn/issues/6655).
 
 # Failure Handling
 
