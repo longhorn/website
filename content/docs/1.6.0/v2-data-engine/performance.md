@@ -1,6 +1,8 @@
 ---
 title: Performance
 weight: 3
+aliases:
+- /spdk/performance.md
 ---
 
 ## Performance Measurement Tools

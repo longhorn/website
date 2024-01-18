@@ -1,6 +1,8 @@
 ---
 title: Features
 weight: 1
+aliases:
+- /spdk/features.md
 ---
 
 - Volume lifecycle (creation, attachment, detachment and deletion)

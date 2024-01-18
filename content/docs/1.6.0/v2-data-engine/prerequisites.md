@@ -1,6 +1,8 @@
 ---
 title: Prerequisites
 weight: 1
+aliases:
+- /spdk/prerequisites.md
 ---
 
 ## Prerequisites

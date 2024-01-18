@@ -1,6 +1,8 @@
 ---
-  title: Performance Benchmark
-  weight: 5
+title: Performance Benchmark
+weight: 5
+aliases:
+- /spdk/performance-benchmark.md
 ---
 
 ## Performance Measurement Tools
