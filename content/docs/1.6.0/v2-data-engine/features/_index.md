@@ -1,6 +1,8 @@
 ---
 title: Features
 weight: 5
+aliases:
+- /spdk/features/_index.md
 ---
 
 - Support for AMD64 and ARM64 platforms

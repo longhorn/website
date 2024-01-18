@@ -1,6 +1,8 @@
 ---
-  title: Quick Start
-  weight: 3
+title: Quick Start
+weight: 3
+aliases:
+- /spdk/quick-start.md
 ---
 
 **Table of Contents**

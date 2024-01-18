@@ -1,6 +1,8 @@
 ---
 title: Troubleshooting
 weight: 4
+aliases:
+- /spdk/troubleshooting.md
 ---
 
 - [Installation](#installation)
