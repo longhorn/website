@@ -63,7 +63,7 @@ For Eviction` and `Block for Eviction If Contains Last Replica` automatically ev
 addition to preventing drain completion until volume data is sufficiently protected. `Block for Eviction` maintains
 maximum data redundancy during maintenance operations, and both new options enable automated cluster upgrades when some
 volumes have only one replica. See the new [Node Drain Policy
-Recommendations](../../volumes-and-nodes/maintenance/#node-drain-policy-recommendations) section for help deciding which
+Recommendations](../../maintenance/maintenance/#node-drain-policy-recommendations) section for help deciding which
 policy to use.
 
 ### Custom Resource Fields Deprecated

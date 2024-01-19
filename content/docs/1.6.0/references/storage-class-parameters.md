@@ -93,11 +93,11 @@ URL of a backup to be restored from.
 
 #### FS Type *(field: `parameters.fsType`)*
 > Default: `ext4`  
-> For more details, see [Creating Longhorn Volumes with Kubernetes](../../volumes-and-nodes/create-volumes#creating-longhorn-volumes-with-kubectl)
+> For more details, see [Creating Longhorn Volumes with Kubernetes](../../nodes-and-volumes/volumes/create-volumes#creating-longhorn-volumes-with-kubectl)
 
 #### Mkfs Params *(field: `parameters.mkfsParams`)*
 > Default: `""`  
-> For more details, see [Creating Longhorn Volumes with Kubernetes](../../volumes-and-nodes/create-volumes#creating-longhorn-volumes-with-kubectl)
+> For more details, see [Creating Longhorn Volumes with Kubernetes](../../nodes-and-volumes/volumes/create-volumes#creating-longhorn-volumes-with-kubectl)
 
 #### Migratable *(field: `parameters.migratable`)*
 > Default: `false`  
@@ -134,14 +134,14 @@ If enabled, move replicas to more lightly-loaded nodes.
 > Example: `"ssd,fast"`  
 
 A list of tags to select which disks are candidates for replica placement.  
-> More details in [Storage Tags](../../volumes-and-nodes/storage-tags)
+> More details in [Storage Tags](../../nodes-and-volumes/nodes/storage-tags)
 
 #### Node Selector *(field: `parameters.nodeSelector`)*
 > Default: `""`  
 > Example: `"storage,fast"`  
 
 A list of tags to select which nodes are candidates for replica placement.  
-> More details in [Storage Tags](../../volumes-and-nodes/storage-tags)
+> More details in [Storage Tags](../../nodes-and-volumes/nodes/storage-tags)
 
 #### Recurring Jobs Selector *(field: `parameters.recurringJobsSelector`)*
 > Default: `""`  
@@ -152,19 +152,19 @@ A list of recurring jobs that are to be run on a volume.
 
 #### Backing Image Name *(field: `parameters.backingImageName`)*
 > Default: `""`  
-> See [Backing Image](../../advanced-resources/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
+> See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Backing Image Checksum *(field: `parameters.backingImageChecksum`)*
 > Default: `""`  
-> See [Backing Image](../../advanced-resources/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
+> See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Backing Image Data Source Type *(field: `parameters.backingImageDataSourceType`)*
 > Default: `""`  
-> See [Backing Image](../../advanced-resources/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
+> See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Backing Image Data Source Parameters *(field: `parameters.backingImageDataSourceParameters`)*
 > Default: `""`  
-> See [Backing Image](../../advanced-resources/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
+> See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Unmap Mark Snap Chain Removed *(field: `parameters.unmapMarkSnapChainRemoved`)*
 > Default: `ignored`  
@@ -173,7 +173,7 @@ A list of recurring jobs that are to be run on a volume.
   - Other values are "enabled" and "disabled".  
 
 > Global setting: [Remove Snapshots During Filesystem Trim](../settings#remove-snapshots-during-filesystem-trim).  
-> More details in [Trim Filesystem](../../volumes-and-nodes/trim-filesystem).
+> More details in [Trim Filesystem](../../nodes-and-volumes/volumes/trim-filesystem).
 
 #### Disable Revision Counter *(field: `parameters.disableRevisionCounter`)*
 > Default: `false`  
@@ -188,7 +188,7 @@ A list of recurring jobs that are to be run on a volume.
   - Other values are "enabled" and "disabled".  
 
 > Global setting: [Replica Node Level Soft Anti-Affinity](../settings#replica-node-level-soft-anti-affinity).  
-> More details in [Scheduling](../../volumes-and-nodes/scheduling) and [Best Practices](../../best-practices#replica-node-level-soft-anti-affinity).
+> More details in [Scheduling](../../nodes-and-volumes/nodes/scheduling) and [Best Practices](../../best-practices#replica-node-level-soft-anti-affinity).
 
 #### Replica Zone Soft Anti-Affinity *(field: `parameters.replicaZoneSoftAntiAffinity`)*
 > Default: `ignored`  
@@ -197,7 +197,7 @@ A list of recurring jobs that are to be run on a volume.
   - Other values are "enabled" and "disabled".  
 
 > Global setting: [Replica Zone Level Soft Anti-Affinity](../settings#replica-zone-level-soft-anti-affinity).  
-> More details in [Scheduling](../../volumes-and-nodes/scheduling).
+> More details in [Scheduling](../../nodes-and-volumes/nodes/scheduling).
 
 #### Replica Disk Soft Anti-Affinity *(field: `parameters.replicaDiskSoftAntiAffinity`)*
 > Default: `ignored`  
@@ -206,7 +206,7 @@ A list of recurring jobs that are to be run on a volume.
   - Other values are "enabled" and "disabled".  
 
 > Global setting: [Replica Disk Level Soft Anti-Affinity](../settings#replica-disk-level-soft-anti-affinity).  
-> More details in [Scheduling](../../volumes-and-nodes/scheduling).
+> More details in [Scheduling](../../nodes-and-volumes/nodes/scheduling).
 
 #### NFS Options *(field: `parameters.nfsOptions`)*
 > Default: `""`
@@ -215,7 +215,7 @@ A list of recurring jobs that are to be run on a volume.
   - Overrides for NFS mount of RWX volumes to the share-manager.  Use this field with caution.  
   - Note:  Built-in options vary by release.  Check your release details before setting this.  
  
-> More details in [RWX Workloads](../../advanced-resources/rwx-workloads/#notice)
+> More details in [RWX Workloads](../../nodes-and-volumes/volumes/rwx-volumes/#notice)
 
 #### Data Engine *(field: `parameters.dataEngine`)*
 > Default: `"v1"`  

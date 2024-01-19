@@ -1,6 +1,6 @@
 ---
 title: Trim Filesystem
-weight: 4
+weight: 7
 ---
 
 Since v1.4.0, Longhorn supports trimming filesystem inside Longhorn volumes. Trimming will reclaim space wasted by the removed files of the filesystem.
@@ -54,7 +54,7 @@ By design each valid snapshot of a Longhorn volume is immutable. Hence Longhorn 
 
 #### The Global Setting "Remove Snapshots During Filesystem Trim"
 
-To help reclaim as much space as possible automatically, Longhorn introduces [setting _Remove Snapshots During Filesystem Trim_](../../references/settings/#remove-snapshots-during-filesystem-trim). This allows Longhorn filesystem trim feature to automatically mark the latest snapshot and its ancestors as removed and stops at the snapshot containing multiple children. As a result, Longhorn can reclaim space for as more snapshots as possible.
+To help reclaim as much space as possible automatically, Longhorn introduces [setting _Remove Snapshots During Filesystem Trim_](../../../references/settings/#remove-snapshots-during-filesystem-trim). This allows Longhorn filesystem trim feature to automatically mark the latest snapshot and its ancestors as removed and stops at the snapshot containing multiple children. As a result, Longhorn can reclaim space for as more snapshots as possible.
 
 #### The Volume Spec Field "UnmapMarkSnapChainAsRemoved"
 

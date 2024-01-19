@@ -1,6 +1,6 @@
 ---
 title: Snapshot Data Integrity Check
-weight: 4
+weight: 2
 ---
 
 Longhorn is capable of hashing snapshot disk files and periodically checking their integrity.

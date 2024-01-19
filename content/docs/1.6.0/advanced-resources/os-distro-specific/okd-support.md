@@ -26,7 +26,7 @@ And then install Longhorn with setting ***openshift.enabled*** true:
 
 ## Prepare A Customized Default Longhorn Disk (Optional)
 
-To understand more about configuring the disks for Longhorn, please refer to the section [Configuring Defaults for Nodes and Disks](../../../advanced-resources/default-disk-and-node-config/#launch-longhorn-with-multiple-disks)
+To understand more about configuring the disks for Longhorn, please refer to the section [Configuring Defaults for Nodes and Disks](../../../nodes-and-volumes/nodes/default-disk-and-node-config/#launch-longhorn-with-multiple-disks)
 
 Longhorn will use the directory `/var/lib/longhorn` as default storage mount point and that means Longhorn use the root device as the default storage. If you don't want to use the root device as the Longhorn storage, set ***defaultSettings.createDefaultDiskLabeledNodes*** true when installing Longhorn by helm:
 
@@ -91,7 +91,7 @@ oc apply -f auto-mount-machineconfig.yaml
 
 #### Label and Annotate The Node
 
-Please refer to the section [Customizing Default Disks for New Nodes](../../../advanced-resources/default-disk-and-node-config/#customizing-default-disks-for-new-nodes) to label and annotate storage node on where your device is by oc commands:
+Please refer to the section [Customizing Default Disks for New Nodes](../../../nodes-and-volumes/nodes/default-disk-and-node-config/#customizing-default-disks-for-new-nodes) to label and annotate storage node on where your device is by oc commands:
 
 ```bash
 oc get nodes --no-headers | awk '{print $1}'

@@ -110,7 +110,7 @@ Define the policy to use when a node with the last healthy replica of a volume i
   WARNING: Can result in slow drains and extra data movement associated with replica rebuilding.
 
 Each option has benefits and drawbacks. See [Node Drain Policy
-Recommendations](../../volumes-and-nodes/maintenance/#node-drain-policy-recommendations) for help deciding which is most
+Recommendations](../../maintenance/maintenance/#node-drain-policy-recommendations) for help deciding which is most
 appropriate in your environment.
 
 #### Detach Manually Attached Volumes When Cordoned
@@ -145,7 +145,7 @@ If disabled, Longhorn will not delete the workload pod that is managed by a cont
 
 > **Note:** This setting doesn't apply to below cases.
 > - The workload pods don't have a controller; Longhorn never deletes them.
-> - The volumes used by workloads are RWX, because the Longhorn share manager, which provides the RWX NFS service, has its own resilience mechanism to ensure availability until the volume gets reattached without relying on the pod lifecycle to trigger volume reattachment. For details, see [here](../../advanced-resources/rwx-workloads).
+> - The volumes used by workloads are RWX, because the Longhorn share manager, which provides the RWX NFS service, has its own resilience mechanism to ensure availability until the volume gets reattached without relying on the pod lifecycle to trigger volume reattachment. For details, see [here](../../nodes-and-volumes/volumes/rwx-volumes).
 
 #### Automatic Salvage
 
@@ -179,7 +179,7 @@ If no other disks exist, create the default disk automatically, only on nodes wi
 
 If disabled, the default disk will be created on all new nodes when the node is detected for the first time.
 
-This option is useful if you want to scale the cluster but don't want to use storage on the new nodes, or if you want to [customize disks for Longhorn nodes](../../advanced-resources/default-disk-and-node-config).
+This option is useful if you want to scale the cluster but don't want to use storage on the new nodes, or if you want to [customize disks for Longhorn nodes](../../nodes-and-volumes/nodes/default-disk-and-node-config).
 
 #### Custom Resource API Version
 
@@ -701,7 +701,7 @@ The available volume spec options are:
 
 With the default setting of 25, the Longhorn Manager will allow scheduling new replicas only after the amount of disk space has been subtracted from the available disk space (**Storage Available**) and the available disk space is still over 25% of actual disk capacity (**Storage Maximum**). Otherwise the disk becomes unschedulable until more space is freed up.
 
-See [Multiple Disks Support](../../volumes-and-nodes/multidisk/#configuration) for details.
+See [Multiple Disks Support](../../nodes-and-volumes/nodes/multidisk/#configuration) for details.
 
 #### Storage Over Provisioning Percentage
 
@@ -828,7 +828,7 @@ Since Longhorn filesystem trim feature can be applied to the volume head and the
 
 Notice that trying to trim a removed files from a valid snapshot will do nothing but the filesystem will discard this kind of in-memory trimmable file info. Later on if you mark the snapshot as removed and want to retry the trim, you may need to unmount and remount the filesystem so that the filesystem can recollect the trimmable file info.
 
-See [Trim Filesystem](../../volumes-and-nodes/trim-filesystem) for details.
+See [Trim Filesystem](../../nodes-and-volumes/volumes/trim-filesystem) for details.
 
 #### Guaranteed Instance Manager CPU
 
