@@ -32,4 +32,4 @@ In `Node` page, Longhorn will show the space allocation, schedule, and usage inf
 
 `Used` column: The left part indicates the currently used space of this node. The whole bar indicates the total space of the node.
 
-Notice that the allocable space may be greater than the actual available space of the node when setting `Storage Over Provisioning Percentage` to a value greater than 100. If the volumes are heavily used and lots of historical data will be stored in the volume snapshots, please be careful about using a large value for this setting. For more info about the setting, see [here](../../references/settings/#storage-over-provisioning-percentage) for details. 
+Notice that the allocable space may be greater than the actual available space of the node when setting `Storage Over Provisioning Percentage` to a value greater than 100. If the volumes are heavily used and lots of historical data will be stored in the volume snapshots, please be careful about using a large value for this setting. For more info about the setting, see [here](../../../references/settings/#storage-over-provisioning-percentage) for details. 

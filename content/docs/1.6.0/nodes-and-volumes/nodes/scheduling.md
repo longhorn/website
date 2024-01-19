@@ -40,14 +40,14 @@ Now suppose one of the potential candidate disks has an existing replica and `Re
 
 For more information on settings that are relevant to scheduling replicas on nodes and disks, refer to the settings reference:
 
-- [Disable Scheduling On Cordoned Node](../../references/settings/#disable-scheduling-on-cordoned-node)
-- [Replica Soft Anti-Affinity](../../references/settings/#replica-node-level-soft-anti-affinity) (also called Replica Node Level Soft Anti-Affinity)
-- [Replica Zone Level Soft Anti-Affinity](../../references/settings/#replica-zone-level-soft-anti-affinity)
-- [Replica Disk Level Soft Anti-Affinity](../../references/settings/#replica-disk-level-soft-anti-affinity)
-- [Storage Minimal Available Percentage](../../references/settings/#storage-minimal-available-percentage)
-- [Storage Over Provisioning Percentage](../../references/settings/#storage-over-provisioning-percentage)
-- [Allow Empty Node Selector Volume](../../references/settings/#allow-empty-node-selector-volume)
-- [Allow Empty Disk Selector Volume](../../references/settings/#allow-empty-disk-selector-volume)
+- [Disable Scheduling On Cordoned Node](../../../references/settings/#disable-scheduling-on-cordoned-node)
+- [Replica Soft Anti-Affinity](../../../references/settings/#replica-node-level-soft-anti-affinity) (also called Replica Node Level Soft Anti-Affinity)
+- [Replica Zone Level Soft Anti-Affinity](../../../references/settings/#replica-zone-level-soft-anti-affinity)
+- [Replica Disk Level Soft Anti-Affinity](../../../references/settings/#replica-disk-level-soft-anti-affinity)
+- [Storage Minimal Available Percentage](../../../references/settings/#storage-minimal-available-percentage)
+- [Storage Over Provisioning Percentage](../../../references/settings/#storage-over-provisioning-percentage)
+- [Allow Empty Node Selector Volume](../../../references/settings/#allow-empty-node-selector-volume)
+- [Allow Empty Disk Selector Volume](../../../references/settings/#allow-empty-disk-selector-volume)
 
 ### Notice
 Longhorn relies on label `topology.kubernetes.io/zone=<Zone name of the node>` or `topology.kubernetes.io/region=<Region name of the node>` in the Kubernetes node object to identify the zone/region.

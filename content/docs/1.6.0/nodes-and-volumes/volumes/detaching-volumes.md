@@ -1,6 +1,6 @@
 ---
-title: Detaching Volumes
-weight: 8
+title: Detach Longhorn Volumes
+weight: 3
 ---
 
 Shut down all Kubernetes Pods using Longhorn volumes in order to detach the volumes. The easiest way to achieve this is by deleting all workloads and recreate them later after upgrade. If this is not desirable, some workloads may be suspended.

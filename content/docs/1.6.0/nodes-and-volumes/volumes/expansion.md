@@ -1,6 +1,6 @@
 ---
-  title: Volume Expansion
-  weight: 4
+title: Volume Expansion
+weight: 6
 ---
 
 Volumes are expanded in two stages. First, Longhorn resizes the block device, then it expands the filesystem.

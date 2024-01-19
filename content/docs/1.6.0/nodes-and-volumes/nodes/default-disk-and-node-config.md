@@ -104,4 +104,4 @@ If the label or annotation fails validation, the whole annotation is ignored.
       }, { "name":"fast-ssd-disk", "path":"/mnt/extra", "allowScheduling":false, "storageReserved":10485760,
       "tags":[ "ssd", "fast" ] }]'
     ```
-3. Deploy Longhorn with `create-default-disk-labeled-nodes: true`, check [here](../deploy/customizing-default-settings) for customizing the default settings of Longhorn.
+3. Deploy Longhorn with `create-default-disk-labeled-nodes: true`, check [here](../../../advanced-resources/deploy/customizing-default-settings) for customizing the default settings of Longhorn.

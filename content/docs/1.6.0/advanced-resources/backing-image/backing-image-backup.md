@@ -1,13 +1,13 @@
 ---
 title: Backing Image Backup
-weight: 4
+weight: 2
 ---
 
 As of v1.6.0, Longhorn supports backing up of backing images.
 
 ## Prerequisites
 
-You must first [set up a backup target](../../snapshots-and-backups/backup-and-restore/set-backup-target). If you skip this crucial step, the missing backup target will prevent Longhorn from creating a backup of the backing image.
+You must first [set up a backup target](../../../snapshots-and-backups/backup-and-restore/set-backup-target). If you skip this crucial step, the missing backup target will prevent Longhorn from creating a backup of the backing image.
 
 ## Create and Restore a Backup of a Backing Image
 

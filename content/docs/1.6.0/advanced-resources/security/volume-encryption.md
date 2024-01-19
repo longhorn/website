@@ -96,7 +96,7 @@ A newly-created PVC remains in the `Pending` state until the associated Secret i
 
 # Filesystem Expansion
 
-Longhorn supports [offline expansion](../../../volumes-and-nodes/expansion/#encrypted-volume) for encrypted volumes.
+Longhorn supports [offline expansion](../../../nodes-and-volumes/volumes/expansion/#encrypted-volume) for encrypted volumes.
 
 # History
 - Encryption of volumes in `Filesystem` mode available starting v1.2.0 ([#1859](https://github.com/longhorn/longhorn/issues/1859))

@@ -1,4 +1,4 @@
 ---
-title: Deploy
+title: Nodes
 weight: 1
 ---

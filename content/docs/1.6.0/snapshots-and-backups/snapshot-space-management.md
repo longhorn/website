@@ -1,6 +1,6 @@
 ---
 title: Snapshot Space Management
-weight: 4
+weight: 1
 ---
 
 Starting with v1.6.0, Longhorn allows you to configure the maximum snapshot count and the maximum aggregate snapshot size for each volume. Both settings do not take into account removed snapshots, backing images, and volume head snapshots. When either of these limits is reached, you must delete snapshots before creating new ones.

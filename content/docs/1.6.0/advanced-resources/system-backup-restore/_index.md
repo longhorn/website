@@ -1,6 +1,6 @@
 ---
 title: Longhorn System Backup And Restore
-weight: 4
+weight: 10
 ---
 
 > Before v1.4.0, you can restore Longhorn with third-party tools.

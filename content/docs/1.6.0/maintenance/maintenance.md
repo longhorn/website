@@ -1,6 +1,6 @@
 ---
 title: Node Maintenance and Kubernetes Upgrade Guide
-weight: 6
+weight: 3
 ---
 
 This section describes how to handle planned node maintenance or upgrading Kubernetes version for the cluster.
@@ -13,6 +13,12 @@ This section describes how to handle planned node maintenance or upgrading Kuber
   - [In-place Upgrade](#in-place-upgrade)
   - [Managed Kubernetes](#managed-kubernetes)
 - [Node Drain Policy Recommendations](#node-drain-policy-recommendations)
+  - [Important Notes](#important-notes)
+  - [Block If Contains Last Replica](#block-if-contains-last-replica)
+  - [Allow If Last Replica Is Stopped](#allow-if-last-replica-is-stopped)
+  - [Always Allow](#always-allow)
+  - [Block For Eviction](#block-for-eviction)
+  - [Block For Eviction If Contains Last Replica](#block-for-eviction-if-contains-last-replica)
 
 ## Updating the Node OS or Container Runtime
 
@@ -36,7 +42,7 @@ This section describes how to handle planned node maintenance or upgrading Kuber
    > **Note:** By default, if there is one last healthy replica for a volume on the node, Longhorn will prevent the node
    > from completing the drain operation, to protect the last replica and prevent the disruption of the workload. You
    > can control this behavior with the setting [Node Drain Policy](../../references/settings#node-drain-policy), or
-   > [evict the replica to other nodes before draining](../disks-or-nodes-eviction). See [Node Drain Policy
+   > [evict the replica to other nodes before draining](../../nodes-and-volumes/nodes/disks-or-nodes-eviction). See [Node Drain Policy
    > Recommendations](#node-drain-policy-recommendations) for considerations when selecting a policy.
 
    After the drain is completed, there should be no engine or replica processes running on the node, as the

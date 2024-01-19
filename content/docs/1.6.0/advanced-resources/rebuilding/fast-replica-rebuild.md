@@ -1,6 +1,6 @@
 ---
 title: Fast Replica Rebuild
-weight: 4
+weight: 5
 ---
 
 Longhorn supports fast replica rebuilding based on the checksums of snapshot disk files.
@@ -19,5 +19,5 @@ Then, a reduction in the number of unnecessary computations can speed up the ent
 ### Global Settings
 - fast-replica-rebuild-enabled <br>
 
-    The setting enables fast replica rebuilding feature. It relies on the checksums of snapshot disk files, so setting the snapshot-data-integrity to **enable** or **fast-check** is a prerequisite. Please refer to [Snapshot Data Integrity Check](../snapshot-data-integrity-check).
+    The setting enables fast replica rebuilding feature. It relies on the checksums of snapshot disk files, so setting the snapshot-data-integrity to **enable** or **fast-check** is a prerequisite. Please refer to [Snapshot Data Integrity Check](../../data-integrity/snapshot-data-integrity-check).
 

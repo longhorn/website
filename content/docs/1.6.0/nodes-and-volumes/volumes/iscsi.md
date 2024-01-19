@@ -9,7 +9,7 @@ hypervisor like KVM, as long as it's in the same network as the Longhorn system.
 
 The Longhorn CSI driver doesn't support iSCSI mode.
 
-To start a volume with the iSCSI target frontend mode, select `iSCSI` as the frontend when [creating the volume.](../../volumes-and-nodes/create-volumes)
+To start a volume with the iSCSI target frontend mode, select `iSCSI` as the frontend when [creating the volume.](../create-volumes)
 
 After the volume has been attached, you will see something like the following in the `endpoint` field:
 

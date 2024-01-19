@@ -55,7 +55,7 @@ You need to set node selector for both types of components. See more details bel
    * If you are changing node selector in a way so that Longhorn cannot run on some nodes that Longhorn is currently running on,
      you will lose the volume replicas on those nodes.
      Therefore, It is recommended that you evict replicas and disable scheduling for those nodes before changing node selector.
-     See [Evicting Replicas on Disabled Disks or Nodes](../../../volumes-and-nodes/disks-or-nodes-eviction) for more details about how to do this.
+     See [Evicting Replicas on Disabled Disks or Nodes](../../../nodes-and-volumes/nodes/disks-or-nodes-eviction) for more details about how to do this.
    * Stop all workloads and detach all Longhorn volumes. Make sure all Longhorn volumes are `detached`.
 
 2. Set node selector for user deployed components
