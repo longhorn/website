@@ -1,6 +1,6 @@
 ---
 title: Air Gap Installation
-weight: 2
+weight: 100
 ---
 
 Longhorn can be installed in an air gapped environment by using a manifest file, a Helm chart, or the Rancher UI.
