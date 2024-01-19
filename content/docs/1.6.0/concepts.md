@@ -88,7 +88,7 @@ Longhorn can create a long-running job to orchestrate the upgrade of all live vo
 The Longhorn CSI driver takes the block device, formats it, and mounts it on the node. Then the [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) bind-mounts the device inside a Kubernetes Pod. This allows the Pod to access the Longhorn volume.
 
 The required Kubernetes CSI Driver images will be deployed automatically by the longhorn driver deployer.
-To install Longhorn in an air gapped environment, refer to [this section](../advanced-resources/deploy/airgap).
+To install Longhorn in an air gapped environment, refer to [this section](../deploy/install/airgap).
 
 ## 1.4. CSI Plugin
 
