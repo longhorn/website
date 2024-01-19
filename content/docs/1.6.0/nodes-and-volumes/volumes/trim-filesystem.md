@@ -48,6 +48,10 @@ To trim an RWX volume, perform the following steps:
     fstrim /export/<volume name>
     ```
 
+#### Periodically
+
+You can set up a [RecurringJob](../../snapshots-and-backups/scheduling-backups-and-snapshots/#set-up-recurring-jobs) to periodically execute a filesystem trim.
+
 ## Automatically Remove Snapshots During Filesystem Trim
 
 By design each valid snapshot of a Longhorn volume is immutable. Hence Longhorn filesystem trim feature can be applied to **the volume head and the followed continuous removed or system snapshots only**.
