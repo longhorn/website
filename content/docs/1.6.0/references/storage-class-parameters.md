@@ -39,7 +39,8 @@ parameters:
 #  replicaZoneSoftAntiAffinity: "ignored"
 #  replicaDiskSoftAntiAffinity: "ignored"
 #  nfsOptions: "soft,timeo=150,retrans=3"
-#  backendStoreDriver: ""
+#  v1DataEngine: true
+#  v2DataEngine: false
 ```
 
 ## Built-in Fields
@@ -216,10 +217,10 @@ A list of recurring jobs that are to be run on a volume.
  
 > More details in [RWX Workloads](../../advanced-resources/rwx-workloads/#notice)
 
-#### Backend Store Driver *(field: `parameters.backendStoreDriver`)*
+#### Data Engine *(field: `parameters.dataEngine`)*
 > Default: `"v1"`  
 
-  - Use "v2" to run the v2 SPDK-based engine (experimental in 1.6.)  If empty, "v1" is assumed.
+  - Use "v2" to run the V2 Data Engine (experimental in 1.6)  If empty, "v1" is assumed.
 
 > Global setting: [V2 Data Engine](../settings#v2-data-engine).  
 > More details in [V2 Data Engine Quick Start](../../v2-data-engine/quick-start#create-a-storageclass).
