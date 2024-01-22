@@ -278,7 +278,7 @@ This information will help us gain insights how Longhorn is being used, which wi
 - Longhorn namespace UID.
 - Number of Longhorn nodes.
 - Number of volumes of each access mode (RWO, RWX, unknown).
-- Number of volumes associated with the backend store driver in each data engine (v1, v2).
+- Number of volumes of each data engine (v1, v2).
 - Number of volumes of each data locality type (disabled, best_effort, strict_local, unknown).
 - Number of volumes of each frontend type (blockdev, iscsi).
 - Average volume size in bytes.
