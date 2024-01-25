@@ -48,9 +48,9 @@ To trim an RWX volume, perform the following steps:
     fstrim /export/<volume name>
     ```
 
-#### Periodically
+#### Periodically trim the filesystem
 
-You can set up a [RecurringJob](../../../snapshots-and-backups/scheduling-backups-and-snapshots/#set-up-recurring-jobs) to periodically execute a filesystem trim.
+You can set up a [RecurringJob](../../../snapshots-and-backups/scheduling-backups-and-snapshots/#set-up-recurring-jobs) to periodically trim the filesystem.
 
 ## Automatically Remove Snapshots During Filesystem Trim
 
