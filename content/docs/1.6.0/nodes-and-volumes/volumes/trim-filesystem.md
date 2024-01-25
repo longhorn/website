@@ -50,7 +50,7 @@ To trim an RWX volume, perform the following steps:
 
 #### Periodically
 
-You can set up a [RecurringJob](../../snapshots-and-backups/scheduling-backups-and-snapshots/#set-up-recurring-jobs) to periodically execute a filesystem trim.
+You can set up a [RecurringJob](../../../snapshots-and-backups/scheduling-backups-and-snapshots/#set-up-recurring-jobs) to periodically execute a filesystem trim.
 
 ## Automatically Remove Snapshots During Filesystem Trim
 
