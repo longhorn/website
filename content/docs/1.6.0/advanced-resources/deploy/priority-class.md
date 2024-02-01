@@ -8,7 +8,7 @@ For more information on how pod priority works, refer to the [official Kubernete
 
 # Setting Priority Class
 
-Longhorn system contains user deployed components (e.g, Longhorn manager, Longhorn driver, Longhorn UI) and system managed components (e.g, instance manager, engine image, CSI driver, etc.)
+Longhorn consists of user-deployed components (for example, Longhorn Manager, Longhorn Driver, and Longhorn UI) and system-managed components (for example, Instance Manager, CSI Driver, and Engine images).
 You need to set Priority Class for both types of components. See more details below.
 
 ### Setting Priority Class During Longhorn Installation
@@ -32,11 +32,13 @@ The Priority Class setting will reject values that appear to be invalid Priority
 
 # Usage
 
-Before modifying the Priority Class setting, all Longhorn volumes must be detached.
+To ensure that your preferred Priority Class settings are immediately applied, stop all workloads and detach all Longhorn volumes before configuring the settings.
 
-Since all Longhorn components will be restarted, the Longhorn system will temporarily be unavailable. If there are running Longhorn volumes in the system, Longhorn system will not be able to restart its components, and the request will be rejected.
-
+Longhorn temporarily becomes unavailable when all components are restarted.
 Don't operate the Longhorn system after modifying the Priority Class setting, as the Longhorn components will be restarting.
+
+When all Longhorn volumes are detached, the customized setting is immediately applied to the system-managed components.
+When one or more Longhorn volumes are still attached, the customized setting is applied to the Instance Manager only when no engines and replica instances are running. You are required to reconfigure the setting after detaching the remaining volumes. Alternatively, you can wait for the next setting synchronization, which will occur in an hour.
 
 Do not delete the Priority Class in use by Longhorn, as this can cause new Longhorn workloads to fail to come online.
 

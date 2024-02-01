@@ -470,7 +470,7 @@ Number of millicpus on each node to be reserved for each instance manager pod wh
 
 > **Warning:**
 >  - Specifying a value of 0 disables CPU requests for instance manager pods. You must specify an integer between 1000 and 8000. 
->  - This is a global setting. Modifying the value triggers an automatic restart of the instance manager pods. Do not modify the value while volumes are still attached.
+>  - This is a global setting. Modifying the value triggers an automatic restart of the Instance Manager pods. However, V2 Instance Manager pods that use this setting are restarted only when no instances are running.
 
 #### Offline Replica Rebuilding
 
@@ -735,6 +735,26 @@ This setting allows replica of the volume without disk selector to be scheduled 
 
 ### Danger Zone
 
+Starting with Longhorn v1.6.0, Longhorn allows you to modify the [Danger Zone settings](https://longhorn.io/docs/1.6.0/references/settings/#danger-zone) without the need to wait for all volumes to become detached. Your preferred settings are immediately applied in the following scenarios:
+
+- No attached volumes: When no volumes are attached before the settings are configured, the setting changes are immediately applied.
+- Engine image upgrade (live upgrade): During a live upgrade, which involves creating a new Instance Manager pod, the setting changes are immediately applied to the new pod.
+
+Settings are synchronized hourly. When all volumes are detached, the settings in the following table are immediately applied and the system-managed components (for example, Instance Manager, CSI Driver, and Engine images) are restarted. If you do not detach all volumes before the settings are synchronized, the settings are not applied and you must reconfigure the same settings after detaching the remaining volumes.
+
+  | Setting | Additional Information| Affected Components |
+  | --- | --- | --- |
+  | [Kubernetes Taint Toleration](#kubernetes-taint-toleration)| [Taints and Tolerations](../../advanced-resources/deploy/taint-toleration/) | System-managed components |
+  | [Priority Class](#priority-class) | [Priority Class](../../advanced-resources/deploy/priority-class/) | System-managed components |
+  | [System Managed Components Node Selector](#system-managed-components-node-selector) | [Node Selector](../../advanced-resources/deploy/node-selector/) | System-managed components |
+  | [Storage Network](#storage-network) | [Storage Network](../../advanced-resources/deploy/storage-network/) | Instance Manager and Backing Image components |
+  | [V1 Data Engine](#v1-data-engine) || Instance Manager component |
+  | [V2 Data Engine](#v2-data-engine) | [V2 Data Engine (Preview Feature)](../../v2-data-engine/) | Instance Manager component |
+  | [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu) || Instance Manager component |
+  | [Guaranteed Instance Manager CPU for V2 Data Engine](#guaranteed-instance-manager-cpu-for-v2-data-engine) || Instance Manager component |
+
+For V1 and V2 Data Engine settings, you can disable the Data Engines only when all associated volumes are detached. For example, you can disable the V2 Data Engine only when all V2 volumes are detached (even when V1 volumes are still attached).
+
 #### Concurrent Replica Rebuild Per Node Limit
 
 > Default: `5`
@@ -759,7 +779,7 @@ Longhorn system contains user deployed components (e.g, Longhorn manager, Longho
 This setting only sets taint tolerations for system managed components.
 Depending on how you deployed Longhorn, you need to set taint tolerations for user deployed components in Helm chart or deployment YAML file.
 
-All Longhorn volumes should be detached before modifying toleration settings.
+To apply the modified toleration setting immediately, ensure that all Longhorn volumes are detached. When volumes are in use, Longhorn components are not restarted, and you need to reconfigure the settings after detaching the remaining volumes; otherwise, you can wait for the setting change to be reconciled in an hour.
 We recommend setting tolerations during Longhorn deployment because the Longhorn system cannot be operated during the update.
 
 Multiple tolerations can be set here, and these tolerations are separated by semicolon. For example:
@@ -795,7 +815,7 @@ Longhorn system contains user deployed components (e.g, Longhorn manager, Longho
 You need to set node selector for both of them. This setting only sets node selector for system managed components. Follow the instruction at [Node Selector](../../advanced-resources/deploy/node-selector) to change node selector.
 
 > **Warning:**  Since all Longhorn components will be restarted, the Longhorn system is unavailable temporarily.
-Make sure all Longhorn volumes are `detached`. If there are running Longhorn volumes in the system, this means the Longhorn system cannot restart its components and the request will be rejected.
+To apply a setting immediately, ensure that all Longhorn volumes are detached. When volumes are in use, Longhorn components are not restarted, and you need to reconfigure the settings after detaching the remaining volumes; otherwise, you can wait for the setting change to be reconciled in an hour.
 Don't operate the Longhorn system while node selector settings are updated and Longhorn components are being restarted.
 
 #### Kubernetes Cluster Autoscaler Enabled (Experimental)
@@ -814,7 +834,7 @@ See [Kubernetes Cluster Autoscaler Support](../../high-availability/k8s-cluster-
 
 The storage network uses Multus NetworkAttachmentDefinition to segregate the in-cluster data traffic from the default Kubernetes cluster network.
 
-> **Warning:** This setting should change after detaching all Longhorn volumes, as some of the Longhorn system component pods will get recreated to apply the setting. Longhorn will try to block this setting update when there are attached volumes.
+> **Warning:** This setting should change after all Longhorn volumes are detached because some pods that run Longhorn system components are recreated to apply the setting. When all volumes are detached, Longhorn attempts to restart all Instance Manager and Backing Image Manager pods immediately. When volumes are in use, Longhorn components are not restarted, and you need to reconfigure the settings after detaching the remaining volumes; otherwise, you can wait for the setting change to be reconciled in an hour.
 
 See [Storage Network](../../advanced-resources/deploy/storage-network) for details.
 
@@ -849,7 +869,7 @@ If it's hard to estimate the usage now, you can leave it with the default value,
 >  - Considering the possible number of new instance manager pods in a further system upgrade, this integer value ranges from 0 to 40.
 >  - One more set of instance manager pods may need to be deployed when the Longhorn system is upgraded. If current available CPUs of the nodes are not enough for the new instance manager pods, you need to detach the volumes using the oldest instance manager pods so that Longhorn can clean up the old pods automatically and release the CPU resources. And the new pods with the latest instance manager image will be launched then.
 >  - This global setting will be ignored for a node if the field "InstanceManagerCPURequest" on the node is set.
->  - After this setting is changed, all instance manager pods using this global setting on all the nodes will be automatically restarted. In other words, DO NOT CHANGE THIS SETTING WITH ATTACHED VOLUMES.
+>  - After the setting is changed, the V1 Instance Manager pods that use this setting are automatically restarted when no instances are running.
 
 #### Disable Snapshot Purge
 
