@@ -3,11 +3,11 @@ title: Upgrading Longhorn Manager
 weight: 1
 ---
 
-### Upgrading from v1.4.x
+### Upgrading from v1.5.x
 
-We only support upgrading to v{{< current-version >}} from v1.4.x. For other versions, please upgrade to v1.4.x first.
+We only support upgrading to v{{< current-version >}} from v1.5.x. For other versions, please upgrade to v1.5.x first.
 
-Engine live upgrade is supported from v1.4.x to v{{< current-version >}}.
+Engine live upgrade is supported from v1.5.x to v{{< current-version >}}.
 
 For airgap upgrades when Longhorn is installed as a Rancher app, you will need to modify the image names and remove the registry URL part.
 
@@ -89,7 +89,7 @@ Next, [upgrade Longhorn engine.](../upgrade-engine)
 
 ### Upgrading from Unsupported Versions
 
-We only support upgrading to v{{< current-version >}} from v1.4.x. For other versions, please upgrade to v1.4.x first.
+We only support upgrading to v{{< current-version >}} from v1.5.x. For other versions, please upgrade to v1.5.x first.
 
 If you attempt to upgrade from an unsupported version, the upgrade will fail. When encountering an upgrade failure, please consider the following scenarios to recover the state based on different upgrade methods.
 
