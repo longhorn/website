@@ -9,14 +9,14 @@ Here we cover how to upgrade to the latest Longhorn from all previous releases.
 
 There are no deprecated or incompatible changes introduced in v{{< current-version >}}.
 
-# Upgrade Path Enforcement and Downgrade Prevention  
+# Upgrade Path Enforcement and Downgrade Prevention
 
-Starting with v1.5.0, Longhorn only allows upgrades from supported versions. When you attempt to upgrade from an unsupported version, the operation automatically fails but you can revert to the previously installed version without any service interruption or downtime.  
+Starting with v1.5.0, Longhorn only allows upgrades from supported versions. When you attempt to upgrade from an unsupported version, the operation automatically fails but you can revert to the previously installed version without any service interruption or downtime.
 
-Moreover, Longhorn does not support downgrades to earlier versions. This restriction helps prevent unexpected system behavior and issues associated with function incompatibility, deprecation, or removal.  
+Moreover, Longhorn does not support downgrades to earlier versions. This restriction helps prevent unexpected system behavior and issues associated with function incompatibility, deprecation, or removal.
 
 > **Warning**:
-> - Once you successfully upgrade to v1.6.0, you will not be allowed to revert to the previously installed version. 
+> - Once you successfully upgrade to v1.6.0, you will not be allowed to revert to the previously installed version.
 > - The Downgrade Prevention feature was introduced in v1.5.0 so Longhorn is unable to prevent downgrade attempts in older versions.
 However, downgrading is completely unsupported and is therefore not recommended.
 
@@ -40,7 +40,7 @@ There are normally two steps in the upgrade process: first upgrade Longhorn mana
 
 ## 1. Upgrade Longhorn manager
 
-- To upgrade from v1.4.x, see [this section.](./longhorn-manager)
+- To upgrade from v1.5.x, see [this section.](./longhorn-manager)
 
 ## 2. Manually Upgrade Longhorn Engine
 
