@@ -41,7 +41,7 @@ You need to set tolerations for both types of components. See more details below
    * If you install Longhorn using Helm, you can change the Helm values for `longhornManager.tolerations`, `longhornUI.tolerations`, `longhornDriver.tolerations` in the `values.yaml` file.
     Then install the chart
 
-2. Set taint tolerations for system managed components
+2. Set taint tolerations for system-managed components (for example, Instance Manager, CSI Driver, and Engine images)
 
    Follow the [Customize default settings](../customizing-default-settings/) to set taint tolerations by changing the value for the `taint-toleratio` default setting
    > Note: Because of the limitation of Rancher 2.5.x, if you are using Rancher UI to install Longhorn, you need to click `Edit As Yaml` and add setting `taintToleration` to `defaultSettings`.
@@ -56,16 +56,18 @@ You need to set tolerations for both types of components. See more details below
 
 > **Warning**:
 >
-> Before modifying the toleration settings, users should make sure all Longhorn volumes are `detached`.
+> To ensure that your preferred toleration settings are immediately applied, stop all workloads and detach all Longhorn volumes before configuring the settings.
 >
 > Since all Longhorn components will be restarted, the Longhorn system is unavailable temporarily.
-> If there are running Longhorn volumes in the system, this means the Longhorn system cannot restart its components and the request will be rejected.
+>
+> When all Longhorn volumes are detached, the customized setting is immediately applied to the system-managed components.
+> When one or more Longhorn volumes are still attached, the customized setting is applied to the Instance Manager only when no engines and replica instances are running. You are required to reconfigure the setting after detaching the remaining volumes. Alternatively, you can wait for the next setting synchronization, which will occur in an hour.
 >
 > Don't operate the Longhorn system while toleration settings are updated and Longhorn components are being restarted.
 
 1. Prepare
 
-   Stop all workloads and detach all Longhorn volumes. Make sure all Longhorn volumes are `detached`.
+   To ensure that your preferred settings are immediately applied, stop all workloads and detach all Longhorn volumes before configuring the settings.
 
 2. Set taint tolerations for user deployed components (Manager, UI, Driver Deployer)
    * If you install Longhorn by Rancher 2.5.x, you need to click `Edit as YAML` in Rancher UI and copy this values into the YAML:
@@ -103,5 +105,3 @@ You need to set tolerations for both types of components. See more details below
 Available since v0.6.0
 * [Original feature request](https://github.com/longhorn/longhorn/issues/584)
 * [Resolve the problem with GitOps](https://github.com/longhorn/longhorn/issues/2120)
-
-

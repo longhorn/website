@@ -43,20 +43,16 @@ You need to set node selector for both types of components. See more details bel
    >   systemManagedComponentsNodeSelector: "label-key1:label-value1"
    >  ```
 
-
 ### Setting up Node Selector After Longhorn has been installed
 
 > **Warning**:
 > * Since all Longhorn components will be restarted, the Longhorn system is unavailable temporarily.
-> * Make sure all Longhorn volumes are `detached`. If there are running Longhorn volumes in the system, this means the Longhorn system cannot restart its components and the request will be rejected.
+> * When all Longhorn volumes are detached, the customized settings are immediately applied to the system-managed components (for example, Instance manager, CSI driver and Engine images).
+> * When one or more Longhorn volumes are still attached, the customized setting is applied to the Instance Manager only when no engines and replica instances are running. You are required to reconfigure the setting after detaching the remaining volumes. Alternatively, you can wait for the next setting synchronization, which will occur in an hour.
 > * Don't operate the Longhorn system while node selector settings are updated and Longhorn components are being restarted.
 
 1. Prepare
-   * If you are changing node selector in a way so that Longhorn cannot run on some nodes that Longhorn is currently running on,
-     you will lose the volume replicas on those nodes.
-     Therefore, It is recommended that you evict replicas and disable scheduling for those nodes before changing node selector.
-     See [Evicting Replicas on Disabled Disks or Nodes](../../../nodes-and-volumes/nodes/disks-or-nodes-eviction) for more details about how to do this.
-   * Stop all workloads and detach all Longhorn volumes. Make sure all Longhorn volumes are `detached`.
+   * To ensure that your preferred settings are immediately applied, stop all workloads and detach all Longhorn volumes before applying it.
 
 2. Set node selector for user deployed components
     * If you install Longhorn by Rancher UI, you need to click `Edit as YAML` and copy this values into the YAML then click upgrade:
@@ -89,5 +85,3 @@ You need to set node selector for both types of components. See more details bel
 ## History
 Available since v1.1.1
 * [Original feature request](https://github.com/longhorn/longhorn/issues/2199)
-
-

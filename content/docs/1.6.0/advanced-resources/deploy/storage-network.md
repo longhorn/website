@@ -12,9 +12,10 @@ You can refer to [Comprehensive Document](https://github.com/k8snetworkplumbingw
 Applying the setting will add `k8s.v1.cni.cncf.io/networks` annotation and recreate all existing instance-manager, and backing-image-manager pods.
 Longhorn will apply the same annotation to any new instance-manager, backing-image-manager, and backing-image-data-source pods.
 
-> **Warning**: Do not change this setting with volumes attached.
+> **Important**: To ensure that your preferred settings are immediately applied, stop all workloads and detach all Longhorn volumes before configuring the settings.
 >
-> Longhorn will try to block this setting update when there are attached volumes.
+> When all volumes are detached, Longhorn attempts to restart all Instance Manager and Backing Image Manager pods to apply the setting.
+> When one or more Longhorn volumes are still attached, the customized setting is applied to the Instance Manager only when no engines and replica instances are running. You are required to reconfigure the setting after detaching the remaining volumes. Alternatively, you can wait for the next setting synchronization, which will occur in an hour.
 
 # Setting Storage Network
 

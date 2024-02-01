@@ -15,6 +15,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Pod Security Policies Disabled \& Pod Security Admission Introduction](#pod-security-policies-disabled--pod-security-admission-introduction)
   - [Updating CSI Snapshot CRD `v1beta1` to `v1`, `v1beta1` Removed](#updating-csi-snapshot-crd-v1beta1-to-v1-v1beta1-removed)
   - [Engine Upgrade Enforcement](#engine-upgrade-enforcement)
+  - [Danger Zone Setting Configuration](#danger-zone-setting-configuration)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Changing Default Huge Page Size to 2 GiB](#changing-default-huge-page-size-to-2-gib)
@@ -135,6 +136,28 @@ done
 ```
 
 Once you successfully upgrade to version v1.6.0, you will be able to view information about engine image versions on the UI.
+
+### Danger Zone Setting Configuration
+
+Starting with Longhorn v1.6.0, Longhorn allows you to modify the [Danger Zone settings](https://longhorn.io/docs/1.6.0/references/settings/#danger-zone) without the need to wait for all volumes to become detached. Your preferred settings are immediately applied in the following scenarios:
+
+- No attached volumes: When no volumes are attached before the settings are configured, the setting changes are immediately applied.
+- Engine image upgrade (live upgrade): During a live upgrade, which involves creating a new Instance Manager pod, the setting changes are immediately applied to the new pod.
+
+Settings are synchronized hourly. When all volumes are detached, the settings in the following table are immediately applied and the system-managed components (for example, Instance Manager, CSI Driver, and engine images) are restarted. If you do not detach all volumes before the settings are synchronized, the settings are not applied and you must reconfigure the same settings after detaching the remaining volumes.
+
+  | Setting | Additional Information| Affected Components |
+  | --- | --- | --- |
+  | [Kubernetes Taint Toleration](../../references/settings/#kubernetes-taint-toleration)| [Taints and Tolerations](../../advanced-resources/deploy/taint-toleration/) | System-managed components |
+  | [Priority Class](../../references/settings/#priority-class) | [Priority Class](../../advanced-resources/deploy/priority-class/) | System-managed components |
+  | [System Managed Components Node Selector](../../references/settings/#system-managed-components-node-selector) | [Node Selector](../../advanced-resources/deploy/node-selector/) | System-managed components |
+  | [Storage Network](../../references/settings/#storage-network) | [Storage Network](../../advanced-resources/deploy/storage-network/) | Instance Manager and Backing Image components |
+  | [V1 Data Engine](../../references/settings/#v1-data-engine) || Instance Manager component |
+  | [V2 Data Engine](../../references/settings/#v2-data-engine) | [V2 Data Engine (Preview Feature)](../../v2-data-engine/) | Instance Manager component |
+  | [Guaranteed Instance Manager CPU](../../references/settings/#guaranteed-instance-manager-cpu) || Instance Manager component |
+  | [Guaranteed Instance Manager CPU for V2 Data Engine](../../references/settings/#guaranteed-instance-manager-cpu-for-v2-data-engine) || Instance Manager component |
+
+For V1 and V2 Data Engine settings, you can disable the Data Engines only when all associated volumes are detached. For example, you can disable the V2 Data Engine only when all V2 volumes are detached (even when V1 volumes are still attached).
 
 ## V2 Data Engine
 
