@@ -24,7 +24,7 @@ parameters:
 #  migratable: false
 #  encrypted: false
 #  dataLocality: "disabled"
-#  replicatAutoBalance: "ignored"
+#  replicaAutoBalance: "ignored"
 #  diskSelector: "ssd,fast"
 #  nodeSelector: "storage,fast"
 #  recurringJobSelector: '[{"name":"snap-group", "isGroup":true},
