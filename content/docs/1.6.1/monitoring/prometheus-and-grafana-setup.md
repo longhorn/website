@@ -70,7 +70,7 @@ Create a ServiceMonitor for Longhorn Manager.
     ```yaml
     metrics:
       serviceMonitor:
-        # -- Setting that allows the creation of a Prometheus ServiceMonitor resource for Longhorn Manager components.
+        # -- Setting that allows the creation of a [Prometheus Operator](https://prometheus-operator.dev/) ServiceMonitor resource for Longhorn Manager components.
         enabled: true
     ```
 
@@ -80,7 +80,7 @@ Create a ServiceMonitor for Longhorn Manager.
       helm upgrade longhorn longhorn/longhorn --namespace longhorn-system -f values.yaml
     ```
 
-Longhorn ServiceMonitor is included in the Prometheus custom resource. This setup allows the Prometheus server to discover all Longhorn Manager pods and their respective endpoints.
+Longhorn ServiceMonitor is a [Prometheus Operator](https://prometheus-operator.dev/) custom resource. This setup allows the Prometheus server to discover all Longhorn Manager pods and their respective endpoints.
 
 You can use the label selector `app: longhorn-manager` to select the longhorn-backend service, which points to the set of Longhorn Manager pods.
 
