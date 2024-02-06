@@ -6,9 +6,12 @@ weight: 7
 Since v1.4.0, Longhorn supports trimming filesystem inside Longhorn volumes. Trimming will reclaim space wasted by the removed files of the filesystem.
 
 > **Note:**
-> - Trying to trim a removed files from a valid snapshot will do nothing but the filesystem will discard this kind of in-memory trimmable file info. Later on if you mark the snapshot as removed and want to retry the trim, you may need to unmount and remount the filesystem so that the filesystem can recollect the trimmable file info.
+> - Since each valid snapshot is immutable, trimming removed files from a valid snapshot will do nothing. However, the
+    filesystem will remember that it has already trimmed the associated blocks. Later on, if you mark the snapshot as
+    removed and want to retry the trim, you may need to unmount and remount the filesystem first.
 >
-> - If you allow automatically removing snapshots during filesystem trim, please be careful of using mount option `discard`, which will trigger the snapshot removal frequently then interrupt some operations like backup creation.
+> - If you allow automatically removing snapshots during filesystem trim, please be careful of using the mount option
+    `discard`, which will trigger the snapshot removal frequently and interrupt some operations like backup creation.
 
 ## Prerequisites
 
@@ -20,13 +23,13 @@ Since v1.4.0, Longhorn supports trimming filesystem inside Longhorn volumes. Tri
 
 You can trim a Longhorn volume using either the Longhorn UI or the `fstrim` command.
 
-#### Via Longhorn UI
+### Via Longhorn UI
 
 You can directly click volume operation `Trim Filesystem` for attached volumes.
 
 Then Longhorn will **try its best** to figure out the mount point and execute `fstrim <the mount point>`.  If something is wrong or the filesystem does not exist, the UI will return an error.
 
-#### Via shell command
+### Via shell command
 
 When using `fstrim`, you must identify the mount point of the volume and then run the command `fstrim <the mount point>`.
 
@@ -34,6 +37,7 @@ When using `fstrim`, you must identify the mount point of the volume and then ru
 - RWX volume: The mount point is the share manager pod of the volume. The share manager pod contains the NFS server and is typically named `share-manager-<volume name>`.
 
 To trim an RWX volume, perform the following steps:
+
 1. Identify and then open a shell inside the share manager pod of the volume.
     ```
     kubectl -n longhorn-system exec -it <the share manager pod> -- bash
@@ -54,23 +58,53 @@ You can set up a [RecurringJob](../../../snapshots-and-backups/scheduling-backup
 
 ## Automatically Remove Snapshots During Filesystem Trim
 
-By design each valid snapshot of a Longhorn volume is immutable. Hence Longhorn filesystem trim feature can be applied to **the volume head and the followed continuous removed or system snapshots only**.
+By design each valid snapshot of a Longhorn volume is immutable. Hence, the Longhorn filesystem trim feature can be
+applied to **the volume head and the preceding continuously removed or system snapshots only**. If most of the actual
+space consumed by a volume is associated with valid snapshots, the trim operation will not be very effective.
 
-#### The Global Setting "Remove Snapshots During Filesystem Trim"
+### The Global Setting "Remove Snapshots During Filesystem Trim"
 
-To help reclaim as much space as possible automatically, Longhorn introduces [setting _Remove Snapshots During Filesystem Trim_](../../../references/settings/#remove-snapshots-during-filesystem-trim). This allows Longhorn filesystem trim feature to automatically mark the latest snapshot and its ancestors as removed and stops at the snapshot containing multiple children. As a result, Longhorn can reclaim space for as more snapshots as possible.
+To help reclaim as much space as possible automatically, Longhorn includes the setting
+[_Remove Snapshots During Filesystem Trim_](../../../references/settings/#remove-snapshots-during-filesystem-trim).
+This allows the trim feature to automatically mark the latest snapshot and all preceding snapshots
+(until there is a fork in the snapshot chain) as removed. As a result, Longhorn can reclaim space for as many snapshots
+as possible. However, this setting also causes intentionally created snapshots to be marked as removed (and eventually
+purged), so it should be used with caution.
 
 #### The Volume Spec Field "UnmapMarkSnapChainRemoved"
 
 Of course there is a per-volume field `volume.Spec.UnmapMarkSnapChainRemoved` would overwrite the global setting mentioned above.
 
-There are 3 options for this volume field: `ignored`, `enabled`, and `disabled`. `ignored` means following the global setting, which is the default value.
+There are 3 options for this volume field: `ignored`, `enabled`, and `disabled`. `ignored` means followi the global
+setting, which is the default value.
 
-You can directly set this field in the StorageClasses so that the customized value can be applied to all volumes created by the StorageClasses.
+You can directly set this field in a StoragaClass so that the customized value can be applied to all volumes created by
+the StorageClass.
 
 ## Known Issues & Limitations
 
+### Rebuilding volumes
+
+The trim operation cannot be executed successfully against a volume that is actively rebuilding. By design, it unmaps
+blocks in the volume head and all the continuously removed snapshots preceding it. However, some of these snapshots may
+be actively transferring from one replica to another while rebuilding is ongoing.
+
+Instead of returning an I/O error to the filesystem, Longhorn silently refuses to unmap blocks during a rebuild. The
+rebuild may take a long time, and VM workloads in particular respond poorly when repeated attempts to complete a trim
+return errors. See https://github.com/longhorn/longhorn/issues/7103 for details.
+
+If a trim operation is started during a rebuild, it will have no effect. Similar to issuing a trim against a valid
+snapshot, the filesystem will remember that it has already trimmed the associated blocks. Later on, if you want to
+attempt the trim again (to recover space), you may need to unmount and remount the filesystem first.
+
+### Expanding volumes
+
+The trim operation cannot be executed successfully against a volume that is actively expanding. Unlike for rebuilding
+volumes, Longhorn returns an I/O error to the filesystem when this occurs. Expansion is generally fast. It is better
+to inform the filesystem that the trim failed so that it can be tried again soon (without remounting).
+
 ### Encrypted volumes
+
 - By default, TRIM commands are not enabled by the device-mapper. You can check [this doc](https://wiki.archlinux.org/title/Dm-crypt/Specialties#Discard/TRIM_support_for_solid_state_drives_(SSD)) for details.
 
 - If you still want to trim an encrypted Longhorn volume, you can:
