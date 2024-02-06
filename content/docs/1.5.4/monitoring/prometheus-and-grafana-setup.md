@@ -40,7 +40,9 @@ Follow instructions in [Prometheus Operator - Quickstart](https://github.com/pro
 
 ### Install Longhorn ServiceMonitor
 
-1. Create a ServiceMonitor for Longhorn manager.
+#### Install Longhorn ServiceMonitor with Kubectl
+
+Create a ServiceMonitor for Longhorn manager.
 
     ```yaml
     apiVersion: monitoring.coreos.com/v1
@@ -61,9 +63,26 @@ Follow instructions in [Prometheus Operator - Quickstart](https://github.com/pro
       - port: manager
     ```
 
-    Longhorn ServiceMonitor has a label selector `app: longhorn-manager` for selecting Longhorn backend service.
+#### Install Longhorn ServiceMonitor with Helm
 
-    Longhorn ServiceMonitor is included in the Prometheus custom resource so that the Prometheus server can discover all Longhorn manager pods and their endpoints.
+1. Modify the YAML file `longhorn/chart/values.yaml`.
+
+    ```yaml
+    metrics:
+      serviceMonitor:
+        # -- Setting that allows the creation of a [Prometheus Operator](https://prometheus-operator.dev/) ServiceMonitor resource for Longhorn Manager components.
+        enabled: true
+    ```
+
+1. Create a ServiceMonitor for Longhorn Manager using Helm.
+
+    ```bash
+      helm upgrade longhorn longhorn/longhorn --namespace longhorn-system -f values.yaml
+    ```
+
+Longhorn ServiceMonitor is a [Prometheus Operator](https://prometheus-operator.dev/) custom resource. This setup allows the Prometheus server to discover all Longhorn Manager pods and their respective endpoints.
+
+You can use the label selector `app: longhorn-manager` to select the longhorn-backend service, which points to the set of Longhorn Manager pods.
 
 ### Install and configure Prometheus AlertManager
 
@@ -398,4 +417,3 @@ See [Prometheus - Configuration](https://prometheus.io/docs/alerting/latest/conf
 
     You should see the following dashboard at successful setup:
     ![images](/img/screenshots/monitoring/longhorn-example-grafana-dashboard.png)
-
