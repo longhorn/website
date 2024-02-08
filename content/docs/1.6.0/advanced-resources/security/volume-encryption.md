@@ -91,8 +91,7 @@ For more information, see [cryptsetup(8)](https://man7.org/linux/man-pages/man8/
 
 To create an encrypted volume, you must create a PVC using a StorageClass that has been configured for encryption. The above StorageClass examples can be used as a starting point.
 
-After creation of the PVC it will remain in `Pending` state till the associated secret has been created and can be retrieved
-A newly-created PVC remains in the `Pending` state until the associated Secret is created and can be retrieved by the csi `external-provisioner` sidecar. Afterwards, the regular volume creation process continues with encryption taking effect.
+After creation of the PVC it will remain in the `Pending` state until the associated secret has been created and can be retrieved by the csi `external-provisioner` sidecar. Afterwards, the regular volume creation process continues with encryption taking effect.
 
 # Filesystem Expansion
 
