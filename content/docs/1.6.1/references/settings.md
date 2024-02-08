@@ -46,6 +46,7 @@ weight: 1
   - [Snapshot Data Integrity](#snapshot-data-integrity)
   - [Immediate Snapshot Data Integrity Check After Creating a Snapshot](#immediate-snapshot-data-integrity-check-after-creating-a-snapshot)
   - [Snapshot Data Integrity Check CronJob](#snapshot-data-integrity-check-cronjob)
+  - [Snapshot Maximum Count](#snapshot-maximum-count)
 - [Orphan](#orphan)
   - [Orphaned Data Automatic Deletion](#orphaned-data-automatic-deletion)
 - [Backups](#backups)
@@ -507,6 +508,11 @@ Unix-cron string format. The setting specifies when Longhorn checks the data int
 > **Warning**
 > Hashing snapshot disk files impacts the performance of the system. It is recommended to run data integrity checks during off-peak times and to reduce the frequency of checks.
 
+#### Snapshot Maximum Count
+
+> Default: `250`
+
+Maximum snapshot count for a volume. The value should be between 2 to 250.
 
 ### Orphan
 
