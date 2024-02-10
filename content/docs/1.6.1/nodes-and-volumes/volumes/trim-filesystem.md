@@ -60,13 +60,13 @@ By design each valid snapshot of a Longhorn volume is immutable. Hence Longhorn 
 
 To help reclaim as much space as possible automatically, Longhorn introduces [setting _Remove Snapshots During Filesystem Trim_](../../../references/settings/#remove-snapshots-during-filesystem-trim). This allows Longhorn filesystem trim feature to automatically mark the latest snapshot and its ancestors as removed and stops at the snapshot containing multiple children. As a result, Longhorn can reclaim space for as more snapshots as possible.
 
-#### The Volume Spec Field "UnmapMarkSnapChainAsRemoved"
+#### The Volume Spec Field "UnmapMarkSnapChainRemoved"
 
-Of course there is a per-volume field `volume.Spec.UnmapMarkSnapChainAsRemoved` would overwrite the global setting mentioned above.
+Of course there is a per-volume field `volume.Spec.UnmapMarkSnapChainRemoved` would overwrite the global setting mentioned above.
 
 There are 3 options for this volume field: `ignored`, `enabled`, and `disabled`. `ignored` means following the global setting, which is the default value.
 
-You can directly set this field in the StoragaClasses so that the customized value can be applied to all volumes created by the StorageClasses.
+You can directly set this field in the StorageClasses so that the customized value can be applied to all volumes created by the StorageClasses.
 
 ## Known Issues & Limitations
 
