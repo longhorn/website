@@ -47,8 +47,8 @@ The following Linux OS distributions and versions have been verified during the 
 | No. | OS           | Versions
 |-----|--------------| --------
 | 1.  | Ubuntu       | 20.04, 22.04
-| 2.  | SLES         | 15 SP4
-| 3.  | SLE Micro    | 5.4
+| 2.  | SLES         | 15 SP5
+| 3.  | SLE Micro    | 5.5
 | 4.  | CentOS       | 8.4
 | 5.  | RHEL         | 8.6
 | 6.  | Oracle Linux | 8.6
