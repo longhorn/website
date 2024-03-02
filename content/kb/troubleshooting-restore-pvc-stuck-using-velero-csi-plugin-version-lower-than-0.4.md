@@ -1,8 +1,11 @@
 ---
 title: "Troubleshooting: Velero restores Longhorn PersistentVolumeClaim stuck in the Pending state when using the Velero CSI Plugin version before v0.4.0"
-author: Ray Chang
+authors:
+- "Ray Chang"
 draft: false
 date: 2022-12-15
+versions:
+- "all"
 categories:
   - "restore"
 ---

@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: Some old instance manager pods are still running after upgrade"
-author: Derek Su
+authors:
+- "Derek Su"
 draft: false
 date: 2021-11-09
+versions:
+- ">= v0.8.0"
 categories:
-  - "Longhorn Upgrade"
+- "Longhorn Upgrade"
 ---
 
 ## Applicable versions

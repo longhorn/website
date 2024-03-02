@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: RWX Volume Fails to Be Attached Caused by `Protocol not supported`"
-author: Derek Su
+authors:
+- "Derek Su"
 draft: false
 date: 2023-10-27
+versions:
+- "all"
 catelogies:
-  - "volume"
+- "volume"
 ---
 
 ## Applicable versions

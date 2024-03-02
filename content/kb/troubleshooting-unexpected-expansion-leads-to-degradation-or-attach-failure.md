@@ -1,12 +1,15 @@
 ---
 title: "Troubleshooting: Unexpected expansion leads to degradation or attach failure"
-author: Eric Weber
+authors:
+- "Eric Weber"
 draft: false
 date: 2023-07-26
+versions:
+- "See Applicable Versions"
 categories:
-  - "expansion"
-  - "replica"
-  - "instance-manager"
+- "expansion"
+- "replica"
+- "instance-manager"
 ---
 
 ## Applicable versions

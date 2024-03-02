@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: Failure to delete orphaned Pod volume directory"
-author: Ray Chang
+authors:
+- "Ray Chang"
 draft: false
 date: 2023-07-20
+versions:
+- "all"
 categories:
-  - "csi"
+- "csi"
 ---
 
 ## Applicable versions

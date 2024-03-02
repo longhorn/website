@@ -1,13 +1,16 @@
 ---
 title: "Troubleshooting: Volume attachment fails due to SELinux denials in Fedora downstream distributions"
-author: Eric Weber
+authors:
+- "Eric Weber"
 draft: false
 date: 2023-06-07
+versions:
+- "all"
 categories:
-  - "iscsi"
-  - "selinux"
-  - "rhel"
-  - "rocky"
+- "iscsi"
+- "selinux"
+- "rhel"
+- "rocky"
 ---
 
 ## Applicable versions

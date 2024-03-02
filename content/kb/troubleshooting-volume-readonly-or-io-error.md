@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: `volume readonly or I/O error`"
-author: Shuo Wu
+authors:
+- "Shuo Wu"
 draft: false
 date: 2021-01-08
+versions:
+- "all"
 categories:
-  - "HA"
+- "HA"
 ---
 
 ## Applicable versions

@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: Longhorn volumes take a long time to finish mounting"
-author: Phan Le
+authors:
+- "Phan Le"
 draft: false
 date: 2021-02-26
+versions:
+- "all"
 categories:
-  - "csi"
+- "csi"
 ---
 
 ## Applicable versions

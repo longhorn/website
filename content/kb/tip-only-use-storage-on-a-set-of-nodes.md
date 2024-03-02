@@ -1,8 +1,11 @@
 ---
 title: "Tip: Set Longhorn To Only Use Storage On A Specific Set Of Nodes"
-author: Phan Le
+authors:
+- "Phan Le"
 draft: false
 date: 2021-11-15
+versions:
+- "all"
 categories:
 - "tip"
 - "scheduling"

@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: Longhorn default settings do not persist"
-author: Chin-Ya Huang
+authors:
+- "Chin-Ya Huang"
 draft: false
 date: 2021-04-29
+versions:
+- "< v1.3.0"
 categories:
-  - "setting"
+- "setting"
 ---
 
 ## Applicable versions

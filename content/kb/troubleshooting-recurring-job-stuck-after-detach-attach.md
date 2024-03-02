@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: Recurring job does not create new jobs after detaching and attaching volume"
-author: Chin-Ya Huang
+authors:
+- "Chin-Ya Huang"
 draft: false
 date: 2021-04-21
+versions:
+- "all"
 categories:
-  - "recurring job"
+- "recurring job"
 ---
 
 ## Applicable versions
