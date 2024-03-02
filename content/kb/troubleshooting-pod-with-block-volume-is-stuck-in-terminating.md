@@ -1,8 +1,11 @@
 ---
 title: "Troubleshooting: Pod with `volumeMode: Block` is stuck in terminating"
-author: Phan Le
+authors:
+- "Phan Le"
 draft: false
 date: 2022-04-06
+versions:
+- "all"
 categories:
 - "HA"
 ---

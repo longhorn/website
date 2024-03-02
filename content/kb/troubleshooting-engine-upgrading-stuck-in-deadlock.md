@@ -1,8 +1,11 @@
 ---
 title: "Troubleshooting: Upgrading volume engine is stuck in deadlock"
-author: Phan Le
+authors:
+- "Phan Le"
 draft: false
 date: 2022-01-03
+versions:
+- "This happens when users upgrade Longhorn from version <= v1.1.1 to a newer version."
 categories:
 - "Longhorn Upgrade"
 ---

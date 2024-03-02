@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: Unable to access an NFS backup target"
-author: James Lu
+authors:
+- "James Lu"
 draft: false
 date: 2022-05-27
+versions:
+- "all"
 categories:
-  - "backup"
+- "backup"
 ---
 
 ## Applicable versions

@@ -1,8 +1,11 @@
 ---
 title: "Space consumption guideline"
-author: Shuo Wu
+authors:
+- "Shuo Wu"
 draft: false
 date: 2023-08-25
+versions:
+- all, but some features are introduced in v1.4.0 or v1.5.0
 categories:
 - "instruction"
 ---

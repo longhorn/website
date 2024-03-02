@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: Volume cannot be cleaned up after the node of the workload pod is down and recovered"
-author: Derek Su
+authors:
+- "Derek Su"
 draft: false
 date: 2021-11-08
+versions:
+- "all"
 categories:
-  - "Pod Cleanup"
+- "pod cleanup"
 ---
 
 ## Applicable versions

@@ -1,8 +1,11 @@
 ---
 title: "Troubleshooting: Longhorn RWX shared mount ownership is shown as nobody in consumer Pod"
-author: Chin-Ya Huang
+authors:
+- "Chin-Ya Huang"
 draft: false
 date: 2021-03-31
+versions:
+- "v1.1.0"
 categories:
   - "rwx"
 ---

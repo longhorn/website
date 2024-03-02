@@ -1,8 +1,11 @@
 ---
 title: "SELinux and Longhorn"
-author: Eric Weber
+authors:
+- "Eric Weber"
 draft: false
 date: 2023-11-21
+versions:
+- "all"
 categories:
 - "instruction"
 - "selinux"

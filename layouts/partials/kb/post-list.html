@@ -1,29 +1,126 @@
-{{ $posts := where site.RegularPages "Section" "kb" }}
-<section class="section">
-  <div class="container has-extra-bottom-padding">
-    <div class="columns is-multiline">
+<style>
+  .table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  .table th:nth-child(1),
+  .table td:nth-child(1) {
+    width: 40s%;
+  }
+  .table th:nth-child(2),
+  .table td:nth-child(2) {
+    width: 15%;
+  }
+  .table th:nth-child(3),
+  .table td:nth-child(3) {
+    width: 15;
+  }
+  .table th:nth-child(4),
+  .table td:nth-child(4) {
+    width: 15%;
+  }
+  .table th:nth-child(5),
+  .table td:nth-child(5) {
+    width: 15%;
+  }
+</style>
+
+<div style="border: 1px solid #ccc; padding: 0px; width: 85%; margin: 0 auto; text-align: center;">
+  <table class="table">
+    <thead>
+      <tr>
+        <th onclick="sortTable(0)">Title</th>
+        <th onclick="sortTable(1)">Categories</th>
+        <th onclick="sortTable(2)">Applicable Versions</th>
+        <th onclick="sortTable(3)">Author</th>
+        <th onclick="sortTable(4)">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ $posts := where site.RegularPages "Section" "kb" }}
       {{ range $posts }}
-      {{ $date := dateFormat "January 2, 2006" .Date }}
-      <div class="column is-one-third">
-        <a href="{{ .RelPermalink }}">
-          <div class="card">
-            <div class="card-content match-height">
-              <p class="title is-size-3 is-size-4-mobile has-text-grey-dark is-spaced">
-                {{ .Title }}
-              </p>
-
-              <p class="subtitle is-size-5 is-size-6-mobile has-text-grey">
-                {{ $date }}
-              </p>
-
-              <div class="content">
-                {{ .Content | truncate 250 }}
-              </div>
-            </div>
-          </div>
-        </a>
-      </div>
+      <tr>
+        <td><a href="{{ .RelPermalink }}">{{ .Title }}</a></td>
+        <td>
+          {{- range $index, $category := .Params.categories -}}
+            {{- if $index -}}
+              <br>{{ $category }}
+            {{- else -}}
+              {{ $category }}
+            {{- end -}}
+          {{- end -}}
+        </td>
+        <td>
+          {{- range $index, $version := .Params.versions -}}
+            {{- if $index -}}
+              <br>{{ $version }}
+            {{- else -}}
+              {{ $version }}
+            {{- end -}}
+          {{- end -}}
+        </td>
+        <td>
+          {{- range $index, $author := .Params.authors -}}
+            {{- if $index -}}
+              <br>{{ $author }}
+            {{- else -}}
+              {{ $author }}
+            {{- end -}}
+          {{- end -}}
+        </td>
+        <td>{{ dateFormat "2006-01-02" .Date }}</td>
+      </tr>
       {{ end }}
-    </div>
-  </div>
-</section>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.querySelector('.table');
+    switching = true;
+    // Set the sorting direction to ascending:
+    dir = 'asc'; 
+    /* Make a loop that will continue until no switching has been done: */
+    while (switching) {
+      // Start by saying: no switching is done:
+      switching = false;
+      rows = table.rows;
+      /* Loop through all table rows (except the first, which contains table headers): */
+      for (i = 1; i < (rows.length - 1); i++) {
+        // Start by saying there should be no switching:
+        shouldSwitch = false;
+        /* Get the two elements you want to compare, one from current row and one from the next: */
+        x = rows[i].getElementsByTagName('td')[n];
+        y = rows[i + 1].getElementsByTagName('td')[n];
+        /* Check if the two rows should switch place, based on the direction, asc or desc: */
+        if (dir === 'asc') {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        } else if (dir === 'desc') {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+      if (shouldSwitch) {
+        /* If a switch has been marked, make the switch and mark that a switch has been done: */
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        // Each time a switch is done, increase this count by 1:
+        switchcount ++;
+      } else {
+        /* If no switching has been done AND the direction is 'asc', set the direction to 'desc' and run the while loop again. */
+        if (switchcount === 0 && dir === 'asc') {
+          dir = 'desc';
+          switching = true;
+        }
+      }
+    }
+  }
+</script>

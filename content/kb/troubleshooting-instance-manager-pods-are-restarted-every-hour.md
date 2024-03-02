@@ -1,8 +1,11 @@
 ---
 title: "Troubleshooting: Instance manager pods are restarted every hour"
-author: Phan Le
+authors:
+- "Phan Le"
 draft: false
 date: 2022-02-25
+versions:
+- ">= v1.0.1"
 categories:
 - "instance manager"
 ---

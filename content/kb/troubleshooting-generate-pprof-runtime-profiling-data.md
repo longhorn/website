@@ -1,8 +1,11 @@
 ---
 title: "Troubleshooting: Generate pprof runtime profiling data"
-author: Derek Su
+authors:
+- "Derek Su"
 draft: false
 date: 2021-10-18
+versions:
+- ">= v1.1.2"
 categories:
   - "pprof"
 ---

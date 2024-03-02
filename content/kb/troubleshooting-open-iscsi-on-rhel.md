@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: Open-iSCSI on RHEL based systems"
-author: Keith Lucas
+authors:
+- "Keith Lucas"
 draft: false
 date: 2022-02-22
+versions:
+- "all"
 categories:
-   - "iscsi"
+- "iscsi"
 ---
 
 ## Applicable versions

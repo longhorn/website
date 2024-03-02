@@ -1,10 +1,14 @@
 ---
 title: "Troubleshooting: fstrim doesn't work on old kernel"
-author: Phan Le
+authors:
+- "Phan Le"
 draft: false
 date: 2023-10-06
+versions:
+- ">= v1.4.0"
+- "<= v4.12"
 catelogies:
-  - "trim"
+- "trim"
 ---
 
 ## Applicable versions

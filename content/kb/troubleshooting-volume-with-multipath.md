@@ -1,11 +1,14 @@
 ---
 title: "Troubleshooting: `MountVolume.SetUp failed for volume` due to multipathd on the node"
-author: Clark Hsu
+authors:
+- "Clark Hsu"
 draft: false
 date: 2021-03-16
+versions:
+- "all"
 catelogies:
-  - "csi"
-  - "multipathd"
+- "csi"
+- "multipathd"
 ---
 
 ## Applicable versions

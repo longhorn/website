@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: None-standard Kubelet directory"
-author: Chin-Ya Huang
+authors:
+- "Chin-Ya Huang"
 draft: false
 date: 2021-06-18
+versions:
+- "all"
 categories:
-  - "csi"
+- "csi"
 ---
 
 ## Applicable versions

@@ -1,10 +1,16 @@
 ---
 title: "Analysis: Potential Data/Filesystem Corruption"
-author: Derek Su and Phan Le
+authors:
+- "Derek Su"
+- "Phan Le"
 draft: false
 date: 2022-09-29
+versions:
+- "v1.1.x"
+- "v1.2.x that are < v1.2.6"
+- "v1.3.x that are < v1.3.2"
 categories:
-- "data-integrity"
+- "data integrity"
 ---
 
 ## Applicable versions

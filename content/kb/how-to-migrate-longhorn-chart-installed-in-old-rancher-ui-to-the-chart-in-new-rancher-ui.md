@@ -1,8 +1,12 @@
 ---
 title: "Instruction: How To Migrate Longhorn Chart Installed In Old Rancher UI To The Chart In New Rancher UI"
-author: Phan Le
+authors:
+- "Phan Le"
 draft: false
 date: 2022-06-23
+versions:
+- "v1.2.x"
+- "v1.3.x"
 categories:
 - "instruction"
 - "upgrade"

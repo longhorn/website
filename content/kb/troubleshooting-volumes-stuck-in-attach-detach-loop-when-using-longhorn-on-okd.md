@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: Volumes Stuck in Attach/Detach Loop When Using Longhorn on OKD"
-author: Jack Lin
+authors:
+- "Jack Lin"
 draft: false
 date: 2023-02-09
+versions:
+- "all"
 categories:
-  - "iscsi"
+- "iscsi"
 ---
 
 ## Applicable versions

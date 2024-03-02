@@ -1,13 +1,16 @@
 ---
 title: "Troubleshooting: Failed RWX mount due to connection timeout"
-author: Eric Weber
+authors:
+- "Eric Weber"
 draft: false
 date: 2023-09-05
+versions:
+- "all"
 categories:
-  - "nfs"
-  - "rwx"
-  - "sles"
-  - "flannel"
+- "nfs"
+- "rwx"
+- "sles"
+- "flannel"
 ---
 
 ## Applicable versions

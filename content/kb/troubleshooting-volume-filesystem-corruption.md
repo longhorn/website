@@ -1,10 +1,14 @@
 ---
 title: "Troubleshooting: Pod stuck in creating state when Longhorn volumes filesystem is corrupted"
-author: Chin-Ya Huang and Derek Su
+authors:
+- "Chin-Ya Huang"
+- "Derek Su"
 draft: false
 date: 2021-08-19
+versions:
+- "all"
 categories:
-  - "volume"
+- "volume"
 ---
 
 ## Applicable versions

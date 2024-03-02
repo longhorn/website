@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: Use Traefik 2.x as ingress controller"
-author: JenTing Hsiao
+authors:
+- "JenTing Hsiao"
 draft: false
 date: 2021-04-20
+versions:
+- "See Applicable Versions"
 categories:
-  - "longhorn-ui"
+- "longhorn-ui"
 ---
 
 ## Applicable versions

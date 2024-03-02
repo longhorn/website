@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: Create Support Bundle with cURL"
-author: Chin-Ya Huang
+authors:
+- "Chin-Ya Huang"
 draft: false
 date: 2021-04-12
+versions:
+- "all"
 categories:
-  - "support bundle"
+- "support bundle"
 ---
 
 ## Applicable versions

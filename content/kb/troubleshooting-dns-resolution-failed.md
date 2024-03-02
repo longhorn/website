@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: DNS Resolution Failed"
-author: JenTing Hsiao
+authors:
+- "JenTing Hsiao"
 draft: false
 date: 2021-10-26
+versions:
+- "all"
 categories:
-  - "dns"
+- "dns"
 ---
 
 ## Applicable versions

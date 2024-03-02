@@ -1,10 +1,13 @@
 ---
 title: "Troubleshooting: Longhorn-UI: Error during WebSocket handshake: Unexpected response code: 200 #2265"
-author: Clark Hsu
+authors:
+- "Clark Hsu"
 draft: false
 date: 2021-03-09
+versions:
+- "Existing Longhorn versions < v1.1.0 upgrade to Longhorn >= v1.1.0."
 catelogies:
-  - "longhorn-ui"
+- "longhorn-ui"
 ---
 
 ## Applicable versions
