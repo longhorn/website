@@ -16,6 +16,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Updating CSI Snapshot CRD `v1beta1` to `v1`, `v1beta1` Removed](#updating-csi-snapshot-crd-v1beta1-to-v1-v1beta1-removed)
   - [Engine Upgrade Enforcement](#engine-upgrade-enforcement)
   - [Danger Zone Setting Configuration](#danger-zone-setting-configuration)
+  - [Longhorn PVC with Block Volume Mode](#longhorn-pvc-with-block-volume-mode)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Changing Default Huge Page Size to 2 GiB](#changing-default-huge-page-size-to-2-gib)
@@ -158,6 +159,54 @@ Settings are synchronized hourly. When all volumes are detached, the settings in
   | [Guaranteed Instance Manager CPU for V2 Data Engine](../../references/settings/#guaranteed-instance-manager-cpu-for-v2-data-engine) || Instance Manager component |
 
 For V1 and V2 Data Engine settings, you can disable the Data Engines only when all associated volumes are detached. For example, you can disable the V2 Data Engine only when all V2 volumes are detached (even when V1 volumes are still attached).
+
+### Longhorn PVC with Block Volume Mode
+
+Starting with v1.6.0, Longhorn is changing the default group ID of Longhorn devices from `0` (root group) to `6` (typically associated with the "disk" group).
+This change allows non-root containers to read or write to PVs using the **Block** volume mode. Note that Longhorn still keeps the owner of the Longhorn block devices as root.
+As a result, if your pod has security context such that it runs as non-root user and is part of the group id 0, the pod will no longer be able to read or write to Longhorn block volume mode PVC anymore.
+This use case should be very rare because running as a non-root user with the root group does not make much sense.
+More specifically, this example will not work anymore:
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: longhorn-block-vol
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Block
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: block-volume-test
+  namespace: default
+spec:
+  securityContext:
+    runAsGroup: 1000
+    runAsNonRoot: true
+    runAsUser: 1000
+    supplementalGroups:
+    - 0
+  containers:
+    - name: block-volume-test
+      image: ubuntu:20.04
+      command: ["sleep", "360000"]
+      imagePullPolicy: IfNotPresent
+      volumeDevices:
+        - devicePath: /dev/longhorn/testblk
+          name: block-vol
+  volumes:
+    - name: block-vol
+      persistentVolumeClaim:
+        claimName: longhorn-block-vol
+```
+From this version, you need to add group id 6 to the security context or run container as root. For more information, see [Longhorn PVC ownership and permission](../../nodes-and-volumes/volumes/pvc-ownership-and-permission)
 
 ## V2 Data Engine
 
