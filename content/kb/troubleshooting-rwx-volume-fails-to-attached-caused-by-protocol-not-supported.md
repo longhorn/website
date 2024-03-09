@@ -6,8 +6,9 @@ draft: false
 date: 2023-10-27
 versions:
 - "all"
-catelogies:
-- "volume"
+categories:
+- "RWX volume"
+- "Linux kernel"
 ---
 
 ## Applicable versions

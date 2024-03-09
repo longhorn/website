@@ -8,6 +8,7 @@ versions:
 - all, but some features are introduced in v1.4.0 or v1.5.0
 categories:
 - "instruction"
+- "snapshot"
 ---
 
 ## Applicable versions

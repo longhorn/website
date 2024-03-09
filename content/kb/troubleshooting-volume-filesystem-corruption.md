@@ -8,7 +8,7 @@ date: 2021-08-19
 versions:
 - "all"
 categories:
-- "volume"
+- "data integrity"
 ---
 
 ## Applicable versions

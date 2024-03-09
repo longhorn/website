@@ -7,7 +7,7 @@ date: 2022-01-03
 versions:
 - "This happens when users upgrade Longhorn from version <= v1.1.1 to a newer version."
 categories:
-- "Longhorn Upgrade"
+- "longhorn upgrade"
 ---
 
 ## Applicable versions

@@ -6,7 +6,7 @@ draft: false
 date: 2021-03-16
 versions:
 - "all"
-catelogies:
+categories:
 - "csi"
 - "multipathd"
 ---

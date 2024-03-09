@@ -6,7 +6,7 @@ draft: false
 date: 2021-03-09
 versions:
 - "Existing Longhorn versions < v1.1.0 upgrade to Longhorn >= v1.1.0."
-catelogies:
+categories:
 - "longhorn-ui"
 ---
 

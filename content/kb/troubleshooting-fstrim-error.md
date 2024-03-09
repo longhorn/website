@@ -6,9 +6,9 @@ draft: false
 date: 2023-10-06
 versions:
 - ">= v1.4.0"
-- "<= v4.12"
-catelogies:
-- "trim"
+categories:
+- "filesystem trim"
+- "Linux kernel"
 ---
 
 ## Applicable versions
