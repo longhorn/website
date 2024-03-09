@@ -7,7 +7,7 @@ date: 2021-11-09
 versions:
 - ">= v0.8.0"
 categories:
-- "Longhorn Upgrade"
+- "longhorn upgrade"
 ---
 
 ## Applicable versions

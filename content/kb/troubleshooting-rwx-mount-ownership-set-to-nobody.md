@@ -7,7 +7,7 @@ date: 2021-03-31
 versions:
 - "v1.1.0"
 categories:
-  - "rwx"
+  - "RWX volume"
 ---
 
 ## Applicable versions

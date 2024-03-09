@@ -1,8 +1,11 @@
 ---
 title: "Kubernetes resource revision frequency expectations"
-author: Eric Weber
+authors:
+- "Eric Weber"
 draft: false
 date: 2024-02-23
+versions:
+- "See Applicable Versions"
 categories:
 - "instruction"
 - "etcd"
