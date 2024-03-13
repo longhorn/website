@@ -140,7 +140,7 @@ A list of tags to select which disks are candidates for replica placement.
 A list of tags to select which nodes are candidates for replica placement.  
 > More details in [Storage Tags](../../volumes-and-nodes/storage-tags)
 
-#### Recurring Jobs Selector *(field: `parameters.recurringJobsSelector`)*
+#### Recurring Job Selector *(field: `parameters.recurringJobSelector`)*
 > Default: `""`  
 > Example:  `[{"name":"backup", "isGroup":true}]`  
 
