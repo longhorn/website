@@ -52,6 +52,7 @@ You must perform additional setups before using Longhorn with certain operating 
 - RKE clusters with CoreOS: See [Longhorn CSI on RKE and CoreOS](../../advanced-resources/os-distro-specific/csi-on-rke-and-coreos).
 - OCP/OKD clusters: See [OKD Support](../../advanced-resources/os-distro-specific/okd-support).
 - Talos Linux clusters: See [Talos Linux Support](../../advanced-resources/os-distro-specific/talos-linux-support).
+- Container-Optimized OS: See [Container-Optimized OS Support](../../advanced-resources/os-distro-specific/container-optimized-os-support).
 
 ### Using the Environment Check Script
 
@@ -161,6 +162,8 @@ You may need to edit the cluster security group to allow SSH access.
 
 - Talos Linux: See [Talos Linux Support](../../advanced-resources/os-distro-specific/talos-linux-support).
 
+- Container-Optimized OS: See [Container-Optimized OS Support](../../advanced-resources/os-distro-specific/container-optimized-os-support)
+
 Please ensure iscsi_tcp module has been loaded before iscsid service starts. Generally, it should be automatically loaded along with the package installation.
 
 ```
@@ -229,6 +232,8 @@ The command used to install a NFSv4 client differs depending on the Linux distri
   ```
 
 - For Talos Linux, [the NFS client is part of the `kubelet` image maintained by the Talos team](https://www.talos.dev/v1.6/kubernetes-guides/configuration/storage/#nfs).
+
+- For Container-Optimized OS, [the NFS is supported with the node image](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images#storage_driver_support).
 
 We also provide an `nfs` installer to make it easier for users to install `nfs-client` automatically:
 ```
