@@ -9,6 +9,7 @@ For reference, this page provides examples of Kubernetes resources that use Long
 - [CSI persistent volume](#csi-persistent-volume)
 - [Deployment](#deployment)
 - [Pod with PersistentVolumeClaim](#pod-with-persistentvolumeclaim)
+- [Pod with Generic Ephemeral Volume](#pod-with-generic-ephemeral-volume)
 - [Restore to file](#restore-to-file)
 - [Simple Pod](#simple-pod)
 - [Simple PersistentVolumeClaim](#simple-persistentvolumeclaim)
@@ -16,7 +17,6 @@ For reference, this page provides examples of Kubernetes resources that use Long
 - [StorageClass](#storageclass)
 
 ### Block Volume
-
 
     apiVersion: v1
     kind: PersistentVolumeClaim
@@ -50,8 +50,6 @@ For reference, this page provides examples of Kubernetes resources that use Long
         - name: block-vol
           persistentVolumeClaim:
             claimName: longhorn-block-vol
-
-
 
 ### CSI Persistent Volume
 
@@ -116,9 +114,7 @@ For reference, this page provides examples of Kubernetes resources that use Long
         persistentVolumeClaim:
           claimName: longhorn-vol-pvc
 
-
 ### Deployment
-
 
     apiVersion: v1
     kind: Service
@@ -187,9 +183,7 @@ For reference, this page provides examples of Kubernetes resources that use Long
             persistentVolumeClaim:
               claimName: mysql-pvc
 
-
 ### Pod with PersistentVolumeClaim
-
 
     apiVersion: v1
     kind: PersistentVolumeClaim
@@ -230,6 +224,46 @@ For reference, this page provides examples of Kubernetes resources that use Long
       - name: volv
         persistentVolumeClaim:
           claimName: longhorn-volv-pvc
+
+### Pod with Generic Ephemeral Volume
+
+For more information about generic ephemeral volumes, refer to the
+[Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes).
+
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: volume-test
+    namespace: default
+  spec:
+    restartPolicy: Always
+    containers:
+    - name: volume-test
+      image: nginx:stable-alpine
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        exec:
+          command:
+            - ls
+            - /data/lost+found
+        initialDelaySeconds: 5
+        periodSeconds: 5
+      volumeMounts:
+      - name: volv
+        mountPath: /data
+      ports:
+      - containerPort: 80
+    volumes:
+    - name: volv
+      ephemeral:
+        volumeClaimTemplate:
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            storageClassName: longhorn
+            resources:
+              requests:
+                storage: 2Gi
 
 ### Restore to File
 
@@ -284,9 +318,7 @@ For more information about restoring to file, refer to [this section.](../../adv
             path: /tmp/restore
       restartPolicy: Never
 
-
 ### Simple Pod
-
 
     apiVersion: v1
     kind: Pod
@@ -316,10 +348,7 @@ For more information about restoring to file, refer to [this section.](../../adv
           persistentVolumeClaim:
             claimName: longhorn-simple-pvc
 
-
-
 ### Simple PersistentVolumeClaim
-
 
     apiVersion: v1
     kind: PersistentVolumeClaim
@@ -333,10 +362,7 @@ For more information about restoring to file, refer to [this section.](../../adv
         requests:
           storage: 1Gi
 
-
-
 ### StatefulSet
-
 
     apiVersion: v1
     kind: Service
