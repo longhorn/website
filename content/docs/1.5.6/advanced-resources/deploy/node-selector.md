@@ -10,12 +10,18 @@ In this case, you can set the node selector to restrict Longhorn to only run on 
 For more information about how node selector work, refer to the [official Kubernetes documentation.](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector)
 
 # Setting up Node Selector for Longhorn
-Longhorn system contains user deployed components (e.g, Manager, Driver Deployer, UI) and system managed components (e.g, Instance Manager, Engine Image, CSI Driver, etc.)
+Longhorn consists of user-deployed components (for example, Longhorn Manager, Longhorn Driver, and Longhorn UI) and system-managed components (for example, Instance Manager, Backing Image Manager, Share Manager, CSI Driver, and Engine Image).
 You need to set node selector for both types of components. See more details below.
 
 ### Setting up Node Selector During installing Longhorn
-1. Set node selector for user deployed components (Manager, UI, Driver Deployer)
-   * If you install Longhorn by Rancher 2.5.x, you need to click `Edit as YAML` in Rancher UI and copy this values into the YAML:
+1. Set the node selector for user-deployed components (for example, Longhorn Manager, Longhorn Driver, and Longhorn UI).
+   * If you install Longhorn through Rancher, you must copy and paste the following parameters into the YAML on the Rancher UI (click **Edit as YAML** during the installation) to apply the value to all user-deployed components.
+      ```yaml
+        global:
+          nodeSelector:
+            label-key1: "label-value1"
+      ```
+   * You can also specify the node selector for each user-deployed component and it will orverride the global setting.
       ```yaml
         longhornManager:
           nodeSelector:
@@ -29,10 +35,9 @@ You need to set node selector for both types of components. See more details bel
       ```
    * If you install Longhorn by using `kubectl` to apply [the deployment YAML](https://raw.githubusercontent.com/longhorn/longhorn/v1.1.1/deploy/longhorn.yaml), you need to modify the node selector section for Longhorn Manager, Longhorn UI, and Longhorn Driver Deployer.
     Then apply the YAMl files.
-   * If you install Longhorn using Helm, you can change the Helm values for `longhornManager.nodeSelector`, `longhornUI.nodeSelector`, `longhornDriver.nodeSelector` in the `values.yaml` file.
-    Then install the chart
+   * If you install Longhorn using Helm, you can change the Helm values for `global.nodeSelector`, `longhornManager.nodeSelector`, `longhornUI.nodeSelector`, `longhornDriver.nodeSelector` in the `values.yaml` file before installing the chart.
 
-2. Set node selector for system managed components
+2. Set the node selector for system-managed components (for example, Instance Manager, Backing Image Manager, Share Manager, CSI Driver, and Engine Image).
 
    Follow the [Customize default settings](../customizing-default-settings/) to set node selector by changing the value for the `system-managed-components-node-selector` default setting
    > Note: Because of the limitation of Rancher 2.5.x, if you are using Rancher UI to install Longhorn, you need to click `Edit As Yaml` and add setting `systemManagedComponentsNodeSelector` to `defaultSettings`.
@@ -42,7 +47,6 @@ You need to set node selector for both types of components. See more details bel
    > defaultSettings:
    >   systemManagedComponentsNodeSelector: "label-key1:label-value1"
    >  ```
-
 
 ### Setting up Node Selector After Longhorn has been installed
 
@@ -58,8 +62,14 @@ You need to set node selector for both types of components. See more details bel
      See [Evicting Replicas on Disabled Disks or Nodes](../../../volumes-and-nodes/disks-or-nodes-eviction) for more details about how to do this.
    * Stop all workloads and detach all Longhorn volumes. Make sure all Longhorn volumes are `detached`.
 
-2. Set node selector for user deployed components
-    * If you install Longhorn by Rancher UI, you need to click `Edit as YAML` and copy this values into the YAML then click upgrade:
+2. Set the node selector for user-deployed components (for example, Longhorn Manager, Longhorn Driver, and Longhorn UI).
+   * If you install Longhorn through Rancher, you must copy and paste the following parameters into the YAML on the Rancher UI (click **Edit as YAML** during the upgrade) to apply the value to all user-deployed components.
+        ```yaml
+        global:
+          nodeSelector:
+            label-key1: "label-value1"
+        ```
+    * You can also specify the node selector for each user-deployed component and it will override the global setting.
         ```yaml
         longhornManager:
           nodeSelector:
@@ -73,10 +83,9 @@ You need to set node selector for both types of components. See more details bel
         ```
     * If you install Longhorn by using `kubectl` to apply [the deployment YAML](https://raw.githubusercontent.com/longhorn/longhorn/v1.1.1/deploy/longhorn.yaml), you need to modify the node selector section for Longhorn Manager, Longhorn UI, and Longhorn Driver Deployer.
       Then reapply the YAMl files.
-    * If you install Longhorn using Helm, you can change the Helm values for `longhornManager.nodeSelector`, `longhornUI.nodeSelector`, `longhornDriverDeployer.nodeSelector` in the `value.yaml` file.
-      Then do Helm upgrade the chart.
+    * If you install Longhorn using Helm, you can change the Helm values for `global.nodeSelector`, `longhornManager.nodeSelector`, `longhornUI.nodeSelector`, `longhornDriverDeployer.nodeSelector` in the `values.yaml` file, and then run `helm upgrade` to upgrade to the new version of the chart.
 
-3. Set node selector for system managed components
+3. Set the node selector for system-managed components (for example, Instance Manager, Backing Image Manager, Share Manager, CSI Driver, and Engine Image).
 
    The node selector setting can be found at Longhorn UI under **Setting > General > System Managed Components Node Selector.**
 
@@ -89,5 +98,3 @@ You need to set node selector for both types of components. See more details bel
 ## History
 Available since v1.1.1
 * [Original feature request](https://github.com/longhorn/longhorn/issues/2199)
-
-
