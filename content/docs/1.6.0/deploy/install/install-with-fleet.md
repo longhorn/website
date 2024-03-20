@@ -48,6 +48,26 @@ weight: 10
         name: volumes.longhorn.io
         operations:
         - {"op": "replace", "path": "/status"}
+      - apiVersion: apiextensions.k8s.io/v1
+        kind: CustomResourceDefinition
+        name: engines.longhorn.io
+        operations:
+        - {"op": "replace", "path": "/status"}
+      - apiVersion: apiextensions.k8s.io/v1
+        kind: CustomResourceDefinition
+        name: instancemanagers.longhorn.io
+        operations:
+        - {"op": "replace", "path": "/status"}
+      - apiVersion: apiextensions.k8s.io/v1
+        kind: CustomResourceDefinition
+        name: replicas.longhorn.io
+        operations:
+        - {"op": "replace", "path": "/status"}
+      - apiVersion: apiextensions.k8s.io/v1
+        kind: CustomResourceDefinition
+        name: settings.longhorn.io
+        operations:
+        - {"op": "replace", "path": "/status"}
     ```
 
     - Parameters for specifying the version of the Longhorn Helm chart to be installed
