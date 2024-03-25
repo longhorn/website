@@ -7,7 +7,7 @@ weight: 11
 - Your workstation: Install [Helm](https://helm.sh/docs/) v3.0 or later.
 - Kubernetes cluster:
   - Ensure that each node fulfills the [installation requirements](../#installation-requirements).
-  - [Install the Flux CLI](https://fluxcd.io/flux/installation/#install-the-flux-cli).
+  - [Install the Flux CLI and controllers](https://fluxcd.io/flux/installation/#install-the-flux-cli).
   - [Bootstrap Flux with GitHub](https://fluxcd.io/flux/installation/bootstrap/github/) using the Flux CLI.
     Run the following commands to export your GitHub personal access token (PAT) as an environment variable, deploy the Flux controllers on your cluster, and configure the controllers to sync the cluster state from the specified GitHub repository.
 
@@ -34,6 +34,7 @@ weight: 11
       --url=https://charts.longhorn.io \
       --namespace=longhorn-system \
       --export > helmrepo.yaml
+    kubectl apply -f helmrepo.yaml
     ```
 
 1. Create a HelmRelease CR that references the HelmRepository and specifies the version of the Longhorn Helm chart to be installed.
@@ -42,9 +43,10 @@ weight: 11
     flux create helmrelease longhorn-release \
       --chart=longhorn \
       --source=HelmRepository/longhorn-repo \
-      --chart-version=1.6.0 \
+      --chart-version=v{{< current-version >}} \
       --namespace=longhorn-system \
       --export > helmrelease.yaml
+    kubectl apply -f helmrelease.yaml
     ```
 
 1. Verify that the HelmRelease CR was created and synced successfully.

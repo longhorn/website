@@ -76,7 +76,7 @@ weight: 10
     helm:
       repo: https://charts.longhorn.io
       chart: longhorn
-      version: v1.6.0 # Replace with the Longhorn version you'd like to install or upgrade to
+      version: v{{< current-version >}} # Replace with the Longhorn version you'd like to install or upgrade to
       releaseName: longhorn
     ```
 
@@ -87,7 +87,7 @@ weight: 10
     helm:
       repo: https://charts.longhorn.io
       chart: longhorn
-      version: 1.6.0
+      version: v{{< current-version >}}
       releaseName: longhorn
     diff:
       comparePatches:
@@ -134,7 +134,7 @@ weight: 10
 1. Verify that the GitRepo CR was created and synced successfully.
 
     ```bash
-    kubectl -n fleet-local get fleet -w
+    kubectl -n fleet-local get gitrepo -w
     ```
 
 1. Verify that Longhorn was installed successfully.
