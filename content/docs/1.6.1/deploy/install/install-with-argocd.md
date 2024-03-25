@@ -41,11 +41,14 @@ weight: 12
       name: longhorn
       namespace: argocd
     spec:
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
       project: default
       sources:
         - chart: longhorn
           repoURL: https://charts.longhorn.io/
-          targetRevision: v1.6.0 # Replace with the Longhorn version you'd like to install or upgrade to
+          targetRevision: v{{< current-version >}} # Replace with the Longhorn version you'd like to install or upgrade to
           helm:
             values: |
               helmPreUpgradeCheckerJob:

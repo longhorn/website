@@ -41,6 +41,8 @@ Different Rancher UIs screenshots.
 - The Cluster Explorer (new UI)
 {{< figure src="/img/screenshots/install/cluster-explorer.png" >}}
 
+On Kubernetes clusters managed by Rancher 2.1 or newer, the steps to upgrade the catalog app `longhorn-system` are the similar to the installation steps.
+
 #### Upgrade with Kubectl
 
 To upgrade with kubectl, run this command:
@@ -57,7 +59,46 @@ To upgrade with Helm, run this command:
 helm upgrade longhorn longhorn/longhorn --namespace longhorn-system --version {{< current-version >}}
 ```
 
-On Kubernetes clusters managed by Rancher 2.1 or newer, the steps to upgrade the catalog app `longhorn-system` are the similar to the installation steps.
+#### Upgrade with Fleet
+
+Update the value of `helm.version` in the `fleet` YAML file of your GitOps repository.
+
+```
+helm:
+  repo: https://charts.longhorn.io
+  chart: longhorn
+  version: v{{< current-version >}} # Replace with the Longhorn version you'd like to upgrade to
+  releaseName: longhorn
+```
+
+#### Upgrade with Flux
+
+Update the value of `spec.chart.spec.version` in the `HelmRelease` YAML file of your GitOps repository.
+
+```
+spec:
+  chart:
+    spec:
+      chart: longhorn
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: longhorn
+      version: v{{< current-version >}} # Replace with the Longhorn version you'd like to upgrade to
+```
+
+#### Upgrade with Argo CD
+
+Update the value of `targetRevision` in the `Application` YAML file of your GitOps repository.
+
+```
+spec:
+  project: default
+  sources:
+    - chart: longhorn
+      repoURL: https://charts.longhorn.io
+      targetRevision: v{{< current-version >}} # Replace with the Longhorn version you'd like to upgrade to
+```
 
 Then wait for all the pods to become running and Longhorn UI working. e.g.:
 
