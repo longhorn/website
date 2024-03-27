@@ -186,7 +186,7 @@ iscsi install successfully
 
 In rare cases, it may be required to modify the installed SELinux policy to get Longhorn working. If you are running
 an up-to-date version of a Fedora downstream distribution (e.g. Fedora, RHEL, Rocky, CentOS, etc.) and plan to leave
-SELinux enabled, see [the KB](../../../../kb/troubleshooting-volume-attachment-fails-due-to-selinux-denials) for details.
+SELinux enabled, see [the KB](../../../../../kb/troubleshooting-volume-attachment-fails-due-to-selinux-denials) for details.
 
 ### Installing NFSv4 client
 
