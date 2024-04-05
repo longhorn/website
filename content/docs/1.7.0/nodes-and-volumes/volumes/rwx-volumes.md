@@ -31,7 +31,7 @@ It is necessary to meet the following requirements in order to use RWX volumes.
     
     > **Tip:** The [environment check script](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh) helps users to check all nodes have unique hostnames.
 
-# Creation and Usage of a RWX Volume
+# Creation and Usage of an RWX Volume
 
 > **Notice**  
 > An RWX volume must have the access mode set to `ReadWriteMany` and the "migratable" flag disabled (*parameters.migratable: `false`*).
@@ -40,7 +40,62 @@ It is necessary to meet the following requirements in order to use RWX volumes.
 2. For manually created Longhorn volumes (restore, DR volume) the access mode can be specified during creation in the Longhorn UI.
 3. When creating a PV/PVC for a Longhorn volume via the UI, the access mode of the PV/PVC will be based on the volume's access mode.
 4. One can change the Longhorn volume's access mode via the UI as long as the volume is not bound to a PVC.
-5. For a Longhorn volume that gets used by a RWX PVC, the volume access mode will be changed to RWX.
+5. For a Longhorn volume that gets used by an RWX PVC, the volume access mode will be changed to RWX.
+
+## Configuring Volume Locality for an RWX Volume
+
+  Longhorn introduces several enhancements to control the volume locality of RWX volumes. This is accomplished by determining the location of the share manager pod associated with an RWX volume. This section explains how to configure the data locality feature for RWX volumes.
+
+### Using `shareManagerNodeSelector`
+
+You can specify the `shareManagerNodeSelector` in the `storageClass.Parameters` to dictate on which nodes RWX volumes can be scheduled. These selectors are merged with global `system-managed-components-node-selector` settings and applied to the share manager pods of the RWX volumes. This provides more control over the locality of the RWX volumes.
+
+  Example:
+  ```
+  kind: StorageClass
+  apiVersion: storage.k8s.io/v1
+  metadata:
+    name: longhorn-rwx
+  provisioner: driver.longhorn.io
+  parameters:
+    shareManagerNodeSelector: label-key1:label-value1;label-key2:label-value2
+  ```
+  In the above example, RWX volumes provisioned with this StorageClass will be scheduled on nodes that have the label key=val. 
+
+### Using `allowedTopologies`
+
+Longhorn converts the `storageClass.allowedTopologies` settings into affinity rules for the share manager pods of the RWX volumes. This ensures the pods are scheduled on nodes that meet the specified topological requirements, such as regions or zones, aligning with the RWX volume locality.
+
+  Example:
+  ```
+  kind: StorageClass
+  apiVersion: storage.k8s.io/v1
+  metadata:
+    name: longhorn-rwx
+  provisioner: driver.longhorn.io
+  allowedTopologies:
+  - matchLabelExpressions:
+    - key: topology.kubernetes.io/region
+      values:
+      - us-west-1
+  ```
+  In the above example, the share manager pods and RWX volumes will be scheduled in the `us-west-1` region.
+
+### Using `shareManagerTolerations`
+
+You can define `shareManagerTolerations` in the `storageClass.Parameters`. These tolerations are merged with global `taint-toleration` settings and applied to the share manager pods, allowing more flexible scheduling based on node taints.
+
+  Example:
+  ```
+  kind: StorageClass
+  apiVersion: storage.k8s.io/v1
+  metadata:
+    name: longhorn-rwx
+  provisioner: driver.longhorn.io
+  parameters:
+    shareManagerTolerations: nodetype=storage:NoSchedule
+  ```
+  In the above example, the share manager pods will tolerate the `nodetype=storage:NoSchedule` taint on nodes, allowing them to be scheduled on those nodes.
 
 ## Configuring Volume Mount Options
 
@@ -99,7 +154,7 @@ For more information, see [#6655](https://github.com/longhorn/longhorn/issues/66
 
     After exiting the grace period, IOs of the clients successfully reclaiming the locks continue without stale file handle errors or IO errors. If a lock cannot be reclaimed within the grace period, the lock is discarded, and the server returns IO error to the client. The client re-establishes a new lock. The application should handle the IO error. Nevertheless, not all applications can handle IO errors due to their implementation. Thus, it may result in the failure of the IO operation and the data loss. Data consistency may be an issue.
 
-    Here is an example of a DaemonSet using a RWX volume.
+    Here is an example of a DaemonSet using an RWX volume.
 
     Each Pod of the DaemonSet is writing data to the RWX volume. If the node, where the share-manager Pod is running, is down, a new share-manager Pod is created on another node. Since one of the clients located on the down node has gone, the lock reclaim process cannot be terminated earlier than 90-second grace period, even though the remaining clients' locks have been successfully reclaimed. The IOs of these clients continue after the grace period has expired.
 
@@ -114,7 +169,7 @@ The below PVC creates a Kubernetes job that can copy data from one volume to ano
 - Replace the `data-source-pvc` with the name of the previous NFSv4 RWX PVC that was created by Kubernetes.
 - Replace the `data-target-pvc` with the name of the new RWX PVC that you wish to use for your new workloads.
 
-You can manually create a new RWX Longhorn volume + PVC/PV, or just create a RWX PVC and then have Longhorn dynamically provision a volume for you.
+You can manually create a new RWX Longhorn volume + PVC/PV, or just create an RWX PVC and then have Longhorn dynamically provision a volume for you.
 
 Both PVCs need to exist in the same namespace. If you were using a different namespace than the default, change the job's namespace below.
 
