@@ -46,9 +46,9 @@ It is necessary to meet the following requirements in order to use RWX volumes.
 
   Longhorn introduces several enhancements to control the volume locality of RWX volumes. This is accomplished by determining the location of the share manager pod associated with an RWX volume. This section explains how to configure the data locality feature for RWX volumes.
 
-### Using `shareManagerNodeSelector`
+### `shareManagerNodeSelector`
 
-You can specify the `shareManagerNodeSelector` in the `storageClass.Parameters` to dictate on which nodes RWX volumes can be scheduled. These selectors are merged with global `system-managed-components-node-selector` settings and applied to the share manager pods of the RWX volumes. This provides more control over the locality of the RWX volumes.
+You can use the StorageClass parameter `shareManagerNodeSelector` to specify selectors for identifying nodes that RWX volumes can be scheduled on. These selectors are merged with global `system-managed-components-node-selector` settings and then applied to the Share Manager pods of the RWX volumes to provide more control over volume locality.
 
   Example:
   ```
