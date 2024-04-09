@@ -60,7 +60,7 @@ You can specify the `shareManagerNodeSelector` in the `storageClass.Parameters` 
   parameters:
     shareManagerNodeSelector: label-key1:label-value1;label-key2:label-value2
   ```
-  In the above example, RWX volumes provisioned with this StorageClass will be scheduled on nodes that have the label key=val. 
+  In this example, RWX volumes provisioned with the specified StorageClass will be scheduled on nodes with the labels `label-key1:label-value1` and `label-key2:label-value2`. 
 
 ### Using `allowedTopologies`
 
