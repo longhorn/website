@@ -48,8 +48,8 @@ weight: 12
           targetRevision: v1.6.0 # Replace with the Longhorn version you'd like to install or upgrade to
           helm:
             values: |
-              helmPreUpgradeCheckerJob:
-                enabled: false
+              preUpgradeChecker:
+                jobEnabled: true
       destination:
         server: https://kubernetes.default.svc
         namespace: longhorn-system
