@@ -95,7 +95,7 @@ You can define `shareManagerTolerations` in the `storageClass.Parameters`. These
   parameters:
     shareManagerTolerations: nodetype=storage:NoSchedule
   ```
-  In the above example, the share manager pods will tolerate the `nodetype=storage:NoSchedule` taint on nodes, allowing them to be scheduled on those nodes.
+  In this example, the Share Manager pods will tolerate the `nodetype=storage:NoSchedule` taint on nodes, allowing them to be scheduled on those nodes.
 
 ## Configuring Volume Mount Options
 
