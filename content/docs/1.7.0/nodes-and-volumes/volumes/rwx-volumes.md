@@ -42,9 +42,9 @@ It is necessary to meet the following requirements in order to use RWX volumes.
 4. One can change the Longhorn volume's access mode via the UI as long as the volume is not bound to a PVC.
 5. For a Longhorn volume that gets used by an RWX PVC, the volume access mode will be changed to RWX.
 
-## Configuring Volume Locality for an RWX Volume
+## Configuring Volume Locality for RWX Volumes
 
-  Longhorn introduces several enhancements to control the volume locality of RWX volumes. This is accomplished by determining the location of the share manager pod associated with an RWX volume. This section explains how to configure the data locality feature for RWX volumes.
+Longhorn provides new settings that allow you to precisely control the data locality of RWX volumes (through identification of associated Share Manager pods). These granular settings work with related global settings to provide optimal performance, resilience, and adherence to organizational policies or constraints.
 
 ### `shareManagerNodeSelector`
 
