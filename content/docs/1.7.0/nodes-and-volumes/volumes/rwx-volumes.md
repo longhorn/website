@@ -62,9 +62,9 @@ You can use the StorageClass parameter `shareManagerNodeSelector` to specify sel
   ```
   In this example, RWX volumes provisioned with the specified StorageClass will be scheduled on nodes with the labels `label-key1:label-value1` and `label-key2:label-value2`. 
 
-### Using `allowedTopologies`
+### `allowedTopologies`
 
-Longhorn converts the `storageClass.allowedTopologies` settings into affinity rules for the share manager pods of the RWX volumes. This ensures the pods are scheduled on nodes that meet the specified topological requirements, such as regions or zones, aligning with the RWX volume locality.
+Longhorn converts the `storageClass.allowedTopologies` settings into affinity rules for the Share Manager pods of the RWX volumes. This ensures that the pods are scheduled on nodes that meet the specified topological requirements (such as regions and zones) and align with the RWX volume locality.
 
   Example:
   ```
