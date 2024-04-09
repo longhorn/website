@@ -79,7 +79,7 @@ Longhorn converts the `storageClass.allowedTopologies` settings into affinity ru
       values:
       - us-west-1
   ```
-  In the above example, the share manager pods and RWX volumes will be scheduled in the `us-west-1` region.
+  In this example, the Share Manager pods and RWX volumes will be scheduled in the `us-west-1` region.
 
 ### Using `shareManagerTolerations`
 
