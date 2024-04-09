@@ -81,9 +81,9 @@ Longhorn converts the `storageClass.allowedTopologies` settings into affinity ru
   ```
   In this example, the Share Manager pods and RWX volumes will be scheduled in the `us-west-1` region.
 
-### Using `shareManagerTolerations`
+### `shareManagerTolerations`
 
-You can define `shareManagerTolerations` in the `storageClass.Parameters`. These tolerations are merged with global `taint-toleration` settings and applied to the share manager pods, allowing more flexible scheduling based on node taints.
+You can also use the StorageClass parameter `shareManagerTolerations` to allow more flexible scheduling based on node taints. The defined tolerations are merged with global `taint-toleration` settings and then applied to the Share Manager pods.
 
   Example:
   ```
