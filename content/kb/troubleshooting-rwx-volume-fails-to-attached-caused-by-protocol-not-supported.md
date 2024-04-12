@@ -8,6 +8,7 @@ versions:
 - "all"
 categories:
 - "RWX volume"
+- "NFS"
 - "Linux kernel"
 ---
 
@@ -42,8 +43,10 @@ The regression has been addressed in the [kernel commit](https://github.com/torv
 | Vanilla kernel | 6.5.6          |
 | Ubuntu         | [5.15.0-94](https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/jammy/log/?h=Ubuntu-5.15.0-94.104) |
 | Ubuntu         | [6.5.0-21](https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/jammy/tag/?h=Ubuntu-hwe-6.5-6.5.0-21.21_22.04.1) |
+| Ubuntu         | 6.5.0-1014-aws |
 
 ## Related information
 
 https://github.com/longhorn/longhorn/issues/6857  
 https://github.com/longhorn/longhorn/issues/6887
+https://github.com/longhorn/longhorn/issues/8344

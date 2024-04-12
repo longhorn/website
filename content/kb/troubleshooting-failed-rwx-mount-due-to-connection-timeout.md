@@ -7,8 +7,8 @@ date: 2023-09-05
 versions:
 - "all"
 categories:
-- "nfs"
-- "rwx"
+- "NFS"
+- "RWX volume"
 - "sles"
 - "flannel"
 ---
