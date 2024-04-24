@@ -1,0 +1,33 @@
+pull_request_rules:
+- name: Automatically merge PRs
+  conditions:
+  - check-success=netlify/longhornio/deploy-preview
+  - check-success=codespell
+  - "#approved-reviews-by>=2"
+  - approved-reviews-by=@longhorn/maintainer
+  - approved-reviews-by=@longhorn/doc
+  actions:
+    merge:
+      method: rebase
+      
+- name: Automatically merge Renovate PRs
+  conditions:
+  - check-success=continuous-integration/drone/pr
+  - author = renovate[bot]
+  actions:
+    merge:
+      method: rebase
+
+- name: Automatically approve Renovate PRs
+  conditions:
+  - author = renovate[bot]
+  actions:
+    review:
+      type: APPROVE
+
+- name: Ask to resolve conflict
+  conditions:
+  - conflict
+  actions:
+    comment:
+      message: This pull request is now in conflict. Could you fix it @{{author}}? 🙏
