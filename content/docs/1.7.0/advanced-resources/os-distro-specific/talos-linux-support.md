@@ -39,7 +39,7 @@ For detailed instructions, see [Pod Security Policies Disabled & Pod Security Ad
 
 You need provide additional data path mounts to be accessible to the Kubernetes Kubelet container.
 
-These mount is necessary to provide access to the host directories and attaching volumes required by the Longhorn components.
+These mounts are necessary to provide access to the host directories, and attach volumes required by Longhorn components.
 
 ```yaml
 machine:
