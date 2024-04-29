@@ -37,6 +37,32 @@ Run this command:
 helm uninstall longhorn -n longhorn-system
 ```
 
+### Uninstalling Longhorn Using Fleet
+
+Run the following command:
+
+```
+kubectl delete GitRepo longhorn -n fleet-local
+```
+
+After the `longhorn-uninstall` job is completed, run the following command:
+
+```
+kubectl delete -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml
+```
+
+### Uninstalling Longhorn Using Flux
+
+Run the following command:
+
+```
+flux delete helmrelease longhorn-release -n longhorn-system
+```
+
+### Uninstalling Longhorn Using Argo CD
+
+Argo CD currently does not support the PreDelete resource hook. Instead of running `argocd app delete longhorn` directly, you must [uninstall Longhorn using kubectl](#uninstalling-longhorn-using-kubectl) to prevent dangling resources from remaining in the `longhorn-system` namespace.
+
 ### Uninstalling Longhorn using kubectl
 
 1. Create the uninstallation job to clean up CRDs from the system and wait for success:
