@@ -49,7 +49,7 @@ weight: 1
   - [Immediate Snapshot Data Integrity Check After Creating a Snapshot](#immediate-snapshot-data-integrity-check-after-creating-a-snapshot)
   - [Snapshot Data Integrity Check CronJob](#snapshot-data-integrity-check-cronjob)
   - [Snapshot Maximum Count](#snapshot-maximum-count)
-  - [Freeze File System For Snapshot](#freeze-file-system-for-snapshot)
+  - [Freeze Filesystem For Snapshot](#freeze-filesystem-for-snapshot)
 - [Orphan](#orphan)
   - [Orphaned Data Automatic Deletion](#orphaned-data-automatic-deletion)
 - [Backups](#backups)
@@ -532,36 +532,35 @@ Unix-cron string format. The setting specifies when Longhorn checks the data int
 
 Maximum snapshot count for a volume. The value should be between 2 to 250.
 
-#### Freeze File System For Snapshot
+#### Freeze Filesystem For Snapshot
 
 > Default: `false`
 
-This setting only affects volumes with Kubernetes volume mode `Filesystem`. When enabled, Longhorn will freeze the file
-system on a volume immediately before taking a user-initiated snapshot. When the Kubernetes volume mode is `Block`, or
-when this setting is disabled, Longhorn will attempt a system sync immediately before taking a user-initiated snapshot
-instead.
+This setting only applies to volumes with the Kubernetes volume mode `Filesystem`. When enabled, Longhorn freezes the
+volume's filesystem immediately before creating a user-initiated snapshot. When disabled or when the Kubernetes volume
+mode is `Block`, Longhorn instead attempts a system sync before creating a user-initiated snapshot.
 
-A snapshot taken with this setting enabled has a higher consistency guarantee, as the file system is definitely in a
-consistent state at the moment of the snapshot. However, under very heavy I/O, the freeze may take noticeable time and
-cause workload activity to pause.
+Snapshots created when this setting is enabled are more likely to be consistent because the filesystem is in a
+consistent state at the moment of creation. However, under very heavy I/O, freezing the filesystem may take a
+significant amount of time and may cause workload activity to pause.
 
-With this setting disabled, all data is flushed to disk just before the snapshot is taken, but Longhorn cannot guarantee
-additional writes do not reach disk in the brief interval between the system sync and the snapshot. I/O is not paused
-during the system sync, so workloads likely do not notice a snapshot being taken.
+When this setting is disabled, all data is flushed to disk just before the snapshot is created, but Longhorn cannot
+completely block write attempts during the brief interval between the system sync and snapshot creation. I/O is not
+paused during the system sync, so workloads likely do not notice that a snapshot is being created.
 
-This setting defaults to `false` because kernels with version <= `v5.17` may not respond correctly when a volume crashes
-while a freeze is ongoing. While this is not likely to happen, if it does, an affected kernel will not allow the file
-system to unmount or the processes using the file system to be killed without a node reboot. Only enable this setting if
-you plan to use kernels with version >= `5.17` and ext4 or XFS file systems.
+The default option for this setting is `false` because kernels with version `v5.17` or earlier may not respond correctly
+when a volume crashes while a freeze is ongoing. This is not likely to happen but if it does, an affected kernel will
+not allow you to unmount the filesystem or stop processes using the filesystem without rebooting the node. Only enable
+this setting if you plan to use kernels with version `5.17` or later, and ext4 or XFS filesystems.
 
-This setting can be overridden for specific volumes in the UI, a storage-class, or by directly modifying an existing
-volume. The overriding field, `freezeFSForSnapshot` can take the following values:
+You can override this setting (using the field `freezeFilesystemForSnapshot`) for specific volumes through the Longhorn
+UI, a StorageClass, or direct changes to an existing volume. `freezeFilesystemForSnapshot` accepts the following values:
 
 > Default: `ignored`
 
-- `ignored`: This is the default option that instructs Longhorn to inherit from the global setting.
-- `enabled`: This option instructs Longhorn to restore volume recurring jobs/groups from the backup target forcibly.
-- `disabled`: This option instructs Longhorn no restoring volume recurring jobs/groups should be done.
+- `ignored`: Instructs Longhorn to use the global setting. This is the default option.
+- `enabled`: Enables freezing before snapshots, regardless of the global setting.
+- `disabled`: Disables freezing before snapshots, regardless of the global setting.
 
 ### Orphan
 
