@@ -63,15 +63,15 @@ The following Linux OS distributions and versions have been verified during the 
 | 6.  | Rocky Linux  | 9.3
 | 7.  | Talos Linux  | 1.6.1
 
-Longhorn relies on heavily on kernel functionality and it performs better on some kernel versions. In particular:
+Longhorn relies heavily on kernel functionality and performs better on some kernel versions. The following activities,
+in particular, benefit from usage of specific kernel versions.
 
-- Use a kernel with version >= `v5.8` for file system optimizations/improvements. See [this
-  issue](https://github.com/longhorn/longhorn/issues/2507#issuecomment-857195496) for details.
-- Use a kernel with version >= `5.17` if you plan to enable the [Freeze File System For
-  Snapshot](../references/settings#freeze-file-system-for-snapshot) setting to ensure a volume crash during a file
-  system freeze can't lock up a node.
-- Use a kernel with version >= `5.19` if you plan to enable the [v2 data engine](../v2-data-engine/prerequisites) to
-  ensure volume-related I/O errors can't unexpectedly reboot a node.
+- Optimizing or improving the filesystem: Use a kernel with version `v5.8` or later. See [Issue
+  #2507](https://github.com/longhorn/longhorn/issues/2507#issuecomment-857195496) for details.
+- Enabling the [Freeze Filesystem for Snapshot](../references/settings#freeze-filesystem-for-snapshot) setting: Use a
+  kernel with version `5.17` or later to ensure that a volume crash during a filesystem freeze cannot lock up a node.
+- Enabling the [V2 Data Engine](../v2-data-engine/prerequisites): Use a kernel with version `5.19` or later to ensure
+  that volume-related I/O errors cannot reboot a node unexpectedly.
 
 ## Kubernetes Version
 

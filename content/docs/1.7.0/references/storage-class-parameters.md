@@ -226,13 +226,13 @@ A list of recurring jobs that are to be run on a volume.
 > Global setting: [V2 Data Engine](../settings#v2-data-engine).  
 > More details in [V2 Data Engine Quick Start](../../v2-data-engine/quick-start#create-a-storageclass).
 
-#### Freeze File System For Snapshot *(field: `parameters.freezeFSForSnapshot`)*
+#### Freeze Filesystem For Snapshot *(field: `parameters.freezeFilesystemForSnapshot`)*
 > Default: `ignored`
 
-  - "ignored" means use the global setting.
+  - "ignored" instructs Longhorn to use the global setting.
   - Other values are "enabled" and "disabled".
 
-> Global setting: [Freeze File System For Snapshot](../settings#freeze-file-system-for-snapshot).
+> Global setting: [Freeze File System For Snapshot](../settings#freeze-filesystem-for-snapshot).
 
 ## Helm Installs
 
