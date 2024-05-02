@@ -31,6 +31,7 @@ weight: 1
   - [System Managed Pod Image Pull Policy](#system-managed-pod-image-pull-policy)
   - [Backing Image Cleanup Wait Interval](#backing-image-cleanup-wait-interval)
   - [Backing Image Recovery Wait Interval](#backing-image-recovery-wait-interval)
+  - [Default Min Number Of Backing Image Copies](#default-min-number-of-backing-image-copies)
   - [Engine to Replica Timeout](#engine-to-replica-timeout)
   - [Support Bundle Manager Image](#support-bundle-manager-image)
   - [Support Bundle Failed History Limit](#support-bundle-failed-history-limit)
@@ -74,6 +75,7 @@ weight: 1
   - [Allow Empty Node Selector Volume](#allow-empty-node-selector-volume)
   - [Allow Empty Disk Selector Volume](#allow-empty-disk-selector-volume)
 - [Danger Zone](#danger-zone)
+  - [Concurrent Backing Image Replenish Per Node Limit](#concurrent-backing-image-replenish-per-node-limit)
   - [Concurrent Replica Rebuild Per Node Limit](#concurrent-replica-rebuild-per-node-limit)
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
   - [Priority Class](#priority-class)
@@ -401,6 +403,11 @@ The interval in seconds determines how long Longhorn will wait before re-downloa
 > **Note:**
 >  - This recovery only works for the backing image of which the creation type is `download`.
 >  - File state `unknown` means the related manager pods on the pod is not running or the node itself is down/disconnected.
+
+#### Default Min Number Of Backing Image Copies
+> Default: `1`
+
+The default minimum number of backing image copies Longhorn maintains.
 
 #### Engine to Replica Timeout
 > Default: `8`
@@ -774,6 +781,13 @@ Typically, Longhorn can block the replica starting once the current rebuilding c
 >  - Different from relying on replica starting delay to limit the concurrent rebuilding, if the rebuilding is disabled, replica object replenishment will be directly skipped.
 >  - When the value is 0, the eviction and data locality feature won't work. But this shouldn't have any impact to any current replica rebuild and backup restore.
 
+#### Concurrent Backing Image Replenish Per Node Limit
+
+> Default: `5`
+
+This setting controls how many backing images copy on a node can be replenished simultaneously.
+
+Typically, Longhorn can block the backing image copy starting once the current replenishing count on a node exceeds the limit. But when the value is 0, it means disabling the backing image replenish.
 
 #### Kubernetes Taint Toleration
 

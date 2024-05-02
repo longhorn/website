@@ -24,6 +24,15 @@ You can prepare a backing image using four different kinds of data sources.
 - It's recommended to provide the expected checksum during backing image creation.
   Otherwise, Longhorn will consider the checksum of the first file as the correct one. Once there is something wrong with the first file preparation, which then leads to an incorrect checksum as the expected value, this backing image is probably unavailable.
 
+#### Scheduling
+- Longhorn first prepares and stores the backing image file on a random node and disk, and then duplicates the file to the disks that are storing the replicas.
+- For improved space efficiency, you can add `nodeSelector` and `diskSelector` to force storing of backing image files on a specific set of nodes and disks.
+- The replicas cannot be scheduled on nodes or disks where the backing image cannot be scheduled.
+
+#### Number of copies
+- You can add `minNumberOfCopies` to ensure that multiple backing image files exist in the cluster. 
+- You can adjust the `minNumberOfCopies` in the global setting to apply the default value to the BackingImage.
+
 ### The way of creating a backing image
 
 #### Create a backing image via Longhorn UI
@@ -41,6 +50,11 @@ metadata:
   name: bi-download
   namespace: longhorn-system
 spec:
+  minNumberOfCopies: 2
+  nodeSelector:
+    - "node1"
+  diskSelector:
+    - "disk1"
   sourceType: download
   sourceParameters:
     url: https://longhorn-backing-image.s3-us-west-1.amazonaws.com/parrot.raw
@@ -53,6 +67,11 @@ metadata:
   name: bi-export
   namespace: longhorn-system
 spec:
+  minNumberOfCopies: 2
+  nodeSelector:
+    - "node1"
+  diskSelector:
+    - "disk1"
   sourceType: export-from-volume
   sourceParameters:
     volume-name: vol-export-src
@@ -80,6 +99,9 @@ spec:
         backingImageDataSourceType: "download"
         backingImageDataSourceParameters: '{"url": "https://backing-image-example.s3-region.amazonaws.com/test-backing-image"}'
         backingImageChecksum: "SHA512 checksum of the backing image"
+        backingImageMinNumberOfCopies: "2"
+        backingImageNodeSelector: "node1"
+        backingImageDiskSelector: "disk1"
       ```
     - For `export-from-volume`:
       ```yaml
@@ -97,6 +119,9 @@ spec:
         backingImage: "bi-export-from-volume"
         backingImageDataSourceType: "export-from-volume"
         backingImageDataSourceParameters: '{"volume-name": "vol-export-src", "export-type": "qcow2"}'
+        backingImageMinNumberOfCopies: "2"
+        backingImageNodeSelector: "node1"
+        backingImageDiskSelector: "disk1"
       ```
 
 4. Create a PVC with the StorageClass. Then the backing image will be created (with the Longhorn volume) if it does not exist.
@@ -147,12 +172,21 @@ Since v1.3.0, users can download existing backing image files to the local via U
   - uploaded from user local env, there is no way to recover it. Users need to delete this backing image then re-create a new one by re-uploading the file.
 - When a node is down or the backing image manager pod on the node is unavailable, all backing image files on the node will become `unknown`. Later on if the node is back and the pod is running, Longhorn will detect then reuse the existing files automatically.
 
+## Backing image eviction
+- You can manually evict all backing image files from a node or disk by setting `Scheduling` to `Disabled` and `Eviction Requested` to `True` on the Longhorn UI.
+- If only one backing image file exists in the cluster, Longhorn first duplicates the file to another disk and then deletes the file.
+- If the backing image file cannot be duplicated to other disks, Longhorn does not delete the file. You can update the settings to resolve the issue.
+
 ## Backing image Workflow
 1. To manage all backing image files in a disk, Longhorn will create one backing image manager pod for each disk. Once the disk has no backing image file requirement, the backing image manager will be removed automatically.
 2. Once a backing image file is prepared by the backing image manager for a disk, the file will be shared among all volume replicas in this disk.
 3. When a backing image is created, Longhorn will launch a backing image data source pod to prepare the first file. The file data is from the data source users specified (download from remote/upload from local/export from the volume). After the preparation done, the backing image manager pod in the same disk will take over the file then Longhorn will stop the backing image data source pod.
 4. Once a new backing image is used by a volume, the backing image manager pods in the disks that the volume replicas reside on will be asked to sync the file from the backing image manager pods that already contain the file.
 5. As mentioned in the section [#clean-up-backing-images-in-disks](#clean-up-backing-images-in-disks), the file will be cleaned up automatically if all replicas in one disk do not use one backing image file.
+
+## Concurrent limit of backing image syncing
+- `Concurrent Backing Image Replenish Per Node Limit` in the global settings controls how many backing images copies on a node can be replenished simultaneously.
+- When set to 0, Longhorn won't replenish the copy automatically event it is less than the `minNumberOfCopies`
 
 ## Warning
 - The download URL of the backing image should be public. We will improve this part in the future.
