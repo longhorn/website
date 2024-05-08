@@ -17,6 +17,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Engine Upgrade Enforcement](#engine-upgrade-enforcement)
   - [Danger Zone Setting Configuration](#danger-zone-setting-configuration)
   - [Longhorn PVC with Block Volume Mode](#longhorn-pvc-with-block-volume-mode)
+  - [Minimum XFS Filesystem Size](#minimum-xfs-filesystem-size)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Changing Default Huge Page Size to 2 GiB](#changing-default-huge-page-size-to-2-gib)
@@ -207,6 +208,20 @@ spec:
         claimName: longhorn-block-vol
 ```
 From this version, you need to add group id 6 to the security context or run container as root. For more information, see [Longhorn PVC ownership and permission](../../nodes-and-volumes/volumes/pvc-ownership-and-permission)
+
+### Minimum XFS Filesystem Size
+
+Recent versions of `xfsprogs` (including the version Longhorn currently uses) *do not allow* the creation of XFS
+filesystems [smaller than 300
+MiB](https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git/commit/?id=6e0ed3d19c54603f0f7d628ea04b550151d8a262).
+Longhorn v{{< current-version >}} does not allow the following:
+
+- CSI flow: Volume provisioning if `resources.requests.storage < 300 Mi` and the corresponding StorageClass has `fsType:
+  xfs`
+- Longhorn UI: `Create PV/PVC` with `File System: XFS` action to be completed on a volume that has `spec.size < 300 Mi`
+
+However, Longhorn still allows the listed actions when cloning or restoring volumes created with earlier Longhorn
+versions.
 
 ## V2 Data Engine
 
