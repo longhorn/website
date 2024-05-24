@@ -785,7 +785,7 @@ Typically, Longhorn can block the replica starting once the current rebuilding c
 
 > Default: `5`
 
-This setting controls how many backing images copy on a node can be replenished simultaneously.
+This setting controls how many backing image copies on a node can be replenished simultaneously.
 
 Typically, Longhorn can block the backing image copy starting once the current replenishing count on a node exceeds the limit. But when the value is 0, it means disabling the backing image replenish.
 
