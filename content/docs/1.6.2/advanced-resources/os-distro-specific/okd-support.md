@@ -5,6 +5,8 @@ weight: 4
 
 To deploy Longhorn on a cluster provisioned with OpenShift 4.x, some additional configurations are required.
 
+> **Note**: OKD currently does not support the ARM platform. For more information, see the [OKD website](https://www.okd.io/crc/?h=arm) and [GitHub issue #1165](https://github.com/okd-project/okd/issues/1165) (*OKD in ARM platform*).
+
 - [Install Longhorn](#install-longhorn)
 - [Prepare A Customized Default Longhorn Disk (Optional)](#prepare-a-customized-default-longhorn-disk-optional)
   - [Add An Extra Disk to Longhorn Storage](#add-an-extra-disk-to-longhorn-storage)
