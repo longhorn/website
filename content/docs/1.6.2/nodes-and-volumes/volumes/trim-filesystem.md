@@ -114,7 +114,7 @@ without a remount.
 
 - If you still want to trim an encrypted Longhorn volume, you can:
     1. Enter into the node host the volume is attached to.
-    2. Enable flag `discards` for the encrypted volume. The passphrase is recorded in the corresponding secert:
+    2. Enable flag `discards` for the encrypted volume. The passphrase is recorded in the corresponding secret:
     ```shell
     cryptsetup --allow-discards --persistent refresh <Longhorn volume name>
     ```
