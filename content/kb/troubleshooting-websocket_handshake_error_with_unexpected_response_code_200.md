@@ -37,7 +37,7 @@ Longhorn UI messages:
 
 ## Reason
 
-To support different routing (Rancher-Proxy, NodePort, Ingress, and Ngnix), Longhorn v1.1.0 has restructured the UI to use hash history for two reasons:
+To support different routing (Rancher-Proxy, NodePort, Ingress, and Nginx), Longhorn v1.1.0 has restructured the UI to use hash history for two reasons:
 
 - To support Longhorn UI routing to different paths. e.g., /longhorn/#/dashboard
 - To support single-page application by disassociating frontend and backend.
