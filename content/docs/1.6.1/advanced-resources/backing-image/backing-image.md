@@ -160,5 +160,5 @@ Since v1.3.0, users can download existing backing image files to the local via U
 
 ## History
 * Available since v1.1.1 [Enable backing image feature in Longhorn](https://github.com/Longhorn/Longhorn/issues/2006)
-* Support [upload]((https://github.com/longhorn/longhorn/issues/2404) and [volume exporting](https://github.com/longhorn/longhorn/issues/2403) since v1.2.0.
-* Support [download to local]((https://github.com/longhorn/longhorn/issues/2404) and [volume exporting](https://github.com/longhorn/longhorn/issues/3155) since v1.3.0.
+* Support [upload](https://github.com/longhorn/longhorn/issues/2404) and [volume exporting](https://github.com/longhorn/longhorn/issues/2403) since v1.2.0.
+* Support [download to local](https://github.com/longhorn/longhorn/issues/2404) and [volume exporting](https://github.com/longhorn/longhorn/issues/3155) since v1.3.0.
