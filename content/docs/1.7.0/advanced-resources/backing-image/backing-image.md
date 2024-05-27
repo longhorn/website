@@ -30,7 +30,7 @@ You can prepare a backing image using four different kinds of data sources.
 - The replicas cannot be scheduled on nodes or disks where the backing image cannot be scheduled.
 
 #### Number of copies
-- You can add `minNumberOfCopies` to ensure that multiple backing image files exist in the cluster. 
+- You can add `minNumberOfCopies` to ensure that multiple backing image files exist in the cluster.
 - You can adjust the `minNumberOfCopies` in the global setting to apply the default value to the BackingImage.
 
 ### The way of creating a backing image
@@ -158,7 +158,7 @@ Since v1.3.0, users can download existing backing image files to the local via U
 
 #### Clean up backing images in disks
 - Longhorn automatically cleans up the unused backing image files in the disks based on [the setting `Backing Image Cleanup Wait Interval`](../../../references/settings#backing-image-cleanup-wait-interval). But Longhorn will retain at least one file in a disk for each backing image anyway.
-- The unused backing images can be also cleaned up manually via the Longhorn UI: Click **Setting > Backing Image > Operation list of one backing image > Clean Up**. Then choose disks.
+- The unused backing images can be also cleaned up manually via the Longhorn UI: Click **Setting > Backing Image > one backing image name**. Then choose disks to clean up.
 - Once there is one replica in a disk using a backing image, no matter what the replica's current state is, the backing image file in this disk cannot be cleaned up.
 
 #### Delete backing images
