@@ -123,13 +123,13 @@ The following sections outline other recommendations for production environments
 
 - **Storage network**: Use a [dedicated storage network](../advanced-resources/deploy/storage-network/#setting-storage-network) to improve IO performance and stability.  
 
-- **Longhorn disk**: Use a [dedicated disk](../nodes-and-volumes/multidisk/#add-a-disk) for Longhorn storage instead of using the root disk.  
+- **Longhorn disk**: Use a [dedicated disk](../nodes-and-volumes/nodes/multidisk/#add-a-disk) for Longhorn storage instead of using the root disk.  
 
 - **Replica count**: Set the [default replica count](../references/settings/#default-replica-count) to "2" to achieve data availability with better disk space usage or less impact to system performance. This practice is especially beneficial to data-intensive applications.  
 
-- **Storage tag**: Use [storage tags](../nodes-and-volumes/storage-tags/) to define storage tiering for data-intensive applications. For example, only high-performance disks can be used for storing performance-sensitive data.  
+- **Storage tag**: Use [storage tags](../nodes-and-volumes/nodes/storage-tags) to define storage tiering for data-intensive applications. For example, only high-performance disks can be used for storing performance-sensitive data.  
 
-- **Data locality**: Use `best-effort` as the default [data locality](../high-availability/data-locality/) of Longhorn StorageClasses.  
+- **Data locality**: Use `best-effort` as the default [data locality](../high-availability/data-locality) of Longhorn StorageClasses.  
 
   For applications that support data replication (for example, a distributed database), you can use the `strict-local` option to ensure that only one replica is created for each volume. This practice prevents the extra disk space usage and IO performance overhead associated with volume replication.  
 
@@ -141,19 +141,19 @@ The following sections outline other recommendations for production environments
 
   For applications with replication capability, periodically [delete all types of snapshots](../concepts/#243-deleting-snapshots).  
 
-- **Recurring filesystem trim**: Periodically [trim the filesystem](../nodes-and-volumes/trim-filesystem/) inside volumes to reclaim disk space.  
+- **Recurring filesystem trim**: Periodically [trim the filesystem](../nodes-and-volumes/volumes/trim-filesystem) inside volumes to reclaim disk space.  
 
-- **Snapshot space management**: [Configure global and volume-specific settings](../advanced-resources/snapshot-space-management/) to prevent unexpected disk space exhaustion.
+- **Snapshot space management**: [Configure global and volume-specific settings](../advanced-resources/snapshot-space-management) to prevent unexpected disk space exhaustion.
 
 ### Disaster Recovery
 
-- **Recurring backups**: Create [recurring backup jobs](../nodes-and-volumes/trim-filesystem/) for mission-critical application volumes.  
+- **Recurring backups**: Create [recurring backup jobs](../snapshots-and-backups/scheduling-backups-and-snapshots) for mission-critical application volumes.  
 
 - **System backup**: Create periodic [system backups](../advanced-resources/system-backup-restore/backup-longhorn-system/#create-longhorn-system-backup).  
 
 ## Deploying Workloads
 
-If you're using `ext4` as the filesystem of the volume, we recommend adding a liveness check to workloads to help automatically recover from a network-caused interruption, a node reboot, or a Docker restart. See [this section](../high-availability/recover-volume/) for details.
+If you're using `ext4` as the filesystem of the volume, we recommend adding a liveness check to workloads to help automatically recover from a network-caused interruption, a node reboot, or a Docker restart. See [this section](../high-availability/recover-volume) for details.
 
 ## Volume Maintenance
 
