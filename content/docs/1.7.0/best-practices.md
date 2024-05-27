@@ -144,7 +144,7 @@ The following sections outline other recommendations for production environments
 
 - **Recurring filesystem trim**: Periodically [trim the filesystem](../nodes-and-volumes/volumes/trim-filesystem) inside volumes to reclaim disk space.  
 
-- **Snapshot space management**: [Configure global and volume-specific settings](../advanced-resources/snapshot-space-management) to prevent unexpected disk space exhaustion.
+- **Snapshot space management**: [Configure global and volume-specific settings](../snapshots-and-backups/snapshot-space-management) to prevent unexpected disk space exhaustion.
 
 ### Disaster Recovery
 
