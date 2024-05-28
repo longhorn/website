@@ -34,6 +34,7 @@ weight: 1
   - [Engine to Replica Timeout](#engine-to-replica-timeout)
   - [Support Bundle Manager Image](#support-bundle-manager-image)
   - [Support Bundle Failed History Limit](#support-bundle-failed-history-limit)
+  - [Support Bundle Node Collection Timeout](#support-bundle-node-collection-timeout)
   - [Fast Replica Rebuild Enabled](#fast-replica-rebuild-enabled)
   - [Timeout of HTTP Client to Replica File Sync Server](#timeout-of-http-client-to-replica-file-sync-server)
   - [V1 Data Engine](#v1-data-engine)
@@ -344,6 +345,7 @@ This information will help us gain insights how Longhorn is being used, which wi
     - Storage Over Provisioning Percentage
     - Storage Reserved Percentage For Default Disk
     - Support Bundle Failed History Limit
+    - Support Bundle Node Collection Timeout
     - System Managed Pods Image Pull Policy
 
 > The `Upgrade Checker` needs to be enabled to periodically send the collected data.
@@ -425,6 +427,14 @@ This setting specifies how many failed support bundles can exist in the cluster.
 The retained failed support bundle is for analysis purposes and needs to clean up manually.
 
 Longhorn blocks support bundle creation when reaching the upper bound of the limitation. You can set this value to **0** to have Longhorn automatically purge all failed support bundles.
+
+#### Support Bundle Node Collection Timeout
+
+> Default: `30`
+
+Number of minutes Longhorn allows for collection of node information and node logs for the support bundle.
+
+If the collection process is not completed within the allotted time, Longhorn continues generating the support bundle without the uncollected node data.
 
 #### Fast Replica Rebuild Enabled
 
