@@ -158,7 +158,7 @@ Since v1.3.0, users can download existing backing image files to the local via U
 
 #### Clean up backing images in disks
 - Longhorn automatically cleans up the unused backing image files in the disks based on [the setting `Backing Image Cleanup Wait Interval`](../../../references/settings#backing-image-cleanup-wait-interval). But Longhorn will retain at least one file in a disk for each backing image anyway.
-- The unused backing images can be also cleaned up manually via the Longhorn UI: Click **Setting > Backing Image > one backing image name**. Then choose disks to clean up.
+- You can manually remove backing images from disks using the Longhorn UI. Go to **Setting** > **Backing Image**, and then click the name of a specific backing image. In the window that opens, select one or more disks and then click **Clean Up**.
 - Once there is one replica in a disk using a backing image, no matter what the replica's current state is, the backing image file in this disk cannot be cleaned up.
 
 #### Delete backing images
