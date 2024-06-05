@@ -167,6 +167,8 @@ Please ensure iscsi_tcp module has been loaded before iscsid service starts. Gen
 modprobe iscsi_tcp
 ```
 
+> **Important**: On SUSE and openSUSE, the `iscsi_tcp` module is included only in the `kernel-default` package. If the `kernel-default-base` package is installed on your system, you must replace it with `kernel-default`.
+
 We also provide an `iscsi` installer to make it easier for users to install `open-iscsi` automatically:
 ```
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/prerequisite/longhorn-iscsi-installation.yaml
