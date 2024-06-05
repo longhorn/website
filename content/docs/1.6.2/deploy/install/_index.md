@@ -167,9 +167,7 @@ Please ensure iscsi_tcp module has been loaded before iscsid service starts. Gen
 modprobe iscsi_tcp
 ```
 
-Note that on SUSE and openSUSE, the iscsi_tcp module is included in the `kernel-default` package, but
-is not available in `kernel-default-base`. If you have `kernel-default-base` installed, you will need
-to install `kernel-default` instead.
+> **Important**: On SUSE and openSUSE, the `iscsi_tcp` module is included only in the `kernel-default` package. If the `kernel-default-base` package is installed on your system, you must replace it with `kernel-default`.
 
 We also provide an `iscsi` installer to make it easier for users to install `open-iscsi` automatically:
 ```
