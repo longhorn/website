@@ -38,6 +38,7 @@ weight: 1
   - [Support Bundle Node Collection Timeout](#support-bundle-node-collection-timeout)
   - [Fast Replica Rebuild Enabled](#fast-replica-rebuild-enabled)
   - [Timeout of HTTP Client to Replica File Sync Server](#timeout-of-http-client-to-replica-file-sync-server)
+  - [Pre-Pull Manager Images](#pre-pull-manager-images)
   - [V1 Data Engine](#v1-data-engine)
 - [V2 Data Engine (Preview Feature)](#v2-data-engine-preview-feature)
   - [V2 Data Engine](#v2-data-engine)
@@ -77,8 +78,8 @@ weight: 1
   - [Allow Empty Node Selector Volume](#allow-empty-node-selector-volume)
   - [Allow Empty Disk Selector Volume](#allow-empty-disk-selector-volume)
 - [Danger Zone](#danger-zone)
-  - [Concurrent Backing Image Replenish Per Node Limit](#concurrent-backing-image-replenish-per-node-limit)
   - [Concurrent Replica Rebuild Per Node Limit](#concurrent-replica-rebuild-per-node-limit)
+  - [Concurrent Backing Image Replenish Per Node Limit](#concurrent-backing-image-replenish-per-node-limit)
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
   - [Priority Class](#priority-class)
   - [System Managed Components Node Selector](#system-managed-components-node-selector)
@@ -455,6 +456,12 @@ The setting enables fast replica rebuilding feature. It relies on the checksums 
 > Default: `30`
 
 The value in seconds specifies the timeout of the HTTP client to the replica's file sync server used for replica rebuilding, volume cloning, snapshot cloning, etc.
+
+#### Pre-Pull Manager Images
+
+> Default: `true`
+
+The setting enables pre-pulling Longhorn managers' images on all worker nodes before starting the managers' pods.
 
 #### V1 Data Engine
 
