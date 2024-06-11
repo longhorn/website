@@ -12,7 +12,7 @@ categories:
 
 ## Applicable versions
 
-Longhorn upgrading from v1.4.x to v1.5.x
+Longhorn v1.4.x upgrading to v1.5.x
 
 ## Symptoms
 
