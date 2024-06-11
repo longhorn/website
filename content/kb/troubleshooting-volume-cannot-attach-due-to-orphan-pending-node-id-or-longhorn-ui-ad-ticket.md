@@ -16,8 +16,7 @@ Longhorn v1.4.x upgrading to v1.5.x
 
 ## Symptoms
 
-After upgrading Longhorn from v1.4.x to v1.5.x, sometimes Longhorn volume cannot attach anymore so the workload which
-uses the volume stuck in pending state.
+In some situations, volumes are unable to attach after Longhorn is upgraded from v1.4.x to v1.5.x. Workloads that use the affected volumes become stuck in the *Pending* state.
 
 ## Reason
 
