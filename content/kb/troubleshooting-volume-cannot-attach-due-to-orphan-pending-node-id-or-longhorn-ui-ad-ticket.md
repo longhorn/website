@@ -1,5 +1,5 @@
 ---
-title: "After upgrading Longhorn, Volume Cannot Attach Because of The Leftover non-empty volume.status.PendingNodeID or Longhorn UI Attachment Ticket"
+title: "Failure to Attach Volumes After Upgrade to Longhorn v1.5.x"
 authors:
 - "Phan Le"
 draft: false
