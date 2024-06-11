@@ -146,7 +146,7 @@ Starting with Longhorn v1.6.0, Longhorn allows you to modify the [Danger Zone se
 - No attached volumes: When no volumes are attached before the settings are configured, the setting changes are immediately applied.
 - Engine image upgrade (live upgrade): During a live upgrade, which involves creating a new Instance Manager pod, the setting changes are immediately applied to the new pod.
 
-Settings are synchronized hourly. When all volumes are detached, the settings in the following table are immediately applied and the system-managed components (for example, Instance Manager, CSI Driver, and engine images) are restarted. If you do not detach all volumes before the settings are synchronized, the settings are not applied and you must reconfigure the same settings after detaching the remaining volumes.
+Settings are synchronized hourly. When all volumes are detached, the settings in the following table are immediately applied and the system-managed components (for example, Instance Manager, CSI Driver, and engine images) are restarted. If you do not detach all volumes before the settings are synchronized, the settings are not applied and you must reconfigure the same settings after detaching the remaining volumes. The unapplied settings will be shown at the top of the danger zone settings in the Longhorn UI.
 
   | Setting | Additional Information| Affected Components |
   | --- | --- | --- |
