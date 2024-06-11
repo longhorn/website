@@ -103,15 +103,15 @@ Define the policy to use when a node with the last healthy replica of a volume i
 - `block-if-contains-last-replica`: Longhorn will block the drain when the node contains the last healthy replica of a
   volume.
 - `allow-if-replica-is-stopped`: Longhorn will allow the drain when the node contains the last healthy replica of a
-  volume but the replica is stopped.  
+  volume but the replica is stopped.
   WARNING: possible data loss if the node is removed after draining.
-- `always-allow`: Longhorn will allow the drain even though the node contains the last healthy replica of a volume.  
+- `always-allow`: Longhorn will allow the drain even though the node contains the last healthy replica of a volume.
   WARNING: possible data loss if the node is removed after draining. Also possible data corruption if the last replica
   was running during the draining.
-- `block-for-eviction`: Longhorn will automatically evict all replicas and block the drain until eviction is complete.  
+- `block-for-eviction`: Longhorn will automatically evict all replicas and block the drain until eviction is complete.
   WARNING: Can result in slow drains and extra data movement associated with replica rebuilding.
 - `block-for-eviction-if-contains-last-replica`: Longhorn will automatically evict any replicas that don't have a
-  healthy counterpart and block the drain until eviction is complete.  
+  healthy counterpart and block the drain until eviction is complete.
   WARNING: Can result in slow drains and extra data movement associated with replica rebuilding.
 
 Each option has benefits and drawbacks. See [Node Drain Policy
@@ -122,7 +122,7 @@ appropriate in your environment.
 
 > Default: `false`
 
-Longhorn will automatically detach volumes that are manually attached to the nodes which are cordoned. 
+Longhorn will automatically detach volumes that are manually attached to the nodes which are cordoned.
 This prevent the draining process stuck by the PDB of instance-manager which still has running engine on the node.
 
 #### Automatically Clean up System Generated Snapshot
@@ -247,7 +247,7 @@ If this flag is **false**, the Longhorn uninstallation job will fail.
 
 #### Disable Revision Counter
 
-> Default: `false`
+> Default: `true`
 
 Allows engine controller and engine replica to disable revision counter file update for every data write. This improves the data path performance. See [Revision Counter](../../advanced-resources/deploy/revision_counter) for details.
 
@@ -488,7 +488,7 @@ Maximum huge page size (in MiB) for the V2 Data Engine.
 Number of millicpus on each node to be reserved for each instance manager pod when the V2 Data Engine is enabled. By default, the Storage Performance Development Kit (SPDK) target daemon within each instance manager pod uses 1 CPU core. Configuring a minimum CPU usage value is essential for maintaining engine and replica stability, especially during periods of high node workload.
 
 > **Warning:**
->  - Specifying a value of 0 disables CPU requests for instance manager pods. You must specify an integer between 1000 and 8000. 
+>  - Specifying a value of 0 disables CPU requests for instance manager pods. You must specify an integer between 1000 and 8000.
 >  - This is a global setting. Modifying the value triggers an automatic restart of the Instance Manager pods. However, V2 Instance Manager pods that use this setting are restarted only when no instances are running.
 
 #### Offline Replica Rebuilding
@@ -581,10 +581,10 @@ If this setting is enabled, Longhorn automatically attaches the volume and takes
 
 #### Backup Target
 
-> Examples:  
-> `s3://backupbucket@us-east-1/backupstore`  
-> `nfs://longhorn-test-nfs-svc.default:/opt/backupstore`  
-> `nfs://longhorn-test-nfs-svc.default:/opt/backupstore?nfsOptions=soft,timeo=330,retrans=3`  
+> Examples:
+> `s3://backupbucket@us-east-1/backupstore`
+> `nfs://longhorn-test-nfs-svc.default:/opt/backupstore`
+> `nfs://longhorn-test-nfs-svc.default:/opt/backupstore?nfsOptions=soft,timeo=330,retrans=3`
 
 Endpoint used to access a backupstore.   Longhorn supports AWS S3, Azure, GCP, CIFS and NFS.  See [Setting a Backup Target](../../snapshots-and-backups/backup-and-restore/set-backup-target) for details.
 

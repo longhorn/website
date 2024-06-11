@@ -69,3 +69,19 @@ weight: 3
 | Name | Description  | Example |
 |---|---|---|
 | longhorn_snapshot_actual_size_bytes | Actual size of this snapshot | longhorn_snapshot_actual_size_bytes{snapshot="f4468111-2efa-45f5-aef6-63109e30d92c",user_created="false",volume="testvol"} 1.048576e+07 |
+
+
+## BackingImage
+
+| Name | Description  | Example |
+|---|---|---|
+| longhorn_backing_image_actual_size_bytes | Actual size of this backing image | longhorn_backing_image_actual_size_bytes{backing_image="parrot",disk="ca203ce8-2cad-4cd1-92a7-542851f50518",node="kworker1"} 3.3554432e+07 |
+| longhorn_backing_image_state | State of this backing image: 0=Pending, 1=Starting, 2=InProgress, 3=ReadyForTransfer, 4=Ready, 5=Failed, 6=FailedAndCleanUp, 7=Unknown | longhorn_backing_image_state{backing_image="parrot",disk="ca203ce8-2cad-4cd1-92a7-542851f50518",node="kworker1"} 4 |
+
+## BackupBackingImage
+
+| Name | Description  | Example |
+|---|---|---|
+| longhorn_backup_backing_image_actual_size_bytes | Actual size of this backup backing image | longhorn_backup_backing_image_actual_size_bytes{backup_backing_image="parrot"} 3.3554432e+07 |
+| longhorn_backup_backing_image_state | State of this backup backing image: 0=New, 1=Pending, 2=InProgress, 3=Completed, 4=Error, 5=Unknown | longhorn_backup_backing_image_state{backup_backing_image="parrot"} 3 |
+
