@@ -64,6 +64,7 @@ weight: 1
   - [Backup Compression Method](#backup-compression-method)
   - [Backup Concurrent Limit Per Backup](#backup-concurrent-limit-per-backup)
   - [Restore Concurrent Limit Per Backup](#restore-concurrent-limit-per-backup)
+  - [Auto Cleanup Snapshot When Delete Backup](#auto-cleanup-snapshot-when-delete-backup)
 - [Scheduling](#scheduling)
   - [Allow Volume Creation with Degraded Availability](#allow-volume-creation-with-degraded-availability)
   - [Disable Scheduling On Cordoned Node](#disable-scheduling-on-cordoned-node)
@@ -946,3 +947,9 @@ Longhorn coalesces unnecessary snapshots into their newer counterparts, freeing 
 Allowing snapshot purging during normal operations is ideal, but this process temporarily consumes additional disk
 space. If insufficient disk space prevents the process from continuing, consider temporarily disabling purging while
 data is moved to other disks.
+
+#### Auto Cleanup Snapshot When Delete Backup
+
+> Default: `false`
+
+When set to true, the snapshot used by the backup will be automatically cleaned up when the backup is deleted.
