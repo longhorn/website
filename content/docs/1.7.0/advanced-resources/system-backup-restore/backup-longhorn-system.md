@@ -19,6 +19,7 @@ weight: 1
 Longhorn system backup creates a resource bundle and uploads it to the remote backup target.
 
 It includes below resources associating with the Longhorn system:
+- BackingImages
 - ClusterRoles
 - ClusterRoleBindings
 - ConfigMaps
@@ -36,8 +37,6 @@ It includes below resources associating with the Longhorn system:
 - ServiceAccounts
 - StorageClasses
 - Volumes
-
-> **Warning:** Longhorn does not backup `BackingImages`. We will improve this part in the future. See [Restore Longhorn System - Prerequisite](../restore-longhorn-system/#prerequisite) for restoring volumes created with the backing image.
 
 > **Note:** Longhorn does not backup `Nodes`. The Longhorn manager on the target cluster is responsible for creating its own Longhorn `Node` custom resources.
 
