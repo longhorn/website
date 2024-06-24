@@ -41,9 +41,6 @@ You can restore the Longhorn system using Longhorn UI. Or with the `kubectl` com
 - Have a Longhorn system backup.
 
   See [Backup Longhorn System - Create Longhorn System Backup](../backup-longhorn-system#create-longhorn-system-backup) for instructions.
-- Have volume `BackingImages` available in the cluster.
-
-  In case of the `BackingImage` absence, Longhorn will skip the restoration for that `Volume` and its `PersistentVolume` and `PersistentVolumeClaim`.
 - All existing `Volumes` are detached.
 
 ### Using Longhorn UI
