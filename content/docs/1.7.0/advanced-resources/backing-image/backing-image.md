@@ -17,6 +17,7 @@ You can prepare a backing image using four different kinds of data sources.
 2. Upload a file from your local machine. This option is available to Longhorn UI users.
 3. Export an existing in-cluster volume as a backing image.
 4. Restore a backing image from the backupstore, For more information, see [Backing Image Backup](../backing-image-backup).
+5. Clone a backing image from another backing image.
 
 #### The checksum of a backing image
 - The checksum of a backing image is **the SHA512 checksum** of the whole backing image **file** rather than that of the actual content.
