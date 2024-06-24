@@ -746,6 +746,23 @@ The available volume spec options are:
   Longhorn does not forcefully re-schedule the replicas to a zone that does not have enough nodes
   to support even balance. Instead, Longhorn will re-schedule to balance at the node level.
 
+#### Replica Auto Balance Disk Pressure Threshold (%)
+
+> Default: `90`
+
+Percentage of currently used storage that triggers automatic replica rebalancing.
+
+When the threshold is reached, Longhorn automatically rebuilds replicas that are under disk pressure on another disk within the same node.
+
+To disable this setting, set the value to **0**.
+
+This setting takes effect only when the following conditions are met:
+
+- [Replica Auto Balance](#replica-auto-balance) is set to **best-effort**. To disable this setting (disk pressure threshold) when replica auto-balance is set to best-effort, set the value of this setting to **0**.
+- At least one other disk on the node has sufficient available space.
+
+This setting is not affected by [Replica Node Level Soft Anti-Affinity](#replica-node-level-soft-anti-affinity), which can prevent Longhorn from rebuilding a replica on the same node. Regardless of that setting's value, this setting still allows Longhorn to attempt replica rebuilding on a different disk on the same node for migration purposes.
+
 #### Storage Minimal Available Percentage
 
 > Default: `25`
