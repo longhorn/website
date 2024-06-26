@@ -246,3 +246,19 @@ The attribute `backendStoreDriver`, which is defined in the parameters of Storag
 ### Updating the Linux Kernel on Longhorn Nodes
 
 Host machines with Linux kernel 5.15 may unexpectedly reboot when volume-related IO errors occur. Update the Linux kernel on Longhorn nodes to version 5.19 or later to prevent such issues. For more information, see [Prerequisites](../../v2-data-engine/prerequisites/).
+
+### Storage Network Support for Read-Write-Many (RWX) Volumes
+
+Starting with Longhorn v1.7.0, the [storage network](../../advanced-resources/deploy/storage-network/) supports RWX volumes. However, there is a limitation due to the reliance on Multus.
+
+Multus networks operate within the Kubernetes network namespace. This restricts Longhorn to mount NFS endpoints within the CSI plugin pod container network namespace. As a result, when the CSI plugin pod restart, NFS mount connections to the Share Manager pod become unresponsive. This occurs because the previous namespace, where the connection was established, is no longer available.
+
+To alleviate this, Longhorn provides two settings:
+- [Storage Network For RWX Volume Enabled](../../references/settings#storage-network-for-rwx-volume-enabled). When this setting is disabled, storage network will only apply to RWO volumes. The RWX volumes NFS client will be mounted over the cluster network in the host network namespace. This means CSI plugin pod restart will not affect on the NFS mount connections.
+- [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](../../references/settings#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly). When the RWX volumes are created over the storage network. This setting actively deletes RWX volume workload pods when the CSI plugin pod restarts, allowing the pods to be remounted and avoiding dangling mount entries.
+
+Clusters with pre-existing RWX volume workloads may upgrade to Longhorn v1.7.0. During and after the upgrade, the workload pod is not be interrupted because the NFS share connection uses the cluster IP, which remains valid in the host network namespace.
+
+You can detach, enable [Storage Network For RWX Volume Enabled](../../references/settings#storage-network-for-rwx-volume-enabled) setting, and reattach existing RWX volumes to apply the storage network to those volumes.
+
+For more information, see [Issue #8184](https://github.com/longhorn/longhorn/issues/8184).
