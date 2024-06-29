@@ -225,13 +225,13 @@ kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< curren
 ```
 After the deployment, run the following command to check pods' status of the installer:
 ```
-kubectl get pod | grep longhorn-iscsi-installation
+kubectl -n longhorn-system get pod | grep longhorn-iscsi-installation
 longhorn-iscsi-installation-49hd7   1/1     Running   0          21m
 longhorn-iscsi-installation-pzb7r   1/1     Running   0          39m
 ```
 And also can check the log with the following command to see the installation result:
 ```
-kubectl logs longhorn-iscsi-installation-pzb7r -c iscsi-installation
+kubectl -n longhorn-system logs longhorn-iscsi-installation-pzb7r -c iscsi-installation
 ...
 Installed:
   iscsi-initiator-utils.x86_64 0:6.2.0.874-7.amzn2
@@ -290,14 +290,14 @@ kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< curren
 ```
 After the deployment, run the following command to check pods' status of the installer:
 ```
-kubectl get pod | grep longhorn-nfs-installation
+kubectl -n longhorn-system get pod | grep longhorn-nfs-installation
 NAME                                  READY   STATUS    RESTARTS   AGE
 longhorn-nfs-installation-t2v9v   1/1     Running   0          143m
 longhorn-nfs-installation-7nphm   1/1     Running   0          143m
 ```
 And also can check the log with the following command to see the installation result:
 ```
-kubectl logs longhorn-nfs-installation-t2v9v -c nfs-installation
+kubectl -n longhorn-system logs longhorn-nfs-installation-t2v9v -c nfs-installation
 ...
 nfs install successfully
 ```
