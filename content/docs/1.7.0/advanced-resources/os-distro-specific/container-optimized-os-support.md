@@ -41,7 +41,7 @@ Longhorn provides a GKE COS node agent daemonset, which leverages GKE Kubernetes
 1. Check the agent pod's status.
     Example:
     ```
-    $ kubectl get pod -l app=longhorn-gke-cos-node
+    $ kubectl -n longhorn-system get pod -l app=longhorn-gke-cos-node
     NAME                                READY   STATUS    RESTARTS      AGE
     longhorn-gke-cos-node-agent-222w8   1/1     Running   1 (86m ago)   86m
     longhorn-gke-cos-node-agent-8r26h   1/1     Running   1 (86m ago)   86m
