@@ -45,7 +45,7 @@ weight: 12
       sources:
         - chart: longhorn
           repoURL: https://charts.longhorn.io/
-          targetRevision: v1.6.0 # Replace with the Longhorn version you'd like to install or upgrade to
+          targetRevision: v{{< current-version >}} # Replace with the Longhorn version you'd like to install or upgrade to
           helm:
             values: |
               preUpgradeChecker:
