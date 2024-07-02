@@ -14,6 +14,8 @@ You can configure,
 - The number of backups or snapshots to retain
 - The number of jobs to run concurrently
 - Any labels that should be applied to the backup or snapshot
+- Parameters that should be applied to the backup or snapshot
+  - `full-backup-interval`: Integer parameter that applied only to the backup. With this parameter, Longhorn performs full backup every N incremental backups. For full backup, see [Periodic Full Backup](#periodic-full-backup) and [Create a Backup](../backup-and-restore/create-a-backup).
 
 Recurring jobs can be set up using the Longhorn UI, `kubectl`, or by using a Longhorn `RecurringJob`.
 
@@ -220,3 +222,11 @@ You can find the setting in Longhorn UI.
 When the setting is enabled, Longhorn will automatically attach the volume and take a snapshot/backup when it is time to do a recurring snapshot/backup.
 
 Note that during the time the volume was attached automatically, the volume is not ready for the workload. Workload will have to wait until the recurring job finishes.
+
+## Periodic Full Backup
+
+By default, Longhorn performs delta backups on snapshots, meaning it backs up only data that has been newly updated since the last backup. However, if a data block in the backup store becomes corrupted, Longhorn does not replace it with a healthy one during subsequent backup operations. This could result in backup restoration failures if a corrupted data block is encountered.
+
+By applying the `full-backup-interval` parameter, Longhorn performs a full backup every N incremental backups. During a full backup, Longhorn uploads all data blocks of the volume and overrides any existing data blocks in the backup store, thereby automatically fixing corrupted data blocks.
+
+It's important to note that performing a full backup requires more time and incurs higher network throughput costs compared to the default incremental backup.
