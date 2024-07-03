@@ -8,7 +8,6 @@ aliases:
 - Support for AMD64 and ARM64 platforms
 - Volume lifecycle (creation, attachment, detachment and deletion)
 - Degraded volume
-- [Automatic offline replica rebuilding](./automatic-offline-replica-rebuilding)
 - Block disk management
 - Orphaned replica management
 - Snapshot creation, deletion and reversion

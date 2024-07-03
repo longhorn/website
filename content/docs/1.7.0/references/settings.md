@@ -44,7 +44,6 @@ weight: 1
   - [V2 Data Engine](#v2-data-engine)
   - [V2 Data Engine Hugepage Limit](#v2-data-engine-hugepage-limit)
   - [Guaranteed Instance Manager CPU for V2 Data Engine](#guaranteed-instance-manager-cpu-for-v2-data-engine)
-  - [Offline Replica Rebuilding](#offline-replica-rebuilding)
 - [Snapshot](#snapshot)
   - [Snapshot Data Integrity](#snapshot-data-integrity)
   - [Immediate Snapshot Data Integrity Check After Creating a Snapshot](#immediate-snapshot-data-integrity-check-after-creating-a-snapshot)
@@ -65,7 +64,6 @@ weight: 1
   - [Backup Compression Method](#backup-compression-method)
   - [Backup Concurrent Limit Per Backup](#backup-concurrent-limit-per-backup)
   - [Restore Concurrent Limit Per Backup](#restore-concurrent-limit-per-backup)
-  - [Auto Cleanup Snapshot When Delete Backup](#auto-cleanup-snapshot-when-delete-backup)
 - [Scheduling](#scheduling)
   - [Allow Volume Creation with Degraded Availability](#allow-volume-creation-with-degraded-availability)
   - [Disable Scheduling On Cordoned Node](#disable-scheduling-on-cordoned-node)
@@ -79,8 +77,8 @@ weight: 1
   - [Allow Empty Node Selector Volume](#allow-empty-node-selector-volume)
   - [Allow Empty Disk Selector Volume](#allow-empty-disk-selector-volume)
 - [Danger Zone](#danger-zone)
-  - [Concurrent Backing Image Replenish Per Node Limit](#concurrent-backing-image-replenish-per-node-limit)
   - [Concurrent Replica Rebuild Per Node Limit](#concurrent-replica-rebuild-per-node-limit)
+  - [Concurrent Backing Image Replenish Per Node Limit](#concurrent-backing-image-replenish-per-node-limit)
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
   - [Priority Class](#priority-class)
   - [System Managed Components Node Selector](#system-managed-components-node-selector)
@@ -89,6 +87,7 @@ weight: 1
   - [Remove Snapshots During Filesystem Trim](#remove-snapshots-during-filesystem-trim)
   - [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu)
   - [Disable Snapshot Purge](#disable-snapshot-purge)
+  - [Auto Cleanup Snapshot When Delete Backup](#auto-cleanup-snapshot-when-delete-backup)
 
 ### Customizing Default Settings
 
@@ -498,16 +497,6 @@ Number of millicpus on each node to be reserved for each instance manager pod wh
 > **Warning:**
 >  - Specifying a value of 0 disables CPU requests for instance manager pods. You must specify an integer between 1000 and 8000.
 >  - This is a global setting. Modifying the value triggers an automatic restart of the Instance Manager pods. However, V2 Instance Manager pods that use this setting are restarted only when no instances are running.
-
-#### Offline Replica Rebuilding
-
-> Default: `enabled`
-
-Setting that allows rebuilding of offline replicas for volumes using the V2 Data Engine. For more information, see [Automatic Offline Replica Rebuilding](../../v2-data-engine/features/automatic-offline-replica-rebuilding).
-
-Here are the available options:
-- `enabled`
-- `disabled`
 
 ### Snapshot
 
