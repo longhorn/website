@@ -31,7 +31,6 @@ Longhorn's V2 Data Engine harnesses the power of the Storage Performance Develop
 
 - Volume lifecycle (creation, attachment, detachment and deletion)
 - Degraded volume
-- Offline replica rebuilding
 - Block disk management
 - Orphaned replica management
 
