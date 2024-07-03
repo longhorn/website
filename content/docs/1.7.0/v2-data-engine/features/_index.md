@@ -8,7 +8,7 @@ aliases:
 - Support for AMD64 and ARM64 platforms
 - Volume lifecycle (creation, attachment, detachment and deletion)
 - Degraded volume
-- Block disk management
+- [Block disk management](./node-disk-support)
 - Orphaned replica management
 - Snapshot creation, deletion and reversion
 - Volume backup and restoration
