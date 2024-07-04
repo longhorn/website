@@ -57,6 +57,16 @@ The following Linux OS distributions and versions have been verified during the 
 
 Note: It's recommended to guarantee that the kernel version is at least 5.8 as there is filesystem optimization/improvement since this version. See [this issue](https://github.com/longhorn/longhorn/issues/2507#issuecomment-857195496) for details.
 
+The list below contains known broken kernel versions that users should avoid using:
+
+| No. | Version          | Distro          | Additional Context
+|-----|------------------|-----------------| ------------------
+| 1.  | 6.5.6            | Vanilla kernel  | Related to this bug https://longhorn.io/kb/troubleshooting-rwx-volume-fails-to-attached-caused-by-protocol-not-supported/
+| 2.  | 5.15.0-94        | Ubuntu          | Related to this bug https://longhorn.io/kb/troubleshooting-rwx-volume-fails-to-attached-caused-by-protocol-not-supported/
+| 3.  | 6.5.0-21         | Ubuntu          | Related to this bug https://longhorn.io/kb/troubleshooting-rwx-volume-fails-to-attached-caused-by-protocol-not-supported/
+| 4.  | 6.5.0-1014-aws   | Ubuntu          | Related to this bug https://longhorn.io/kb/troubleshooting-rwx-volume-fails-to-attached-caused-by-protocol-not-supported/
+
+
 ## Node and Disk Setup
 
 We recommend the following setup for nodes and disks.
