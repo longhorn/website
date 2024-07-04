@@ -72,7 +72,17 @@ in particular, benefit from usage of specific kernel versions.
 - Enabling the [Freeze Filesystem for Snapshot](../references/settings#freeze-filesystem-for-snapshot) setting: Use a
   kernel with version `5.17` or later to ensure that a volume crash during a filesystem freeze cannot lock up a node.
 - Enabling the [V2 Data Engine](../v2-data-engine/prerequisites): Use a kernel with version `5.19` or later to ensure
-  that volume-related I/O errors cannot reboot a node unexpectedly.
+
+
+The list below contains known broken kernel versions that users should avoid using:
+
+| No. | Version          | Distro          | Additional Context
+|-----|------------------|-----------------| ------------------
+| 1.  | 6.5.6            | Vanilla kernel  | Related to this bug https://longhorn.io/kb/troubleshooting-rwx-volume-fails-to-attached-caused-by-protocol-not-supported/
+| 2.  | 5.15.0-94        | Ubuntu          | Related to this bug https://longhorn.io/kb/troubleshooting-rwx-volume-fails-to-attached-caused-by-protocol-not-supported/
+| 3.  | 6.5.0-21         | Ubuntu          | Related to this bug https://longhorn.io/kb/troubleshooting-rwx-volume-fails-to-attached-caused-by-protocol-not-supported/
+| 4.  | 6.5.0-1014-aws   | Ubuntu          | Related to this bug https://longhorn.io/kb/troubleshooting-rwx-volume-fails-to-attached-caused-by-protocol-not-supported/
+
 
 ## Kubernetes Version
 
@@ -118,47 +128,47 @@ To use a directory other than the default `/var/lib/longhorn` for storage, the `
 
 The [Default node/disk configuration](../nodes-and-volumes/nodes/default-disk-and-node-config) feature can be used to customize the default disk after installation. Customizing the default configurations for disks and nodes is useful for scaling the cluster because it eliminates the need to configure Longhorn manually for each new node if the node contains more than one disk, or if the disk configuration is different for new nodes. Remember to enable `Create default disk only on labeled node` if applicable.
 
-## Volume Performance Optimization  
+## Volume Performance Optimization
 
-Before configuring workloads, ensure that you have set up the following basic requirements for optimal volume performance.  
+Before configuring workloads, ensure that you have set up the following basic requirements for optimal volume performance.
 
-- SATA/NVMe SSDs or disk drives with similar performance  
-- 10 Gbps network bandwidth between nodes  
-- Dedicated Priority Class for system-managed and user-deployed Longhorn components. By default, Longhorn installs the default Priority Class `longhorn-critical`.  
+- SATA/NVMe SSDs or disk drives with similar performance
+- 10 Gbps network bandwidth between nodes
+- Dedicated Priority Class for system-managed and user-deployed Longhorn components. By default, Longhorn installs the default Priority Class `longhorn-critical`.
 
-The following sections outline other recommendations for production environments.  
+The following sections outline other recommendations for production environments.
 
-### IO Performance  
+### IO Performance
 
-- **Storage network**: Use a [dedicated storage network](../advanced-resources/deploy/storage-network/#setting-storage-network) to improve IO performance and stability.  
+- **Storage network**: Use a [dedicated storage network](../advanced-resources/deploy/storage-network/#setting-storage-network) to improve IO performance and stability.
 
-- **Longhorn disk**: Use a [dedicated disk](../nodes-and-volumes/nodes/multidisk/#add-a-disk) for Longhorn storage instead of using the root disk.  
+- **Longhorn disk**: Use a [dedicated disk](../nodes-and-volumes/nodes/multidisk/#add-a-disk) for Longhorn storage instead of using the root disk.
 
-- **Replica count**: Set the [default replica count](../references/settings/#default-replica-count) to "2" to achieve data availability with better disk space usage or less impact to system performance. This practice is especially beneficial to data-intensive applications.  
+- **Replica count**: Set the [default replica count](../references/settings/#default-replica-count) to "2" to achieve data availability with better disk space usage or less impact to system performance. This practice is especially beneficial to data-intensive applications.
 
-- **Storage tag**: Use [storage tags](../nodes-and-volumes/nodes/storage-tags) to define storage tiering for data-intensive applications. For example, only high-performance disks can be used for storing performance-sensitive data.  
+- **Storage tag**: Use [storage tags](../nodes-and-volumes/nodes/storage-tags) to define storage tiering for data-intensive applications. For example, only high-performance disks can be used for storing performance-sensitive data.
 
-- **Data locality**: Use `best-effort` as the default [data locality](../high-availability/data-locality) of Longhorn StorageClasses.  
+- **Data locality**: Use `best-effort` as the default [data locality](../high-availability/data-locality) of Longhorn StorageClasses.
 
-  For applications that support data replication (for example, a distributed database), you can use the `strict-local` option to ensure that only one replica is created for each volume. This practice prevents the extra disk space usage and IO performance overhead associated with volume replication.  
+  For applications that support data replication (for example, a distributed database), you can use the `strict-local` option to ensure that only one replica is created for each volume. This practice prevents the extra disk space usage and IO performance overhead associated with volume replication.
 
-  For data-intensive applications, you can use pod scheduling functions such as node selector or taint toleration. These functions allow you to schedule the workload to a specific storage-tagged node together with one replica.  
+  For data-intensive applications, you can use pod scheduling functions such as node selector or taint toleration. These functions allow you to schedule the workload to a specific storage-tagged node together with one replica.
 
-### Space Efficiency  
+### Space Efficiency
 
-- **Recurring snapshots**: Periodically clean up system-generated snapshots and retain only the number of snapshots that makes sense for your implementation.  
+- **Recurring snapshots**: Periodically clean up system-generated snapshots and retain only the number of snapshots that makes sense for your implementation.
 
-  For applications with replication capability, periodically [delete all types of snapshots](../concepts/#243-deleting-snapshots).  
+  For applications with replication capability, periodically [delete all types of snapshots](../concepts/#243-deleting-snapshots).
 
-- **Recurring filesystem trim**: Periodically [trim the filesystem](../nodes-and-volumes/volumes/trim-filesystem) inside volumes to reclaim disk space.  
+- **Recurring filesystem trim**: Periodically [trim the filesystem](../nodes-and-volumes/volumes/trim-filesystem) inside volumes to reclaim disk space.
 
 - **Snapshot space management**: [Configure global and volume-specific settings](../snapshots-and-backups/snapshot-space-management) to prevent unexpected disk space exhaustion.
 
 ### Disaster Recovery
 
-- **Recurring backups**: Create [recurring backup jobs](../snapshots-and-backups/scheduling-backups-and-snapshots/) for mission-critical application volumes.  
+- **Recurring backups**: Create [recurring backup jobs](../snapshots-and-backups/scheduling-backups-and-snapshots/) for mission-critical application volumes.
 
-- **System backup**: Create periodic [system backups](../advanced-resources/system-backup-restore/backup-longhorn-system/#create-longhorn-system-backup).  
+- **System backup**: Create periodic [system backups](../advanced-resources/system-backup-restore/backup-longhorn-system/#create-longhorn-system-backup).
 
 ## Deploying Workloads
 
