@@ -104,3 +104,13 @@ parameters:
   staleReplicaTimeout: "2880" # 48 hours in minutes
   fromBackup: ""
 ```
+
+## Replica Auto Balance Disk Pressure Threshold (%)
+
+When `Replica Auto Balance` is enabled with `best-effort`, you can set a `Replica Auto Balance Disk Pressure Threshold (%)`. This threshold defines the disk usage level at which Longhorn will automatically attempt to migrate replicas to another disk on the same node.
+
+For example, if the threshold is set to 75%, Longhorn will try to migrate replicas sequentially when the disk consumption reaches 75% capacity.
+
+Longhorn prioritizes balancing replicas across node and zone first. Once the node and zones are balanced, it will then consider balancing within a single node based on disk pressure.
+
+Since Longhorn v1.7.0, when rebuilding replicas on the same node, Longhorn uses local file data synchronization for more efficient data transfer.
