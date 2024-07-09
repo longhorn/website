@@ -8,6 +8,8 @@ To deploy Longhorn on a cluster provisioned with OpenShift 4.x, some additional 
 > **Note**: OKD currently does not support the ARM platform. For more information, see the [OKD website](https://www.okd.io/crc/?h=arm) and [GitHub issue #1165](https://github.com/okd-project/okd/issues/1165) (*OKD in ARM platform*).
 
 - [Install Longhorn](#install-longhorn)
+  - [Install With Helm](#install-with-helm)
+  - [Install With `oc` Command](#install-with-oc-command)
 - [Prepare A Customized Default Longhorn Disk (Optional)](#prepare-a-customized-default-longhorn-disk-optional)
   - [Add An Extra Disk to Longhorn Storage](#add-an-extra-disk-to-longhorn-storage)
     - [Create Filesystem For The Device](#create-filesystem-for-the-device)
@@ -18,6 +20,8 @@ To deploy Longhorn on a cluster provisioned with OpenShift 4.x, some additional 
 
 ## Install Longhorn
 
+### Install With Helm
+
 Please refer to this section [Install with Helm](../../../deploy/install/install-with-helm/) first.
 
 And then install Longhorn with setting ***openshift.enabled*** true:
@@ -25,6 +29,24 @@ And then install Longhorn with setting ***openshift.enabled*** true:
 ```bash
   helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --set openshift.enabled=true
 ```
+
+### Install With `oc` Command
+
+You can install Longhorn on [OKD](https://www.okd.io/) clusters using the following command:
+
+  ```shell
+    oc apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn-okd.yaml
+  ```
+
+One way to monitor the progress of the installation is to watch pods being created in the `longhorn-system` namespace:
+
+  ```shell
+    oc get pods \
+    --namespace longhorn-system \
+    --watch
+  ```
+
+For more information, see [Install with Kubectl](../../../deploy/install/install-with-kubectl).
 
 ## Prepare A Customized Default Longhorn Disk (Optional)
 
