@@ -1,12 +1,15 @@
 ---
-title: CSI Volume Clone Support
+title: Volume Clone Support
 description: Creating a new volume as a duplicate of an existing volume
 weight: 3
 ---
 
 Longhorn supports [CSI volume cloning](https://kubernetes.io/docs/concepts/storage/volume-pvc-datasource/).
 
-## Clone a Volume Using YAML
+
+## Volume Cloning
+
+### Clone a Volume Using YAML
 Suppose that you have the following `source-pvc`:
 ```yaml
 apiVersion: v1
@@ -44,16 +47,16 @@ spec:
 > the `cloned-pvc` must have the same `resources.requests.storage` as the `source-pvc`.
 
 
-## Clone a Volume Using the Longhorn UI
+### Clone Volume Using the Longhorn UI
 
-### Clone a volume
-1. Go to the **Volume** screen.
+#### Clone a volume
+1. Go to the **Volume** page.
 2. Select a volume, and then click **Clone Volume** in the **Operation** menu.
 3. (Optional) Configure the settings of the new volume.
 4. Click **OK**.
 
-### Clone a Volume Using a Snapshot
-1. Go to the **Volume** screen.
+#### Clone a Volume Using a Snapshot
+1. Go to the **Volume** page.
 2. Click the name of the volume that you want to clone.
 3. In the **Snapshot and Backups** section of the details screen, identify the snapshot that you want to use and then click **Clone Volume**.
 4. (Optional) Configure the settings of the new volume.
@@ -61,12 +64,21 @@ spec:
 
 {{< figure src="/img/screenshots/snapshots-and-backups/clone-volume-modal.png" >}}
 
+#### Clone Multiple Volumes (Bulk Cloning)
+1. Go to the **Volume** page.
+2. Select the volume you want to clone.
+3. Click **Clone Volume** button on top of the table.
+4. (Optional) Configure the settings of the new volumes
+5. Click **OK**
+
+
 **Note**:
 > - The Longhorn UI pre-fills certain fields and prevents you from modifying the values to ensure that those match the settings of the source volume.
 > - Longhorn automatically attaches the new volume, clones the source volume, and then detaches the new volume.
 
-### Create a Volume Using a Specific Data Source
-1. Go to the **Volume** screen.
+
+## Volume Creation
+1. Go to the **Volume** page.
 2. Click **Create Volume**.
 3. Select the data source (**Volume** or **Volume Snapshot**) that you want to use.
 4. If you selected **Volume Snapshot**, select a snapshot.
