@@ -110,7 +110,7 @@ stringData:
 You can also clone and encrypt the backing image via UI
 1. Go to `Setting -> Backing Image` page and click `Create Backing Image` button.
 2. Select `Created From` to `Clone From Existing Backing Image` and select `Encryption` to `encrypt`.
-3. Input the `Secret` and `Secret Namespace` which required to encrypt the backing image
+3. Input the `Secret` and `Secret Namespace` which are required to encrypt the backing image
 4. Click `OK`
 
 {{< figure src="/img/screenshots/backing-image/encrypt.png" >}}
@@ -178,7 +178,7 @@ spec:
 You can also clone and decrypt the backing image via UI
 1. Go to `Setting -> Backing Image` page and click `Create Backing Image` button.
 2. Select `Created From` to `Clone From Existing Backing Image` and select `Encryption` to `decrypt`.
-3. Input the `Secret` and `Secret Namespace` which required to decrypt the backing image
+3. Input the `Secret` and `Secret Namespace` which are required to decrypt the backing image
 4. Click `OK`
 
 {{< figure src="/img/screenshots/backing-image/decrypt.png" >}}
