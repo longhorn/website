@@ -9,11 +9,11 @@ As of v1.6.0, Longhorn supports backing up of backing images.
 
 You must first [set up a backup target](../../../snapshots-and-backups/backup-and-restore/set-backup-target). If you skip this crucial step, the missing backup target will prevent Longhorn from creating a backup of the backing image.
 
-## Create and Restore a Backup of a Backing Image
+## Create Backup of a Backing Image
 
 Because backing images are globally unique within the Longhorn system, the corresponding backups are also globally unique and are identified using the same name.
 
-You can create backups of backing images using YAML. 
+You can create backups of backing images using YAML.
 
 Example of backing image:
 ```yaml
@@ -48,6 +48,14 @@ spec:
 > - `userCreated`: Set the value to `true` to indicate that you created the backup custom resource, which enabled the creation of the backup in the backupstore. The value `false` indicates that the backup custom resource was synced from the backupstore.
 > - `labels`: You can add labels to the backing image backup.
 
+Backup a backing image via UI
+1. Go to `Setting -> Backing Image` page.
+2. Click the `Backup` action in operation menu for the backing image you want to do backup
+3. The backup with the same backing image name will show in below `Backup Backing Image` table
+
+{{< figure src="/img/screenshots/backing-image/backup.png" >}}
+
+
 ## Restore a Backing Image from a Backup
 You can restore a backing image in another cluster after creating a backup in the backupstore.
 
@@ -74,6 +82,22 @@ spec:
 >   - `backup-url`: URL of the backing image resource in the backupstore. You can find this information in the status of the backup custom resource `.Status.URL`.
 >   - `concurrent-limit`: Maximum number of worker threads that can concurrently run for each restore operation. When unspecified, Longhorn uses the default value.
 > - `checksum`: You can specify the expected SHA-512 checksum of the backing image file, which Longhorn uses to validate the restored file. When unspecified, Longhorn uses the checksum of the restored file as the truth.
+
+Restore backing image from a backup via UI
+1. Go to `Setting -> Backing Image` page.
+2. Click the `Restore` action in operation menu for the backup backing image you want to restore
+3. Input the `Secret` and `Secret Namespace` if the backing image is an encrypted image
+4. Click OK
+
+{{< figure src="/img/screenshots/backing-image/restore.png" >}}
+
+> **IMPORTANT:**
+>
+> Longhorn won't store secret / secret namespace in the backup backing image config in v1.7.0 release.
+>
+> Users need to manually fill in the secret / secret namespace of the image when restoring.
+> We will enhance this flow in the future.
+
 
 ## Volume with a Backing Image
 
