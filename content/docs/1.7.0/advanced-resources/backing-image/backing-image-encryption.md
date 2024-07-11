@@ -42,6 +42,13 @@ spec:
 > - `backing-image`: Specify the name of the backing image to be cloned.
 > - `encryption`: Set the value to `ignore` to directly clone the backing image. If the value is not given, Longhorn use `ignore` as default value.
 
+Longhorn also supports cloning the backing image via UI.
+1. Go to `Setting -> Backing Image` page and click `Create Backing Image` button.
+2. Select `Created From` to `Clone From Existing Backing Image` and select `Encryption` to `ignore`.
+3. Click `OK`
+
+{{< figure src="/img/screenshots/backing-image/clone.png" >}}
+
 ## Encrypt a Backing Image
 You can enable encryption during cloning of a backing image so that the image can be used with an encrypted volume.
 
@@ -100,8 +107,16 @@ stringData:
 > - `secret`: Specify the secret used to encrypt the backing image.
 > - `secret-namespace`: Specify the namespace of the secret used to encrypt the backing image.
 
+You can also clone and encrypt the backing image via UI
+1. Go to `Setting -> Backing Image` page and click `Create Backing Image` button.
+2. Select `Created From` to `Clone From Existing Backing Image` and select `Encryption` to `encrypt`.
+3. Input the `Secret` and `Secret Namespace` which required to encrypt the backing image
+4. Click `OK`
+
+{{< figure src="/img/screenshots/backing-image/encrypt.png" >}}
+
 ## Decrypt a Backing Image
-You can decrypt an encrypted backing image through cloning. 
+You can decrypt an encrypted backing image through cloning.
 
 Example of an encrypted backing image:
 
@@ -160,9 +175,17 @@ spec:
 > - `secret`: Specify the secret used to decrypt the backing image.
 > - `secret-namespace`: Specify the namespace of the secret used to decrypt the backing image.
 
+You can also clone and decrypt the backing image via UI
+1. Go to `Setting -> Backing Image` page and click `Create Backing Image` button.
+2. Select `Created From` to `Clone From Existing Backing Image` and select `Encryption` to `decrypt`.
+3. Input the `Secret` and `Secret Namespace` which required to decrypt the backing image
+4. Click `OK`
+
+{{< figure src="/img/screenshots/backing-image/decrypt.png" >}}
+
 
 ## Use an Encrypted Backing Image with an Encrypted Volume
-The secret used to encrypt the backing image and the volume must be identical. Once the encrypted backing image is ready, you can create the StorageClass with the corresponding backing image and the secret to create the volume for the workload. 
+The secret used to encrypt the backing image and the volume must be identical. Once the encrypted backing image is ready, you can create the StorageClass with the corresponding backing image and the secret to create the volume for the workload.
 
 Example of YAML code for the encryption secret:
 
@@ -195,7 +218,7 @@ parameters:
   fromBackup: ""
   encrypted: "true"
   backingImage: "parrot-cloned-encrypted"
-  backingImageDataSourceType: "clone"  
+  backingImageDataSourceType: "clone"
   # global secret that contains the encryption key that will be used for all volumes
   csi.storage.k8s.io/provisioner-secret-name: "longhorn-crypto"
   csi.storage.k8s.io/provisioner-secret-namespace: "longhorn-system"
@@ -210,9 +233,9 @@ For more information, see [Volume Encryption](../../security/volume-encryption).
 ## Limitations
 - Longhorn is unable to encrypt backing images that are already encrypted, and decrypt backing images that are not encrypted.
 - Longhorn does not allow you to change the encryption key of an encrypted backing image.
-- When encrypting a qcow2 image, Longhorn first creates a raw image from the qcow2 image and then encrypts it. The resulting encrypted raw image temporarily consumes extra space during cloning. For example, 
+- When encrypting a qcow2 image, Longhorn first creates a raw image from the qcow2 image and then encrypts it. The resulting encrypted raw image temporarily consumes extra space during cloning. For example,
     1. If we encrypt a 10MiB qcow2 image with a virtual size of 200MiB, we first create the raw image from the qcow2 which will consume 200MiB of the space.
     2. Longhorn then create the encrypted backing image from that 200MiB raw image which will take another 200MiB of the space.
-    3. After the encrypted backing image is created, the temporary raw image will be cleaned up and free the 200MiB from the space. 
+    3. After the encrypted backing image is created, the temporary raw image will be cleaned up and free the 200MiB from the space.
 - If the source backing image is a sparse file, the file loses its sparsity after encryption.
 - To allow storage of the LUKS metadata during encryption, the image size is increased by 16 MB. For more information, see the [cryptsetup release notes](https://gitlab.com/cryptsetup/cryptsetup/-/blob/master/docs/v2.1.0-ReleaseNotes#L27).
