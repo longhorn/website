@@ -71,6 +71,7 @@ weight: 1
   - [Replica Zone Level Soft Anti-Affinity](#replica-zone-level-soft-anti-affinity)
   - [Replica Disk Level Soft Anti-Affinity](#replica-disk-level-soft-anti-affinity)
   - [Replica Auto Balance](#replica-auto-balance)
+  - [Replica Auto Balance Disk Pressure Threshold (%)](#replica-auto-balance-disk-pressure-threshold-)
   - [Storage Minimal Available Percentage](#storage-minimal-available-percentage)
   - [Storage Over Provisioning Percentage](#storage-over-provisioning-percentage)
   - [Storage Reserved Percentage For Default Disk](#storage-reserved-percentage-for-default-disk)
@@ -84,6 +85,7 @@ weight: 1
   - [System Managed Components Node Selector](#system-managed-components-node-selector)
   - [Kubernetes Cluster Autoscaler Enabled (Experimental)](#kubernetes-cluster-autoscaler-enabled-experimental)
   - [Storage Network](#storage-network)
+  - [Storage Network For RWX Volume Enabled](#storage-network-for-rwx-volume-enabled)
   - [Remove Snapshots During Filesystem Trim](#remove-snapshots-during-filesystem-trim)
   - [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu)
   - [Disable Snapshot Purge](#disable-snapshot-purge)
@@ -811,7 +813,13 @@ Starting with Longhorn v1.6.0, Longhorn allows you to modify the [Danger Zone se
 
 Settings are synchronized hourly. When all volumes are detached, the settings in the following table are immediately applied and the system-managed components (for example, Instance Manager, CSI Driver, and engine images) are restarted.
 
-If you do not detach all volumes before the settings are synchronized, the settings are not applied and you must reconfigure the same settings after detaching the remaining volumes. You can view the list of unapplied settings in the **Danger Zone** section of the Longhorn UI.
+If you do not detach all volumes before the settings are synchronized, the settings are not applied and you must reconfigure the same settings after detaching the remaining volumes. You can view the list of unapplied settings in the **Danger Zone** section of the Longhorn UI, or run the following CLI command to check the value of the field `APPLIED`.
+
+  ```shell
+  ~# kubectl -n longhorn-system get setting priority-class
+  NAME             VALUE               APPLIED   AGE
+  priority-class   longhorn-critical   true      3h26m
+  ```
 
   | Setting | Additional Information| Affected Components |
   | --- | --- | --- |
