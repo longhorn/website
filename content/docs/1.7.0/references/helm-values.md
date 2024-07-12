@@ -162,6 +162,18 @@ You can install Longhorn in an air-gapped environment with a private registry. F
 | privateRegistry.registryUrl | URL of a private registry. When unspecified, Longhorn uses the default system registry. |
 | privateRegistry.registryUser | User account used for authenticating with a private registry. |
 
+### Metrics Settings
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels for the Prometheus ServiceMonitor resource. |
+| metrics.serviceMonitor.annotations | object | `{}` | Annotations for the Prometheus ServiceMonitor resource. |
+| metrics.serviceMonitor.enabled | bool | `false` | Setting that allows the creation of a Prometheus ServiceMonitor resource for Longhorn Manager components. |
+| metrics.serviceMonitor.interval | string | `""` | Interval at which Prometheus scrapes the metrics from the target. |
+| metrics.serviceMonitor.metricRelabelings | list | `[]` | Configures the relabeling rules to apply to the samples before ingestion. See the [Prometheus Operator  documentation](https://prometheus-operator.dev/docs/api-reference/api/#monitoring.coreos.com/v1.Endpoint) for formatting details. |
+| metrics.serviceMonitor.relabelings | list | `[]` | Configures the relabeling rules to apply the target’s metadata labels. See the [Prometheus Operator  documentation](https://prometheus-operator.dev/docs/api-reference/api/#monitoring.coreos.com/v1.Endpoint) for formatting details. |
+| metrics.serviceMonitor.scrapeTimeout | string | `""` | Timeout after which Prometheus considers the scrape to be failed. |
+
 ### OS/Kubernetes Distro Settings
 
 #### OpenShift Settings
@@ -182,7 +194,6 @@ For more details, see the [ocp-readme](https://github.com/longhorn/longhorn/blob
 | annotations | `{}` | Annotation for the Longhorn Manager DaemonSet pods. This setting is optional. |
 | enableGoCoverDir | `false` | Setting that allows Longhorn to generate code coverage profiles. |
 | enablePSP | `false` | Setting that allows you to enable pod security policies (PSPs) that allow privileged Longhorn pods to start. This setting applies only to clusters running Kubernetes 1.25 and earlier, and with the built-in Pod Security admission controller enabled. |
-| metrics.serviceMonitor.enabled | `false` | Setting that allows the creation of a Prometheus ServiceMonitor resource for Longhorn Manager components. |
 | namespaceOverride | `""` | Specify override namespace, specifically this is useful for using longhorn as sub-chart and its release namespace is not the `longhorn-system`. |
 | preUpgradeChecker.jobEnabled | `true` | Setting that allows Longhorn to perform pre-upgrade checks. Disable this setting when installing Longhorn using Argo CD or other GitOps solutions. |
 | preUpgradeChecker.upgradeVersionCheck | `true` | Setting that allows Longhorn to perform upgrade version checks after starting the Longhorn Manager DaemonSet Pods. Disabling this setting also disables `preUpgradeChecker.jobEnabled`. Longhorn recommends keeping this setting enabled. |
