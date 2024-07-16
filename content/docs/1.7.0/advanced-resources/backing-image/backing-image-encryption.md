@@ -42,10 +42,13 @@ spec:
 > - `backing-image`: Specify the name of the backing image to be cloned.
 > - `encryption`: Set the value to `ignore` to directly clone the backing image. If the value is not given, Longhorn use `ignore` as default value.
 
-Longhorn also supports cloning the backing image via UI.
-1. Go to `Setting -> Backing Image` page and click `Create Backing Image` button.
-2. Select `Created From` to `Clone From Existing Backing Image` and select `Encryption` to `ignore`.
-3. Click `OK`
+You can also clone a backing image using the Longhorn UI.
+1. Go to **Setting** > **Backing Image**.
+2. Click **Create Backing Image**.
+3. Configure the following settings:
+  - **Created From**: Select **Clone From Existing Backing Image**.
+  - **Encryption**: Select **Ignore**.
+4. Click **OK**.
 
 {{< figure src="/img/screenshots/backing-image/clone.png" >}}
 
@@ -107,11 +110,14 @@ stringData:
 > - `secret`: Specify the secret used to encrypt the backing image.
 > - `secret-namespace`: Specify the namespace of the secret used to encrypt the backing image.
 
-You can also clone and encrypt the backing image via UI
-1. Go to `Setting -> Backing Image` page and click `Create Backing Image` button.
-2. Select `Created From` to `Clone From Existing Backing Image` and select `Encryption` to `encrypt`.
-3. Input the `Secret` and `Secret Namespace` which are required to encrypt the backing image
-4. Click `OK`
+You can also create an encrypted copy of a backing image using the Longhorn UI.
+1. Go to **Setting** > **Backing Image**.
+2. Click **Create Backing Image**.
+3. Configure the following settings:
+  - **Created From**: Select **Clone From Existing Backing Image**.
+  - **Encryption**: Select **Encrypt**.
+4. Specify the secret and secret namespace to be used for encryption.
+5. Click **OK**.
 
 {{< figure src="/img/screenshots/backing-image/encrypt.png" >}}
 
@@ -175,11 +181,15 @@ spec:
 > - `secret`: Specify the secret used to decrypt the backing image.
 > - `secret-namespace`: Specify the namespace of the secret used to decrypt the backing image.
 
-You can also clone and decrypt the backing image via UI
-1. Go to `Setting -> Backing Image` page and click `Create Backing Image` button.
-2. Select `Created From` to `Clone From Existing Backing Image` and select `Encryption` to `decrypt`.
-3. Input the `Secret` and `Secret Namespace` which are required to decrypt the backing image
-4. Click `OK`
+You can also decrypt a backing image (through cloning) using the Longhorn UI.
+1. Go to **Setting** > **Backing Image**.
+2. Click **Create Backing Image**.
+3. Configure the following settings:
+  - **Created From**: Select **Clone From Existing Backing Image**.
+  - **Encryption**: Select **Decrypt**.
+4. Specify the secret and secret namespace to be used for decryption.
+5. Click **OK**.
+
 
 {{< figure src="/img/screenshots/backing-image/decrypt.png" >}}
 
