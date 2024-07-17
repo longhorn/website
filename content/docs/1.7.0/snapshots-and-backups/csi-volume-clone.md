@@ -81,7 +81,7 @@ spec:
 1. Go to the **Volume** page.
 2. Click **Create Volume**.
 3. Select the data source (**Volume** or **Volume Snapshot**) that you want to use.
-4. If you selected **Volume Snapshot**, select a snapshot.
+4. If you select **Volume Snapshot**, choose a snapshot.
 5. Specify the volume name.
 6. Click **OK**.
 
