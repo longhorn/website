@@ -19,4 +19,4 @@ The `longhornctl` tool is a CLI interface to Longhorn operations. It interacts w
 
 ## Usage
 
-For more information about the available commands, see [this document](https://github.com/longhorn/cli/tree/{{< current-version >}}/docs/longhornctl.md) in the GitHub repository, or run `longhornctl help` in your terminal.
+For more information about the available commands, see [this document](https://github.com/longhorn/cli/tree/v{{< current-version >}}/docs/longhornctl.md) in the GitHub repository, or run `longhornctl help` in your terminal.
