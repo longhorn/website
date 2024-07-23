@@ -271,3 +271,51 @@ Server Version: version.Info{Major:"1", Minor:"26", GitVersion:"v1.26.10+k3s2", 
 ```
 
 The `Server Version` should be >= v1.21.
+
+### Installing Cryptsetup and LUKS
+
+[Cryptsetup](https://gitlab.com/cryptsetup/cryptsetup) is an open-source utility used to conveniently set up `dm-crypt` based device-mapper targets and Longhorn uses [LUKS2](https://gitlab.com/cryptsetup/cryptsetup#luks-design) (Linux Unified Key Setup) format that is the standard for Linux disk encryption to support volume encryption.
+
+The command used to install the cryptsetup tool differs depending on the Linux distribution.
+
+- For Debian and Ubuntu, use this command:
+
+  ```shell
+  apt-get install cryptsetup
+  ```
+
+- For RHEL, CentOS, Rocky Linux and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`, use this command:
+
+  ```shell
+  yum install cryptsetup
+  ```
+
+- For SUSE/OpenSUSE, use this command:
+
+  ```shell
+  zypper install cryptsetup
+  ```
+
+### Installing Device Mapper Userspace Tool
+
+The device mapper is a framework provided by the Linux kernel for mapping physical block devices onto higher-level virtual block devices. It forms the foundation of the `dm-crypt` disk encryption and provides the linear dm device on the top of v2 volume. The device mapper is typically included by default in many Linux distributions. Some lightweight or highly customized distributions or a minimal installation of a distribution might exclude it to save space or reduce complexity
+
+The command used to install the device mapper differs depending on the Linux distribution.
+
+- For Debian and Ubuntu, use this command:
+
+  ```shell
+  apt-get install dmsetup
+  ```
+
+- For RHEL, CentOS, Rocky Linux and EKS with `EKS Kubernetes Worker AMI with AmazonLinux2 image`, use this command:
+
+  ```shell
+  yum install device-mapper
+  ```
+
+- For SUSE/OpenSUSE, use this command:
+
+  ```shell
+  zypper install device-mapper
+  ```

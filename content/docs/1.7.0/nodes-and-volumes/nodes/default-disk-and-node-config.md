@@ -1,6 +1,6 @@
 ---
 title: Configuring Defaults for Nodes and Disks
-weight: 6
+weight: 3
 ---
 
 _Available as of v0.8.1_

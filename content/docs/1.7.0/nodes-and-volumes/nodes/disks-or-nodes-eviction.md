@@ -1,6 +1,6 @@
 ---
 title: Evicting Replicas on Disabled Disks or Nodes
-weight: 5
+weight: 6
 ---
 
 Longhorn supports auto eviction for evicting the replicas on the selected disabled disks or nodes to other suitable disks and nodes. Meanwhile the same level of high availability is maintained during the eviction.
