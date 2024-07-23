@@ -1,6 +1,6 @@
 ---
 title: Storage Tags
-weight: 3
+weight: 2
 ---
 
 ## Overview

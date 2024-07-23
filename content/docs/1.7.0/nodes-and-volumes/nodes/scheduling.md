@@ -1,5 +1,6 @@
 ---
 title: Scheduling
+weight: 5
 ---
 
 In this section, you'll learn how Longhorn schedules replicas based on multiple factors.
