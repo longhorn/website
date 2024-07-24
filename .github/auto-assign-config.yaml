@@ -1,5 +1,6 @@
 addAssignees: author
 addReviewers: true
-numberOfReviewers: 1
+numberOfReviewers: 0
 reviewers:
 - jillian-maroket
+- jhkrug
