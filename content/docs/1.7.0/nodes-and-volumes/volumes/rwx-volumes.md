@@ -8,7 +8,7 @@ Longhorn supports ReadWriteMany (RWX) volumes by exposing regular Longhorn volum
 
 # Introduction
 
-Longhorn creates a dedicated `share-manager-<volume-name>` Pod within the `longhorn-system` namespace for each RWX volume that is currently in active use. The Pod facilitate the export of Longhorn volume via an internally hosted NFSv4 server. Additionally, a corresponding Service is created for each RWX volume, serving as the designated endpoint for actual NFSv4 client connections.
+Longhorn creates a dedicated `share-manager-<volume-name>` Pod within the `longhorn-system` namespace for each RWX volume that is currently in active use. The Pod facilitates the export of Longhorn volume via an internally hosted NFSv4 server. Additionally, a corresponding Service is created for each RWX volume, serving as the designated endpoint for actual NFSv4 client connections.
 
 {{< figure src="/img/diagrams/rwx/rwx-arch.png" >}}
 
@@ -156,11 +156,17 @@ For more information, see [#6655](https://github.com/longhorn/longhorn/issues/66
 
     Here is an example of a DaemonSet using an RWX volume.
 
-    Each Pod of the DaemonSet is writing data to the RWX volume. If the node, where the share-manager Pod is running, is down, a new share-manager Pod is created on another node. Since one of the clients located on the down node has gone, the lock reclaim process cannot be terminated earlier than 90-second grace period, even though the remaining clients' locks have been successfully reclaimed. The IOs of these clients continue after the grace period has expired.
+    Each Pod of the DaemonSet is writing data to the RWX volume. If the node where the share-manager Pod is running is down, a new share-manager Pod is created on another node. Since one of the clients located on the down node has gone, the lock reclaim process cannot be terminated earlier than 90-second grace period, even though the remaining clients' locks have been successfully reclaimed. The IOs of these clients continue after the grace period has expired.
 
 2. If the Kubernetes DNS service goes down, share-manager Pods will not be able to communicate with longhorn-nfs-recovery-backend
 
     The NFS-ganesha server in a share-manager Pod communicates with longhorn-nfs-recovery-backend via the service `longhorn-recovery-backend`'s IP. If the DNS service is out of service, the creation and deletion of RWX volumes as well as the recovery of NFS servers will be inoperable. Thus, the high availability of the DNS service is recommended for avoiding the communication failure.
+
+3. Fast failover feature.
+
+    Longhorn supports a feature that can improve availability by shortening the time it takes to recover from a failure of the node on which the volume's share-manager NFS server pod is running.  The feature uses a direct heartbeat to notice that the server is unresponsive, and acts to create a new one faster than the usual sequence.  It also configures the NFS server differently, to shorten the recover grace period from 90 to 30 seconds.  
+    More details are at [RWX Volume Fast Failover](../../high-availability/rwx-volume-fast-failover).
+
 
 # Migration from Previous External Provisioner
 

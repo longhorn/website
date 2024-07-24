@@ -152,7 +152,7 @@ For more information, see [Issue #8184](https://github.com/longhorn/longhorn/iss
 
 ### RWX Volumes Fast Failover
 
-RWX Volumes fast failover is introduced in Longhorn v1.7.0 to improve resilience to share-manager pod failures. This failover mechanism quickly detects and responds to share-manager pod failures independently of the Kubernetes node failure sequence and timing. For more information, see https://github.com/longhorn/longhorn/issues/6205.
+RWX Volumes fast failover is introduced in Longhorn v1.7.0 to improve resilience to share-manager pod failures. This failover mechanism quickly detects and responds to share-manager pod failures independently of the Kubernetes node failure sequence and timing. For details, see [RWX Volume Fast Failover](../../high-availability/rwx-volume-fast-failover).
 
 ### Support Configurable Timeout for Replica Rebuilding and Snapshot cloning
 
