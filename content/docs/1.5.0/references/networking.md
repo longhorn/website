@@ -34,7 +34,7 @@ From | Port | Protocol
 To | Port | Protocol
 --- | --- | ---
 `Other Longhorn Manager` | 9500 | TCP
-`Instance Manager` | 8500; 8501 | TCP
+`Instance Manager` | 8500 (process-manager service); 8501 (proxy service); 8502 (disk service); 8503 (instance service); 8504 (spdk service) | TCP
 `Backing Image Manager` | 8000 | TCP
 `Backing Image Data Source` | 8000 | TCP
 `External Backupstore` | User defined | TCP
@@ -52,7 +52,7 @@ To | Port | Protocol
 #### ingress
 From | Port | Protocol
 --- | --- | ---
-`Longhorn Manager` | 8500; 8501 | TCP
+`Longhorn Manager` | 8500 (process-manager service); 8501 (proxy service); 8502 (disk service); 8503 (instance service); 8504 (spdk service) | TCP
 `Other Instance Manager` | 10000-30000 | TCP
 `Node in the Cluster` | 3260 | TCP
 `Backing Image Data Source` | 10000-30000 | TCP
