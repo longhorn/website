@@ -165,7 +165,7 @@ For more information, see [#6655](https://github.com/longhorn/longhorn/issues/66
 3. Fast failover feature.
 
     Longhorn supports a feature that can improve availability by shortening the time it takes to recover from a failure of the node on which the volume's share-manager NFS server pod is running.  The feature uses a direct heartbeat to notice that the server is unresponsive, and acts to create a new one faster than the usual sequence.  It also configures the NFS server differently, to shorten the recover grace period from 90 to 30 seconds.  
-    More details are at [RWX Volume Fast Failover](../../high-availability/rwx-volume-fast-failover).
+    More details are at [RWX Volume Fast Failover](../../../high-availability/rwx-volume-fast-failover).
 
 
 # Migration from Previous External Provisioner
