@@ -7,7 +7,7 @@ Release 1.7.0 adds a feature that minimizes the downtime for ReadWriteMany volum
 
 To enable the feature, you set [RWX Volume Fast Failover](../../references/settings#rwx-volume-fast-failover) to "true".  Existing RWX volumes will need to be restarted to use the feature after the setting is changed.  That is done by scaling the workload down to zero and then back up again.  New volumes will pick up the setting at creation and be configured appropriately.  
 
-With the feature enabled, when a pod is created or re-created, Longhorn will also create an associated lease object in the `longhorn-system` namespace, with the same name as the volume.  The NFS server pod keeps the lease renewed as proof of life.  If the renewal stops happening, Longhorn will take steps to create a new NFS server pod on another node and to re-attach the workload, even before the old node is marked as `Not Ready` by Kubernetes.
+With the feature enabled, when a pod is created or re-created, Longhorn also creates an associated lease object in the `longhorn-system` namespace, with the same name as the volume.  The NFS server pod keeps the lease renewed as proof of life.  If the renewal stops happening, Longhorn will take steps to create a new NFS server pod on another node and to re-attach the workload, even before the old node is marked as `Not Ready` by Kubernetes.
 
 Along with adding the monitoring and fast reaction, the feature also changes the NFS server configuration to use a shortened grace period for client re-connection.
 
