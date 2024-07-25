@@ -47,4 +47,4 @@ SPDK leverages huge pages for enhancing performance and minimizing memory overhe
 
 ### Disk
 
-**Local NVMe disks** are highly recommended for optimal storage performance of volumes using V2 Data Engine.
+SPDK leverages kernel drivers to support every kind of disk that Linux supports. However, SPDK is equipped with a user space NVMe driver that provides zero-copy, highly parallel, direct access to an SSD from a user space application. Because of this, using **local NVMe disks** is highly recommended for enabling V2 volumes to achieve optimal storage performance.
