@@ -145,6 +145,8 @@ You may need to edit the cluster security group to allow SSH access.
 - SUSE and openSUSE: Run the following command:
   ```
   zypper install open-iscsi
+  systemctl enable iscsid
+  systemctl start iscsid
   ```
 
 - Debian and Ubuntu: Run the following command:
