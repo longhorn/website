@@ -40,7 +40,7 @@ weight: 1
   - [Timeout of HTTP Client to Replica File Sync Server](#timeout-of-http-client-to-replica-file-sync-server)
   - [Long gRPC Timeout](#long-grpc-timeout)
   - [V1 Data Engine](#v1-data-engine)
-  - [RWX Volume Fast Failover (Experimental)](#rwx-volume-fast-failover)
+  - [RWX Volume Fast Failover (Experimental)](#rwx-volume-fast-failover-experimental)
 - [V2 Data Engine (Preview Feature)](#v2-data-engine-preview-feature)
   - [V2 Data Engine](#v2-data-engine)
   - [V2 Data Engine Hugepage Limit](#v2-data-engine-hugepage-limit)
@@ -473,7 +473,7 @@ Number of seconds that Longhorn allows for the completion of replica rebuilding 
 
 Setting that allows you to enable the V1 Data Engine.
 
-#### RWX Volume Fast Failover
+#### RWX Volume Fast Failover (Experimental)
 
 > Default: `false`
 
