@@ -156,7 +156,7 @@ For more information, see [#6655](https://github.com/longhorn/longhorn/issues/66
 
     Here is an example of a DaemonSet using an RWX volume.
 
-    Each Pod of the DaemonSet is writing data to the RWX volume. If the node where the share-manager Pod is running is down, a new share-manager Pod is created on another node. Since one of the clients located on the down node has gone, the lock reclaim process cannot be terminated earlier than 90-second grace period, even though the remaining clients' locks have been successfully reclaimed. The IOs of these clients continue after the grace period has expired.
+    Each Pod of the DaemonSet is writing data to the RWX volume. If the node where the share-manager Pod is running is down, a new share-manager Pod is created on another node. Since one of the clients located on the down node has gone, the lock reclaim process cannot be terminated earlier than the 90-second grace period, even though the remaining clients' locks have been successfully reclaimed. The IOs of these clients continue after the grace period has expired.
 
 2. If the Kubernetes DNS service goes down, share-manager Pods will not be able to communicate with longhorn-nfs-recovery-backend
 
