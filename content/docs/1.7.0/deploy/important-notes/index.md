@@ -8,72 +8,32 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 
 - [General](#general)
   - [Supported Kubernetes Versions](#supported-kubernetes-versions)
-  - [Offline Upgrade Required To Fully Prevent Unexpected Replica Expansion](#offline-upgrade-required-to-fully-prevent-unexpected-replica-expansion)
-  - [Default Priority Class](#default-priority-class)
-  - [New Node Drain Policies Added](#new-node-drain-policies-added)
-  - [Custom Resource Fields Deprecated](#custom-resource-fields-deprecated)
   - [Pod Security Policies Disabled \& Pod Security Admission Introduction](#pod-security-policies-disabled--pod-security-admission-introduction)
-  - [Updating CSI Snapshot CRD `v1beta1` to `v1`, `v1beta1` Removed](#updating-csi-snapshot-crd-v1beta1-to-v1-v1beta1-removed)
-  - [Engine Upgrade Enforcement](#engine-upgrade-enforcement)
-  - [Danger Zone Setting Configuration](#danger-zone-setting-configuration)
-  - [Longhorn PVC with Block Volume Mode](#longhorn-pvc-with-block-volume-mode)
+  - [Introduction of Commandline Tool](#introduction-of-commandline-tool)
   - [Minimum XFS Filesystem Size](#minimum-xfs-filesystem-size)
+  - [Longhorn PVC with Block Volume Mode](#longhorn-pvc-with-block-volume-mode)
+- [Networking](#networking)
+  - [Storage Network Support for Read-Write-Many (RWX) Volumes](#storage-network-support-for-read-write-many-rwx-volumes)
+- [Resilience](#resilience)
+  - [RWX Volumes Fast Failover](#rwx-volumes-fast-failover)
+  - [Support Configurable Timeout for Replica Rebuilding and Snapshot cloning](#support-configurable-timeout-for-replica-rebuilding-and-snapshot-cloning)
+- [Data Integrity and Reliability](#data-integrity-and-reliability)
+  - [Support Periodic and On-Demand Full Backups to Enhance Backup Reliability](#support-periodic-and-on-demand-full-backups-to-enhance-backup-reliability)
+  - [High Availability of Backing Images](#high-availability-of-backing-images)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
-  - [Changing Default Huge Page Size to 2 GiB](#changing-default-huge-page-size-to-2-gib)
-  - [Support for ARM64 Platform](#support-for-arm64-platform)
-  - [Replacing `backendStoreDriver` with `dataEngine`](#replacing-backendstoredriver-with-dataengine)
-  - [Updating the Linux Kernel on Longhorn Nodes](#updating-the-linux-kernel-on-longhorn-nodes)
+  - [Introduction of Online Replica Rebuilding](#introduction-of-online-replica-rebuilding)
+  - [Block-type Disk Supports SPDK AIO, NVMe and VirtIO Bdev Drivers](#block-type-disk-supports-spdk-aio-nvme-and-virtio-bdev-drivers)
+  - [Introduction of Filesystem Trim](#introduction-of-filesystem-trim)
+  - [Linux Kernel on Longhorn Nodes](#linux-kernel-on-longhorn-nodes)
+  - [Snapshot Creation Time as shown in the UI occasionally changes](#snapshot-creation-time-as-shown-in-the-ui-occasionally-changes)
+  - [Unable to Revert a Volume to a Snapshot Created before Longhorn v1.7.0](#unable-to-revert-a-volume-to-a-snapshot-created-before-longhorn-v170)
 
 ## General
 
 ### Supported Kubernetes Versions
 
 Please ensure your Kubernetes cluster is at least v1.21 before upgrading to Longhorn v{{< current-version >}} because this is the minimum version Longhorn v{{< current-version >}} supports.
-
-### Offline Upgrade Required To Fully Prevent Unexpected Replica Expansion
-
-Longhorn v1.6.0 introduces a new mechanism to prevent [unexpected replica
-expansion](../../../../kb/troubleshooting-unexpected-expansion-leads-to-degradation-or-attach-failure). This
-mechanism is entirely transparent. However, a volume is only protected if it is running a new version of longhorn-engine
-inside a new version of longhorn-instance-manager and managed by a new version of longhorn-manager. The [live upgrade
-process](../../deploy/upgrade/upgrade-engine#live-upgrade) results in a volume running a new version of longhorn-engine
-in an old version of longhorn-instance-manager until it is detached (by scaling its consuming workload down) and
-reattached (by scaling its consuming workload up). Consider scaling workloads down and back up again as soon as possible
-after upgrading from a version without this mechanism (v1.5.1 or older) to v{{< current-version >}}.
-
-### Default Priority Class
-
-Longhorn v1.6.0 introduces the default Priority Class `longhorn-critical`, which has the highest value and ensures that Longhorn pods are not evicted by kube-scheduler when system resources are low.
-
-During upgrades, Longhorn applies the default Priority Class to components depending on specific settings.
-
-- When all volumes are detached and you did not specify a value for the global Priority Class setting `priority-class`, the default Priority Class is applied to all Longhorn components. `priority-class` is updated.
-- When all volumes are detached and you specified a value for the global Priority Class setting `priority-class`, the default Priority Class is applied only to user-deployed components. `priority-class` is not updated.
-- When one or more volumes are attached and you did not specify a value for `PriorityClass` in the `chart/value.yaml` or `longhorn/deploy/longhorn.yaml`, the default Priority Class is applied only to user-deployed components. `priority-class` is not updated.
-
-If you want to apply the default Priority Class to system-managed components, you must detach all volumes and change the Priority Class default setting value after the upgrade is successfully completed.
-
-You can change these behaviors by customizing the following before starting the upgrade process:
-
-- For user deployed components: `priorityClass` parameters for each component in the `values.yaml` file of the [Longhorn Helm chart](https://github.com/longhorn/longhorn/blob/v1.6.0/chart/values.yaml)
-- For system managed components: `defaultSetting.priorityClass` in the `values.yaml` file of the [Longhorn Helm chart](https://github.com/longhorn/longhorn/blob/v1.6.0/chart/values.yaml)
-
-### New Node Drain Policies Added
-
-There are two new options for the [Node Drain Policy](../../references/settings#node-drain-policy) setting. Both `Block
-For Eviction` and `Block for Eviction If Contains Last Replica` automatically evict replicas from draining nodes in
-addition to preventing drain completion until volume data is sufficiently protected. `Block for Eviction` maintains
-maximum data redundancy during maintenance operations, and both new options enable automated cluster upgrades when some
-volumes have only one replica. See the new [Node Drain Policy
-Recommendations](../../maintenance/maintenance/#node-drain-policy-recommendations) section for help deciding which
-policy to use.
-
-### Custom Resource Fields Deprecated
-
-Starting in `v1.6.0`, the following custom resource fields are deprecated. They will be removed in `v1.7.0`:
-
-- Volume.status.evictionRequested
 
 ### Pod Security Policies Disabled & Pod Security Admission Introduction
 
@@ -104,64 +64,23 @@ For example, adding the following labels to the namespace that is running Longho
         pod-security.kubernetes.io/warn-version: latest
    	```
 
-### Updating CSI Snapshot CRD `v1beta1` to `v1`, `v1beta1` Removed
+### Introduction of Commandline Tool
 
-Support for the `v1beta1` version of CSI snapshot CRDs was previously deprecated in favor of the `v1` version.
-The CSI components in Longhorn v{{< current-version >}} only function with the `v1` version.
-Please follow the instructions at [Enable CSI Snapshot Support](../../snapshots-and-backups/csi-snapshot-support/enable-csi-snapshot-support) to update CSI snapshot CRDs and the CSI snapshot controller.
-If you have Longhorn volume manifests or scripts that are still using `v1beta1` version, you must upgrade them to `v1` as well.
+The longhornctl command-line tool was introduced in v1.7.0. It interacts with Longhorn by creating Kubernetes Custom Resources (CRs) and executing commands inside a dedicated Pod for in-cluster and host operations. Usage scenarios include installation, operations such as exporting replicas, and troubleshooting. For more information, please see [Command Line Tool (longhornctl)](../../advanced-resources/longhornctl/).
 
-### Engine Upgrade Enforcement
+### Minimum XFS Filesystem Size
 
-Beginning with version v1.6.0, Longhorn is implementing mandatory engine upgrades. See the [release note](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}) for information about the minimum supported engine image version.
+Recent versions of `xfsprogs` (including the version Longhorn currently uses) *do not allow* the creation of XFS
+filesystems [smaller than 300
+MiB](https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git/commit/?id=6e0ed3d19c54603f0f7d628ea04b550151d8a262).
+Longhorn v{{< current-version >}} does not allow the following:
 
-When upgrading through Helm, a component compatibility check is automatically performed. If the new Longhorn is not compatible with the engine images that are currently in use, the upgrade path is blocked through a pre-hook mechanism.
+- CSI flow: Volume provisioning if `resources.requests.storage < 300 Mi` and the corresponding StorageClass has `fsType:
+  xfs`
+- Longhorn UI: `Create PV/PVC` with `File System: XFS` action to be completed on a volume that has `spec.size < 300 Mi`
 
-If you installed Longhorn using the manifests, engine upgrades are enforced by the Longhorn Manager. Attempts to upgrade Longhorn Manager may cause unsuccessful pod launches and generate corresponding error logs, although it poses no harm. If you encounter such errors, you must revert to the previous Longhorn version and then upgrade the engines that are using the incompatible engine images before the next upgrade.
-
-> **Warning:**
-> Whenever engine upgrade enforcement causes upgrade failure, Longhorn allows you to revert to the previous version because Longhorn Manager will block the entire upgrade. However, Longhorn prohibits downgrading when an upgrade is successful. For more information, see [Upgrade Path Enforcement](../../deploy/upgrade/#upgrade-path-enforcement-and-downgrade-prevention).
-
-You can determine the versions of engine images that are currently in use with the following script:
-```bash
-#!/bin/bash
-
-namespace="longhorn-system"
-
-engine_images=$(kubectl -n $namespace get engineimage -o=jsonpath='{.items[*].metadata.name}')
-
-for engine_image in $engine_images; do
-    cli_api_version=$(kubectl -n $namespace get engineimage $engine_image -o=jsonpath='{.status.cliAPIVersion}')
-    controller_api_version=$(kubectl -n $namespace get engineimage $engine_image -o=jsonpath='{.status.controllerAPIVersion}')
-    echo "EngineImage: $engine_image | cliAPIVersion: $cli_api_version | controllerAPIVersion: $controller_api_version"
-done
-```
-
-Once you successfully upgrade to version v1.6.0, you will be able to view information about engine image versions on the UI.
-
-### Danger Zone Setting Configuration
-
-Starting with Longhorn v1.6.0, Longhorn allows you to modify the [Danger Zone settings](https://longhorn.io/docs/1.6.0/references/settings/#danger-zone) without the need to wait for all volumes to become detached. Your preferred settings are immediately applied in the following scenarios:
-
-- No attached volumes: When no volumes are attached before the settings are configured, the setting changes are immediately applied.
-- Engine image upgrade (live upgrade): During a live upgrade, which involves creating a new Instance Manager pod, the setting changes are immediately applied to the new pod.
-
-Settings are synchronized hourly. When all volumes are detached, the settings in the following table are immediately applied and the system-managed components (for example, Instance Manager, CSI Driver, and engine images) are restarted.
-
-If you do not detach all volumes before the settings are synchronized, the settings are not applied and you must reconfigure the same settings after detaching the remaining volumes. You can view the list of unapplied settings in the **Danger Zone** section of the Longhorn UI.
-
-  | Setting | Additional Information| Affected Components |
-  | --- | --- | --- |
-  | [Kubernetes Taint Toleration](../../references/settings/#kubernetes-taint-toleration)| [Taints and Tolerations](../../advanced-resources/deploy/taint-toleration/) | System-managed components |
-  | [Priority Class](../../references/settings/#priority-class) | [Priority Class](../../advanced-resources/deploy/priority-class/) | System-managed components |
-  | [System Managed Components Node Selector](../../references/settings/#system-managed-components-node-selector) | [Node Selector](../../advanced-resources/deploy/node-selector/) | System-managed components |
-  | [Storage Network](../../references/settings/#storage-network) | [Storage Network](../../advanced-resources/deploy/storage-network/) | Instance Manager and Backing Image components |
-  | [V1 Data Engine](../../references/settings/#v1-data-engine) || Instance Manager component |
-  | [V2 Data Engine](../../references/settings/#v2-data-engine) | [V2 Data Engine (Preview Feature)](../../v2-data-engine/) | Instance Manager component |
-  | [Guaranteed Instance Manager CPU](../../references/settings/#guaranteed-instance-manager-cpu) || Instance Manager component |
-  | [Guaranteed Instance Manager CPU for V2 Data Engine](../../references/settings/#guaranteed-instance-manager-cpu-for-v2-data-engine) || Instance Manager component |
-
-For V1 and V2 Data Engine settings, you can disable the Data Engines only when all associated volumes are detached. For example, you can disable the V2 Data Engine only when all V2 volumes are detached (even when V1 volumes are still attached).
+However, Longhorn still allows the listed actions when cloning or restoring volumes created with earlier Longhorn
+versions.
 
 ### Longhorn PVC with Block Volume Mode
 
@@ -211,41 +130,7 @@ spec:
 ```
 From this version, you need to add group id 6 to the security context or run container as root. For more information, see [Longhorn PVC ownership and permission](../../nodes-and-volumes/volumes/pvc-ownership-and-permission)
 
-### Minimum XFS Filesystem Size
-
-Recent versions of `xfsprogs` (including the version Longhorn currently uses) *do not allow* the creation of XFS
-filesystems [smaller than 300
-MiB](https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git/commit/?id=6e0ed3d19c54603f0f7d628ea04b550151d8a262).
-Longhorn v{{< current-version >}} does not allow the following:
-
-- CSI flow: Volume provisioning if `resources.requests.storage < 300 Mi` and the corresponding StorageClass has `fsType:
-  xfs`
-- Longhorn UI: `Create PV/PVC` with `File System: XFS` action to be completed on a volume that has `spec.size < 300 Mi`
-
-However, Longhorn still allows the listed actions when cloning or restoring volumes created with earlier Longhorn
-versions.
-
-## V2 Data Engine
-
-### Longhorn System Upgrade
-
-Longhorn currently does not support live upgrading of V2 volumes. Ensure that all V2 volumes are detached before initiating the upgrade process.
-
-### Changing Default Huge Page Size to 2 GiB
-
-The default huge page size for the V2 Data Engine has been raised to 2 GiB, allowing the creation of more V2 volumes and enhancing the overall user experience. Before upgrading to v1.6.0, ensure that the configured huge page size on each node is 2 GiB.
-
-### Support for ARM64 Platform
-
-As of Longhorn v1.6.0, volumes using the V2 Data Engine support the ARM64 platform. For more information, see [Prerequisites](../../v2-data-engine/prerequisites/).
-
-### Replacing `backendStoreDriver` with `dataEngine`
-
-The attribute `backendStoreDriver`, which is defined in the parameters of StorageClasses and other Longhorn resources (for example, volumes, engines, and replicas), has been replaced with `dataEngine`. You must remove the existing StorageClasses for V2 volumes and create new ones that use `dataEngine`.
-
-### Updating the Linux Kernel on Longhorn Nodes
-
-Host machines with Linux kernel 5.15 may unexpectedly reboot when volume-related IO errors occur. Update the Linux kernel on Longhorn nodes to version 5.19 or later to prevent such issues. For more information, see [Prerequisites](../../v2-data-engine/prerequisites/).
+## Networking
 
 ### Storage Network Support for Read-Write-Many (RWX) Volumes
 
@@ -262,3 +147,57 @@ You can upgrade clusters with pre-existing RWX volume workloads to Longhorn v1.7
 To apply the storage network to existing RWX volumes, you must detach the volumes, enable the [Storage Network For RWX Volume Enabled](../../references/settings#storage-network-for-rwx-volume-enabled) setting, and then reattach the volumes.
 
 For more information, see [Issue #8184](https://github.com/longhorn/longhorn/issues/8184).
+
+## Resilience
+
+### RWX Volumes Fast Failover
+
+RWX Volumes fast failover is introduced in Longhorn v1.7.0 to improve resilience to share-manager pod failures. This failover mechanism quickly detects and responds to share-manager pod failures independently of the Kubernetes node failure sequence and timing. For more information, see https://github.com/longhorn/longhorn/issues/6205.
+
+### Support Configurable Timeout for Replica Rebuilding and Snapshot cloning
+
+Since Longhorn v1.7.0, configurable timeouts for replica rebuilding and snapshot cloning are supported. Prior to v1.7.0, the timeout for replica rebuilding was capped at 24 hours, which could cause failures for large volumes in slow bandwidth environments. Now, the timeout is still 24 hours by default but can be adjusted to accommodate different environments. More information can be found [Settings Reference](http://0.0.0.0:8085/docs/1.7.0/references/settings/#long-grpc-timeout).
+
+## Data Integrity and Reliability
+
+### Support Periodic and On-Demand Full Backups to Enhance Backup Reliability
+
+Since Longhorn v1.7.0, periodic and on-demand full backups have been supported to enhance backup reliability. Prior to v1.7.0, the initial backup was a full backup, with subsequent backups being incremental. If any block became corrupted, all backup revisions relying on that block would also be corrupted. To address this issue, Longhorn now supports performing a full backup after every N incremental backups, as well as on-demand full backups. This approach decreases the likelihood of backup corruption and enhances the overall reliability of the backup process. For more information, see [Recurring Snapshots and Backups](../../snapshots-and-backups/scheduling-backups-and-snapshots/) and [Create a Backup](../../snapshots-and-backups/backup-and-restore/create-a-backup/).
+
+### High Availability of Backing Images
+
+To address the single point of failure (SPOF) issue with backing images, high availability for backing images was introduced in Longhorn v1.7.0. For more information, please see [Backing Image](../../advanced-resources/backing-image/backing-image/#number-of-copies).
+
+## V2 Data Engine
+
+### Longhorn System Upgrade
+
+Longhorn currently does not support live upgrading of V2 volumes. Ensure that all V2 volumes are detached before initiating the upgrade process.
+
+### Introduction of Online Replica Rebuilding
+
+Online replica rebuilding was introduced in Longhorn 1.7.0, so offline replica rebuilding has been removed.
+
+### Block-type Disk Supports SPDK AIO, NVMe and VirtIO Bdev Drivers 
+
+Before Longhorn v1.7.0, Longhorn block-type disks only supported the SPDK AIO bdev driver, which introduced extra performance penalties. Since v1.7.0, block devices can be directly managed by SPDK NVMe or VirtIO bdev drivers, improving IO performance through a kernel bypass scheme. For more information, see this [link](https://github.com/longhorn/longhorn/issues/7672).
+
+### Introduction of Filesystem Trim
+
+Filesystem trim is supported since Longhorn v1.7.0. If a disk is managed by the SPDK AIO bdev driver, the Trim (UNMAP) operation is not recommended in a production environment (ref). It is recommended to manage a block-type disk with an NVMe bdev driver.
+
+### Linux Kernel on Longhorn Nodes
+
+Host machines with Linux kernel 5.15 may unexpectedly reboot when volume-related IO errors occur. To prevent this, update the Linux kernel on Longhorn nodes to version 5.19 or later. For more information, see [Prerequisites](../../v2-data-engine/prerequisites/). Version 6.7 or later is recommended for improved system stability.
+
+### Snapshot Creation Time as shown in the UI occasionally changes
+
+Snapshots created before Longhorn v1.7.0 may change occasionally. This issue arises because the engine randomly selects a replica and its snapshot map each time the UI requests snapshot information or when a replica is rebuilt with a random healthy replica. This can lead to potential time gaps between snapshots among different replicas. Although this bug was fixed in v1.7.0, snapshots created before this version may still encounter the issue. For more information, see this [link](https://github.com/longhorn/longhorn/issues/7641).
+
+### Unable to Revert a Volume to a Snapshot Created before Longhorn v1.7.0
+
+Reverting a volume to a snapshot created before Longhorn v1.7.0 is not supported due to an incorrect UserCreated flag set on the snapshot. The workaround is to back up the existing snapshots before upgrading to Longhorn v1.7.0 and restore them if needed. The bug is fixed in v1.7.0, and more information can be found [here](https://github.com/longhorn/longhorn/issues/9054).
+
+
+
+
