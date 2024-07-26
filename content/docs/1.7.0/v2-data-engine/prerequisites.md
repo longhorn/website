@@ -27,8 +27,7 @@ Longhorn nodes must meet the following requirements:
   > Memory corruption may occur on hosts using versions of the Linux kernel earlier than 6.7, as highlighted by this SPDK upstream issue: https://github.com/spdk/spdk/issues/3116#issuecomment-1890984674. In Longhorn environment the kernel panic can be caused by prevalent IO timeouts in communications between the nvme-tcp driver and SPDK. Update the Linux kernel on Longhorn nodes to version 6.7 or later to prevent the issue from occurring.
 
 - Linux kernel modules
-  - uio
-  - uio_pci_generic
+  - `vfio_pci`
   - nvme-tcp
 
 - Huge page support
