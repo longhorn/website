@@ -62,8 +62,7 @@ SPDK environment is configured successfully
 Or, you can install them manually by following these steps.
 - Load the kernel modules on the each Longhorn node
   ```
-  modprobe uio
-  modprobe uio_pci_generic
+  modprobe vfio_pci
   ```
 
 - Configure huge pages
@@ -93,7 +92,7 @@ Or, you can manually load `nvme-tcp` kernel module on the each Longhorn node
 
 ### Load Kernel Modules Automatically on Boot
 
-Rather than manually loading kernel modules `uio`, `uio_pci_generic` and `nvme-tcp` each time after reboot, you can streamline the process by configuring automatic module loading during the boot sequence. For detailed instructions, please consult the manual provided by your operating system.
+Rather than manually loading kernel modules `vfio_pci` and `nvme-tcp` each time after reboot, you can streamline the process by configuring automatic module loading during the boot sequence. For detailed instructions, please consult the manual provided by your operating system.
 
 Reference:
 - [SUSE/OpenSUSE: Loading kernel modules automatically on boot](https://documentation.suse.com/sles/15-SP4/html/SLES-all/cha-mod.html#sec-mod-modprobe-d)
