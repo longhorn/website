@@ -8,10 +8,10 @@ weight: 3
 This page documents the networking communication between components in the Longhorn system. Using this information, users can write Kubernetes NetworkPolicy
 to control the inbound/outbound traffic to/from Longhorn components. This helps to reduce the damage when a malicious pod breaks into the in-cluster network.
 
-We have provided some NetworkPolicy example yamls at [here](https://github.com/longhorn/longhorn/tree/master/examples/network-policy).
-Or you can enable the setting in the helm chart to install these NetworkPolicy [https://github.com/longhorn/longhorn/blob/master/chart/values.yaml]
+The helm chart will install NetworkPolicy objects when the [networkPolicies.enabled value](https://github.com/longhorn/longhorn/blob/v1.6.1/chart/values.yaml) is set to `true`.
+The manifests of these objects can be viewed in the [git repository](https://github.com/longhorn/longhorn/tree/v1.6.1/chart/templates/network-policies).
 Note that depending on the deployed [CNI](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/), not all Kubernetes clusters support NetworkPolicy.
-See [here](https://kubernetes.io/docs/concepts/services-networking/network-policies/) for more detail.
+See the [Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/network-policies/) for details.
 
 > Note: If you are writing network policies, please revisit this page before upgrading Longhorn to make the necessary adjustments to your network policies.
 > Note: Depending on your CNI for cluster network, there might be some delay when Kubernetes applying netowk policies to the pod. This delay may fail Longhorn recurring job for taking Snapshot or Backup of the Volume since it cannot access longhorn-manager in the beginning. This is a known issue found in K3s with Traefik and is beyond Longhorn control.
