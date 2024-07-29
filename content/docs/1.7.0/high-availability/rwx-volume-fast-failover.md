@@ -14,3 +14,9 @@ Along with adding the monitoring and fast reaction, the feature also changes the
 If the setting is changed back to "false", the lease check is disabled and pod relocation will use regular Kubernetes rules for node failure, even on existing volumes.  When the server pod is next restarted, it will revert to the normal grace period configuration.
 
 For more information, see https://github.com/longhorn/longhorn/issues/6205.
+
+> **Note:**  In rare circumstances, it is possible for the failover to become deadlocked. This happens if the NFS server pod creation is blocked by a recovery action that is itself blocked by the failover-in-process state.  If that is the case, and failover takes more than a minute or two, the workaround is to delete the associated lease object.  That clears the state, and a new lease is created along with the replacement server pod.  For example, if the stuck volume is named `pvc-2ce4e82e-7ccc-46c0-90a8-a141501fbf93` and the feature is enabled, there will be a lease with the same name.  To delete the associated lease object:
+> ```bash
+> kubectl -n longhorn-system delete lease pvc-2ce4e82e-7ccc-46c0-90a8-a141501fbf93
+> ```
+> See, for example, https://github.com/longhorn/longhorn/issues/9093.

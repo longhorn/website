@@ -155,6 +155,8 @@ For more information, see [Issue #8184](https://github.com/longhorn/longhorn/iss
 
 RWX Volumes fast failover is introduced in Longhorn v1.7.0 to improve resilience to share-manager pod failures. This failover mechanism quickly detects and responds to share-manager pod failures independently of the Kubernetes node failure sequence and timing. For details, see [RWX Volume Fast Failover](../../high-availability/rwx-volume-fast-failover).
 
+> **Note:**  In rare circumstances, it is possible for the failover to become deadlocked. This happens if the NFS server pod creation is blocked by a recovery action that is itself blocked by the failover-in-process state.  If the feature is enabled, and a failover takes more than a minute or two, it is probably stuck in this situation.  There is an explanation and a workaround in [RWX Volume Fast Failover](../../high-availability/rwx-volume-fast-failover).
+
 ### Support Configurable Timeout for Replica Rebuilding and Snapshot cloning
 
 Since Longhorn v1.7.0, configurable timeouts for replica rebuilding and snapshot cloning are supported. Prior to v1.7.0, the timeout for replica rebuilding was capped at 24 hours, which could cause failures for large volumes in slow bandwidth environments. Now, the timeout is still 24 hours by default but can be adjusted to accommodate different environments. More information can be found [Settings Reference](http://0.0.0.0:8085/docs/1.7.0/references/settings/#long-grpc-timeout).
