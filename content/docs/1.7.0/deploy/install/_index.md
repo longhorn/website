@@ -54,6 +54,51 @@ You must perform additional setups before using Longhorn with certain operating 
 - Talos Linux clusters: See [Talos Linux Support](../../advanced-resources/os-distro-specific/talos-linux-support).
 - Container-Optimized OS: See [Container-Optimized OS Support](../../advanced-resources/os-distro-specific/container-optimized-os-support).
 
+### Using the Longhorn Command Line Tool
+
+The `longhornctl` tool is a CLI for Longhorn operations. For more information, see [Command Line Tool (longhornctl)](../../advanced-resources/longhornctl/).
+
+To check the prerequisites and configurations, download the tool and run the `check` sub-command:
+
+```shell
+# For AMD64 platform
+curl -sSfL -o longhornctl https://github.com/longhorn/cli/releases/download/v{{< current-version >}}/longhornctl-linux-amd64
+# For ARM platform
+curl -sSfL -o longhornctl https://github.com/longhorn/cli/releases/download/v{{< current-version >}}/longhornctl-linux-arm64
+
+chmod +x longhornctl
+./longhornctl check preflight
+```
+
+Example of result:
+
+```shell
+INFO[2024-01-01T00:00:01Z] Initializing preflight checker
+INFO[2024-01-01T00:00:01Z] Cleaning up preflight checker
+INFO[2024-01-01T00:00:01Z] Running preflight checker
+INFO[2024-01-01T00:00:02Z] Retrieved preflight checker result:
+worker1:
+  info:
+  - Service iscsid is running
+  - NFS4 is supported
+  - Package nfs-common is installed
+  - Package open-iscsi is installed
+  warn:
+  - multipathd.service is running. Please refer to https://longhorn.io/kb/troubleshooting-volume-with-multipath/ for more information.
+worker2:
+  info:
+  - Service iscsid is running
+  - NFS4 is supported
+  - Package nfs-common is not installed
+  - Package open-iscsi is installed
+```
+
+Use the `install` sub-command to install and set up the preflight dependencies before installing Longhorn.
+
+```shell
+./longhornctl install preflight
+```
+
 ### Using the Environment Check Script
 
 We've written a script to help you gather enough information about the factors.
@@ -66,7 +111,7 @@ To run script:
 curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh | bash
 ```
 
-Example result:
+Example of result:
 
 ```shell
 [INFO]  Required dependencies 'kubectl jq mktemp sort printf' are installed.
