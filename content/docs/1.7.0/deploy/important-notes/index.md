@@ -177,7 +177,7 @@ Longhorn currently does not support live upgrading of V2 volumes. Ensure that al
 
 ### Enable Both `vfio_pci` and `uio_pci_generic` Kernel Modules
 
-According to the [SPDK System Configuration User Guide](https://spdk.io/doc/system_configuration.html), neither `vfio_pci` nor `uio_pci_generic` is universally suitable for all devices and environments. Therefore, users can enable both `vfio_pci` and `uio_pci_generic` kernel modules, allowing Longhorn to automatically select the appropriate module. For more information, see this [link](https://github.com/longhorn/longhorn/issues/9182).
+According to the [SPDK System Configuration User Guide](https://spdk.io/doc/system_configuration.html), neither `vfio_pci` nor `uio_pci_generic` is universally suitable for all devices and environments. Therefore, users can enable both `vfio_pci` and `uio_pci_generic` kernel modules. This allows Longhorn to automatically select the appropriate module. For more information, see this [link](https://github.com/longhorn/longhorn/issues/9182).
 
 ### Introduction of Online Replica Rebuilding
 
