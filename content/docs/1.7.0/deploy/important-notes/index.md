@@ -22,7 +22,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [High Availability of Backing Images](#high-availability-of-backing-images)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
-  - [Using `vfio_pci` as the Default Userspace I/O Driver for Bare-Metal and Virtualized Environments](#using-vfio_pci-as-the-default-userspace-io-driver-for-bare-metal-and-virtualized-environments)
+  - [Enable Both `vfio_pci` and `uio_pci_generic` Kernel Modules](#enable-both-vfio_pci-and-uio_pci_generic-kernel-modules)
   - [Introduction of Online Replica Rebuilding](#introduction-of-online-replica-rebuilding)
   - [Block-type Disk Supports SPDK AIO, NVMe and VirtIO Bdev Drivers](#block-type-disk-supports-spdk-aio-nvme-and-virtio-bdev-drivers)
   - [Introduction of Filesystem Trim](#introduction-of-filesystem-trim)
@@ -175,9 +175,9 @@ To address the single point of failure (SPOF) issue with backing images, high av
 
 Longhorn currently does not support live upgrading of V2 volumes. Ensure that all V2 volumes are detached before initiating the upgrade process.
 
-### Using `vfio_pci` as the Default Userspace I/O Driver for Bare-Metal and Virtualized Environments
+### Enable Both `vfio_pci` and `uio_pci_generic` Kernel Modules
 
-For improved compatibility with both bare-metal and virtualized environments, it is recommended to use `vfio_pci` as the default Userspace I/O Driver. For more information, see this [link](https://github.com/longhorn/longhorn/issues/8813).
+According to the [SPDK System Configuration User Guide](https://spdk.io/doc/system_configuration.html), neither `vfio_pci` nor `uio_pci_generic` is universally suitable for all devices and environments. Therefore, users can enable both `vfio_pci` and `uio_pci_generic` kernel modules, allowing Longhorn to automatically select the appropriate module. For more information, see this [link](https://github.com/longhorn/longhorn/issues/9182).
 
 ### Introduction of Online Replica Rebuilding
 
