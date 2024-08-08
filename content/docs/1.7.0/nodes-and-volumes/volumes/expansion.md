@@ -125,10 +125,27 @@ If you cannot enable it but still prefer to do online expansion, you can:
 
 #### RWX volume
 
-Currently, Longhorn is unable to expand the filesystem (NFS) for RWX volumes. - If you decide to expand a RWX volume manually, you can:
+Longhorn currently does not support fully automatic expansion of the filesystem (NFS) for RWX volumes.  You can expand the filesystem manually using one of the following methods:
 
+##### Online
 1. Expand the block device of the RWX volume via PVC or UI.
-2. Figure out the share manager pod of the RWX volume then execute the filesystem expansion command. The share manager pod is typically named as `share-manager-<volume name>`.
+2. Identify the Share Manager pod of the RWX volume (typically named `share-manager-<volume name>`), and then run the filesystem expansion command in it.
     ```shell
     kubectl -n longhorn-system exec -it <the share manager pod> -- resize2fs /dev/longhorn/<volume name>
     ```
+
+> **Important**:  
+> Online expansion can only be done for volumes with `fsType: ext4`.  If it is attempted with a volume of type `xfs`with `xfs_growfs`, it may appear to be successful, but when the workload is next scaled up or reattached, the pods will hang in `ContainerCreating` and the logs will show an error attempting to mount the filesystem.
+
+##### Offline
+1. Detach the RWX volume by scaling the workload down to `replicas=0`.  
+2. Make sure the volume is fully detached.  After the scale command returns, check it with 
+    ```shell
+    kubectl -n longhorn-system get volume <volume-name>
+    ```
+    and verify that the state is `detached`.  That may take a little time after the scale-down.
+3. Expand the block device using either the PVC or Longhorn UI.
+4. Scale up the workload.  
+The reattached volume will have the expanded size.
+
+
