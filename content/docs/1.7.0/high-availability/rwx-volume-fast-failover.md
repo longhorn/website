@@ -20,3 +20,28 @@ For more information, see https://github.com/longhorn/longhorn/issues/6205.
 > kubectl -n longhorn-system delete lease pvc-2ce4e82e-7ccc-46c0-90a8-a141501fbf93
 > ```
 > See, for example, https://github.com/longhorn/longhorn/issues/9093.
+
+### Resource Consumption and System Performance Impact
+
+The Longhorn team has investigated the impact of RWX volumes on resource consumption and system performance. The benchmarking studies, which were completed using 60 RWX volumes, show that enabling the *RWX Volume Fast Failover* feature results in the following: 
+
+- More requests sent to the Kubernetes API server (kube-apiserver)
+- More remote procedure calls (RPCs) sent from kube-apiserver to etcd
+- Slight increase in CPU and memory usage
+
+#### **Environment:**
+
+- **Setup:** 1 Control Node + 3 Worker Nodes (v1.27.15+rke2r1)
+- **Workload:** 60 Deployments with 60 RWX volumes with `soft` mount
+
+#### **Test Results:**
+
+| **Metric**                           | **Fast Failover Disabled** | **Fast Failover Enabled** | **Difference**             |
+|--------------------------------------|---------------------------|----------------------------|----------------------------|
+| **API request rate (kube-apiserver)**        | 37.5 req/s                  | 59 req/s                 | +57.3%                 |
+| **RPC rate (kube-apiserver to etcd)**                      | 37 ops/s                  | 57 ops/s                   | +54.1%                 |
+| **Memory usage**                  | Lower Peaks/Minima       | Higher Peaks/Minima         | Increased usage with Fast Failover enabled |
+| **Longhorn Manager CPU/RAM usage**      | 405 MB / 0.1 CPU          | 417 MB / 0.13 CPU            | +3% RAM / +30% CPU |
+| **Share Manager CPU/RAM usage**         | 2.2 GB / 0.235 CPU         | 2.25 GB / 0.26 CPU          | +2.3% RAM / +10.6% CPU |
+
+For detailed screenshots and further context, please refer to the [related issue discussion](https://github.com/longhorn/longhorn/issues/6205#issuecomment-2262625965).
