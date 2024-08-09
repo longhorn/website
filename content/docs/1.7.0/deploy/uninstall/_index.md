@@ -155,5 +155,44 @@ for crd in $(kubectl get crd -o jsonpath={.items[*].metadata.name} | tr ' ' '\n'
 done
 ```
 
+If you encounter the following error, it is possible that an incomplete uninstallation removed the Longhorn validation or modification webhook services, but left the same services registered.  
+
+`for: "STDIN": error when patching "STDIN": Internal error occurred: failed calling webhook "validator.longhorn.io": failed to call webhook: Post "https://longhorn-admission-webhook.longhorn-system.svc:9502/v1/webhook/validation?timeout=10s": service "longhorn-admission-webhook" not found`
+
+You can run the following commands to check the status of the webhook services.
+
+```shell
+$ kubectl get ValidatingWebhookConfiguration -A
+NAME                               WEBHOOKS   AGE
+longhorn-webhook-validator         1          46d
+rancher.cattle.io                  7          133d
+rke2-ingress-nginx-admission       1          133d
+rke2-snapshot-validation-webhook   1          133d
+
+$ kubectl get MutatingWebhookConfiguration -A
+NAME                       WEBHOOKS   AGE
+longhorn-webhook-mutator   1          46d
+rancher.cattle.io          4          133d
+```
+
+If either or both are still registered, you can delete the configuration to remove the services from the patch operation call path.
+
+```shell
+$ kubectl delete ValidatingWebhookConfiguration longhorn-webhook-validator
+validatingwebhookconfiguration.admissionregistration.k8s.io "longhorn-webhook-validator" deleted
+
+$ kubectl delete MutatingWebhookConfiguration longhorn-webhook-mutator
+mutatingwebhookconfiguration.admissionregistration.k8s.io "longhorn-webhook-mutator" deleted
+```
+
+The script should run successfully after the configuration is deleted.
+
+```shell
+Warning: Detected changes to resource pvc-279e8c3e-bfb0-4233-8899-77b5b178c08c which is currently being deleted.
+volumeattachment.longhorn.io/pvc-279e8c3e-bfb0-4233-8899-77b5b178c08c configured
+No resources found
+customresourcedefinition.apiextensions.k8s.io "volumeattachments.longhorn.io" deleted
+```
+
 ---
 Please see [link](https://github.com/longhorn/longhorn) for more information.
