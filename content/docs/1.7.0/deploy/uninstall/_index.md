@@ -155,11 +155,11 @@ for crd in $(kubectl get crd -o jsonpath={.items[*].metadata.name} | tr ' ' '\n'
 done
 ```
 
-**Tip**:
-If that gets an error like this
-> for: "STDIN": error when patching "STDIN": Internal error occurred: failed calling webhook "validator.longhorn.io": failed to call webhook: Post "https://longhorn-admission-webhook.longhorn-system.svc:9502/v1/webhook/validation?timeout=10s": service "longhorn-admission-webhook" not found
+If you encounter the following error, it is possible that an incomplete uninstallation removed the Longhorn validation or modification webhook services, but left the same services registered.  
 
-It is possible that an incomplete uninstall might remove the Longhorn validation or modification webhook services, but leave them registered.  You can check that 
+`for: "STDIN": error when patching "STDIN": Internal error occurred: failed calling webhook "validator.longhorn.io": failed to call webhook: Post "https://longhorn-admission-webhook.longhorn-system.svc:9502/v1/webhook/validation?timeout=10s": service "longhorn-admission-webhook" not found`
+
+You can run the following commands to check the status of the webhook services.
 
 ```shell
 $ kubectl get ValidatingWebhookConfiguration -A
