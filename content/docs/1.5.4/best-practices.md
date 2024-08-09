@@ -46,14 +46,14 @@ Longhorn supports the following architectures:
 
 The following Linux OS distributions and versions have been verified during the v{{< current-version >}} release testing. However, this does not imply that Longhorn exclusively supports these distributions. Essentially, Longhorn should function well on any certified Kubernetes cluster running on Linux nodes with a wide range of general-purpose operating systems, as well as verified container-optimized operating systems like SLE Micro.
 
-| No. | OS           | Versions
-|-----|--------------| --------
-| 1.  | Ubuntu       | 22.04
-| 2.  | SLES         | 15 SP5
-| 3.  | SLE Micro    | 5.5
-| 4.  | RHEL         | 9.1
-| 5.  | Oracle Linux | 9.1
-| 6.  | Rocky Linux  | 9.2
+| No. | OS                           | Versions
+|-----|------------------------------| --------
+| 1.  | Ubuntu                       | 22.04
+| 2.  | SUSE Linux Enterprise Server | 15 SP5
+| 3.  | SUSE Linux Enterprise Micro  | 5.5
+| 4.  | Red Hat Enterprise Linux     | 9.1
+| 5.  | Oracle Linux                 | 9.1
+| 6.  | Rocky Linux                  | 9.2
 
 Note: It's recommended to guarantee that the kernel version is at least 5.8 as there is filesystem optimization/improvement since this version. See [this issue](https://github.com/longhorn/longhorn/issues/2507#issuecomment-857195496) for details.
 

@@ -60,6 +60,42 @@ For detailed instructions, see the Talos documentation on [Editing Machine Confi
 
 - Exclusive to v1 data volume: currently, within a Talos Linux cluster, Longhorn only supports v1 data volume. The v2 data volume isn't currently supported in this environment.
 
+## Talos Linux Upgrades
+
+When [upgrading a Talos Linux node](https://www.talos.dev/v1.7/talos-guides/upgrading-talos/#talosctl-upgrade), always include the `--preserve` option in the command. This option explicitly tells Talos to keep ephemeral data intact.
+
+Example:
+
+```
+talosctl upgrade --nodes 10.20.30.40 --image ghcr.io/siderolabs/installer:v1.7.6 --preserve
+```
+
+> **Caution:**
+> If you do not include the `--preserve` option, Talos wipes `/var/lib/longhorn`, destroying all replicas stored on that node.
+
+### Recovering from an Upgraded Node without Preserving Data
+
+If you were unable to include the `--preserve` option in the upgrade command, perform the following steps:
+
+1. On the Longhorn UI, go to the **Node** screen.
+
+1. Select the upgraded node, and then select **Edit node and disks** in the **Operation** menu.
+
+1. On the **Edit Node and Disks** screen, set **Scheduling** to **Disable**, delete the disk, and then click **Save**.
+
+1. Select the upgraded node again, and then select **Edit node and disks** in the **Operation** menu.
+
+1. On the **Edit Node and Disks** screen, add a disk and configure the following settings:
+
+    - **Path**: Specify `/var/lib/longhorn/`.
+    - **Storage Reserved**: Specify a value that matches your requirements. The default value is **30 Gi**. 
+    - **Scheduling**: Select **Enable**.
+
+1. Click **Save**.
+
+Longhorn synchronizes the replicas based on the configured settings.
+
+
 ## References
 
 - [[FEATURE] Talos support](https://github.com/longhorn/longhorn/issues/3161)
