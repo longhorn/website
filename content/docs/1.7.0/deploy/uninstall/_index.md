@@ -185,7 +185,7 @@ $ kubectl delete MutatingWebhookConfiguration longhorn-webhook-mutator
 mutatingwebhookconfiguration.admissionregistration.k8s.io "longhorn-webhook-mutator" deleted
 ```
 
-After that, the script should be successful:
+The script should run successfully after the configuration is deleted.
 
 ```shell
 Warning: Detected changes to resource pvc-279e8c3e-bfb0-4233-8899-77b5b178c08c which is currently being deleted.
