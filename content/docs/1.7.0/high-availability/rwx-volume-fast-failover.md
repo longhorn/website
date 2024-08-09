@@ -20,3 +20,25 @@ For more information, see https://github.com/longhorn/longhorn/issues/6205.
 > kubectl -n longhorn-system delete lease pvc-2ce4e82e-7ccc-46c0-90a8-a141501fbf93
 > ```
 > See, for example, https://github.com/longhorn/longhorn/issues/9093.
+
+### Performance Testing
+
+If your cluster has many RWX volumes, enabling the RWX Volume Fast Failover feature has a high impact on system performance in terms of `API requests`, `RPC rate`, `CPU`, and `memory` usage. Below are key observations from testing:
+
+#### **Environment:**
+- **Setup:** 1 Control Node + 3 Worker Nodes (v1.27.15+rke2r1)
+- **Workload:** 60 Deployments with 60 RWX volumes with `soft` mount
+
+#### **Test Results:**
+
+| **Metric**                           | **Fast Failover Enabled** | **Fast Failover Disabled** | **Difference**             |
+|--------------------------------------|---------------------------|----------------------------|----------------------------|
+| **1. Number of API Requests**        | 59 req/s                  | 37.5 req/s                 | **+57.3%**                 |
+| **2. RPC Rate**                      | 57 ops/s                  | 37 ops/s                   | **+54.1%**                 |
+| **3. Memory Usage**                  | Higher Peaks/Minima       | Lower Peaks/Minima         | More usage with Fast Failover Enabled |
+| **4. Longhorn Manager CPU/RAM**      | 417MB / 0.13 CPU          | 405MB / 0.1 CPU            | **+3% RAM** / **+30% CPU** |
+| **5. Share Manager CPU/RAM**         | 2.25GB / 0.26 CPU         | 2.2GB / 0.235 CPU          | **+2.3% RAM** / **+10.6% CPU** |
+
+These results demonstrate that enabling Fast Failover leads to a significant increase in resource consumption if your cluster has many RWX volumes. You should monitor these metrics closely, after enabling this feature, to ensure your environment can handle the additional load.
+
+For detailed screenshots and further context, please refer to the [related issue discussion](https://github.com/longhorn/longhorn/issues/6205#issuecomment-2262625965).
