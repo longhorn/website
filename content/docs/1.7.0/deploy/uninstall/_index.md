@@ -175,7 +175,7 @@ longhorn-webhook-mutator   1          46d
 rancher.cattle.io          4          133d
 ```
 
-If either or both are still registered, deleting the configuration will remove them from the patch operation call path.
+If either or both are still registered, you can delete the configuration to remove the services from the patch operation call path.
 
 ```shell
 $ kubectl delete ValidatingWebhookConfiguration longhorn-webhook-validator
