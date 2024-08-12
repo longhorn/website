@@ -135,7 +135,7 @@ Longhorn currently does not support fully automatic expansion of the filesystem 
     ```
 
 > **Important**:  
-> Online expansion can only be done for volumes with `fsType: ext4`.  If it is attempted with a volume of type `xfs`with `xfs_growfs`, it may appear to be successful, but when the workload is next scaled up or reattached, the pods will hang in `ContainerCreating` and the logs will show an error attempting to mount the filesystem.
+> Online expansion is possible only for `ext4` volumes. Attempts to manually expand `xfs` volumes with `xfs_growfs` may initially appear to be successful, but issues occur when the workload is scaled up and the volume is reattached. In particular, the pods become stuck in the `ContainerCreating` state, and the logs show an error message about attempts to mount the filesystem.
 
 ##### Offline
 1. Detach the RWX volume by scaling the workload down to `replicas=0`.  
