@@ -138,8 +138,10 @@ Longhorn currently does not support fully automatic expansion of the filesystem 
 > Online expansion is possible only for `ext4` volumes. Attempts to manually expand `xfs` volumes with `xfs_growfs` may initially appear to be successful, but issues occur when the workload is scaled up and the volume is reattached. In particular, the pods become stuck in the `ContainerCreating` state, and the logs show an error message about attempts to mount the filesystem.
 
 ##### Offline
-1. Detach the RWX volume by scaling the workload down to `replicas=0`.  
-2. Make sure the volume is fully detached.  After the scale command returns, check it with 
+
+1. Detach the RWX volume by scaling down the workload to `replicas=0`. Ensure that the volume is fully detached.
+
+1. After the scale command returns, run the following command and verify that the state is `detached`.
     ```shell
     kubectl -n longhorn-system get volume <volume-name>
     ```
