@@ -145,9 +145,10 @@ Longhorn currently does not support fully automatic expansion of the filesystem 
     ```shell
     kubectl -n longhorn-system get volume <volume-name>
     ```
-    and verify that the state is `detached`.  That may take a little time after the scale-down.
-3. Expand the block device using either the PVC or Longhorn UI.
-4. Scale up the workload.  
+1. Expand the block device using either the PVC or the Longhorn UI.
+
+1. Scale up the workload.
+
 The reattached volume will have the expanded size.
 
 
