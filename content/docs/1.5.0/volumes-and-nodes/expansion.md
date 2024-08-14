@@ -77,6 +77,7 @@ Longhorn will try to expand the file system only if:
 - The filesystem used in the Longhorn volume is one of the following:
     - ext4
     - xfs
+- The expanded size must be less than the maximum file size allowed by the file system (for example, 16TiB for `ext4`).
 - The Longhorn volume is using the block device frontend.
 
 ## Corner cases
@@ -124,10 +125,30 @@ If you cannot enable it but still prefer to do online expansion, you can:
 
 #### RWX volume
 
-Currently, Longhorn is unable to expand the filesystem (NFS) for RWX volumes. - If you decide to expand a RWX volume manually, you can:
+Longhorn currently does not support fully automatic expansion of the filesystem (NFS) for RWX volumes.  You can expand the filesystem manually using one of the following methods:
 
+##### Online
 1. Expand the block device of the RWX volume via PVC or UI.
-2. Figure out the share manager pod of the RWX volume then execute the filesystem expansion command. The share manager pod is typically named as `share-manager-<volume name>`.
+2. Identify the Share Manager pod of the RWX volume (typically named `share-manager-<volume name>`), and then run the filesystem expansion command in it.
     ```shell
     kubectl -n longhorn-system exec -it <the share manager pod> -- resize2fs /dev/longhorn/<volume name>
     ```
+
+> **Important**:  
+> Online expansion is possible only for `ext4` volumes. Attempts to manually expand `xfs` volumes with `xfs_growfs` may initially appear to be successful, but issues occur when the workload is scaled up and the volume is reattached. In particular, the pods become stuck in the `ContainerCreating` state, and the logs show an error message about attempts to mount the filesystem.
+
+##### Offline
+
+1. Detach the RWX volume by scaling down the workload to `replicas=0`. Ensure that the volume is fully detached.
+
+1. After the scale command returns, run the following command and verify that the state is `detached`.
+    ```shell
+    kubectl -n longhorn-system get volume <volume-name>
+    ```
+1. Expand the block device using either the PVC or the Longhorn UI.
+
+1. Scale up the workload.
+
+The reattached volume will have the expanded size.
+
+
