@@ -6,6 +6,8 @@ weight: 4
 This page lists important notes for Longhorn v{{< current-version >}}.
 Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}) for the full release note.
 
+- [Deprecation](#deprecation)
+  - [Environment Check Script](#environment-check-script)
 - [General](#general)
   - [Supported Kubernetes Versions](#supported-kubernetes-versions)
   - [Pod Security Policies Disabled \& Pod Security Admission Introduction](#pod-security-policies-disabled--pod-security-admission-introduction)
@@ -29,6 +31,12 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Linux Kernel on Longhorn Nodes](#linux-kernel-on-longhorn-nodes)
   - [Snapshot Creation Time as shown in the UI occasionally changes](#snapshot-creation-time-as-shown-in-the-ui-occasionally-changes)
   - [Unable to Revert a Volume to a Snapshot Created before Longhorn v1.7.0](#unable-to-revert-a-volume-to-a-snapshot-created-before-longhorn-v170)
+
+## Deprecation
+
+### Environment Check Script
+
+Since Longhorn v1.7.0, we have introduced the [Longhorn Command-line Tool](../../advanced-resources/longhornctl/). The functionality of the environment check script, [environment_check.sh](https://github.com/longhorn/longhorn/blob/master/scripts/environment_check.sh) overlaps with that of the Longhorn Command-line Tool. Therefore, the script has been deprecated in v1.7.0 and is scheduled for removal in v1.8.0.
 
 ## General
 
