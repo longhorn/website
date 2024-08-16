@@ -11,23 +11,26 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 - [General](#general)
   - [Supported Kubernetes Versions](#supported-kubernetes-versions)
   - [Pod Security Policies Disabled \& Pod Security Admission Introduction](#pod-security-policies-disabled--pod-security-admission-introduction)
-  - [Introduction of Commandline Tool](#introduction-of-commandline-tool)
+  - [Command Line Tool](#command-line-tool)
   - [Minimum XFS Filesystem Size](#minimum-xfs-filesystem-size)
   - [Longhorn PVC with Block Volume Mode](#longhorn-pvc-with-block-volume-mode)
-- [Networking](#networking)
-  - [Storage Network Support for Read-Write-Many (RWX) Volumes](#storage-network-support-for-read-write-many-rwx-volumes)
+  - [Container-Optimized OS Support](#container-optimized-os-support)
 - [Resilience](#resilience)
   - [RWX Volumes Fast Failover](#rwx-volumes-fast-failover)
-  - [Support Configurable Timeout for Replica Rebuilding and Snapshot cloning](#support-configurable-timeout-for-replica-rebuilding-and-snapshot-cloning)
+  - [Support Configurable Timeout for Replica Rebuilding and Snapshot Cloning](#support-configurable-timeout-for-replica-rebuilding-and-snapshot-cloning)
 - [Data Integrity and Reliability](#data-integrity-and-reliability)
   - [Support Periodic and On-Demand Full Backups to Enhance Backup Reliability](#support-periodic-and-on-demand-full-backups-to-enhance-backup-reliability)
   - [High Availability of Backing Images](#high-availability-of-backing-images)
+- [Scheduling](#scheduling)
+  - [Auto-Balance Pressured Disks](#auto-balance-pressured-disks)
+- [Networking](#networking)
+  - [Storage Network Support for Read-Write-Many (RWX) Volumes](#storage-network-support-for-read-write-many-rwx-volumes)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Enable Both `vfio_pci` and `uio_pci_generic` Kernel Modules](#enable-both-vfio_pci-and-uio_pci_generic-kernel-modules)
-  - [Introduction of Online Replica Rebuilding](#introduction-of-online-replica-rebuilding)
+  - [Online Replica Rebuilding](#online-replica-rebuilding)
   - [Block-type Disk Supports SPDK AIO, NVMe and VirtIO Bdev Drivers](#block-type-disk-supports-spdk-aio-nvme-and-virtio-bdev-drivers)
-  - [Introduction of Filesystem Trim](#introduction-of-filesystem-trim)
+  - [Filesystem Trim](#filesystem-trim)
   - [Linux Kernel on Longhorn Nodes](#linux-kernel-on-longhorn-nodes)
   - [Snapshot Creation Time as shown in the UI occasionally changes](#snapshot-creation-time-as-shown-in-the-ui-occasionally-changes)
   - [Unable to Revert a Volume to a Snapshot Created before Longhorn v1.7.0](#unable-to-revert-a-volume-to-a-snapshot-created-before-longhorn-v170)
@@ -73,9 +76,9 @@ For example, adding the following labels to the namespace that is running Longho
         pod-security.kubernetes.io/warn-version: latest
    	```
 
-### Introduction of Commandline Tool
+### Command Line Tool
 
-The longhornctl command-line tool was introduced in v1.7.0. It interacts with Longhorn by creating Kubernetes Custom Resources (CRs) and executing commands inside a dedicated Pod for in-cluster and host operations. Usage scenarios include installation, operations such as exporting replicas, and troubleshooting. For more information, please see [Command Line Tool (longhornctl)](../../advanced-resources/longhornctl/).
+The `longhornctl` command line tool was introduced in v1.7.0. It interacts with Longhorn by creating Kubernetes Custom Resources (CRs) and executing commands inside a dedicated Pod for in-cluster and host operations. Usage scenarios include installation, operations such as exporting replicas, and troubleshooting. For more information, please see [Command Line Tool (longhornctl)](../../advanced-resources/longhornctl/).
 
 ### Minimum XFS Filesystem Size
 
@@ -139,6 +142,38 @@ spec:
 ```
 From this version, you need to add group id 6 to the security context or run container as root. For more information, see [Longhorn PVC ownership and permission](../../nodes-and-volumes/volumes/pvc-ownership-and-permission)
 
+### Container-Optimized OS Support
+
+Longhorn currently supports Container-Optimized OS (COS), providing robust and efficient persistent storage solutions for Kubernetes clusters running on COS. For more information, see [link](../../advanced-resources/os-distro-specific/container-optimized-os-support/).  
+
+## Resilience
+
+### RWX Volumes Fast Failover
+
+RWX Volumes fast failover is introduced in Longhorn v1.7.0 to improve resilience to share-manager pod failures. This failover mechanism quickly detects and responds to share-manager pod failures independently of the Kubernetes node failure sequence and timing. For details, see [RWX Volume Fast Failover](../../high-availability/rwx-volume-fast-failover).
+
+> **Note:**  In rare circumstances, it is possible for the failover to become deadlocked. This happens if the NFS server pod creation is blocked by a recovery action that is itself blocked by the failover-in-process state.  If the feature is enabled, and a failover takes more than a minute or two, it is probably stuck in this situation.  There is an explanation and a workaround in [RWX Volume Fast Failover](../../high-availability/rwx-volume-fast-failover).
+
+### Support Configurable Timeout for Replica Rebuilding and Snapshot Cloning
+
+Since Longhorn v1.7.0, configurable timeouts for replica rebuilding and snapshot cloning are supported. Prior to v1.7.0, the timeout for replica rebuilding was capped at 24 hours, which could cause failures for large volumes in slow bandwidth environments. Now, the timeout is still 24 hours by default but can be adjusted to accommodate different environments. More information can be found [Settings Reference](../../references/settings/#long-grpc-timeout).
+
+## Data Integrity and Reliability
+
+### Support Periodic and On-Demand Full Backups to Enhance Backup Reliability
+
+Since Longhorn v1.7.0, periodic and on-demand full backups have been supported to enhance backup reliability. Prior to v1.7.0, the initial backup was a full backup, with subsequent backups being incremental. If any block became corrupted, all backup revisions relying on that block would also be corrupted. To address this issue, Longhorn now supports performing a full backup after every N incremental backups, as well as on-demand full backups. This approach decreases the likelihood of backup corruption and enhances the overall reliability of the backup process. For more information, see [Recurring Snapshots and Backups](../../snapshots-and-backups/scheduling-backups-and-snapshots/) and [Create a Backup](../../snapshots-and-backups/backup-and-restore/create-a-backup/).
+
+### High Availability of Backing Images
+
+To address the single point of failure (SPOF) issue with backing images, high availability for backing images was introduced in Longhorn v1.7.0. For more information, please see [Backing Image](../../advanced-resources/backing-image/backing-image/#number-of-copies).
+
+## Scheduling
+
+### Auto-Balance Pressured Disks
+
+In Longhorn v1.7.0, the replica auto-balancing feature was enhanced to address disk space pressure from growing volumes, introducing a new setting, `replica-auto-balance-disk-pressure-percentage`, that allows users to set a threshold for automatic action. This update reduces the need for manual intervention by automatically rebalancing replicas during disk pressure and improves performance by enabling faster replica rebuilds using local file copying. For more information, see the [setting](../../references/settings#replica-auto-balance-disk-pressure-threshold-) and this [link](https://github.com/longhorn/longhorn/issues/4105).
+
 ## Networking
 
 ### Storage Network Support for Read-Write-Many (RWX) Volumes
@@ -157,28 +192,6 @@ To apply the storage network to existing RWX volumes, you must detach the volume
 
 For more information, see [Issue #8184](https://github.com/longhorn/longhorn/issues/8184).
 
-## Resilience
-
-### RWX Volumes Fast Failover
-
-RWX Volumes fast failover is introduced in Longhorn v1.7.0 to improve resilience to share-manager pod failures. This failover mechanism quickly detects and responds to share-manager pod failures independently of the Kubernetes node failure sequence and timing. For details, see [RWX Volume Fast Failover](../../high-availability/rwx-volume-fast-failover).
-
-> **Note:**  In rare circumstances, it is possible for the failover to become deadlocked. This happens if the NFS server pod creation is blocked by a recovery action that is itself blocked by the failover-in-process state.  If the feature is enabled, and a failover takes more than a minute or two, it is probably stuck in this situation.  There is an explanation and a workaround in [RWX Volume Fast Failover](../../high-availability/rwx-volume-fast-failover).
-
-### Support Configurable Timeout for Replica Rebuilding and Snapshot cloning
-
-Since Longhorn v1.7.0, configurable timeouts for replica rebuilding and snapshot cloning are supported. Prior to v1.7.0, the timeout for replica rebuilding was capped at 24 hours, which could cause failures for large volumes in slow bandwidth environments. Now, the timeout is still 24 hours by default but can be adjusted to accommodate different environments. More information can be found [Settings Reference](http://0.0.0.0:8085/docs/1.7.0/references/settings/#long-grpc-timeout).
-
-## Data Integrity and Reliability
-
-### Support Periodic and On-Demand Full Backups to Enhance Backup Reliability
-
-Since Longhorn v1.7.0, periodic and on-demand full backups have been supported to enhance backup reliability. Prior to v1.7.0, the initial backup was a full backup, with subsequent backups being incremental. If any block became corrupted, all backup revisions relying on that block would also be corrupted. To address this issue, Longhorn now supports performing a full backup after every N incremental backups, as well as on-demand full backups. This approach decreases the likelihood of backup corruption and enhances the overall reliability of the backup process. For more information, see [Recurring Snapshots and Backups](../../snapshots-and-backups/scheduling-backups-and-snapshots/) and [Create a Backup](../../snapshots-and-backups/backup-and-restore/create-a-backup/).
-
-### High Availability of Backing Images
-
-To address the single point of failure (SPOF) issue with backing images, high availability for backing images was introduced in Longhorn v1.7.0. For more information, please see [Backing Image](../../advanced-resources/backing-image/backing-image/#number-of-copies).
-
 ## V2 Data Engine
 
 ### Longhorn System Upgrade
@@ -189,7 +202,7 @@ Longhorn currently does not support live upgrading of V2 volumes. Ensure that al
 
 According to the [SPDK System Configuration User Guide](https://spdk.io/doc/system_configuration.html), neither `vfio_pci` nor `uio_pci_generic` is universally suitable for all devices and environments. Therefore, users can enable both `vfio_pci` and `uio_pci_generic` kernel modules. This allows Longhorn to automatically select the appropriate module. For more information, see this [link](https://github.com/longhorn/longhorn/issues/9182).
 
-### Introduction of Online Replica Rebuilding
+### Online Replica Rebuilding
 
 Online replica rebuilding was introduced in Longhorn 1.7.0, so offline replica rebuilding has been removed.
 
@@ -197,7 +210,7 @@ Online replica rebuilding was introduced in Longhorn 1.7.0, so offline replica r
 
 Before Longhorn v1.7.0, Longhorn block-type disks only supported the SPDK AIO bdev driver, which introduced extra performance penalties. Since v1.7.0, block devices can be directly managed by SPDK NVMe or VirtIO bdev drivers, improving IO performance through a kernel bypass scheme. For more information, see this [link](https://github.com/longhorn/longhorn/issues/7672).
 
-### Introduction of Filesystem Trim
+### Filesystem Trim
 
 Filesystem trim is supported since Longhorn v1.7.0. If a disk is managed by the SPDK AIO bdev driver, the Trim (UNMAP) operation is not recommended in a production environment (ref). It is recommended to manage a block-type disk with an NVMe bdev driver.
 
