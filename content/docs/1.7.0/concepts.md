@@ -51,7 +51,7 @@ The Longhorn design has two layers: the data plane and the controlplane. The Lon
 
 The Longhorn Manager Pod runs on each node in the Longhorn cluster as a Kubernetes [DaemonSet.](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) It is responsible for creating and managing volumes in the Kubernetes cluster, and handles the API calls from the UI or the volume plugins for Kubernetes. It follows the Kubernetes controller pattern, which is sometimes called the operator pattern.
 
-The Longhorn Manager communicates with the Kubernetes API server to create a new Longhorn volume [CRD.](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) Then the Longhorn Manager watches the API server's response, and when it sees that the Kubernetes API server created a new Longhorn volume CRD, the Longhorn Manager creates a new volume.
+The Longhorn Manager communicates with the Kubernetes API server to create a new Longhorn volume [CR](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/). Then the Longhorn Manager watches the API server's response, and when it sees that the Kubernetes API server created a new Longhorn volume CR, the Longhorn Manager creates a new volume.
 
 When the Longhorn Manager is asked to create a volume, it creates a Longhorn Engine instance on the node the volume is attached to, and it creates a replica on each node where a replica will be placed. Replicas should be placed on separate hosts to ensure maximum availability.
 
