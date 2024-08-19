@@ -1,4 +1,4 @@
 ---
 title: Troubleshoot
-weight: 80
+weight: 10
 ---
