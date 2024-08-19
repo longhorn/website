@@ -47,10 +47,10 @@ The following Linux OS distributions and versions have been verified during the 
 | No. | OS           | Versions
 |-----|--------------| --------
 | 1.  | Ubuntu       | 18.04, 20.04
-| 2.  | SLES         | 15 SP3
-| 3.  | SLE Micro    | 5.3
+| 2.  | SUSE Linux Enterprise Server         | 15 SP3
+| 3.  | SUSE Linux Enterprise Micro    | 5.3
 | 4.  | CentOS       | 7, 8
-| 5.  | RHEL         | 7.9, 8.3, 8.4
+| 5.  | Red Hat Enterprise Linux         | 7.9, 8.3, 8.4
 | 6.  | Oracle Linux | 8.3
 | 7.  | Rocky Linux  | 8.4
 
