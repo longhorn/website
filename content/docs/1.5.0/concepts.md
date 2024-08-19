@@ -20,11 +20,11 @@ For the installation requirements, go to [this section.](../deploy/install/#inst
   - [1.4. CSI Plugin](#14-csi-plugin)
   - [1.5. The Longhorn UI](#15-the-longhorn-ui)
 - [2. Longhorn Volumes and Primary Storage](#2-longhorn-volumes-and-primary-storage)
-  - [2.1. Thin Provisioning and Volume Size](#21-thin-provisioning-and-volume-size)
-  - [2.2. Reverting Volumes in Maintenance Mode](#22-reverting-volumes-in-maintenance-mode)
+    - [2.1. Thin Provisioning and Volume Size](#21-thin-provisioning-and-volume-size)
+    - [2.2. Reverting Volumes in Maintenance Mode](#22-reverting-volumes-in-maintenance-mode)
   - [2.3. Replicas](#23-replicas)
     - [2.3.1. How Read and Write Operations Work for Replicas](#231-how-read-and-write-operations-work-for-replicas)
-    - [2.3.2. How New Replicas are Added](#232-how-new-replicas-are-added)
+    - [2.3.2 How New Replicas are Added](#232-how-new-replicas-are-added)
     - [2.3.3. How Faulty Replicas are Rebuilt](#233-how-faulty-replicas-are-rebuilt)
   - [2.4. Snapshots](#24-snapshots)
     - [2.4.1. How Snapshots Work](#241-how-snapshots-work)
@@ -36,7 +36,7 @@ For the installation requirements, go to [this section.](../deploy/install/#inst
   - [3.1. How Backups Work](#31-how-backups-work)
   - [3.2. Recurring Backups](#32-recurring-backups)
   - [3.3. Disaster Recovery Volumes](#33-disaster-recovery-volumes)
-  - [3.4. Backupstore Update Intervals, RTO and RPO](#34-backupstore-update-intervals-rto-and-rpo)
+  - [3.4. Backupstore Update Intervals, RTO, and RPO](#34-backupstore-update-intervals-rto-and-rpo)
 - [Appendix: How Persistent Storage Works in Kubernetes](#appendix-how-persistent-storage-works-in-kubernetes)
   - [How Kubernetes Workloads use New and Existing Persistent Storage](#how-kubernetes-workloads-use-new-and-existing-persistent-storage)
     - [Existing Storage Provisioning](#existing-storage-provisioning)
@@ -49,9 +49,9 @@ The Longhorn design has two layers: the data plane and the controlplane. The Lon
 
 ## 1.1. The Longhorn Manager and the Longhorn Engine
 
-The Longhorn Manager Pod runs on each node in the Longhorn cluster as a Kubernetes [DaemonSet.](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) It is responsible for creating and managing volumes in the Kubernetes cluster, and handles the API calls from the UI or the volume plugins for Kubernetes. It follows the Kubernetes controller pattern, which is sometimes called the operator pattern.
+The Longhorn Manager Pod runs on each node in the Longhorn cluster as a Kubernetes [DaemonSet](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/). It is responsible for creating and managing volumes in the Kubernetes cluster, and handles the API calls from the UI or the volume plugins for Kubernetes. It follows the Kubernetes controller pattern, which is sometimes called the operator pattern.
 
-The Longhorn Manager communicates with the Kubernetes API server to create a new Longhorn volume [CRD.](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) Then the Longhorn Manager watches the API server's response, and when it sees that the Kubernetes API server created a new Longhorn volume CRD, the Longhorn Manager creates a new volume.
+The Longhorn Manager communicates with the Kubernetes API server to create a new Longhorn volume [CR](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/). Then the Longhorn Manager watches the API server's response, and when it sees that the Kubernetes API server created a new Longhorn volume CR, the Longhorn Manager creates a new volume.
 
 When the Longhorn Manager is asked to create a volume, it creates a Longhorn Engine instance on the node the volume is attached to, and it creates a replica on each node where a replica will be placed. Replicas should be placed on separate hosts to ensure maximum availability.
 
