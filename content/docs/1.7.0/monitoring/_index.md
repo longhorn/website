@@ -1,6 +1,6 @@
 ---
 title: Monitoring
-weight: 5
+weight: 6
 ---
 
 * Setting up Prometheus and Grafana to monitor Longhorn
