@@ -35,7 +35,7 @@ Longhorn should work well on any certified Kubernetes cluster running on Linux n
 |1.    | Ubuntu       | 18.04, 20.04
 |2.    | SLES         | 15 SP1, 15 SP2, 15 SP3
 |3.    | CentOS       | 7, 8
-|4.    | RHEL         | 7.9, 8.3, 8.4
+|4.    | Red Hat Enterprise Linux         | 7.9, 8.3, 8.4
 |5.    | Oracle Linux | 8.3
 |6.    | Rocky Linux  | 8.4
 

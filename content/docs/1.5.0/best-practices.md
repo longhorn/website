@@ -49,9 +49,9 @@ The following Linux OS distributions and versions have been verified during the 
 | No. | OS           | Versions
 |-----|--------------| --------
 | 1.  | Ubuntu       | 22.04
-| 2.  | SLES         | 15 SP4
-| 3.  | SLE Micro    | 5.3
-| 4.  | RHEL         | 9.1
+| 2.  | SUSE Linux Enterprise Server         | 15 SP4
+| 3.  | SUSE Linux Enterprise Micro    | 5.3
+| 4.  | Red Hat Enterprise Linux         | 9.1
 | 5.  | Oracle Linux | 9.1
 | 6.  | Rocky Linux  | 9.2
 
