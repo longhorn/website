@@ -107,7 +107,7 @@ Use the `install` sub-command to install and set up the preflight dependencies b
 ### Using the Environment Check Script
 
 > **Deprecation Notice**  
-> Since Longhorn v1.7.0, we have introduced the [Longhorn Command-line Tool](../../advanced-resources/longhornctl/). The functionality of the environment check script, [environment_check.sh](https://github.com/longhorn/longhorn/blob/master/scripts/environment_check.sh) overlaps with that of the Longhorn Command-line Tool. Therefore, the script has been deprecated in v1.7.0 and is scheduled for removal in v1.8.0.
+> Since Longhorn v1.7.0, we have introduced the [Longhorn Command Line Tool](../../advanced-resources/longhornctl/). The functionality of the environment check script, [environment_check.sh](https://github.com/longhorn/longhorn/blob/master/scripts/environment_check.sh) overlaps with that of the Longhorn Command Line Tool. Therefore, the script has been deprecated in v1.7.0 and is scheduled for removal in v1.8.0.
 
 We've written a script to help you gather enough information about the factors.
 
