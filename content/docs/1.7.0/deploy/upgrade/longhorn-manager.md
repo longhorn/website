@@ -130,7 +130,7 @@ Next, [upgrade Longhorn engine.](../upgrade-engine)
 
 ### Upgrading from Unsupported Versions
 
-We only support upgrading to v{{< current-version >}} from v1.5.x. For other versions, please upgrade to v1.5.x first.
+We only support upgrading to v{{< current-version >}} from v1.6.x. For other versions, please upgrade to v1.6.x first.
 
 If you attempt to upgrade from an unsupported version, the upgrade will fail. When encountering an upgrade failure, please consider the following scenarios to recover the state based on different upgrade methods.
 
