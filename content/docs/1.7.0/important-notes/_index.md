@@ -6,6 +6,8 @@ weight: 1
 This page lists important notes for Longhorn v{{< current-version >}}.
 Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}) for the full release note.
 
+- [Warning](#warning)
+  - [Unable to Attach Volumes Created Before v1.5.2 and v1.4.4](#unable-to-attach-volumes-created-before-v152-and-v144)
 - [Deprecation](#deprecation)
   - [Environment Check Script](#environment-check-script)
 - [General](#general)
@@ -34,6 +36,23 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Linux Kernel on Longhorn Nodes](#linux-kernel-on-longhorn-nodes)
   - [Snapshot Creation Time As Shown in the UI Occasionally Changes](#snapshot-creation-time-as-shown-in-the-ui-occasionally-changes)
   - [Unable To Revert a Volume to a Snapshot Created Before Longhorn v1.7.0](#unable-to-revert-a-volume-to-a-snapshot-created-before-longhorn-v170)
+
+## Warning
+
+### Unable to Attach Volumes Created Before v1.5.2 and v1.4.4
+
+The Longhorn team has identified [a critical issue](https://github.com/longhorn/longhorn/issues/9267) that affects volume attachment in Longhorn v1.7.0. A fix for this issue will be included in v1.7.1, which is in active development. 
+
+Avoid upgrading to v1.7.0 if your Longhorn cluster contains `engine` resources with the following characteristics:
+
+- Resource name: The format is `<volume name>-e-<8-char random id>`.
+- Time of creation: A Longhorn version earlier than v1.5.2 and v1.4.4 was installed on the cluster.
+
+Run the following command to check if you can safely upgrade your Longhorn cluster to v1.7.0:
+
+> ```
+> [ $(kubectl -n longhorn-system get engines.longhorn.io -o name | grep -E '\-e\-[a-z0-9]{8}$' | wc -l) -gt 0 ] && echo "Please hold off on upgrading to v1.7.0 until v1.7.1 is available." || echo "Safe to upgrade to v1.7.0."
+> ```
 
 ## Deprecation
 
