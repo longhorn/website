@@ -29,8 +29,6 @@ The following table outlines the supported upgrade paths.
   |  x.y[^lastMinorVersion].*      |  (x+1).y.*  |   ✓    |  v1.30.0 to  v2.0.0  |
   |  x.(y-1).*  |  x.(y+1).*  |   X    |  v1.3.3  to  v1.5.1  |
   |  x.(y-2).*  |  x.(y+1).*  |   X    |  v1.2.6  to  v1.5.1  |
-  |  x.y.*      |  x.(y-1).*  |   X    |  v1.6.0  to  v1.5.1  |
-  |  x.y.*      |  x.y.(*-1)  |   X    |  v1.5.1  to  v1.5.0  |
 
 [^lastMinorVersion]: Longhorn only allows upgrades from any patch version of the last minor release before the new major version. For example, if v1.3.0 is the last minor version before v2.0, you can upgrade from any patch version of v1.3.0 to any patch version of v2.0.
 

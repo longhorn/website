@@ -22,8 +22,6 @@ In addition, Longhorn disallows downgrading to any previous version to prevent u
   |  x.y[^lastMinorVersion].*      |  (x+1).y.*  |   ✓    |  v1.30.0 to  v2.0.0  |
   |  x.(y-1).*  |  x.(y+1).*  |   X    |  v1.3.3  to  v1.5.1  |
   |  x.(y-2).*  |  x.(y+1).*  |   X    |  v1.2.6  to  v1.5.1  |
-  |  x.y.*      |  x.(y-1).*  |   X    |  v1.6.0  to  v1.5.1  |
-  |  x.y.*      |  x.y.(*-1)  |   X    |  v1.5.1  to  v1.5.0  |
 
 [^lastMinorVersion]: Longhorn only allows upgrades from any patch version of the last minor release before the new major version. (For example, v1.30.* is allowed to upgrade to v2.0.*, given that v1.30 is the last minor release branch before 2.0.)
 
