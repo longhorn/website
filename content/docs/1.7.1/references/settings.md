@@ -32,7 +32,7 @@ weight: 1
   - [Backing Image Cleanup Wait Interval](#backing-image-cleanup-wait-interval)
   - [Backing Image Recovery Wait Interval](#backing-image-recovery-wait-interval)
   - [Default Min Number Of Backing Image Copies](#default-min-number-of-backing-image-copies)
-  - [Engine to Replica Timeout](#engine-to-replica-timeout)
+  - [Engine Replica Timeout](#engine-replica-timeout)
   - [Support Bundle Manager Image](#support-bundle-manager-image)
   - [Support Bundle Failed History Limit](#support-bundle-failed-history-limit)
   - [Support Bundle Node Collection Timeout](#support-bundle-node-collection-timeout)
@@ -417,10 +417,21 @@ The interval in seconds determines how long Longhorn will wait before re-downloa
 
 The default minimum number of backing image copies Longhorn maintains.
 
-#### Engine to Replica Timeout
+#### Engine Replica Timeout
+
 > Default: `8`
 
-The value in seconds specifies the timeout of the engine to the replica(s), and the value should be between 8 to 30 seconds.
+The time in seconds a v1 engine will wait for a response from a replica before marking it as failed. Values between 8
+and 30 are allowed. The engine replica timeout is only in effect while there are I/O requests outstanding.
+
+This timeout only applies as-configured to additional replicas. A v1 engine will not mark the final replica for a
+running volume as failed until twice the configured timeout. This behavior is intended to balance volume responsiveness
+with volume availability:
+
+- The engine can quickly (after the configured timeout) ignore individual replicas that become unresponsive in favor of
+  other available ones. This ensures future I/O will not be held up.
+- The engine waits on the last replica (until twice the configured timeout) to prevent unnecessarily crashing as a
+  result of having no available backends.
 
 #### Support Bundle Manager Image
 
