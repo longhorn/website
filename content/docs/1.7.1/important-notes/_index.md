@@ -18,6 +18,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 - [Resilience](#resilience)
   - [RWX Volumes Fast Failover](#rwx-volumes-fast-failover)
   - [Timeout Configuration for Replica Rebuilding and Snapshot Cloning](#timeout-configuration-for-replica-rebuilding-and-snapshot-cloning)
+  - [Change in Engine Replica Timeout Behavior](#change-in-engine-replica-timeout-behavior)
 - [Data Integrity and Reliability](#data-integrity-and-reliability)
   - [Support Periodic and On-Demand Full Backups to Enhance Backup Reliability](#support-periodic-and-on-demand-full-backups-to-enhance-backup-reliability)
   - [High Availability of Backing Images](#high-availability-of-backing-images)
@@ -158,6 +159,12 @@ RWX Volumes fast failover is introduced in Longhorn v1.7.0 to improve resilience
 ### Timeout Configuration for Replica Rebuilding and Snapshot Cloning
 
 Starting with v1.7.0, Longhorn supports configuration of timeouts for replica rebuilding and snapshot cloning. Before v1.7.0, the replica rebuilding timeout was capped at 24 hours, which could cause failures for large volumes in slow bandwidth environments. The default timeout is still 24 hours but you can adjust it to accommodate different environments. For more information, see [Long gRPC Timeout](../references/settings/#long-grpc-timeout).
+
+### Change in Engine Replica Timeout Behavior
+
+In versions earlier than v1.7.1, the [Engine Replica Timeout](../references/settings#engine-replica-timeout) setting
+was equally applied to all V1 volume replicas. In v1.7.1, a V1 engine marks the last active replica as failed only after
+twice the configured number of seconds (timeout value x 2) have passed.
 
 ## Data Integrity and Reliability
 

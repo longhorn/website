@@ -424,9 +424,9 @@ The default minimum number of backing image copies Longhorn maintains.
 The time in seconds a v1 engine will wait for a response from a replica before marking it as failed. Values between 8
 and 30 are allowed. The engine replica timeout is only in effect while there are I/O requests outstanding.
 
-This timeout only applies as-configured to additional replicas. A v1 engine will not mark the final replica for a
-running volume as failed until twice the configured timeout. This behavior is intended to balance volume responsiveness
-with volume availability:
+This setting only applies to additional replicas. A V1 engine marks the last active replica as failed only after twice
+the configured number of seconds (timeout value x 2) have passed. This behavior is intended to balance volume
+responsiveness with volume availability.
 
 - The engine can quickly (after the configured timeout) ignore individual replicas that become unresponsive in favor of
   other available ones. This ensures future I/O will not be held up.
