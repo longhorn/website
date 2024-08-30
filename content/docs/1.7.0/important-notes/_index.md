@@ -24,6 +24,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Support Periodic and On-Demand Full Backups to Enhance Backup Reliability](#support-periodic-and-on-demand-full-backups-to-enhance-backup-reliability)
   - [High Availability of Backing Images](#high-availability-of-backing-images)
 - [Scheduling](#scheduling)
+  - [Volume Locality for RWX Volumes](#volume-locality-for-rwx-volumes)
   - [Auto-Balance Pressured Disks](#auto-balance-pressured-disks)
 - [Networking](#networking)
   - [Storage Network Support for Read-Write-Many (RWX) Volumes](#storage-network-support-for-read-write-many-rwx-volumes)
@@ -188,6 +189,10 @@ Since Longhorn v1.7.0, periodic and on-demand full backups have been supported t
 To address the single point of failure (SPOF) issue with backing images, high availability for backing images was introduced in Longhorn v1.7.0. For more information, please see [Backing Image](../advanced-resources/backing-image/backing-image/#number-of-copies).
 
 ## Scheduling
+
+### Volume Locality for RWX Volumes
+
+Longhorn provides new settings that allow you to precisely control the data locality of RWX volumes (through identification of associated Share Manager pods). These granular settings work with related global settings to provide optimal performance, resilience, and adherence to organizational policies or constraints. For more information, see [Configuring Volume Locality for RWX Volumes](../nodes-and-volumes/volumes/rwx-volumes/#configuring-volume-locality-for-rwx-volumes).
 
 ### Auto-Balance Pressured Disks
 
