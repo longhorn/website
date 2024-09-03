@@ -25,6 +25,8 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Auto-Balance Pressured Disks](#auto-balance-pressured-disks)
 - [Networking](#networking)
   - [Storage Network Support for Read-Write-Many (RWX) Volumes](#storage-network-support-for-read-write-many-rwx-volumes)
+- [OS Distro Specific](#os-distro-specific)
+  - [V2 Data Engine Support for Talos Linux](#talos-linux)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Enable Both `vfio_pci` and `uio_pci_generic` Kernel Modules](#enable-both-vfio_pci-and-uio_pci_generic-kernel-modules)
@@ -192,6 +194,12 @@ You can upgrade clusters with pre-existing RWX volume workloads to Longhorn v1.7
 To apply the storage network to existing RWX volumes, you must detach the volumes, enable the [Storage Network For RWX Volume Enabled](../references/settings#storage-network-for-rwx-volume-enabled) setting, and then reattach the volumes.
 
 For more information, see [Issue #8184](https://github.com/longhorn/longhorn/issues/8184).
+
+## OS Distro Specific
+
+### Talos Linux
+
+Longhorn v1.8.0 and later versions support usage of V2 volumes in Talos Linux clusters. To use V2 volumes, ensure that all nodes meet the V2 Data Engine prerequisites. For more information, see [Talos Linux Support: V2 Data Engine](../advanced-resources/os-distro-specific/talos-linux-support#v2-data-engine).
 
 ## V2 Data Engine
 
