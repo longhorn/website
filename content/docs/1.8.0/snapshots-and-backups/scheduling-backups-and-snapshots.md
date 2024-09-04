@@ -142,7 +142,7 @@ kubectl -n longhorn-system label volume/<VOLUME-NAME> <RECURRING-JOB-LABEL>-
 # kubectl -n longhorn-system label volume/pvc-8b9cd514-4572-4eb2-836a-ed311e804d2f recurring-job.longhorn.io/backup-
 ```
 
-## With PersistentVolumeClam Using the `kubectl` command
+## With PersistentVolumeClaim Using the `kubectl` command
 
 By default, applying a recurring job to a Persistent Volume Claim (PVC) does not have any effect. You can enable or disable this feature using the recurring job source label.
 
