@@ -16,7 +16,7 @@ Starting with v1.5.0, Longhorn only allows upgrades from supported versions. Whe
 Moreover, Longhorn does not support downgrades to earlier versions. This restriction helps prevent unexpected system behavior and issues associated with function incompatibility, deprecation, or removal.
 
 > **Warning**:
-> - Once you successfully upgrade to v1.6.0, you will not be allowed to revert to the previously installed version.
+> - Once you successfully upgrade to v{{< current-version >}}, you will not be allowed to revert to the previously installed version.
 > - The Downgrade Prevention feature was introduced in v1.5.0 so Longhorn is unable to prevent downgrade attempts in older versions.
 However, downgrading is completely unsupported and is therefore not recommended.
 

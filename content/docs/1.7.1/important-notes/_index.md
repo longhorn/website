@@ -76,7 +76,7 @@ For example, adding the following labels to the namespace that is running Longho
         pod-security.kubernetes.io/audit-version: latest
         pod-security.kubernetes.io/warn: privileged
         pod-security.kubernetes.io/warn-version: latest
-   	```
+    ```
 
 ### Command Line Tool
 
@@ -237,7 +237,3 @@ Snapshots created before Longhorn v1.7.0 may change occasionally. This issue ari
 ### Unable To Revert a Volume to a Snapshot Created Before Longhorn v1.7.0
 
 Reverting a volume to a snapshot created before Longhorn v1.7.0 is not supported due to an incorrect UserCreated flag set on the snapshot. The workaround is to back up the existing snapshots before upgrading to Longhorn v1.7.0 and restore them if needed. The bug is fixed in v1.7.0, and more information can be found [here](https://github.com/longhorn/longhorn/issues/9054).
-
-
-
-

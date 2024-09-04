@@ -21,7 +21,7 @@ Follow these steps if the live upgrade is not available, or if the volume is stu
 
 ### Live upgrade
 
-Live upgrade is supported for upgrading from v1.6.x to v{{< current-version >}}.
+Live upgrade is supported for upgrading from v1.7.x to v{{< current-version >}}.
 
 The `iSCSI` frontend does not support live upgrades.
 
