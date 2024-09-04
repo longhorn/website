@@ -25,15 +25,15 @@ Longhorn now supports the addition and management of various disk types (AIO, NV
 
 ## Configure a Disk on Longhorn Node
 
-Longhorn can automatically detect the disk type if `node.disks[i].diskDriver` is set to `auto`, optimizing storage performance. The detection and management will be as follows:
+Longhorn automatically detects the disk type if `node.spec.disks[i].diskDriver` is set to `auto`, optimizing storage performance. The detection and management is as follows:
 
-- NVMe Disk: managed by spdk_tgt using the nvme bdev driver, and `node.disks[i].diskDriver` will be set to `nvme`.
-- VirtIO Disk: managed by spdk_tgt using the virtio bdev driver, and `node.disks[i].diskDriver` will be set to `virtio-blk`.
-- Other Disks: managed by spdk_tgt using the aio bdev driver, and `node.disks[i].diskDriver` will be set to `aio`.
+- NVMe Disk: managed by spdk_tgt using the nvme bdev driver, and `node.status.diskStatus[i].diskDriver` is set to `nvme`.
+- VirtIO Disk: managed by spdk_tgt using the virtio bdev driver, and `node.status.diskStatus[i].diskDriver` is set to `virtio-blk`.
+- Other Disks: managed by spdk_tgt using the aio bdev driver, and `node.status.diskStatus[i].diskDriver` is set to `aio`.
 
-Alternatively, users can manually set `node.disks[i].diskDriver` to `aio` to force the use of the aio bdev driver.
+Alternatively, users can manually set `node.spec.disks[i].diskDriver` to `aio` to force the use of the aio bdev driver.
 
-To support NVMe and VirtIO disks, you need to find the BDF (Bus, Device, Function) of the disk as a disk path that will be added to the Longhorn node. The following examples provide an introduction to configuring NVMe disks, VirtIO disks, and others.
+To support NVMe and VirtIO disks, you need to find the BDF (Bus, Device, Function) of the disk as a disk path to be added to the Longhorn node. The following examples provide an introduction to configuring NVMe disks, VirtIO disks, and others.
 
 > **Note**
 > 
@@ -89,7 +89,7 @@ To support NVMe and VirtIO disks, you need to find the BDF (Bus, Device, Functio
 >    storageReserved: 0
 >    tags: []
 >  ```
-> In this case, the disk will be managed by the aio bdev driver, and the `node.disks[i].diskDriver` will be set to `aio`.
+> In this case, the disk will be managed by the aio bdev driver, and the `node.status.diskStatus[i].diskDriver` is set to `aio`.
 
 ### Using VirtIO Disks
 
@@ -144,7 +144,7 @@ The steps are similar to NVMe disks.
 >    storageReserved: 0
 >    tags: []
 >  ```
-> In this case, the disk will be managed by the aio bdev driver, and the `node.disks[i].diskDriver` will be set to `aio`.
+> In this case, the disk will be managed by the aio bdev driver, and the `node.status.diskStatus[i].diskDriver` is set to `aio`.
 
 
 ### Using AIO Disks
@@ -164,7 +164,7 @@ When neither NVMe nor VirtIO drivers can manage a disk, Longhorn will default to
       tags: []
     ```
 
-1. Check node.status.diskStatus. The disk should be detected without errors, and the `node.disks[i].diskDriver` will be set to aio.
+1. Check node.status.diskStatus. The disk should be detected without errors, and the `node.status.diskStatus[i].diskDriver` is set to `aio`.
 
 ## History
 
