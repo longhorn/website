@@ -620,6 +620,12 @@ The interval in seconds to poll the backup store for updating volumes' **Last Ba
 
 For more information on how the backupstore poll interval affects the recovery time objective and recovery point objective, refer to the [concepts section.](../../concepts/#34-backupstore-update-intervals-rto-and-rpo)
 
+#### Backup Execution Timeout
+
+> Default: `1`
+
+Number of minutes that Longhorn allows for the backup execution.
+
 #### Failed Backup Time To Live
 
 > Default: `1440`
