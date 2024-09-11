@@ -224,7 +224,7 @@ Every Longhorn release will ship with a new Longhorn engine image. If the curren
 
 > Default: `longhorn-static`
 
-The `storageClassName` is for persistent volumes (PVs) and persistent volume claims (PVCs) when creating PV/PVC for an existing Longhorn volume. Notice that it's unnecessary for users to create the related StorageClass object in Kubernetes since the StorageClass would only be used as matching labels for PVC bounding purpose. By default 'longhorn-static'.
+The `storageClassName` is for persistent volumes (PVs) and persistent volume claims (PVCs) when creating PV/PVC for an existing Longhorn volume. Notice that it's unnecessary for users to create the related StorageClass object in Kubernetes since the StorageClass would only be used as matching labels for PVC bounding purposes.  The "storageClassName" needs to be an existing StorageClass. Only the StorageClass named `longhorn-static` will be created if it does not exist. By default 'longhorn-static'.
 
 #### Default Replica Count
 
