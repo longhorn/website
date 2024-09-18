@@ -86,3 +86,34 @@ weight: 3
 | longhorn_backup_backing_image_actual_size_bytes | Actual size of this backup backing image | longhorn_backup_backing_image_actual_size_bytes{backup_backing_image="parrot"} 3.3554432e+07 |
 | longhorn_backup_backing_image_state | State of this backup backing image: 0=New, 1=Pending, 2=InProgress, 3=Completed, 4=Error, 5=Unknown | longhorn_backup_backing_image_state{backup_backing_image="parrot"} 3 |
 
+## CSI
+
+The CSI sidecar component has built-in metrics for users to get insights into CSI operations. The CSI operations metrics cover total count, error count, and call latency. Longhorn enables the metrics by adding the flag `--http-endpoint` for each CSI sidecar component. You can use [Prometheus's PodMonitor](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#podmonitor) to collect these metrics. 
+
+| Name | Port |
+|---|---|
+| longhorn-csi-attacher | 8000 | 
+| longhorn-csi-provisioner | 8000 |
+| longhorn-csi-resizer | 8000 |
+| longhorn-csi-snapshotter | 8000 |
+
+The metrics provided by the CSI sidecar component are provided in a histogram format. For example, you can obtain metrics observing the time it takes to create a Longhorn Volume for the PVC.
+
+```
+csi_sidecar_operations_seconds_bucket{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume",le="0.1"} 0
+csi_sidecar_operations_seconds_bucket{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume",le="0.25"} 0
+csi_sidecar_operations_seconds_bucket{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume",le="0.5"} 0
+csi_sidecar_operations_seconds_bucket{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume",le="1"} 0
+csi_sidecar_operations_seconds_bucket{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume",le="2.5"} 3
+csi_sidecar_operations_seconds_bucket{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume",le="5"} 3
+csi_sidecar_operations_seconds_bucket{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume",le="10"} 3
+csi_sidecar_operations_seconds_bucket{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume",le="15"} 9
+csi_sidecar_operations_seconds_bucket{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume",le="25"} 9
+csi_sidecar_operations_seconds_bucket{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume",le="50"} 9
+csi_sidecar_operations_seconds_bucket{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume",le="120"} 9
+csi_sidecar_operations_seconds_bucket{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume",le="300"} 9
+csi_sidecar_operations_seconds_bucket{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume",le="600"} 9
+csi_sidecar_operations_seconds_bucket{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume",le="+Inf"} 9
+csi_sidecar_operations_seconds_sum{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume"} 66.816478825
+csi_sidecar_operations_seconds_count{driver_name="driver.longhorn.io",grpc_status_code="OK",method_name="/csi.v1.Controller/ControllerPublishVolume"} 9
+```
