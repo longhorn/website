@@ -16,6 +16,7 @@ weight: 3
 | longhorn_volume_write_iops | Write IOPS of this volume | longhorn_volume_write_iops{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 100 |
 | longhorn_volume_read_latency | Read latency of this volume (ns) | longhorn_volume_read_latency{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 100000 |
 | longhorn_volume_write_latency | Write latency of this volume (ns) | longhorn_volume_write_latency{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 100000 |
+| longhorn_volume_file_system_read_only | This metric indicates that the volume is now in read-only mode. The metric is either 1 or no record for each volume | longhorn_volume_file_system_read_only{node="worker-2",pvc="testvol",pvc_namespace="default",volume="testvol"} 1
 
 ## Node
 
