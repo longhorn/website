@@ -90,9 +90,9 @@ We recommend running your Kubernetes cluster on one of the following versions. T
 
 | Release | Released     | End-of-life
 |---------|--------------| -----------
+| 1.30    | 17 Apr 2024  | 28 Jun 2025
 | 1.28    | 15 Aug 2023  | 28 Oct 2024
 | 1.27    | 11 Apr 2023  | 28 Jun 2024
-| 1.26    | 08 Dec 2022  | 28 Feb 2024
 
 Referenced to https://endoflife.date/kubernetes.
 
