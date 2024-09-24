@@ -40,6 +40,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Snapshot Creation Time As Shown in the UI Occasionally Changes](#snapshot-creation-time-as-shown-in-the-ui-occasionally-changes)
   - [Unable To Revert a Volume to a Snapshot Created Before Longhorn v1.7.0](#unable-to-revert-a-volume-to-a-snapshot-created-before-longhorn-v170)
   - [Disaster Recovery Volumes](#disaster-recovery-volumes)
+  - [Auto-Salvage Volumes](#auto-salvage-volumes)
 
 ## Deprecation
 
@@ -256,6 +257,8 @@ Before Longhorn v1.7.0, Longhorn block-type disks only supported the SPDK AIO bd
 
 Filesystem trim is supported since Longhorn v1.7.0. If a disk is managed by the SPDK AIO bdev driver, the Trim (UNMAP) operation is not recommended in a production environment (ref). It is recommended to manage a block-type disk with an NVMe bdev driver.
 
+Starting with Longhorn v1.8.0, filesystem trim is blocked when the the targeting v2 volume is in a degraded state. This ensures the reliability of the volume head size during the [auto-salvage](#auto-salvage-volumes) operation.
+
 ### Linux Kernel on Longhorn Nodes
 
 Host machines with Linux kernel 5.15 may unexpectedly reboot when volume-related IO errors occur. To prevent this, update the Linux kernel on Longhorn nodes to version 5.19 or later. For more information, see [Prerequisites](../v2-data-engine/prerequisites/). Version 6.7 or later is recommended for improved system stability.
@@ -271,3 +274,7 @@ Reverting a volume to a snapshot created before Longhorn v1.7.0 is not supported
 ### Disaster Recovery Volumes
 
 Disaster recovery volumes are supported from Longhorn v1.8.0.
+
+### Auto-salvage Volumes
+
+Auto-salvage volumes are supported from Longhorn v1.8.0.
