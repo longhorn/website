@@ -28,6 +28,7 @@ We recommend the following setup for deploying Longhorn in production.
 - [Scheduling Settings](#scheduling-settings)
   - [Replica Node Level Soft Anti-Affinity](#replica-node-level-soft-anti-affinity)
   - [Allow Volume Creation with Degraded Availability](#allow-volume-creation-with-degraded-availability)
+  - [Replica Auto-Balance](#replica-auto-balance)
 
 ## Minimum Recommended Hardware
 
@@ -217,3 +218,13 @@ This setting should be set to `false` in production environment to ensure the be
 > Recommend: `false`
 
 This setting should be set to `false` in production environment to ensure every volume have the best availability when created. Because with the setting set to `true`, the volume creation won't error out even there is only enough room to schedule one replica. So there is a risk that the cluster is running out of the spaces but the user won't be made aware immediately.
+
+### Replica Auto-Balance
+
+> Recommend: `least-effort`
+
+For production environments, we recommend setting Replica Auto-Balance to `least-effort`. This setting ensures that at least one replica is placed on a different node in each zone, providing extra high availability (HA).
+
+In certain edge cases, you might consider using the `best-effort`, which continuously attempts to evenly distribute replicas across nodes and zones. However, this setting can lead to frequent rebuilds if the cluster is unstable.
+
+For most users, having multiple replicas without Replica Auto-Balance setting is sufficient to achieve basic HA, especially if you prefer to avoid excessive rebuilds and resource usage.
