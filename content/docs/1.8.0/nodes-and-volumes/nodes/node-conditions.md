@@ -25,5 +25,9 @@ Node conditions:
 - `NFSClientInstalled`:  
   Identifies if any of the following NFS clients are supported: `v4.2`, `v4.1`, or `v4.0`. NFS client is required for RWX volume and backup.  
 
+- `KernelModulesLoaded`:  
+  Identifies if the following Kernel modules are loaded:
+  - `dm_crypt`: Is required for the volume and backing image encryption.  
+
 Node conditions do not block the Longhorn deployment but they result in warnings in the Longhorn `Node` resource.
 For more information, see [Longhorn Installation Requirements](../../../deploy/install/#installation-requirements).
