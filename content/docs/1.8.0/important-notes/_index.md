@@ -49,7 +49,7 @@ The functionality of the [environment check script](https://github.com/longhorn/
 
 ### Supported Kubernetes Versions
 
-Please ensure your Kubernetes cluster is at least v1.21 before upgrading to Longhorn v{{< current-version >}} because this is the minimum version Longhorn v{{< current-version >}} supports.
+Please ensure your Kubernetes cluster is at least v1.25 before upgrading to Longhorn v{{< current-version >}} because this is the minimum version Longhorn v{{< current-version >}} supports.
 
 ### Pod Security Policies Disabled & Pod Security Admission Introduction
 
