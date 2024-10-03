@@ -27,7 +27,7 @@ For information on deploying Longhorn on specific nodes and rejecting general wo
 Each node in the Kubernetes cluster where Longhorn is installed must fulfill the following requirements:
 
 -  A container runtime compatible with Kubernetes (Docker v1.13+, containerd v1.3.7+, etc.)
--  Kubernetes >= v1.21
+-  Kubernetes >= v1.25
 -  `open-iscsi` is installed, and the `iscsid` daemon is running on all the nodes. This is necessary, since Longhorn relies on `iscsiadm` on the host to provide persistent volumes to Kubernetes. For help installing `open-iscsi`, refer to [this section.](#installing-open-iscsi)
 -  RWX support requires that each node has a NFSv4 client installed.
     - For installing a NFSv4 client, refer to [this section.](#installing-nfsv4-client)
@@ -325,7 +325,7 @@ Client Version: version.Info{Major:"1", Minor:"26", GitVersion:"v1.26.10", GitCo
 Server Version: version.Info{Major:"1", Minor:"26", GitVersion:"v1.26.10+k3s2", GitCommit:"cb5cb5557f34e240e38c68a8c4ca2506c68b1d86", GitTreeState:"clean", BuildDate:"2023-11-08T03:21:46Z", GoVersion:"go1.20.10", Compiler:"gc", Platform:"linux/amd64"}
 ```
 
-The `Server Version` should be >= v1.21.
+The `Server Version` should be >= v1.25.
 
 ### Installing Cryptsetup and LUKS
 
