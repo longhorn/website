@@ -69,7 +69,7 @@ The following parameters should be specified for each recurring job selector:
 
 - `task`: Type of the job. Longhorn supports the following:
   - `backup`: periodically create snapshots then do backups after cleaning up outdated snapshots
-  - `backup-force-create`: periodically create snapshots the do backups
+  - `backup-force-create`: periodically create snapshots then do backups
   - `snapshot`: periodically create snapshots after cleaning up outdated snapshots
   - `snapshot-force-create`: periodically create snapshots
   - `snapshot-cleanup`: periodically purge removable snapshots and system snapshots
