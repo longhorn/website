@@ -18,9 +18,16 @@ Edit the statefulset with `kubectl edit statefulset/<name>`.
 Set `.spec.replicas` to `0`.
 
 #### DaemonSet
-There is no way to suspend this workload.
+Edit the daemonset with `kubectl edit ds/<name>`.
 
-Delete the daemonset with `kubectl delete ds/<name>`.
+Add a nodeSelector to the pod spec:
+```yaml
+spec:
+  template:
+    spec:
+      nodeSelector:
+        no-schedule: "true"
+```
 
 #### Pod
 Delete the pod with `kubectl delete pod/<name>`.
