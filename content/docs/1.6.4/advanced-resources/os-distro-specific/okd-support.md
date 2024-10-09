@@ -20,10 +20,21 @@ To deploy Longhorn on a cluster provisioned with OpenShift 4.x, some additional 
 
 Please refer to this section [Install with Helm](../../../deploy/install/install-with-helm/) first.
 
-And then install Longhorn with setting ***openshift.enabled*** true:
+Install Longhorn with the following settings:
+
+| Setting | Value | Example | 
+| --- | --- | --- |
+| `openshift.enabled` | `true` | N/A |
+| `image.openshift.oauthProxy.repository` | Upstream image | `quay.io/openshift/origin-oauth-proxy` |
+| `image.openshift.oauthProxy.tag` | Version 4.1 or later | `4.15` |
 
 ```bash
-  helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --set openshift.enabled=true
+  helm install longhorn longhorn/longhorn \
+    --namespace longhorn-system \
+    --create-namespace \
+    --set openshift.enabled=true \
+    --set image.openshift.oauthProxy.repository=quay.io/openshift/origin-oauth-proxy \
+    --set image.openshift.oauthProxy.tag=4.15
 ```
 
 ## Prepare A Customized Default Longhorn Disk (Optional)
