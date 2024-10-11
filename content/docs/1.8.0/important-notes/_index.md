@@ -28,6 +28,8 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Storage Network Support for Read-Write-Many (RWX) Volumes](#storage-network-support-for-read-write-many-rwx-volumes)
 - [OS Distro Specific](#os-distro-specific)
   - [V2 Data Engine Support for Talos Linux](#talos-linux)
+- [Backup](#backup)
+  - [Related Custom Resources Might Disappear](#related-custom-resources-might-disappear)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Enable Both `vfio_pci` and `uio_pci_generic` Kernel Modules](#enable-both-vfio_pci-and-uio_pci_generic-kernel-modules)
@@ -207,6 +209,18 @@ For more information, see [Issue #8184](https://github.com/longhorn/longhorn/iss
 ### Talos Linux
 
 Longhorn v1.8.0 and later versions support usage of V2 volumes in Talos Linux clusters. To use V2 volumes, ensure that all nodes meet the V2 Data Engine prerequisites. For more information, see [Talos Linux Support: V2 Data Engine](../advanced-resources/os-distro-specific/talos-linux-support#v2-data-engine).
+
+## Backup
+
+### Related Custom Resources Might Disappear
+
+Longhorn will attempt to clean up the backup-related custom resources in the following scenarios:
+
+- An empty response from the NFS server due to a brief server downtime.
+- A race condition between related Longhorn backup controllers.
+
+The backup information will be resynchronized during the next polling interval.  
+For more information, see [#9530](https://github.com/longhorn/longhorn/issues/9530).
 
 ## V2 Data Engine
 

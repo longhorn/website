@@ -27,6 +27,8 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Auto-Balance Pressured Disks](#auto-balance-pressured-disks)
 - [Networking](#networking)
   - [Storage Network Support for Read-Write-Many (RWX) Volumes](#storage-network-support-for-read-write-many-rwx-volumes)
+- [Backup](#backup)
+  - [Related Custom Resources Might Disappear](#related-custom-resources-might-disappear)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Enable Both `vfio_pci` and `uio_pci_generic` Kernel Modules](#enable-both-vfio_pci-and-uio_pci_generic-kernel-modules)
@@ -203,6 +205,18 @@ You can upgrade clusters with pre-existing RWX volume workloads to Longhorn v1.7
 To apply the storage network to existing RWX volumes, you must detach the volumes, enable the [Storage Network For RWX Volume Enabled](../references/settings#storage-network-for-rwx-volume-enabled) setting, and then reattach the volumes.
 
 For more information, see [Issue #8184](https://github.com/longhorn/longhorn/issues/8184).
+
+## Backup
+
+### Related Custom Resources Might Disappear
+
+Longhorn will attempt to clean up the backup-related custom resources in the following scenarios:
+
+- An empty response from the NFS server due to a brief server downtime.
+- A race condition between related Longhorn backup controllers.
+
+The backup information will be resynchronized during the next polling interval.  
+For more information, see [#9530](https://github.com/longhorn/longhorn/issues/9530).
 
 ## V2 Data Engine
 
