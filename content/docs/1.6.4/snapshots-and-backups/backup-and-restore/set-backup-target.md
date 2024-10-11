@@ -13,6 +13,14 @@ If you don't have access to AWS S3 or want to give the backupstore a try first, 
 
 Longhorn also supports setting up recurring snapshot/backup jobs for volumes, via Longhorn UI or Kubernetes Storage Class. See [here](../../scheduling-backups-and-snapshots) for details.
 
+> Note:  
+> Longhorn will attempt to clean up the backup-related custom resources in the following scenarios:
+>
+> - An empty response from the NFS server due to a brief server downtime.
+> - A race condition between related Longhorn backup controllers.
+>
+> The backup information will be resynchronized during the next polling interval. For more information, see [#9530](https://github.com/longhorn/longhorn/issues/9530).
+
 This page covers the following topics:
 
 - [Set up AWS S3 Backupstore](#set-up-aws-s3-backupstore)
@@ -451,6 +459,5 @@ Then, navigate to Longhorn UI > Setting > General > Backup
     ```txt
     azblob-secret
     ```
-
 
 After configuring the above settings, you can manage backups on Azure Blob storage. See [how to create backup](../create-a-backup) for details.

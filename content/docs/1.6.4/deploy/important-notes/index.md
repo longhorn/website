@@ -18,6 +18,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Danger Zone Setting Configuration](#danger-zone-setting-configuration)
   - [Longhorn PVC with Block Volume Mode](#longhorn-pvc-with-block-volume-mode)
   - [Minimum XFS Filesystem Size](#minimum-xfs-filesystem-size)
+  - [Backup Related Custom Resources Might Disappear](#backup-related-custom-resources-might-disappear)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Changing Default Huge Page Size to 2 GiB](#changing-default-huge-page-size-to-2-gib)
@@ -222,6 +223,16 @@ Longhorn v{{< current-version >}} does not allow the following:
 
 However, Longhorn still allows the listed actions when cloning or restoring volumes created with earlier Longhorn
 versions.
+
+### Backup Related Custom Resources Might Disappear
+
+Longhorn will attempt to clean up the backup-related custom resources in the following scenarios:
+
+- An empty response from the NFS server due to a brief server downtime.
+- A race condition between related Longhorn backup controllers.
+
+The backup information will be resynchronized during the next polling interval.  
+For more information, see [#9530](https://github.com/longhorn/longhorn/issues/9530).
 
 ## V2 Data Engine
 
