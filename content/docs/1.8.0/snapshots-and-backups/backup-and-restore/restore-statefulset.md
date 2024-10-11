@@ -58,6 +58,36 @@ To restore, follow the below instructions. The example below uses a StatefulSet 
         volumeHandle: statefulset-vol-1 # must match volume name from Longhorn
       storageClassName: longhorn # must be same name that we will use later
     ```
+
+> 2.1 In the case of encrypted volume, make sure you are specifying the `nodePublishSecretRef`, and `nodeStageSecretRef` while creating the `PV`.
+>
+> ```yaml
+> kind: PersistentVolume
+> metadata:
+>   name: statefulset-encrypted-vol-0
+> spec:
+>   capacity:
+>     storage: <size>
+>   volumeMode: Filesystem
+>   accessModes:
+>     - ReadWriteOnce
+>   persistentVolumeReclaimPolicy: Delete
+>   csi:
+>     driver: driver.longhorn.io
+>     fsType: ext4
+>     nodePublishSecretRef:
+>       name: <secret-name>
+>       namespace: <namespace>
+>     nodeStageSecretRef:
+>       name: <secret-name>
+>       namespace: <namespace>
+>     volumeAttributes:
+>       numberOfReplicas: <replicas>
+>       staleReplicaTimeout: "30"
+>     volumeHandle: statefulset-encrypted-vol-0
+>   storageClassName: longhorn
+> ```
+
 3. In the `namespace` the `StatefulSet` will be deployed in, create PersistentVolume Claims **for each** `Persistent Volume`. The name of the `Persistent Volume Claim` must follow this naming scheme:
 
     ```
