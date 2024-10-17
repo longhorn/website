@@ -6,6 +6,8 @@ The Priority Class setting can be used to set a higher priority on Longhorn work
 
 For more information on how pod priority works, refer to the [official Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/).
 
+> **Note:** If Kubernetes has a PriorityClass set as the cluster global default, it can lead to issues with Longhorn pods restarting unexpectedly. To prevent that, the Longhorn setting `PriorityClass` should also be set to match the cluster default value. On a fresh installation, that is most easily done before any volumes are created.
+
 # Setting Priority Class
 Longhorn system contains user deployed components (e.g, Longhorn manager, Longhorn driver, Longhorn UI) and system managed components (e.g, instance manager, engine image, CSI driver, etc.)
 You need to set Priority Class for both types of components. See more details below.
