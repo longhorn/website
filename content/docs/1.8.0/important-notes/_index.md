@@ -29,7 +29,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 - [OS Distro Specific](#os-distro-specific)
   - [V2 Data Engine Support for Talos Linux](#talos-linux)
 - [Backup](#backup)
-  - [Related Custom Resources Might Disappear](#related-custom-resources-might-disappear)
+  - [Backup Data On The Remote Backup Server Might Be Deleted](#backup-data-on-the-remote-backup-server-might-be-deleted)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Enable Both `vfio_pci` and `uio_pci_generic` Kernel Modules](#enable-both-vfio_pci-and-uio_pci_generic-kernel-modules)
@@ -212,14 +212,18 @@ Longhorn v1.8.0 and later versions support usage of V2 volumes in Talos Linux cl
 
 ## Backup
 
-### Related Custom Resources Might Disappear
+### Backup Data On The Remote Backup Server Might Be Deleted
 
-Longhorn will attempt to clean up the backup-related custom resources in the following scenarios:
+Longhorn may unintentionally delete backup-related custom resources (such as `BackupVolume`, `BackupBackingImage`, `SystemBackup`, and `Backup`) and backup data on the remote backup server before Longhorn v{{< current-version >}} in the following scenarios:
 
 - An empty response from the NFS server due to a brief server downtime.
-- A race condition between related Longhorn backup controllers.
+- A race condition could delete the remote backup volume and its corresponding backups when the backup target is reset within a short period.
 
-The backup information will be resynchronized during the next polling interval.  
+Starting with v{{< current-version >}}, Longhorn handles backup-related custom resources in the following manner:
+
+- If there are discrepancies between the backup information in the cluster and on the remote backup server, Longhorn deletes only the backup-related custom resources in the cluster.
+- The backup-related custom resources in the cluster may be deleted unintentionally while the remote backup data remains safely stored. The deleted resources are resynchronized from the remote backup server during the next polling period (if the backup target is available).
+
 For more information, see [#9530](https://github.com/longhorn/longhorn/issues/9530).
 
 ## V2 Data Engine
