@@ -18,7 +18,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Danger Zone Setting Configuration](#danger-zone-setting-configuration)
   - [Longhorn PVC with Block Volume Mode](#longhorn-pvc-with-block-volume-mode)
   - [Minimum XFS Filesystem Size](#minimum-xfs-filesystem-size)
-  - [Backup Related Custom Resources Might Disappear](#backup-related-custom-resources-might-disappear)
+  - [Backup Data On The Remote Backup Server Might Be Deleted](#backup-data-on-the-remote-backup-server-might-be-deleted)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Changing Default Huge Page Size to 2 GiB](#changing-default-huge-page-size-to-2-gib)
@@ -224,14 +224,18 @@ Longhorn v{{< current-version >}} does not allow the following:
 However, Longhorn still allows the listed actions when cloning or restoring volumes created with earlier Longhorn
 versions.
 
-### Backup Related Custom Resources Might Disappear
+### Backup Data On The Remote Backup Server Might Be Deleted
 
-Longhorn will attempt to clean up the backup-related custom resources in the following scenarios:
+Longhorn may unintentionally delete backup-related custom resources (such as `BackupVolume`, `BackupBackingImage`, `SystemBackup`, and `Backup`) and backup data on the remote backup server before Longhorn v{{< current-version >}} in the following scenarios:
 
 - An empty response from the NFS server due to a brief server downtime.
-- A race condition between related Longhorn backup controllers.
+- A race condition could delete the remote backup volume and its corresponding backups when the backup target is reset within a short period.
 
-The backup information will be resynchronized during the next polling interval.  
+Starting with v{{< current-version >}}, Longhorn handles backup-related custom resources in the following manner:
+
+- If there are discrepancies between the backup information in the cluster and on the remote backup server, Longhorn deletes only the backup-related custom resources in the cluster.
+- The backup-related custom resources in the cluster may be deleted unintentionally while the remote backup data remains safely stored. The deleted resources are resynchronized from the remote backup server during the next polling period (if the backup target is available).
+
 For more information, see [#9530](https://github.com/longhorn/longhorn/issues/9530).
 
 ## V2 Data Engine
