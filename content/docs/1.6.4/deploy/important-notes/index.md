@@ -111,7 +111,7 @@ If you have Longhorn volume manifests or scripts that are still using `v1beta1` 
 
 Beginning with version v1.6.0, Longhorn is implementing mandatory engine upgrades. See the [release note](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}) for information about the minimum supported engine image version.
 
-When upgrading through Helm, a component compatibility check is automatically performed. If the new Longhorn is not compatible with the engine images that are currently in use, the upgrade path is blocked through a pre-hook mechanism.
+When upgrading through Helm, a component compatibility check is automatically performed. If the new Longhorn is not compatible with the engine images that are currently in use, the upgrade path is blocked through a pre-hook mechanism. The upgrade will stop and the reason for the check's failure will be recorded in an event.  For more detail, see [Upgrading Longhorn Manager](../../deploy/upgrade/longhorn-manager).
 
 If you installed Longhorn using the manifests, engine upgrades are enforced by the Longhorn Manager. Attempts to upgrade Longhorn Manager may cause unsuccessful pod launches and generate corresponding error logs, although it poses no harm. If you encounter such errors, you must revert to the previous Longhorn version and then upgrade the engines that are using the incompatible engine images before the next upgrade.
 
