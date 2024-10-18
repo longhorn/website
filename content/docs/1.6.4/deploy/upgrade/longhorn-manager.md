@@ -116,7 +116,13 @@ Besides, users might need to delete new components introduced by the new version
 
 To prevent any impact caused by failed upgrades from unsupported versions, Longhorn will automatically initiate a new job (`pre-upgrade`) to verify if the upgrade path is supported before upgrading when upgrading through `Helm` or `Rancher App Marketplace`.
 
-The `pre-upgrade` job will block the upgrade process and provide the failure reason in the logs of the pod.
+The `pre-upgrade` job will block the upgrade process and provide the failure reason in the logs of the pod.  It will also be recorded in an event, for instance:
+
+```
+2m33s               Normal    Created                 Pod/longhorn-pre-upgrade-v5tqq    Created container longhorn-pre-upgrade
+2m33s               Warning   FailedUpgradePreCheck   /longhorn-pre-upgrade             failed to upgrade since upgrading from v1.4.3 to v1.6.4 for minor version is not supported
+```
+
 During the upgrade failure, the user's Longhorn system should remain intact without any impacts.
 
 To recover, you need to run the below commands to rollback to the previously installed revision:

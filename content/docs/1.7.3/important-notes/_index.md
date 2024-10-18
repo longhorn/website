@@ -14,6 +14,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Minimum XFS Filesystem Size](#minimum-xfs-filesystem-size)
   - [Longhorn PVC with Block Volume Mode](#longhorn-pvc-with-block-volume-mode)
   - [Container-Optimized OS Support](#container-optimized-os-support)
+  - [Upgrade Check Events](#upgrade-check-events)
 - [Resilience](#resilience)
   - [RWX Volumes Fast Failover](#rwx-volumes-fast-failover)
   - [Timeout Configuration for Replica Rebuilding and Snapshot Cloning](#timeout-configuration-for-replica-rebuilding-and-snapshot-cloning)
@@ -144,6 +145,9 @@ From this version, you need to add group id 6 to the security context or run con
 ### Container-Optimized OS Support
 
 Starting with Longhorn v1.7.0, Longhorn supports Container-Optimized OS (COS), providing robust and efficient persistent storage solutions for Kubernetes clusters running on COS. For more information, see [Container-Optimized OS (COS) Support](../advanced-resources/os-distro-specific/container-optimized-os-support/).  
+
+### Upgrade Check Events
+Longhorn performs a pre-upgrade check when upgrading with Helm or Rancher App Marketplace.  If a check fails, the upgrade will stop and the reason for the check's failure will be recorded in an event.  For more detail, see [Upgrading Longhorn Manager](../deploy/upgrade/longhorn-manager).
 
 ## Resilience
 
