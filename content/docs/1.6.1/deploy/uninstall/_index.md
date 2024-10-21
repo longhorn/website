@@ -9,6 +9,7 @@ In this section, you'll learn how to uninstall Longhorn.
 - [Prerequisite](#prerequisite)
 - [Uninstalling Longhorn from the Rancher UI](#uninstalling-longhorn-from-the-rancher-ui)
 - [Uninstalling Longhorn using Helm](#uninstalling-longhorn-using-helm)
+- [Uninstalling Longhorn using Helm Controller](#uninstalling-longhorn-using-helm-controller)
 - [Uninstalling Longhorn using kubectl](#uninstalling-longhorn-using-kubectl)
 - [Troubleshooting](#troubleshooting)
   - [Uninstalling using Rancher UI or Helm failed, I am not sure why](#uninstalling-using-rancher-ui-or-helm-failed-i-am-not-sure-why)
@@ -35,6 +36,14 @@ Run this command:
 
 ```
 helm uninstall longhorn -n longhorn-system
+```
+
+### Uninstalling Longhorn using Helm Controller
+
+Run this command:
+
+```
+kubectl delete helmchart <HelmChart name> -n <HelmChart namespace>
 ```
 
 ### Uninstalling Longhorn Using Fleet

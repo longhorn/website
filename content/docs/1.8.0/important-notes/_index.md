@@ -151,6 +151,9 @@ Starting with Longhorn v1.7.0, Longhorn supports Container-Optimized OS (COS), p
 ### Upgrade Check Events
 Longhorn performs a pre-upgrade check when upgrading with Helm or Rancher App Marketplace.  If a check fails, the upgrade will stop and the reason for the check's failure will be recorded in an event.  For more detail, see [Upgrading Longhorn Manager](../deploy/upgrade/longhorn-manager).
 
+### Install/Upgrade with Helm Controller
+Longhorn also supports installation or upgrade via the HelmChart controller built into RKE2 and K3s.  It allows management in a CRD YAML chart of most of the options that would normally be passed to the `helm` command-line tool. For more details on how it works, see [Install with Helm Controller](../deploy/install/install-with-helm-controller).
+
 ## Resilience
 
 ### RWX Volumes Fast Failover
