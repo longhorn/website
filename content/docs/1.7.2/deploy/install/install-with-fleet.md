@@ -1,6 +1,6 @@
 ---
 title: Install with Fleet
-weight: 10
+weight: 11
 ---
 
 ## Prerequisites

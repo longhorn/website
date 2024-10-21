@@ -11,6 +11,7 @@ The default settings can be customized in the following ways:
   - [Using the Rancher UI](#using-the-rancher-ui)
   - [Using the Longhorn Deployment YAML File](#using-the-longhorn-deployment-yaml-file)
   - [Using Helm](#using-helm)
+  - [Using Helm Controller](#using-helm-controller)
 - [Update Settings](#update-settings)
   - [Using the Longhorn UI](#using-the-longhorn-ui)
   - [Using the Rancher UI](#using-the-rancher-ui-1)
@@ -158,6 +159,20 @@ You can also provide a copy of the `values.yaml` file with the default settings 
 
 For more info about using helm, see the section about
 [installing Longhorn with Helm](../../../deploy/install/install-with-helm)
+
+### Using Helm Controller
+
+In the HelmChart YAML file, add lines to spec.set with the desired settings:
+```yaml
+spec:
+  ...
+  set:
+    defaultSettings.priorityClass: system-node-critical
+    defaultSettings.replicaAutoBalance: least-effort
+    defaultSettings.storageOverProvisioningPercentage: "200"
+    persistence.defaultClassReplicaCount: "2"
+
+```
 
 ## Update Settings
 

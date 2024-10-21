@@ -59,11 +59,35 @@ To upgrade with Helm, run this command:
 helm upgrade longhorn longhorn/longhorn --namespace longhorn-system --version {{< current-version >}}
 ```
 
+#### Upgrade with Helm Controller
+
+Update the value of `spec.version` in the `HelmChart` YAML file:
+
+```yaml
+spec:
+  version: v{{< current-version >}} # Replace with the Longhorn version you'd like to upgrade to
+  chart: longhorn
+  repo: https://charts.longhorn.io
+  failurePolicy: abort
+```
+
+Alternatively, if using the `spec.chartContent` key, create a patch file with 
+```yaml
+spec:
+  chartContent: <base64 content> # tar cz of longhorn charts directory for release | base64 -w 0
+```
+and then apply it with 
+```
+kubectl  patch helmchart longhorn -n <namespace> --type merge --patch-file <name of patch file>
+```
+
+> **IMPORTANT!** In both cases, ensure that `spec.failurePolicy` is set to "abort".  The only other value is the default: "reinstall", which performs an uninstall of Longhorn if the pre-upgrade check or the upgrade fails.  With "abort", it retries periodically, giving the user a chance to fix the problem.
+
 #### Upgrade with Fleet
 
 Update the value of `helm.version` in the `fleet` YAML file of your GitOps repository.
 
-```
+```yaml
 helm:
   repo: https://charts.longhorn.io
   chart: longhorn
@@ -75,7 +99,7 @@ helm:
 
 Update the value of `spec.chart.spec.version` in the `HelmRelease` YAML file of your GitOps repository.
 
-```
+```yaml
 spec:
   chart:
     spec:
@@ -91,7 +115,7 @@ spec:
 
 Update the value of `targetRevision` in the `Application` YAML file of your GitOps repository.
 
-```
+```yaml
 spec:
   project: default
   sources:
