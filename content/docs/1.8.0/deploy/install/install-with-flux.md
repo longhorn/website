@@ -1,6 +1,6 @@
 ---
 title: Install with Flux
-weight: 11
+weight: 12
 ---
 
 ## Prerequisites
