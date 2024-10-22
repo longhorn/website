@@ -7,7 +7,6 @@ This page lists important notes for Longhorn v{{< current-version >}}.
 Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}) for the full release note.
 
 - [General](#general)
-  - [Supported Kubernetes Versions](#supported-kubernetes-versions)
   - [Offline Upgrade Required To Fully Prevent Unexpected Replica Expansion](#offline-upgrade-required-to-fully-prevent-unexpected-replica-expansion)
   - [Default Priority Class](#default-priority-class)
   - [New Node Drain Policies Added](#new-node-drain-policies-added)
@@ -27,10 +26,6 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Updating the Linux Kernel on Longhorn Nodes](#updating-the-linux-kernel-on-longhorn-nodes)
 
 ## General
-
-### Supported Kubernetes Versions
-
-Please ensure your Kubernetes cluster is at least v1.21 before upgrading to Longhorn v{{< current-version >}} because this is the minimum version Longhorn v{{< current-version >}} supports.
 
 ### Offline Upgrade Required To Fully Prevent Unexpected Replica Expansion
 

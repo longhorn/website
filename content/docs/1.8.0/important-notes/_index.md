@@ -9,7 +9,6 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 - [Deprecation](#deprecation)
   - [Environment Check Script](#environment-check-script)
 - [General](#general)
-  - [Supported Kubernetes Versions](#supported-kubernetes-versions)
   - [Pod Security Policies Disabled \& Pod Security Admission Introduction](#pod-security-policies-disabled--pod-security-admission-introduction)
   - [Command Line Tool](#command-line-tool)
   - [Minimum XFS Filesystem Size](#minimum-xfs-filesystem-size)
@@ -27,7 +26,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 - [Networking](#networking)
   - [Storage Network Support for Read-Write-Many (RWX) Volumes](#storage-network-support-for-read-write-many-rwx-volumes)
 - [OS Distro Specific](#os-distro-specific)
-  - [V2 Data Engine Support for Talos Linux](#talos-linux)
+  - [Talos Linux](#talos-linux)
 - [Backup](#backup)
   - [Backup Data On The Remote Backup Server Might Be Deleted](#backup-data-on-the-remote-backup-server-might-be-deleted)
 - [V2 Data Engine](#v2-data-engine)
@@ -48,10 +47,6 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 The functionality of the [environment check script](https://github.com/longhorn/longhorn/blob/master/scripts/environment_check.sh) (`environment_check.sh`) overlaps with that of the Longhorn CLI, which is available starting with v1.7.0. Because of this, the script is deprecated in v1.7.0 and is scheduled for removal in v1.8.0.
 
 ## General
-
-### Supported Kubernetes Versions
-
-Please ensure your Kubernetes cluster is at least v1.25 before upgrading to Longhorn v{{< current-version >}} because this is the minimum version Longhorn v{{< current-version >}} supports.
 
 ### Pod Security Policies Disabled & Pod Security Admission Introduction
 
