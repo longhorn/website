@@ -78,6 +78,8 @@ The list below contains known broken kernel versions that users should avoid usi
 
 ## Kubernetes Version
 
+Please ensure your Kubernetes cluster is at least v1.21 before upgrading to Longhorn v{{< current-version >}} because this is the minimum version Longhorn v{{< current-version >}} supports.
+
 We recommend running your Kubernetes cluster on one of the following versions. These versions are the active supported versions prior to the Longhorn release, and have been tested with Longhorn v{{< current-version >}}.
 
 | Release | Released     | End-of-life
