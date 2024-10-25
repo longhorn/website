@@ -1,6 +1,6 @@
 ---
 title: Install with ArgoCD
-weight: 12
+weight: 13
 ---
 
 ## Prerequisites

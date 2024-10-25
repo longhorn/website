@@ -12,6 +12,7 @@ Longhorn can be installed on a Kubernetes cluster in several ways:
 - [Rancher catalog app](./install-with-rancher)
 - [kubectl](./install-with-kubectl/)
 - [Helm](./install-with-helm/)
+- [Helm Controller](./install-with-helm-controller/)
 - [Fleet](./install-with-fleet/)
 - [Flux](./install-with-flux/)
 - [ArgoCD](./install-with-argocd/)
