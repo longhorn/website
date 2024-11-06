@@ -61,7 +61,7 @@ You can create a Longhorn system backup using the Longhorn UI. Or with the `kube
 
 #### Volume Backup Policy
 The Longhorn system backup offers the following volume backup policies:
- - `if-not-present`: Longhorn will create a backup for volumes that currently lack a backup.
+ - `if-not-present`: Longhorn will create a backup for volumes that either lack an existing backup or have an outdated latest backup.
  - `always`: Longhorn will create a backup for all volumes, regardless of their existing backups.
  - `disabled`: Longhorn will not create any backups for volumes.
 
