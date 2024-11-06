@@ -228,6 +228,12 @@ Starting with v{{< current-version >}}, Longhorn handles backup-related custom r
 
 For more information, see [#9530](https://github.com/longhorn/longhorn/issues/9530).
 
+## System Backup And Restore
+
+### Volume Backup Policy
+
+Since Longhorn v1.8.0, the `if-not-present` volume backup policy now ensures the latest backup contains the most recent data. If the latest backup is outdated, Longhorn will create a new backup for the volume.
+
 ## V2 Data Engine
 
 ### Longhorn System Upgrade
