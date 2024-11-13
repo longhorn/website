@@ -15,6 +15,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Longhorn PVC with Block Volume Mode](#longhorn-pvc-with-block-volume-mode)
   - [Container-Optimized OS Support](#container-optimized-os-support)
   - [Upgrade Check Events](#upgrade-check-events)
+  - [Install/Upgrade with Helm Controller](#installupgrade-with-helm-controller)
 - [Resilience](#resilience)
   - [RWX Volumes Fast Failover](#rwx-volumes-fast-failover)
   - [Timeout Configuration for Replica Rebuilding and Snapshot Cloning](#timeout-configuration-for-replica-rebuilding-and-snapshot-cloning)
@@ -30,6 +31,8 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Talos Linux](#talos-linux)
 - [Backup](#backup)
   - [Backup Data On The Remote Backup Server Might Be Deleted](#backup-data-on-the-remote-backup-server-might-be-deleted)
+- [System Backup And Restore](#system-backup-and-restore)
+  - [Volume Backup Policy](#volume-backup-policy)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Enable Both `vfio_pci` and `uio_pci_generic` Kernel Modules](#enable-both-vfio_pci-and-uio_pci_generic-kernel-modules)
@@ -40,7 +43,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Snapshot Creation Time As Shown in the UI Occasionally Changes](#snapshot-creation-time-as-shown-in-the-ui-occasionally-changes)
   - [Unable To Revert a Volume to a Snapshot Created Before Longhorn v1.7.0](#unable-to-revert-a-volume-to-a-snapshot-created-before-longhorn-v170)
   - [Disaster Recovery Volumes](#disaster-recovery-volumes)
-  - [Auto-Salvage Volumes](#auto-salvage-volumes)
+  - [Auto-salvage Volumes](#auto-salvage-volumes)
 
 ## Deprecation
 
@@ -219,7 +222,7 @@ Longhorn v1.8.0 and later versions support usage of V2 volumes in Talos Linux cl
 
 Longhorn may unintentionally delete backup-related custom resources (such as `BackupVolume`, `BackupBackingImage`, `SystemBackup`, and `Backup`) and backup data on the remote backup server before Longhorn v{{< current-version >}} in the following scenarios:
 
-- An empty response from the NFS server due to a brief server downtime.
+- An empty response from the NFS server due to server downtime.
 - A race condition could delete the remote backup volume and its corresponding backups when the backup target is reset within a short period.
 
 Starting with v{{< current-version >}}, Longhorn handles backup-related custom resources in the following manner:

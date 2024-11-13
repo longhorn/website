@@ -13,6 +13,10 @@ If you don't have access to AWS S3 or want to give the backupstore a try first, 
 
 Longhorn also supports setting up recurring snapshot/backup jobs for volumes, via Longhorn UI or Kubernetes Storage Class. See [here](../../scheduling-backups-and-snapshots) for details.
 
+> **Notice**
+> 
+> The lifecycle of Longhorn backups within the backup store is managed by Longhorn. Any retention policy on the backup store is prohibited.
+
 This page covers the following topics:
 
 - [Set up AWS S3 Backupstore](#set-up-aws-s3-backupstore)
