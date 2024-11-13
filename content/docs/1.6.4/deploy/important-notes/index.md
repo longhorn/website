@@ -223,7 +223,7 @@ versions.
 
 Longhorn may unintentionally delete backup-related custom resources (such as `BackupVolume`, `BackupBackingImage`, `SystemBackup`, and `Backup`) and backup data on the remote backup server before Longhorn v{{< current-version >}} in the following scenarios:
 
-- An empty response from the NFS server due to a brief server downtime.
+- An empty response from the NFS server due to server downtime.
 - A race condition could delete the remote backup volume and its corresponding backups when the backup target is reset within a short period.
 
 Starting with v{{< current-version >}}, Longhorn handles backup-related custom resources in the following manner:

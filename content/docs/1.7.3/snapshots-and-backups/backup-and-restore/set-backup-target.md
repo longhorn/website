@@ -13,13 +13,15 @@ If you don't have access to AWS S3 or want to give the backupstore a try first, 
 
 Longhorn also supports setting up recurring snapshot/backup jobs for volumes, via Longhorn UI or Kubernetes Storage Class. See [here](../../scheduling-backups-and-snapshots) for details.
 
-> Note:  
-> Longhorn will attempt to clean up the backup-related custom resources in the following scenarios:
+> **Notice**
+> 
+> - The lifecycle of Longhorn backups within the backup store is entirely managed by Longhorn. **Any retention policy directly on the backup store is strictly prohibited**.
 >
-> - An empty response from the NFS server due to a brief server downtime.
-> - A race condition between related Longhorn backup controllers.
->
-> The backup information will be resynchronized during the next polling interval. For more information, see [#9530](https://github.com/longhorn/longhorn/issues/9530).
+> - Longhorn attempts to clean up the backup-related custom resources in the following scenarios:
+>   - An empty response from the NFS server due to server downtime.
+>   - A race condition between related Longhorn backup controllers.
+> 
+>   The backup information is resynchronized during the next polling interval. For more information, see [#9530](https://github.com/longhorn/longhorn/issues/9530).
 
 This page covers the following topics:
 
