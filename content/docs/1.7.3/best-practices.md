@@ -8,7 +8,9 @@ We recommend the following setup for deploying Longhorn in production.
 - [Minimum Recommended Hardware](#minimum-recommended-hardware)
 - [Architecture](#architecture)
 - [Operating System](#operating-system)
-- [Kubernetes Version](#kubernetes-version)
+- [Kubernetes](#kubernetes)
+  - [Kubernetes Version](#kubernetes-version)
+  - [CoreDNS Setup](#coredns-setup)
 - [Node and Disk Setup](#node-and-disk-setup)
   - [Use a Dedicated Disk](#use-a-dedicated-disk)
   - [Minimal Available Storage and Over-provisioning](#minimal-available-storage-and-over-provisioning)
@@ -85,7 +87,9 @@ The list below contains known broken kernel versions that users should avoid usi
 | 4.  | 6.5.0-1014-aws   | Ubuntu          | Related to this bug https://longhorn.io/kb/troubleshooting-rwx-volume-fails-to-attached-caused-by-protocol-not-supported/
 
 
-## Kubernetes Version
+## Kubernetes
+
+### Kubernetes Version
 
 Please ensure your Kubernetes cluster is at least v1.21 before upgrading to Longhorn v{{< current-version >}} because this is the minimum version Longhorn v{{< current-version >}} supports.
 
@@ -98,6 +102,10 @@ We recommend running your Kubernetes cluster on one of the following versions. T
 | 1.27    | 11 Apr 2023  | 28 Jun 2024
 
 Referenced to https://endoflife.date/kubernetes.
+
+### CoreDNS Setup
+
+Ensure that CoreDNS runs with at least 2 replicas to maintain high availability. This setup minimizes interruptions in the DNS resolution if one CoreDNS pod experiences a temporary disruption.
 
 ## Node and Disk Setup
 
