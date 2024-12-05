@@ -61,11 +61,11 @@ The following Linux OS distributions and versions have been verified during the 
 | 1.  | Ubuntu                       | 24.04
 | 2.  | SUSE Linux Enterprise Server| 15 SP6
 | 3.  | SUSE Linux Enterprise Micro  | 6.0
-| 4.  | Red Hat Enterprise Linux     | 9.3
+| 4.  | Red Hat Enterprise Linux     | 9.5
 | 5.  | Oracle Linux                 | 9.4
-| 6.  | Rocky Linux                  | 9.3
-| 7.  | Talos Linux                  | 1.7
-| 8.  | Container-Optimized OS (GKE) | 113
+| 6.  | Rocky Linux                  | 9.5
+| 7.  | Talos Linux                  | 1.8
+| 8.  | Container-Optimized OS (GKE) | 117
 
 Longhorn relies heavily on kernel functionality and performs better on some kernel versions. The following activities,
 in particular, benefit from usage of specific kernel versions.
@@ -97,9 +97,9 @@ We recommend running your Kubernetes cluster on one of the following versions. T
 
 | Release | Released     | End-of-life
 |---------|--------------| -----------
+| 1.31    | 13 Aug 2024  | 28 Oct 2025
 | 1.30    | 17 Apr 2024  | 28 Jun 2025
-| 1.28    | 15 Aug 2023  | 28 Oct 2024
-| 1.27    | 11 Apr 2023  | 28 Jun 2024
+| 1.29    | 13 Dec 2023  | 28 Feb 2025
 
 Referenced to https://endoflife.date/kubernetes.
 
