@@ -100,14 +100,14 @@ Use the `install` sub-command to install and set up the preflight dependencies b
 ./longhornctl install preflight
 ```
 
-> **Note**:  
+> **Note**:
 > Some immutable Linux distributions, such as SUSE Linux Enterprise Micro (SLE Micro), require you to reboot worker nodes after running the `install` sub-command.
 >
 > The documentation of the Linux distribution you are using should outline such requirements. For example, the [SLE Micro documentation](https://documentation.suse.com/sle-micro/6.0/html/Micro-transactional-updates/index.html#reference-transactional-update-usage) explains how all changes made by the `transactional-update` command become active only after the node is rebooted.
 
 ### Using the Environment Check Script
 
-> **Deprecation Notice**  
+> **Deprecation Notice**
 > Since Longhorn v1.7.0, we have introduced the [Longhorn Command Line Tool](../../advanced-resources/longhornctl/). The functionality of the environment check script, [environment_check.sh](https://github.com/longhorn/longhorn/blob/master/scripts/environment_check.sh) overlaps with that of the Longhorn Command Line Tool. Therefore, the script has been deprecated in v1.7.0 and is scheduled for removal in v1.8.0.
 
 We've written a script to help you gather enough information about the factors.
@@ -159,6 +159,7 @@ Below are the directories Longhorn components requiring access with root and pri
   - /boot: Get required modules' information from /boot/config-$(uname -r) on the host.
   - /dev: Block devices created by Longhorn are under the `/dev` path.
   - /proc: Find the recognized host process like container runtime, then use `nsenter` to access the mounts on the host to understand disks usage.
+  - /etc: Read the necessary system configuration to get node status updated, for example, `nfsmount.conf`.
   - /var/lib/longhorn: The default path for storing volume data on a host.
 - Longhorn Engine Image
   - /var/lib/longhorn/engine-binaries: The default path for storing the Longhorn engine binaries.
