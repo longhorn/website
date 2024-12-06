@@ -11,12 +11,12 @@ weight: 1
    ARCH="amd64"
 
    # Download the release binary.
-   curl -LO "https://github.com/longhorn/cli/releases/download/{{< current-version >}}/longhornctl-linux-${ARCH}"
+   curl -LO "https://github.com/longhorn/cli/releases/download/v{{< current-version >}}/longhornctl-linux-${ARCH}"
    ```
 1. Validate the binary:
    ```bash
    # Download the checksum for your architecture.
-   curl -LO "https://github.com/longhorn/cli/releases/download/{{< current-version >}}/longhornctl-linux-${ARCH}.sha256"
+   curl -LO "https://github.com/longhorn/cli/releases/download/v{{< current-version >}}/longhornctl-linux-${ARCH}.sha256"
 
    # Verify the downloaded binary matches the checksum.
    echo "$(cat longhornctl-linux-${ARCH}.sha256 | awk '{print $1}') longhornctl-linux-${ARCH}" | sha256sum --check
