@@ -125,19 +125,25 @@ If you cannot enable it but still prefer to do online expansion, you can:
 
 #### RWX volume
 
-Longhorn currently does not support fully automatic expansion of the filesystem (NFS) for RWX volumes.  You can expand the filesystem manually using one of the following methods:
+From v1.8.0, Longhorn supports fully automatic online expansion of the filesystem (NFS) for RWX volumes.  The feature requires the v1.8.0 versions of these components to be running:
 
-##### Online
-1. Expand the block device of the RWX volume via PVC or UI.
-2. Identify the Share Manager pod of the RWX volume (typically named `share-manager-<volume name>`), and then run the filesystem expansion command in it.
-    ```shell
-    kubectl -n longhorn-system exec -it <the share manager pod> -- resize2fs /dev/longhorn/<volume name>
-    ```
+- Longhorn-Manager
+- CSI plugin
+- Share Manager, which manages the NFS export
 
-> **Important**:  
-> Online expansion is possible only for `ext4` volumes. Attempts to manually expand `xfs` volumes with `xfs_growfs` may initially appear to be successful, but issues occur when the workload is scaled up and the volume is reattached. In particular, the pods become stuck in the `ContainerCreating` state, and the logs show an error message about attempts to mount the filesystem.
+If you have upgraded from a previous version, the Share Manager pods (one for each RWX volume) are not upgraded automatically, to avoid disruption during the upgrade. 
+
+After growing the block device, the CSI layer sends a resize command to the Share Manager to grow the filesystem within the block device.  With a down-rev share-manager, the command fails with an "unimplemented" error code and so no expansion happens.  To get the right image before the expansion, the simplest thing is to force a restart of the pod.  Identify the Share Manager pod of the RWX volume (typically named `share-manager-<volume name>`) and delete it:  
+
+```shell
+kubectl -n longhorn-system delete pod <the share manager pod>
+```
+
+The pod will automatically be recreated using the appropriate version, and the expansion completes.  Further expansions will not require any further intervention.
 
 ##### Offline
+
+It's still possible to expand the RWX volume offline using these steps:
 
 1. Detach the RWX volume by scaling down the workload to `replicas=0`. Ensure that the volume is fully detached.
 
@@ -149,6 +155,6 @@ Longhorn currently does not support fully automatic expansion of the filesystem 
 
 1. Scale up the workload.
 
-The reattached volume will have the expanded size.
+The reattached volume will have the expanded size.  Furthermore, the Share Manager pod will be recreated with the current version.
 
 
