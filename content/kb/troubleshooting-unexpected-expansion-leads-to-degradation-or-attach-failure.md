@@ -148,7 +148,7 @@ Two specific races that lead to this situation have been identified and fixed, b
 
 ### Avoid the issue
 
-Whenever possible, follow the [node maintenance guide](../../docs/1.5.1/volumes-and-nodes/maintenance) when
+Whenever possible, follow the [node maintenance guide](../../docs/archives/1.5.1/volumes-and-nodes/maintenance) when
 shutting down or restarting nodes. This eliminates the churn described above and ensures Longhorn safely moves engine
 and replica processes between nodes. Never intentionally shut down instance-manager pods or nodes running
 instance-manager pods while Longhorn processes are running in them.
@@ -163,7 +163,7 @@ impact. Unfortunately, it is unlikely to discover it occurred before symptoms ar
 1. Delete the expanded replica.
 
 If symptoms are observed and there is an acceptable backup,
-[restore from backup](../../docs/1.5.1/snapshots-and-backups/backup-and-restore/restore-from-a-backup).
+[restore from backup](../../docs/archives/1.5.1/snapshots-and-backups/backup-and-restore/restore-from-a-backup).
 
 If symptoms are observed and there is not an acceptable backup, expand the volume to the size of the expanded replica.
 
@@ -171,7 +171,7 @@ If symptoms are observed and there is not an acceptable backup, expand the volum
    logs. It is also the larger size of the snapshot files on disk.
 1. On Longhorn versions before v1.4.0 (or if these steps otherwise don't succeed), scale down the workload. Longhorn
    v1.4.0+ supports online expansion and it should work depending on the exact state of the volume.
-1. [Expand the volume to the larger size](../../docs/1.5.1/volumes-and-nodes/expansion).
+1. [Expand the volume to the larger size](../../docs/archives/1.5.1/volumes-and-nodes/expansion).
 1. Wait for replicas to rebuild and for the volume to transition from degraded to healthy.
 1. If the workload is scaled down, scale it up again.
 
