@@ -87,14 +87,9 @@ spec:
 ### Restore from a Backup Using the Longhorn UI
 1. Go to **Setting** > **Backing Image**.
 2. Select the backup that you want to use, and then click **Restore** in the **Operation** menu.
-3. If you are restoring an encrypted backing image, specify the `Secret` and `Secret Namespace`.
-4. Click **OK**.
+3. Click **OK**.
 
-{{< figure src="/img/screenshots/backing-image/restore.png" >}}
-
-> **IMPORTANT:**
->
-> Longhorn currently does not store secret-related information in backing image backups. You must specify the secret and secret namespace when restoring encrypted backing images. This issue will be addressed in a future release.
+{{< figure src="/img/screenshots/backing-image/1.8.0/restore.png" >}}
 
 ## Volume with a Backing Image
 
