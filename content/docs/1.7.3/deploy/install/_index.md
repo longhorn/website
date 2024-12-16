@@ -156,10 +156,10 @@ Longhorn components require root access with privileged permissions to achieve v
 Below are the directories Longhorn components requiring access with root and privileged permissions :
 
 - Longhorn Manager
-  - /boot: Get required modules' information from /boot/config-$(uname -r) on the host.
+  - /boot (read only): Get required modules' information from /boot/config-$(uname -r) on the host.
   - /dev: Block devices created by Longhorn are under the `/dev` path.
-  - /proc: Find the recognized host process like container runtime, then use `nsenter` to access the mounts on the host to understand disks usage.
-  - /etc: Read the necessary system configuration to get node status updated, for example, `nfsmount.conf`.
+  - /proc (read only): Find the recognized host process like container runtime, then use `nsenter` to access the mounts on the host to understand disks usage.
+  - /etc (read only): Read the necessary system configuration to get node status updated, for example, `nfsmount.conf`.
   - /var/lib/longhorn: The default path for storing volume data on a host.
 - Longhorn Engine Image
   - /var/lib/longhorn/engine-binaries: The default path for storing the Longhorn engine binaries.
