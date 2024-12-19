@@ -116,7 +116,13 @@ If a volume is reverted to a snapshot with smaller size, the frontend of the vol
 
 #### Encrypted volume
 
-Due to [the upstream limitation](https://kubernetes.io/blog/2022/09/21/kubernetes-1-25-use-secrets-while-expanding-csi-volumes-on-node-alpha/), Longhorn cannot handle **online** expansion for encrypted volumes automatically unless you enable the feature gate `CSINodeExpandSecret`.
+Longhorn support for online expansion depends on Kubernetes.
+- Kubernetes natively supports [authenticated CSI storage resizing](https://kubernetes.io/blog/2023/12/15/csi-node-expand-secret-support-ga/) starting in v1.29.
+- In [Kubernetes v1.25 to v1.28](https://kubernetes.io/blog/2022/09/21/kubernetes-1-25-use-secrets-while-expanding-csi-volumes-on-node-alpha/), the feature gate `CSINodeExpandSecret` is required.
+  You can enable online expansion for encrypted volumes by specifying the following [encryption parameters in the StorageClass](../../../advanced-resources/security/volume-encryption#setting-up-kubernetes-secrets-and-storageclasses):
+
+- `csi.storage.k8s.io/node-expand-secret-name`
+- `csi.storage.k8s.io/node-expand-secret-namespace`
 
 If you cannot enable it but still prefer to do online expansion, you can:
 1. Login the node host the encrypted volume is attached to.
@@ -131,9 +137,9 @@ From v1.8.0, Longhorn supports fully automatic online expansion of the filesyste
 - CSI plugin
 - Share Manager, which manages the NFS export
 
-If you have upgraded from a previous version, the Share Manager pods (one for each RWX volume) are not upgraded automatically, to avoid disruption during the upgrade. 
+If you have upgraded from a previous version, the Share Manager pods (one for each RWX volume) are not upgraded automatically, to avoid disruption during the upgrade.
 
-After growing the block device, the CSI layer sends a resize command to the Share Manager to grow the filesystem within the block device.  With a down-rev share-manager, the command fails with an "unimplemented" error code and so no expansion happens.  To get the right image before the expansion, the simplest thing is to force a restart of the pod.  Identify the Share Manager pod of the RWX volume (typically named `share-manager-<volume name>`) and delete it:  
+After growing the block device, the CSI layer sends a resize command to the Share Manager to grow the filesystem within the block device.  With a down-rev share-manager, the command fails with an "unimplemented" error code and so no expansion happens.  To get the right image before the expansion, the simplest thing is to force a restart of the pod.  Identify the Share Manager pod of the RWX volume (typically named `share-manager-<volume name>`) and delete it:
 
 ```shell
 kubectl -n longhorn-system delete pod <the share manager pod>

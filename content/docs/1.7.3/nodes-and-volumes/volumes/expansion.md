@@ -116,7 +116,13 @@ If a volume is reverted to a snapshot with smaller size, the frontend of the vol
 
 #### Encrypted volume
 
-Due to [the upstream limitation](https://kubernetes.io/blog/2022/09/21/kubernetes-1-25-use-secrets-while-expanding-csi-volumes-on-node-alpha/), Longhorn cannot handle **online** expansion for encrypted volumes automatically unless you enable the feature gate `CSINodeExpandSecret`.
+Longhorn support for online expansion depends on Kubernetes.
+- Kubernetes natively supports [authenticated CSI storage resizing](https://kubernetes.io/blog/2023/12/15/csi-node-expand-secret-support-ga/) starting in v1.29.
+- In [Kubernetes v1.25 to v1.28](https://kubernetes.io/blog/2022/09/21/kubernetes-1-25-use-secrets-while-expanding-csi-volumes-on-node-alpha/), the feature gate `CSINodeExpandSecret` is required.
+  You can enable online expansion for encrypted volumes by specifying the following [encryption parameters in the StorageClass](../../../advanced-resources/security/volume-encryption#setting-up-kubernetes-secrets-and-storageclasses):
+
+- `csi.storage.k8s.io/node-expand-secret-name`
+- `csi.storage.k8s.io/node-expand-secret-namespace`
 
 If you cannot enable it but still prefer to do online expansion, you can:
 1. Login the node host the encrypted volume is attached to.
@@ -134,7 +140,7 @@ Longhorn currently does not support fully automatic expansion of the filesystem 
     kubectl -n longhorn-system exec -it <the share manager pod> -- resize2fs /dev/longhorn/<volume name>
     ```
 
-> **Important**:  
+> **Important**:
 > Online expansion is possible only for `ext4` volumes. Attempts to manually expand `xfs` volumes with `xfs_growfs` may initially appear to be successful, but issues occur when the workload is scaled up and the volume is reattached. In particular, the pods become stuck in the `ContainerCreating` state, and the logs show an error message about attempts to mount the filesystem.
 
 ##### Offline
