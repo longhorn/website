@@ -18,6 +18,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Longhorn PVC with Block Volume Mode](#longhorn-pvc-with-block-volume-mode)
   - [Minimum XFS Filesystem Size](#minimum-xfs-filesystem-size)
   - [Backup Data On The Remote Backup Server Might Be Deleted](#backup-data-on-the-remote-backup-server-might-be-deleted)
+  - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Changing Default Huge Page Size to 2 GiB](#changing-default-huge-page-size-to-2-gib)
@@ -232,6 +233,12 @@ Starting with v{{< current-version >}}, Longhorn handles backup-related custom r
 - The backup-related custom resources in the cluster may be deleted unintentionally while the remote backup data remains safely stored. The deleted resources are resynchronized from the remote backup server during the next polling period (if the backup target is available).
 
 For more information, see [#9530](https://github.com/longhorn/longhorn/issues/9530).
+
+### Manual Checks Before Upgrade
+Automated checks are only performed on some upgrade paths, and the pre-upgrade checker may not cover some scenarios.  Manual checks, performed using either kubectl or the UI, are recommended for these schenarios.  You can take mitigating actions or defer the upgrade until issues are addressed.
+- Ensure that all V2 Data Engine volumes are detached and the replicas are stopped.  The V2 Data Engine currently does not support live upgrades.
+- Avoid upgrading when volumes are in the "Faulted" status.  If all the replicas are deemed unusable, they may be deleted and data may be permanently lost (if no usable backups exist).
+- Avoid upgrading if a failed BackingImage exists.  For more information, see [Backing Image](../../advanced-resources/backing-image/backing-image).
 
 ## V2 Data Engine
 
