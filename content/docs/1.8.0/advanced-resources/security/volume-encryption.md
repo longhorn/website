@@ -63,6 +63,8 @@ For more information, see [cryptsetup(8)](https://man7.org/linux/man-pages/man8/
     csi.storage.k8s.io/node-publish-secret-namespace: "longhorn-system"
     csi.storage.k8s.io/node-stage-secret-name: "longhorn-crypto"
     csi.storage.k8s.io/node-stage-secret-namespace: "longhorn-system"
+    csi.storage.k8s.io/node-expand-secret-name: "longhorn-crypto"
+    csi.storage.k8s.io/node-expand-secret-namespace: "longhorn-system"
   ```
 
 - Example of a StorageClass with a volume-specific Secret:
@@ -85,6 +87,8 @@ For more information, see [cryptsetup(8)](https://man7.org/linux/man-pages/man8/
     csi.storage.k8s.io/node-publish-secret-namespace: ${pvc.namespace}
     csi.storage.k8s.io/node-stage-secret-name: ${pvc.name}
     csi.storage.k8s.io/node-stage-secret-namespace: ${pvc.namespace}
+    csi.storage.k8s.io/node-expand-secret-name: ${pvc.name}
+    csi.storage.k8s.io/node-expand-secret-namespace: ${pvc.namespace}
   ```
 
 # Using an Encrypted Volume
@@ -96,7 +100,12 @@ A newly-created PVC remains in the `Pending` state until the associated Secret i
 
 # Filesystem Expansion
 
-Longhorn supports [offline expansion](../../../nodes-and-volumes/volumes/expansion/#encrypted-volume) for encrypted volumes.
+Longhorn supports [both online and offline expansion](../../../nodes-and-volumes/volumes/expansion/#encrypted-volume) for encrypted volumes.
+
+StorageClass parameters are needed to enable online expansion:
+
+- `csi.storage.k8s.io/node-expand-secret-name`
+- `csi.storage.k8s.io/node-expand-secret-namespace`
 
 # History
 - Encryption of volumes in `Filesystem` mode available starting v1.2.0 ([#1859](https://github.com/longhorn/longhorn/issues/1859))
