@@ -36,6 +36,10 @@ This is caused by multipath creating a multipath device for any eligible device 
 
 ### Troubleshooting
 
+If you don't need multipath, then disable it. 
+
+If you need multipath, then follow these steps to configure it correctly:
+
 1. Find the major:minor number of the Longhorn device. On the node, try `ls -l /dev/longhorn/`. The major:minor number will be shown as e.g. `8, 32` before the device name.
 
 ```
