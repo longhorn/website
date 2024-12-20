@@ -15,6 +15,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Updating CSI Snapshot CRD `v1beta1` to `v1`, `v1beta1` Removed](#updating-csi-snapshot-crd-v1beta1-to-v1-v1beta1-removed)
   - [Engine Upgrade Enforcement](#engine-upgrade-enforcement)
   - [Danger Zone Setting Configuration](#danger-zone-setting-configuration)
+  - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Changing Default Huge Page Size to 2 GiB](#changing-default-huge-page-size-to-2-gib)
@@ -153,6 +154,12 @@ Settings are synchronized hourly. When all volumes are detached, the settings in
   | [Guaranteed Instance Manager CPU for V2 Data Engine](../../references/settings/#guaranteed-instance-manager-cpu-for-v2-data-engine) || Instance Manager component |
 
 For V1 and V2 Data Engine settings, you can disable the Data Engines only when all associated volumes are detached. For example, you can disable the V2 Data Engine only when all V2 volumes are detached (even when V1 volumes are still attached).
+
+### Manual Checks Before Upgrade
+Automated checks are only performed on some upgrade paths, and the pre-upgrade checker may not cover some scenarios.  Manual checks, performed using either kubectl or the UI, are recommended for these schenarios.  You can take mitigating actions or defer the upgrade until issues are addressed.
+- Ensure that all V2 Data Engine volumes are detached and the replicas are stopped.  The V2 Data Engine currently does not support live upgrades.
+- Avoid upgrading when volumes are in the "Faulted" status.  If all the replicas are deemed unusable, they may be deleted and data may be permanently lost (if no usable backups exist).
+- Avoid upgrading if a failed BackingImage exists.  For more information, see [Backing Image](../../advanced-resources/backing-image/backing-image).
 
 ## V2 Data Engine
 
