@@ -9,6 +9,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 - [Deprecation](#deprecation)
   - [Environment Check Script](#environment-check-script)
 - [General](#general)
+  - [Minimum Kubernetes Supported](#minimum-kubernetes-supported)
   - [Upgrade Check Events](#upgrade-check-events)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
   - [Install/Upgrade with Helm Controller](#installupgrade-with-helm-controller)
@@ -33,7 +34,12 @@ The functionality of the [environment check script](https://github.com/longhorn/
 
 ## General
 
+### Minimum Kubernetes Supported
+
+Please ensure your Kubernetes cluster is at least v1.25 before upgrading to Longhorn v{{< current-version >}} because this is the minimum version Longhorn v{{< current-version >}} supports.
+
 ### Upgrade Check Events
+
 Longhorn performs a pre-upgrade check when upgrading with Helm or Rancher App Marketplace.  If a check fails, the upgrade will stop and the reason for the check's failure will be recorded in an event.  For more detail, see [Upgrading Longhorn Manager](../deploy/upgrade/longhorn-manager).
 
 ### Manual Checks Before Upgrade
@@ -43,9 +49,11 @@ Automated checks are only performed on some upgrade paths, and the pre-upgrade c
 - Avoid upgrading if a failed BackingImage exists.  For more information, see [Backing Image](../advanced-resources/backing-image/backing-image).
 
 ### Install/Upgrade with Helm Controller
+
 Longhorn also supports installation or upgrade via the HelmChart controller built into RKE2 and K3s.  It allows management in a CRD YAML chart of most of the options that would normally be passed to the `helm` command-line tool. For more details on how it works, see [Install with Helm Controller](../deploy/install/install-with-helm-controller).
 
 ### Automatic Expansion of RWX Volumes
+
 In v1.8.0, Longhorn supports fully automatic online expansion of RWX volumes.  There is no need to scale down the workload or apply manual commands.  Full details are in [RWX Volume](../nodes-and-volumes/volumes/expansion/#rwx-volume)
 
 ## Resilience
