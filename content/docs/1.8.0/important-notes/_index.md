@@ -10,6 +10,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Environment Check Script](#environment-check-script)
 - [General](#general)
   - [Upgrade Check Events](#upgrade-check-events)
+  - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
   - [Install/Upgrade with Helm Controller](#installupgrade-with-helm-controller)
   - [Automatic Expansion of RWX Volumes](#automatic-expansion-of-rwx-volumes)
 - [Resilience](#resilience)
@@ -34,6 +35,12 @@ The functionality of the [environment check script](https://github.com/longhorn/
 
 ### Upgrade Check Events
 Longhorn performs a pre-upgrade check when upgrading with Helm or Rancher App Marketplace.  If a check fails, the upgrade will stop and the reason for the check's failure will be recorded in an event.  For more detail, see [Upgrading Longhorn Manager](../deploy/upgrade/longhorn-manager).
+
+### Manual Checks Before Upgrade
+Automated checks are only performed on some upgrade paths, and the pre-upgrade checker may not cover some scenarios.  Manual checks, performed using either kubectl or the UI, are recommended for these schenarios.  You can take mitigating actions or defer the upgrade until issues are addressed.
+- Ensure that all V2 Data Engine volumes are detached and the replicas are stopped.  The V2 Data Engine currently does not support live upgrades.
+- Avoid upgrading when volumes are in the "Faulted" status.  If all the replicas are deemed unusable, they may be deleted and data may be permanently lost (if no usable backups exist).
+- Avoid upgrading if a failed BackingImage exists.  For more information, see [Backing Image](../advanced-resources/backing-image/backing-image).
 
 ### Install/Upgrade with Helm Controller
 Longhorn also supports installation or upgrade via the HelmChart controller built into RKE2 and K3s.  It allows management in a CRD YAML chart of most of the options that would normally be passed to the `helm` command-line tool. For more details on how it works, see [Install with Helm Controller](../deploy/install/install-with-helm-controller).

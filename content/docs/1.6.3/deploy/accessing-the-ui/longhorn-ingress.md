@@ -36,6 +36,7 @@ Authentication is not enabled by default for kubectl and Helm installations. In 
         # custom max body size for file uploading like backing image uploading
         nginx.ingress.kubernetes.io/proxy-body-size: 10000m
     spec:
+      ingressClassName: nginx
       rules:
       - http:
           paths:
@@ -90,6 +91,7 @@ metadata:
     # message to display with an appropriate context why the authentication is required
     nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required '
 spec:
+  ingressClassName: nginx
   rules:
   - http:
       paths:

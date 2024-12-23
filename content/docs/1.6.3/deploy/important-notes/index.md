@@ -17,6 +17,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Danger Zone Setting Configuration](#danger-zone-setting-configuration)
   - [Longhorn PVC with Block Volume Mode](#longhorn-pvc-with-block-volume-mode)
   - [Minimum XFS Filesystem Size](#minimum-xfs-filesystem-size)
+  - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Changing Default Huge Page Size to 2 GiB](#changing-default-huge-page-size-to-2-gib)
@@ -217,6 +218,12 @@ Longhorn v{{< current-version >}} does not allow the following:
 
 However, Longhorn still allows the listed actions when cloning or restoring volumes created with earlier Longhorn
 versions.
+
+### Manual Checks Before Upgrade
+Automated checks are only performed on some upgrade paths, and the pre-upgrade checker may not cover some scenarios.  Manual checks, performed using either kubectl or the UI, are recommended for these schenarios.  You can take mitigating actions or defer the upgrade until issues are addressed.
+- Ensure that all V2 Data Engine volumes are detached and the replicas are stopped.  The V2 Data Engine currently does not support live upgrades.
+- Avoid upgrading when volumes are in the "Faulted" status.  If all the replicas are deemed unusable, they may be deleted and data may be permanently lost (if no usable backups exist).
+- Avoid upgrading if a failed BackingImage exists.  For more information, see [Backing Image](../../advanced-resources/backing-image/backing-image).
 
 ## V2 Data Engine
 

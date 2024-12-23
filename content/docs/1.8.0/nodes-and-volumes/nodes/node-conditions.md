@@ -29,5 +29,10 @@ Node conditions:
   Identifies if the following Kernel modules are loaded:
   - `dm_crypt`: Is required for the volume and backing image encryption.  
 
+- `HugePagesAvailable`:
+  Indicates whether the node is properly configured with HugePages (2Mi) as required by the Longhorn v2 data engine. This includes verifying that:
+  - HugePages (2Mi) are registered as a Kubernetes resource (`hugepages-2Mi`).
+  - The configured HugePages capacity meets or exceeds the value defined in the `v2-data-engine-hugepage-limit` setting.
+
 Node conditions do not block the Longhorn deployment but they result in warnings in the Longhorn `Node` resource.
 For more information, see [Longhorn Installation Requirements](../../../deploy/install/#installation-requirements).
