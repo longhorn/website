@@ -76,7 +76,8 @@ Longhorn provides a GKE COS node agent daemonset, which leverages GKE Kubernetes
 
 ## Limitations
 
-In COS clusters, Longhorn currently supports only V1 data volumes.
+- In COS clusters, Longhorn currently supports only V1 data volumes.
+- You can use `pbkdf2` for volume encryption if the built-in `cryptsetup` utility in your COS cluster does not support `argon2i` or `argon2id`. For more information, see [Issue #10049](https://github.com/longhorn/longhorn/issues/10049).
 
 ## References
 
