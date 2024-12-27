@@ -38,6 +38,8 @@ It includes below resources associating with the Longhorn system:
 - StorageClasses
 - Volumes
 
+> **Note:** Longhorn is unable to back up V2 Data Engine backing images.
+
 > **Note:** Longhorn does not backup `Nodes`. The Longhorn manager on the target cluster is responsible for creating its own Longhorn `Node` custom resources.
 
 > **Note:**  Longhorn system backup bundle only includes resources operated by Longhorn.  
