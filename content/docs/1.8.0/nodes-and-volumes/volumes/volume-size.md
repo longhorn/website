@@ -6,19 +6,29 @@ weight: 4
 In this section, you'll have a better understanding of concepts related to volume size.
 
 ## Volume `Size`:
+
 {{< figure src="/img/screenshots/volumes-and-nodes/volume-size-nominal-size.png" >}}
-- It is what you set during the volume creation, and we will call it nominal size in this doc to avoid ambiguity.
-- Since the volume itself is just a CRD object in Kubernetes and the data is stored in each replica, this is actually the nominal size of each replica.
-- The reason we call this field as "nominal size" is that Longhorn replicas are using [sparse files](https://wiki.archlinux.org/index.php/Sparse_file) to store data and this value is the apparent size of the sparse files (the maximum size to which they may expand). The actual size used by each replica is not equal to this nominal size.
-- Based on this nominal size, the replicas will be scheduled to those nodes that have enough allocatable space during the volume creation. (See [this doc](../../nodes/node-space-usage) for more info about node allocation size.)
-- The value of nominal size determines the max available space when the volume is in use. In other words, the current active data size hold by a volume cannot be greater than its nominal size.
-- The maximum volume size is based on the disk's file system (for example, 16383 GiB for `ext4`).
+
+This value, which you specified during volume creation, represents the amount of space available to the volume when in use. 
+
+The following are other ways of understanding this concept:
+
+- The volume itself is just a Kubernetes CRD object and volume data is stored in replicas. This value represents the nominal size of each replica. 
+- Longhorn replicas use [sparse files](https://wiki.archlinux.org/index.php/Sparse_file) to store data. This value represents the maximum size to which a sparse file may expand.
+
+Replicas are scheduled on nodes with enough allocatable space to cover this nominal size during volume creation. For more information, see [Node Space Usage](../../nodes/node-space-usage).
+
+Note: The maximum volume size is based on the disk's file system (for example, 16383 GiB for `ext4`).
 
 ## Volume `Actual Size`
+
 {{< figure src="/img/screenshots/volumes-and-nodes/volume-size-actual-size.png" >}}
-- The actual size indicates the actual space used by **each** replica on the corresponding node.
-- Since all historical data stored in the snapshots and active data will be calculated into the actual size, the final value can be greater than the nominal size.
-- The actual size will be shown only when the volume is running.
+
+This value represents the amount of space used by each replica (including the volume head and snapshots) on the node.
+
+Because all historical data (stored in the snapshots) and active data are included in the calculation, this value can exceed the user-defined nominal size.
+
+The Longhorn UI displays this value only when the volume is running.
 
 ## Example
 
