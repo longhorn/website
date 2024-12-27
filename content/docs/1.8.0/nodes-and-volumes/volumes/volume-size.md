@@ -18,7 +18,7 @@ The following are other ways of understanding this concept:
 
 Replicas are scheduled on nodes with enough allocatable space to cover this nominal size during volume creation. For more information, see [Node Space Usage](../../nodes/node-space-usage).
 
-Note: The maximum volume size is based on the disk's file system (for example, 16383 GiB for `ext4`).
+> **Note**: The maximum volume size is based on the disk's file system (for example, 16383 GiB for `ext4`).
 
 ## Volume `Actual Size`
 
