@@ -25,6 +25,7 @@ weight: 2
 - Longhorn automatically restores a `Volume` from its latest backup.
 - To prevent overwriting eligible settings, Longhorn does not restore the `ConfigMap/longhorn-default-setting`.
 - Longhorn does not restore [configurable settings](#configurable-settings).
+- Since Longhorn does not back up V2 Data Engine backing images, you must ensure that those images are available in the cluster before you restore the Longhorn system. This allows Longhorn to restore volumes that use V2 Data Engine backing images.
 
 ## Limitations
 ### Restore Path

@@ -7,12 +7,12 @@ Longhorn natively supports backing images since v1.1.1.
 
 A QCOW2 or RAW image can be set as the backing/base image of a Longhorn volume, which allows Longhorn to be integrated with a VM like [Harvester](https://github.com/rancher/harvester).
 
-## Create Backing Image
+## Create V1 Data Engine Backing Image
 
 ### Parameters during creation
 
 #### The data source of a backing image
-You can prepare a backing image using four different kinds of data sources.
+You can prepare a V1 Data Engine backing image using any of the supported data sources.
 1. Download a backing image file (using a URL).
 2. Upload a file from your local machine. This option is available to Longhorn UI users.
 3. Export an existing in-cluster volume as a backing image.
@@ -39,7 +39,7 @@ You can prepare a backing image using four different kinds of data sources.
 #### Create a backing image via Longhorn UI
 On **Setting > Backing Image** page, users can create backing images with any kinds of data source.
 
-#### Create a backing image via YAML
+#### Create a V1 Backing Image Using YAML
 You can download a file or export an existing volume as a backing image via YAML.
 It's better not to "upload" a file via YAML. Otherwise, you need to manually handle the data upload via HTTP requests.
 
@@ -51,6 +51,7 @@ metadata:
   name: bi-download
   namespace: longhorn-system
 spec:
+  dataEngine: v1
   minNumberOfCopies: 2
   nodeSelector:
     - "node1"
@@ -68,6 +69,7 @@ metadata:
   name: bi-export
   namespace: longhorn-system
 spec:
+  dataEngine: v1
   minNumberOfCopies: 2
   nodeSelector:
     - "node1"
@@ -103,6 +105,7 @@ spec:
         backingImageMinNumberOfCopies: "2"
         backingImageNodeSelector: "node1"
         backingImageDiskSelector: "disk1"
+        dataEngine: "v1"
       ```
     - For `export-from-volume`:
       ```yaml
@@ -123,6 +126,7 @@ spec:
         backingImageMinNumberOfCopies: "2"
         backingImageNodeSelector: "node1"
         backingImageDiskSelector: "disk1"
+        dataEngine: "v1"
       ```
 
 4. Create a PVC with the StorageClass. Then the backing image will be created (with the Longhorn volume) if it does not exist.
@@ -130,6 +134,7 @@ spec:
 
 #### Notice:
 - Please be careful of the escape character `\` when you input a download URL in a StorageClass.
+- A backing image that is created using a StorageClass has the same data engine as the volume.
 
 ## Utilize a backing image in a volume
 
@@ -140,7 +145,7 @@ or utilize an existing backing image as mentioned below.
 ##### Use an existing backing Image during volume creation
 1. Click **Setting > Backing Image** in the Longhorn UI.
 2. Click **Create Backing Image** to create a backing image with a unique name and a valid URL.
-3. During the volume creation, specify the backing image from the backing image list.
+3. Select a backing image from the list. The volume and the backing image must use the same data engine.
 4. Longhorn starts to download the backing image to disks for the replicas when a volume using the backing image is attached to a node.
 
 ##### Use an existing backing Image during volume restore
@@ -154,6 +159,32 @@ Since v1.3.0, users can download existing backing image files to the local via U
 #### Notice:
 - Users need to make sure the backing image existence when they use UI to create or restore a volume with a backing image specified.
 - Before downloading an existing backing image file to the local, users need to guarantee there is a ready file for it.
+- Downloading of V2 Data Engine backing images is currently not supported.
+
+## Create a V2 Data Engine Backing Image
+
+Starting v1.8.0, you can create a backing image that is supported by the V2 Data Engine by configuring `Data Engine` in the YAML (through the UI or a StorageClass).
+
+### Parameters During Creation
+
+All parameters are the same as that of the V1 Data Engine backing image, except for `Data Engine`.
+
+#### Backing Image Data Sources
+
+You can prepare a V2 Data Engine backing image using any of the supported data sources.
+- Download a backing image file (using a URL).
+- Upload a file from your local machine. This option is available to Longhorn UI users.
+- Export an existing in-cluster V1 Data Engine volume as a backing image.
+- Restore a backing image from the backupstore. For more information, see [Backing Image Backup](../backing-image-backup).
+- Clone a V1 backing image.
+
+#### Notice
+
+- The following operations are currently not supported:
+  - Exporting from a V2 Data Engine volume
+  - Cloning a V2 backing image
+  - Backing up a V2 backing image
+- Unlike the V1 Data Engine, which is file-based, the V2 Data Engine requires Longhorn to store the backing image data in an SPDK logical volume. As a result, for qcow2 images, Longhorn must first convert the qcow2 image to a raw format before storing the data to the V2 Data Engine backing image, enabling it to read the correct data.
 
 ## Clean up backing images
 
