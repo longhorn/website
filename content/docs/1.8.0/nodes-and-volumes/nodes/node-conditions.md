@@ -28,6 +28,10 @@ Node conditions:
 - `KernelModulesLoaded`:  
   Identifies if the following Kernel modules are loaded:
   - `dm_crypt`: Is required for the volume and backing image encryption.  
+  - For engine v2 only:
+    - `vfio_pci`: Is required for SPDK and PCI device management
+    - `uio_pci_generic`: Is required for SPDK UIO support
+    - `nvme_tcp`: Is required for NVMe-over-TCP device usage
 
 - `HugePagesAvailable`:
   Indicates whether the node is properly configured with HugePages (2Mi) as required by the Longhorn v2 data engine. This includes verifying that:
