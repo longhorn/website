@@ -109,3 +109,7 @@ Disaster recovery volumes are supported from Longhorn v1.8.0.
 ### Auto-salvage Volumes
 
 Auto-salvage volumes are supported from Longhorn v1.8.0.
+
+### Volume Encryption
+
+Starting with v1.8.0, Longhorn supports encryption of V1 and V2 volumes.
