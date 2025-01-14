@@ -38,11 +38,13 @@ It includes below resources associating with the Longhorn system:
 - StorageClasses
 - Volumes
 
-> **Note:** Longhorn is unable to back up V2 Data Engine backing images.
-
-> **Note:** Longhorn does not backup `Nodes`. The Longhorn manager on the target cluster is responsible for creating its own Longhorn `Node` custom resources.
-
-> **Note:**  Longhorn system backup bundle only includes resources operated by Longhorn.  
+> **Note:**
+>
+> - The default backup target (`default`) is always used to store system backups.
+> - The Longhorn system backup bundle only includes resources operated by Longhorn.
+> - Longhorn does not back up the `Nodes` resource. The Longhorn Manager on the target cluster is responsible for creating its own Longhorn `Node` custom resources.
+> - Longhorn is unable to back up V2 Data Engine backing images.
+>
 > Here is an example of a cluster workload with a bare `Pod` workload. The system backup will collect the `PersistentVolumeClaim`, `PersistentVolume`, and `Volume`. The system backup will exclude the `Pod` during system backup resource collection.
 
 ## Create Longhorn System Backup

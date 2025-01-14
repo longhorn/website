@@ -17,6 +17,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Change in Engine Replica Timeout Behavior](#change-in-engine-replica-timeout-behavior)
   - [Talos Linux](#talos-linux)
 - [Backup](#backup)
+  - [Multiple Backup Stores Support](#multiple-backupstores-support)
   - [Backup Data On The Remote Backup Server Might Be Deleted](#backup-data-on-the-remote-backup-server-might-be-deleted)
 - [System Backup And Restore](#system-backup-and-restore)
   - [Volume Backup Policy](#volume-backup-policy)
@@ -63,16 +64,33 @@ Longhorn v1.8.0 and later versions support usage of V2 volumes in Talos Linux cl
 
 ## Backup
 
+### Multiple Backupstores Support
+
+Starting with v1.8.0, Longhorn supports usage of multiple backupstores. You can configure backup targets to access backupstores on the **Setting/Backup Target** screen of the Longhorn UI. v1.8.0 improves on earlier Longhorn versions, which only allow you to use a single backup target for accessing a backupstore. Earlier versions also require you to configure the settings `backup-target`, `backup-target-credential-secret`, and `backupstore-poll-interval` for backup target management.
+
+> **IMPORTANT:**  
+> The settings `backup-target`, `backup-target-credential-secret`, and `backupstore-poll-interval` were removed from the global settings because backup targets can be configured on the **Setting/Backup Target** screen of the Longhorn UI. Longhorn also creates a default backup target (`default`) during installation and upgrades.
+
+Longhorn creates a default backup target (`default`) during installation and upgrades. The default backup target is used for the following:
+
+- System backups
+- Volumes that were created without a specific backup target name
+
+> **Tip:**
+> Set the [default backup target](../snapshots-and-backups/backup-and-restore/set-backup-target#default-backup-target) before creating a new one.
+
+For more information, see [Setting a Backup Target](../snapshots-and-backups/backup-and-restore/set-backup-target), [Issue #5411](https://github.com/longhorn/longhorn/issues/5411) and [Issue #10089](https://github.com/longhorn/longhorn/issues/10089).
+
 ### Backup Data On The Remote Backup Server Might Be Deleted
 
-Longhorn may unintentionally delete backup-related custom resources (such as `BackupVolume`, `BackupBackingImage`, `SystemBackup`, and `Backup`) and backup data on the remote backup server before Longhorn v{{< current-version >}} in the following scenarios:
+Earlier Longhorn versions may unintentionally delete data in the backupstore and backup-related custom resources (such as `BackupVolume`, `BackupBackingImage`, `SystemBackup`, and `Backup`) in the following scenarios:
 
 - An empty response from the NFS server due to server downtime.
 - A race condition could delete the remote backup volume and its corresponding backups when the backup target is reset within a short period.
 
-Starting with v{{< current-version >}}, Longhorn handles backup-related custom resources in the following manner:
+Starting with v1.8.0, Longhorn handles backup-related custom resources in the following manner:
 
-- If there are discrepancies between the backup information in the cluster and on the remote backup server, Longhorn deletes only the backup-related custom resources in the cluster.
+- If there are discrepancies between the backup information in the cluster and in the backupstore, Longhorn deletes only the backup-related custom resources in the cluster.
 - The backup-related custom resources in the cluster may be deleted unintentionally while the remote backup data remains safely stored. The deleted resources are resynchronized from the remote backup server during the next polling period (if the backup target is available).
 
 For more information, see [#9530](https://github.com/longhorn/longhorn/issues/9530).

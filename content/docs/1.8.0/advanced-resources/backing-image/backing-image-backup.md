@@ -34,9 +34,11 @@ Example of YAML code used to create a backup of the sample backing image:
 apiVersion: longhorn.io/v1beta2
 kind: BackupBackingImage
 metadata:
-  name: parrot
+  name: parrot-backup
   namespace: longhorn-system
 spec:
+  backingImage: parrot
+  backupTargetName: default
   userCreated: true
   labels:
     usecase: test
@@ -44,7 +46,9 @@ spec:
 ```
 
 > **IMPORTANT:**
-> - `name`: Use the same name for the backing image and its backup. If the names are not identical, Longhorn will not be able to find the backing image.
+> - `name`: If the names are not unique, Longhorn will not be able to create a backup of the backing image.
+> - `backingImage`: The backing image for the backup.
+> - `backupTargetName`: The backup target that is used to store the backup of the backing image.
 > - `userCreated`: Set the value to `true` to indicate that you created the backup custom resource, which enabled the creation of the backup in the backupstore. The value `false` indicates that the backup custom resource was synced from the backupstore.
 > - `labels`: You can add labels to the backing image backup.
 
@@ -52,7 +56,7 @@ spec:
 1. Go to **Setting** > **Backing Image**.
 2. Select the backing image that you want to back up, and then click **Back Up** in the **Operation** menu.
 
-Longhorn creates the backup and adds the details to the **Backing Image Backup** list.  The names of the backup and the source backing image are identical.
+Longhorn creates the backup and adds the details to the **Backing Image Backup** list.
 
 {{< figure src="/img/screenshots/backing-image/backup.png" >}}
 
