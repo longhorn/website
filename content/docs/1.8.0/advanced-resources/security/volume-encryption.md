@@ -107,7 +107,10 @@ StorageClass parameters are needed to enable online expansion:
 - `csi.storage.k8s.io/node-expand-secret-name`
 - `csi.storage.k8s.io/node-expand-secret-namespace`
 
-# History
-- Encryption of volumes in `Filesystem` mode available starting v1.2.0 ([#1859](https://github.com/longhorn/longhorn/issues/1859))
+> **Notice**  
+> - Longhorn v1.8.0 does not support expansion of V2 volumes.
 
+# History
+
+- Encryption of volumes in `Filesystem` mode available starting v1.2.0 ([#1859](https://github.com/longhorn/longhorn/issues/1859))
 - Encryption of volumes in `Block` mode available starting v1.6.0 ([#4883](https://github.com/longhorn/longhorn/issues/4883))

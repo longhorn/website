@@ -15,6 +15,7 @@ aliases:
 - [Selective V2 Data Engine activation](./selective-v2-data-engine-activation)
 - [Filesystem Trim](../../nodes-and-volumes/volumes/trim-filesystem)
 - [Backing Image](../../advanced-resources/backing-image/backing-image)
+- [Volume Encryption](../../advanced-resources/security/volume-encryption)
 
 
 In addition to the features mentioned above, additional functionalities such as replica number adjustment, online replica rebuilding and so on will be introduced in future versions.
