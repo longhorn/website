@@ -3,7 +3,12 @@ title: Setting a Backup Target
 weight: 1
 ---
 
-A backup target is an endpoint used to access a backup store in Longhorn. A backup store is an NFS server, SMB/CIFS server, Azure Blob Storage server, or S3 compatible server that stores the backups of Longhorn volumes. The backup target can be set at `Settings/General/BackupTarget`.
+A backup target is an endpoint used to access a backupstore. Backup targets can be configured on the Longhorn UI (**Settings > Backup Target**). A backupstore is a server that stores the backups of Longhorn volumes. You can use NFS, SMB/CIFS, Azure Blob Storage, and S3-compatible servers.
+
+{{< figure alt="the backup target UI page" src="/img/screenshots/backup-target/page.png" >}}
+
+> **Note:** 
+> Starting with v1.8.0, Longhorn supports usage of multiple backupstores. Setting the default backup target before creating a new one is recommended.
 
 Saving to an object store such as S3 is preferable because it generally offers better reliability.  Another advantage is that you do not need to mount and unmount the target, which can complicate failover and upgrades.
 
@@ -15,7 +20,7 @@ Longhorn also supports setting up recurring snapshot/backup jobs for volumes, vi
 
 > **Notice**
 > 
-> - The lifecycle of Longhorn backups within the backup store is entirely managed by Longhorn. **Any retention policy directly on the backup store is strictly prohibited**.
+> - The lifecycle of Longhorn backups within the backupstore is entirely managed by Longhorn. **Any retention policy directly on the backupstore is strictly prohibited**.
 >
 > - Longhorn attempts to clean up the backup-related custom resources in the following scenarios:
 >   - An empty response from the NFS server due to server downtime.
@@ -33,6 +38,51 @@ This page covers the following topics:
 - [Set up NFS Backupstore](#set-up-nfs-backupstore)
 - [Set up SMB/CIFS Backupstore](#set-up-smbcifs-backupstore)
 - [Set up Azure Blob Storage Backupstore](#set-up-azure-blob-storage-backupstore)
+
+### Default Backup Target
+
+The default backup target (`default`) is automatically created during a fresh installation. You can set the default backup target during or after the installation using either Helm or a [manifest YAML file](https://raw.githubusercontent.com/longhorn/longhorn/v1.8.0/deploy/longhorn.yaml)(`longhorn.yaml`).
+
+#### Set the Default Backup Target Using Helm
+
+In the `values.yaml` file, you can set three parameters to manage the default backup target.
+
+- `defaultBackupStore.backupTarget`: Endpoint used to access the default backupstore.
+- `defaultBackupStore.backupTargetCredentialSecret`: Name of the Kubernetes secret associated with the default backup target.
+- `defaultBackupStore.pollInterval`: Number of seconds that Longhorn waits before checking the default backupstore for new backups.
+
+```yaml
+# -- Setting that allows you to update the default backupstore.
+defaultBackupStore:
+  # -- Endpoint used to access the default backupstore.
+  backupTarget: ~
+  # -- Name of the Kubernetes secret associated with the default backup target.
+  backupTargetCredentialSecret: ~
+  # -- Number of seconds that Longhorn waits before checking the default backupstore for new backups.
+  pollInterval: ~
+```
+
+#### Set the Default Backup Target Using a Manifest YAML File
+
+Starting with v1.8.0, you can use a new `ConfigMap` resource named `longhorn-default-resource` to manage settings of resources, including the default backup target resource.
+
+- `backup-target`: Endpoint used to access the default backupstore.
+- `backup-target-credential-secret`: Name of the Kubernetes secret associated with the default backup target.
+- `backupstore-poll-interval`: Number of seconds that Longhorn waits before checking the default backupstore for new backups.
+
+```yaml
+# Example
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: longhorn-default-resource
+  namespace: longhorn-system
+data:
+  default-resource.yaml: |
+    "backup-target": "s3://example@us-west-1/"
+    "backup-target-credential-secret": "example-secret"
+    "backupstore-poll-interval": "180"
+```
 
 ### Set up AWS S3 Backupstore
 
@@ -134,7 +184,11 @@ This page covers the following topics:
            -n longhorn-system
        ```
 
-3. Go to the Longhorn UI. In the top navigation bar, click **Settings.** In the Backup section, set **Backup Target** to:
+3. On the Longhorn UI, go to **Setting > Backup Target**, and then create or edit a backup target.
+
+  {{< figure alt="edit a backup target" src="/img/screenshots/backup-target/edit.png" >}}
+
+  Set **URL** to:
 
     ```text
     s3://<your-bucket-name>@<your-aws-region>/
@@ -152,7 +206,7 @@ This page covers the following topics:
 
    For Google Cloud Storage, you can find the region codes [here.](https://cloud.google.com/storage/docs/locations)
 
-4.  In the Backup section set **Backup Target Credential Secret** to:
+  Set **Credential Secret** to:
 
     ```
     aws-secret
@@ -203,13 +257,15 @@ Make sure `NO_PROXY` contains the network addresses, network address ranges and 
 - The Secret will be mapped to the `AWS_SECRET_ACCESS_KEY` field in the Kubernetes secret we create later.
 - The Storage URI will be mapped to the `AWS_ENDPOINTS` field in the Kubernetes secret we create later.
 
-9. Go to the Longhorn UI. In the top navigation bar, click **Settings.** In the Backup section, set **Backup Target** to
+9. Go to the Longhorn UI. In the top navigation bar, click **Setting/Backup Target**, and create or edit a backup target.
+
+Set **URL** to:
 
 ```
 s3://${BUCKET_NAME}@us/
 ```
 
-And set **Backup Target Credential Secret** to:
+Set **Credential Secret** to:
 
 ```
 longhorn-gcp-backups
@@ -244,12 +300,15 @@ Longhorn provides sample backupstore server setups for testing purposes.  You ca
     kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/backupstores/minio-backupstore.yaml
     ```
 
-2. Go to the Longhorn UI. In the top navigation bar, click **Settings.** In the Backup section, set **Backup Target** to
+2. Go to the Longhorn UI. click **Setting/Backup Target**, and create or edit a backup target.
+
+  Set **URL** to:
 
     ```
     s3://backupbucket@us-east-1/
     ```
-   And set **Backup Target Credential Secret** to:
+  Set **Credential Secret** to:
+
     ```
     minio-secret
     ```
@@ -271,7 +330,7 @@ Longhorn provides sample backupstore server setups for testing purposes.  You ca
     ```
    For more information on creating a secret, see [the Kubernetes documentation.](https://kubernetes.io/docs/concepts/configuration/secret/#creating-a-secret-manually) The secret must be created in the `longhorn-system` namespace for Longhorn to access it.
 
-   > Note: Make sure to use `echo -n` when generating the base64 encoding, otherwise an new line will be added at the end of the string and it will cause error when accessing the S3.
+   > Note: Make sure to use `echo -n` when generating the base64 encoding, otherwise a new line will be added at the end of the string and it will cause error when accessing the S3.
 
 3. Click the **Backup** tab in the UI. It should report an empty list without any errors.
 
@@ -356,9 +415,11 @@ Before configuring a SMB/CIFS backupstore, a credential secret for the backupsto
   kubectl apply -f cifs_secret.yml
   ```
 
-Then, navigate to Longhorn UI > Setting > General > Backup
+On the Longhorn UI, go to **Setting > Backup Target**.
 
-1. Set **Backup Target**. The target URL should look like this:
+1. Create or edit a backup target.
+
+  Set **URL** to:
 
     ```
     cifs://longhorn-test-cifs-svc.default/backupstore
@@ -373,8 +434,7 @@ Then, navigate to Longhorn UI > Setting > General > Backup
 
 	Any mount options that you specify will replace, not add to, the default options.
 
-
-2. Set **Backup Target Credential Secret**
+  Set **Credential Secret** to:
 
     ```
     cifs-secret
@@ -387,79 +447,61 @@ You can find an example CIFS backupstore for testing purpose [here](https://gith
 
 ### Set up Azure Blob Storage Backupstore
 
-1. Create a new container in [Azure Blob Storage Service](https://portal.azure.com/)
+1. Verify that a container for the backupstore exists in [Azure Blob Storage](https://portal.azure.com/).
+2. Grant the Azure service account permissions to read, write, and delete objects in the container.
+  For more information, see [Manage blob containers using the Azure portal](https://learn.microsoft.com/en-us/azure/storage/blobs/blob-containers-portal) in the Microsoft documentation.
 
-2. Before configuring an Azure Blob Storage backup store, create a Kubernetes secret with a name such as `azblob-secret` in the namespace where Longhorn is installed (`longhorn-system`). The secret must be created in the same namespace for Longhorn to access it.
+3. Go to **Home > `serviceaccount` > Security + networking > Access keys**.
+4. Save the following information:
 
-  - The Account Name will be the `AZBLOB_ACCOUNT_NAME` field in the secret.
-  - The Account Secret Key will be the `AZBLOB_ACCOUNT_KEY` field in the secret.
-  - The Storage URI will be the `AZBLOB_ENDPOINT` field in the secret.
+  - `Storage account name`: Maps to the `AZBLOB_ACCOUNT_NAME` field in the Kubernetes secret that you will create.
+  - `Key`: Maps to the `AZBLOB_ACCOUNT_KEY` field in the Kubernetes secret that you will create.
 
-  - By a manifest:
-    ```shell
-    #!/bin/bash
+5. Go to the Longhorn UI. In the top navigation bar, click **Setting/Backup Target**, and create or edit a backup target.
 
-    # AZBLOB_ACCOUNT_NAME:   Account name of Azure Blob Storage server
-    # AZBLOB_ACCOUNT_KEY:    Account key of Azure Blob Storage server
-    # AZBLOB_ENDPOINT:       Endpoint of Azure Blob Storage server
-    # AZBLOB_CERT:           SSL certificate for Azure Blob Storage server
-
-    AZBLOB_ACCOUNT_NAME=`echo -n ${AZBLOB_ACCOUNT_NAME} | base64`
-    AZBLOB_ACCOUNT_KEY=`echo -n ${AZBLOB_ACCOUNT_KEY} | base64`
-    AZBLOB_ENDPOINT=`echo -n ${AZBLOB_ENDPOINT} | base64`
-    AZBLOB_CERT=`echo -n ${AZBLOB_CERT} | base64`
-
-    cat <<EOF >>azblob_secret.yml
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      name: azblob-secret
-      namespace: longhorn-system
-    type: Opaque
-    data:
-      AZBLOB_ACCOUNT_NAME: ${AZBLOB_ACCOUNT_NAME}
-      AZBLOB_ACCOUNT_KEY: ${AZBLOB_ACCOUNT_KEY}
-      #AZBLOB_ENDPOINT: ${AZBLOB_ENDPOINT}
-      #AZBLOB_CERT: ${AZBLOB_CERT}
-      #HTTP_PROXY: aHR0cDovLzEwLjIxLjkxLjUxOjMxMjg=
-      #HTTPS_PROXY: aHR0cDovLzEwLjIxLjkxLjUxOjMxMjg=
-    EOF
-
-    kubectl apply -f azblob_secret.yml
-    ```
-
-  - CLI command:
-    ```shell
-    kubectl create secret generic <azblob-secret> \
-      --from-literal=AZBLOB_ACCOUNT_NAME=<your-azure-storage-account-name> \
-      --from-literal=AZBLOB_ACCOUNT_KEY=<your-azure-storage-account-key> \
-      --from-literal=HTTP_PROXY=<your-proxy-ip-and-port> \
-      --from-literal=HTTPS_PROXY=<your-proxy-ip-and-port> \
-      --from-literal=NO_PROXY=<excluded-ip-list> \
-      -n longhorn-system
-    ```
-
-Then, navigate to Longhorn UI > Setting > General > Backup
-
-1. Set **Backup Target**. The target URL should look like this:
+  Set **URL**. The target URL should look like this:
 
     ```txt
-    azblob://[your-container-name]@[endpoint-suffix]/
+    azblob://[your-container-name]@core.windows.net/
     ```
 
    Make sure that you have `/` at the end, otherwise you will get an error. A subdirectory (prefix) may be used:
 
-    ```text
-    azblob://[your-container-name]@[endpoint-suffix]/my-path/
+    ```txt
+    azblob://[your-container-name]@core.windows.net/my-path/
     ```
 
-   - If you set `<endpoint-suffix>` in the URL, the default endpoint suffix will be `core.windows.net`.
-   - If you set `AZBLOB_ENDPOINT` in the secret, Longhorn will use `AZBLOB_ENDPOINT` as your storage URL, and `<endpoint-suffix>` will not be used even if it has been set. 
-
-2. Set **Backup Target Credential Secret**
+  Set **Credential Secret**.
 
     ```txt
-    azblob-secret
+    longhorn-azblob-secret
     ```
+
+6. Create a Kubernetes secret named `longhorn-azblob-secret`.
+  This secret is used to access the backupstore in the Longhorn namespace (default: `longhorn-system`) with the following content:
+
+  ```shell
+  #!/bin/bash
+  cat <<EOF >>longhorn-azblob-secret.yml
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: longhorn-azblob-secret
+    namespace: longhorn-system
+  type: Opaque
+  stringData:
+    AZBLOB_ACCOUNT_NAME: "<Storage account name>"
+    AZBLOB_ACCOUNT_KEY:  "<Key>"
+    ...
+    # Parameters below are used for the compatible azure server for instance `Azurite` or 
+    # you have a proxy to redirect the requests.
+    #AZBLOB_ENDPOINT: ""
+    #AZBLOB_CERT: ""
+    #HTTP_PROXY: ""
+    #HTTPS_PROXY: ""
+  EOF
+
+  kubectl apply -f longhorn-azblob-secret.yml
+  ```
 
 After configuring the above settings, you can manage backups on Azure Blob storage. See [how to create backup](../create-a-backup) for details.

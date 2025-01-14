@@ -267,7 +267,7 @@ A backup is an object in the backupstore, which is an NFS or S3 compatible objec
 
 Because the volume replication is synchronized, and because of network latency, it is hard to do cross-region replication. The backupstore is also used as a medium to address this problem.
 
-When the backup target is configured in the Longhorn settings, Longhorn can connect to the backupstore and show you a list of existing backups in the Longhorn UI.
+When the backup target is configured on the Longhorn UI (**Setting > Backup Target**), Longhorn can connect to the backupstore and display a list of existing backups on the **Backup** screen.
 
 If Longhorn runs in a second Kubernetes cluster, it can also sync disaster recovery volumes to the backups in secondary storage, so that your data can be recovered more quickly in the second Kubernetes cluster.
 
@@ -326,9 +326,9 @@ Because the main purpose of a DR volume is to restore data from backup, this typ
 - Creating persistent volumes
 - Creating persistent volume claims
 
-A DR volume can be created from a volume’s backup in the backup store. After the DR volume is created, Longhorn will monitor its original backup volume and incrementally restore from the latest backup. A backup volume is an object in the backupstore that contains multiple backups of the same volume.
+A DR volume can be created from a volume’s backup in the backupstore. After the DR volume is created, Longhorn will monitor its original backup volume and incrementally restore from the latest backup. A backup volume is an object in the backupstore that contains multiple backups of the same volume.
 
-If the original volume in the main cluster goes down, the DR volume can be immediately activated in the backup cluster, so it can greatly reduce the time needed to restore the data from the backup store to the volume in the backup cluster.
+If the original volume in the main cluster goes down, the DR volume can be immediately activated in the backup cluster, reducing the time needed to restore the data from the backupstore to the volume in the backup cluster.
 
 When a DR volume is activated, Longhorn will check the last backup of the original volume. If that backup has not already been restored, the restoration will be started, and the activate action will fail. Users need to wait for the restoration to complete before retrying.
 
@@ -338,7 +338,7 @@ After a DR volume is activated, it becomes a normal Longhorn volume and it canno
 
 ## 3.4. Backupstore Update Intervals, RTO, and RPO
 
-Typically incremental restoration is triggered by the periodic backup store update. Users can set backup store update interval in Setting - General - Backupstore Poll Interval.
+Incremental restoration is usually triggered by the periodic backupstore update. You can set the update interval on the backup target settings screen (**Setting > Backup Target**).
 
 Notice that this interval can potentially impact Recovery Time Objective (RTO). If it is too long, there may be a large amount of data for the disaster recovery volume to restore, which will take a long time.
 
@@ -346,8 +346,8 @@ As for Recovery Point Objective (RPO), it is determined by recurring backup sche
 
 The following analysis assumes that the volume creates a backup every hour, and that incrementally restoring data from one backup takes five minutes:
 
-- If the Backupstore Poll Interval is 30 minutes, then there will be at most one backup worth of data since the last restoration. The time for restoring one backup is five minutes, so the RTO would be five minutes.
-- If the Backupstore Poll Interval is 12 hours, then there will be at most 12 backups worth of data since last restoration. The time for restoring the backups is 5 * 12 = 60 minutes, so the RTO would be 60 minutes.
+- If the backupstore Poll Interval is 30 minutes, then there will be at most one backup worth of data since the last restoration. The time for restoring one backup is five minutes, so the RTO would be five minutes.
+- If the backupstore Poll Interval is 12 hours, then there will be at most 12 backups worth of data since last restoration. The time for restoring the backups is 5 * 12 = 60 minutes, so the RTO would be 60 minutes.
 
 # Appendix: How Persistent Storage Works in Kubernetes
 
