@@ -53,7 +53,7 @@ spec:
   frontend: blockdev
 ```
 
-Users can override the setting `restore-volume-recurring-jobs` by the volume spec property  `spec.restoreVolumeRecurringJob`.
+Users can override the setting `restore-volume-recurring-jobs` by the volume spec property `spec.restoreVolumeRecurringJob`.
 
 - **ignored**. This is the default option that instructs Longhorn to inherit from the global setting.
 - **enabled**. This option instructs Longhorn to restore volume recurring jobs from the backup target forcibly.

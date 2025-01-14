@@ -112,8 +112,6 @@ You can abort or remove a completed Longhorn system restore using Longhorn UI. O
 Some settings are excluded as configurable before the Longhorn system restore.
 - [Concurrent volume backup restore per node limit](../../../references/settings/#concurrent-volume-backup-restore-per-node-limit)
 - [Concurrent replica rebuild per node limit](../../../references/settings/#concurrent-replica-rebuild-per-node-limit)
-- [Backup Target](../../../references/settings/#backup-target)
-- [Backup Target Credential Secret](../../../references/settings/#backup-target-credential-secret)
 
 ## Troubleshoot
 

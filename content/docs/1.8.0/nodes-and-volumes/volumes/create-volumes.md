@@ -35,6 +35,7 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
       staleReplicaTimeout: "2880" # 48 hours in minutes
       fromBackup: ""
       fsType: "ext4"
+    #  backupTargetName: "default"
     #  mkfsParams: "-I 256 -b 4096 -O ^metadata_csum,^64bit"
     #  diskSelector: "ssd,fast"
     #  nodeSelector: "storage,fast"
@@ -51,6 +52,7 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
     ```
 
     In particular, starting with v1.4.0, the parameter `mkfsParams` can be used to specify filesystem format options for each StorageClass.
+    Starting with v1.8.0, the parameter `backupTargetName` can be used to specify the backup target. The name of the default backup target (`default`) is used if `backupTargetName` is not specified.
 
 2. Create a Pod that uses Longhorn volumes by running this command:
 

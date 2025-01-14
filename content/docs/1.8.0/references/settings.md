@@ -56,9 +56,6 @@ weight: 1
   - [Orphaned Data Automatic Deletion](#orphaned-data-automatic-deletion)
 - [Backups](#backups)
   - [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
-  - [Backup Target](#backup-target)
-  - [Backup Target Credential Secret](#backup-target-credential-secret)
-  - [Backupstore Poll Interval](#backupstore-poll-interval)
   - [Failed Backup Time To Live](#failed-backup-time-to-live)
   - [Cronjob Failed Jobs History Limit](#cronjob-failed-jobs-history-limit)
   - [Cronjob Successful Jobs History Limit](#cronjob-successful-jobs-history-limit)
@@ -603,29 +600,6 @@ This setting allows Longhorn to automatically delete the `orphan` resource and i
 If this setting is enabled, Longhorn automatically attaches the volume and takes snapshot/backup when it is the time to do recurring snapshot/backup.
 
 > **Note:** During the time the volume was attached automatically, the volume is not ready for the workload. The workload will have to wait until the recurring job finishes.
-
-#### Backup Target
-
-> Examples:
-> `s3://backupbucket@us-east-1/backupstore`
-> `nfs://longhorn-test-nfs-svc.default:/opt/backupstore`
-> `nfs://longhorn-test-nfs-svc.default:/opt/backupstore?nfsOptions=soft,timeo=330,retrans=3`
-
-Endpoint used to access a backupstore.   Longhorn supports AWS S3, Azure, GCP, CIFS and NFS.  See [Setting a Backup Target](../../snapshots-and-backups/backup-and-restore/set-backup-target) for details.
-
-#### Backup Target Credential Secret
-
-> Example: `s3-secret`
-
-The Kubernetes secret associated with the backup target. See [Setting a Backup Target](../../snapshots-and-backups/backup-and-restore/set-backup-target) for details.
-
-#### Backupstore Poll Interval
-
-> Default: `300`
-
-The interval in seconds to poll the backup store for updating volumes' **Last Backup** field. Set to 0 to disable the polling. See [Setting up Disaster Recovery Volumes](../../snapshots-and-backups/setup-disaster-recovery-volumes) for details.
-
-For more information on how the backupstore poll interval affects the recovery time objective and recovery point objective, refer to the [concepts section.](../../concepts/#34-backupstore-update-intervals-rto-and-rpo)
 
 #### Failed Backup Time To Live
 
