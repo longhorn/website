@@ -5,7 +5,7 @@ weight: 5
 
 ## Release Labels
 
-Each release is supported for 14 months (12 months of support and 2 months for upgrades). Only the two most recent minor releases receive security and bug fixes. For more information, see the [Support Matrix](https://www.suse.com/suse-longhorn/support-matrix/all-supported-versions/).
+Each release is supported for ? months. Only the ? most recent minor releases receive security and bug fixes. For more information, see the [Support Matrix](https://www.suse.com/suse-longhorn/support-matrix/all-supported-versions/).
 
 - **Dev**: The software is under active development and has not been thoroughly tested. Upgrading from earlier versions or to later versions is not supported. Use this version only for testing purposes.
 
@@ -29,8 +29,8 @@ Features that are labeled **Experimental** and **Technical Preview** provide gli
 
 These features have the following limitations:
 
-- Are still in development and may be functionally incomplete, unstable, or in other ways unsuitable for production use.
-- Are not supported.
+- Still in development and may be functionally incomplete, unstable, or in other ways unsuitable for production use.
+- Not supported.
 - May only be available for specific hardware architectures. Details and functionality are subject to change. As a result, upgrading to subsequent releases may be impossible and may require a fresh installation.
 - Can be removed from the product at any time. This may occur, for example, if SUSE discovers that the feature does not meet customer or market needs, or does not comply with enterprise standards.
 
