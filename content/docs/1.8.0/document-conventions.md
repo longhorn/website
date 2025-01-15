@@ -21,16 +21,18 @@ Each release is supported for 14 months (12 months of support and 2 months for u
 
 ## Feature Labels
 
-Features that are labeled **Experimental** and **Technical Preview** are delivered by SUSE to provide glimpses into upcoming innovations and opportunities to test new technologies within your environment. These features have the following limitations:
-
-- Are still in development and may be functionally incomplete, unstable, or in other ways unsuitable for production use.
-- Are not supported.
-- May only be available for specific hardware architectures. Details and functionality are subject to change. As a result, upgrading to subsequent releases may be impossible and may require a fresh installation.
-- Can be removed from a product at any time. This may occur if SUSE discovers that the feature does not meet customer or market needs, or does not comply with enterprise standards.
+Features that are labeled **Experimental** and **Technical Preview** provide glimpses into upcoming innovations and offer opportunities to test new technologies within your environment.
 
 - **Experimental**: The feature is incomplete but its essential functionality is operational. Tests in a controlled environment have shown that it can coexist with existing stable features. Because of the missing components and/or evolving functionality, the feature is not recommended for use in production environments.
 
 - **Technical Preview**: The feature is almost complete and its functionality is not expected to change significantly. Tests in a controlled environment have shown that it can coexist with existing stable features. Explore the feature extensively before using in production environments.
+
+These features have the following limitations:
+
+- Are still in development and may be functionally incomplete, unstable, or in other ways unsuitable for production use.
+- Are not supported.
+- May only be available for specific hardware architectures. Details and functionality are subject to change. As a result, upgrading to subsequent releases may be impossible and may require a fresh installation.
+- Can be removed from the product at any time. This may occur, for example, if SUSE discovers that the feature does not meet customer or market needs, or does not comply with enterprise standards.
 
 > **Note**:
 > 
