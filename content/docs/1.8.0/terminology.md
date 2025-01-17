@@ -1,6 +1,6 @@
 ---
 title: Terminology
-weight: 4
+weight: 3
 ---
 
 - [Attach/Reattach](#attachreattach)
