@@ -34,7 +34,7 @@ weight: 1
   - [Support Bundle Failed History Limit](#support-bundle-failed-history-limit)
   - [Fast Replica Rebuild Enabled](#fast-replica-rebuild-enabled)
   - [Timeout of HTTP Client to Replica File Sync Server](#timeout-of-http-client-to-replica-file-sync-server)
-- [V2 Data Engine (Preview Feature)](#v2-data-engine-preview-feature)
+- [V2 Data Engine (Experimental)](#v2-data-engine-experimental)
   - [V2 Data Engine](#v2-data-engine)
   - [Offline Replica Rebuilding](#offline-replica-rebuilding)
 - [Snapshot](#snapshot)
@@ -410,12 +410,12 @@ The setting enables fast replica rebuilding feature. It relies on the checksums 
 
 The value in seconds specifies the timeout of the HTTP client to the replica's file sync server used for replica rebuilding, volume cloning, snapshot cloning, etc.
 
-### V2 Data Engine (Preview Feature)
+### V2 Data Engine (Experimental)
 #### V2 Data Engine
 
 > Default: `false`
 
-This allows users to activate the v2 data engine based on SPDK. Currently, it is in the preview phase and should not be utilized in a production environment. For more information, please refer to [V2 Data Engine (Preview Feature)](../../v2-data-engine).
+This allows users to activate the v2 data engine based on SPDK. Currently, it is in the preview phase and should not be utilized in a production environment. For more information, please refer to [V2 Data Engine (Experimental)](../../v2-data-engine).
 
 > **Warning**
 >

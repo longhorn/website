@@ -37,7 +37,7 @@ weight: 1
   - [Fast Replica Rebuild Enabled](#fast-replica-rebuild-enabled)
   - [Timeout of HTTP Client to Replica File Sync Server](#timeout-of-http-client-to-replica-file-sync-server)
   - [V1 Data Engine](#v1-data-engine)
-- [V2 Data Engine (Preview Feature)](#v2-data-engine-preview-feature)
+- [V2 Data Engine (Experimental)](#v2-data-engine-experimental)
   - [V2 Data Engine](#v2-data-engine)
   - [V2 Data Engine Hugepage Limit](#v2-data-engine-hugepage-limit)
   - [Guaranteed Instance Manager CPU for V2 Data Engine](#guaranteed-instance-manager-cpu-for-v2-data-engine)
@@ -443,12 +443,12 @@ The value in seconds specifies the timeout of the HTTP client to the replica's f
 
 Setting that allows you to enable the V1 Data Engine.
 
-### V2 Data Engine (Preview Feature)
+### V2 Data Engine (Experimental)
 #### V2 Data Engine
 
 > Default: `false`
 
-Setting that allows you to enable the V2 Data Engine, which is based on the Storage Performance Development Kit (SPDK). The V2 Data Engine is a preview feature and should not be used in production environments. For more information, see [V2 Data Engine (Preview Feature)](../../v2-data-engine).
+Setting that allows you to enable the V2 Data Engine, which is based on the Storage Performance Development Kit (SPDK). The V2 Data Engine is an experimental feature and should not be used in production environments. For more information, see [V2 Data Engine (Experimental)](../../v2-data-engine).
 
 > **Warning**
 >
@@ -754,7 +754,7 @@ Settings are synchronized hourly. When all volumes are detached, the settings in
   | [System Managed Components Node Selector](#system-managed-components-node-selector) | [Node Selector](../../advanced-resources/deploy/node-selector/) | System-managed components |
   | [Storage Network](#storage-network) | [Storage Network](../../advanced-resources/deploy/storage-network/) | Instance Manager and Backing Image components |
   | [V1 Data Engine](#v1-data-engine) || Instance Manager component |
-  | [V2 Data Engine](#v2-data-engine) | [V2 Data Engine (Preview Feature)](../../v2-data-engine/) | Instance Manager component |
+  | [V2 Data Engine](#v2-data-engine) | [V2 Data Engine (Experimental)](../../v2-data-engine/) | Instance Manager component |
   | [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu) || Instance Manager component |
   | [Guaranteed Instance Manager CPU for V2 Data Engine](#guaranteed-instance-manager-cpu-for-v2-data-engine) || Instance Manager component |
 

@@ -98,7 +98,7 @@ For existing v2 volumes, users can update their setup by following these steps:
 - Back up the current v2 volumes.
 - Remove the v2 volumes.
 - Delete the block-type disk with a 4096-byte block size from `node.spec.disks`.
-- Erase the old data on the block-type disk using tools such as wipefs or dd.
+- Erase the old data on the block-type disk using tools such as `dd`.
 - Re-add the disk to `node.spec.disks` with the updated configuration.
 - Restore the v2 volumes.
 

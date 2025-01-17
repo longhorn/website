@@ -41,7 +41,7 @@ weight: 1
   - [Long gRPC Timeout](#long-grpc-timeout)
   - [V1 Data Engine](#v1-data-engine)
   - [RWX Volume Fast Failover (Experimental)](#rwx-volume-fast-failover-experimental)
-- [V2 Data Engine (Preview Feature)](#v2-data-engine-preview-feature)
+- [V2 Data Engine (Experimental)](#v2-data-engine-experimental)
   - [V2 Data Engine](#v2-data-engine)
   - [V2 Data Engine Hugepage Limit](#v2-data-engine-hugepage-limit)
   - [Guaranteed Instance Manager CPU for V2 Data Engine](#guaranteed-instance-manager-cpu-for-v2-data-engine)
@@ -491,12 +491,12 @@ Setting that allows you to enable the V1 Data Engine.
 
 Enable improved ReadWriteMany volume HA by shortening the time it takes to recover from a node failure.
 
-### V2 Data Engine (Preview Feature)
+### V2 Data Engine (Experimental)
 #### V2 Data Engine
 
 > Default: `false`
 
-Setting that allows you to enable the V2 Data Engine, which is based on the Storage Performance Development Kit (SPDK). The V2 Data Engine is a preview feature and should not be used in production environments. For more information, see [V2 Data Engine (Preview Feature)](../../v2-data-engine).
+Setting that allows you to enable the V2 Data Engine, which is based on the Storage Performance Development Kit (SPDK). The V2 Data Engine is an experimental feature and should not be used in production environments. For more information, see [V2 Data Engine (Experimental)](../../v2-data-engine).
 
 > **Warning**
 >
@@ -853,7 +853,7 @@ If you do not detach all volumes before the settings are synchronized, the setti
   | [System Managed Components Node Selector](#system-managed-components-node-selector) | [Node Selector](../../advanced-resources/deploy/node-selector/) | System-managed components |
   | [Storage Network](#storage-network) | [Storage Network](../../advanced-resources/deploy/storage-network/) | Instance Manager and Backing Image components |
   | [V1 Data Engine](#v1-data-engine) || Instance Manager component |
-  | [V2 Data Engine](#v2-data-engine) | [V2 Data Engine (Preview Feature)](../../v2-data-engine/) | Instance Manager component |
+  | [V2 Data Engine](#v2-data-engine) | [V2 Data Engine (Experimental)](../../v2-data-engine/) | Instance Manager component |
   | [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu) || Instance Manager component |
   | [Guaranteed Instance Manager CPU for V2 Data Engine](#guaranteed-instance-manager-cpu-for-v2-data-engine) || Instance Manager component |
 

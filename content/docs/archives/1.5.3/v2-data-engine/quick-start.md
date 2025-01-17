@@ -27,7 +27,7 @@ aliases:
 
 Longhorn's V2 Data Engine harnesses the power of the Storage Performance Development Kit (SPDK) to elevate its overall performance. The integration significantly reduces I/O latency while simultaneously boosting IOPS and throughput. The enhancement provides a high-performance storage solution capable of meeting diverse workload demands.
 
-**V2 Data Engine is currently a PREVIEW feature and should NOT be utilized in a production environment.** At present, a volume with V2 Data Engine only supports
+**V2 Data Engine is currently an Experimental feature and should NOT be utilized in a production environment.** At present, a volume with V2 Data Engine only supports
 
 - Volume lifecycle (creation, attachment, detachment and deletion)
 - Degraded volume
