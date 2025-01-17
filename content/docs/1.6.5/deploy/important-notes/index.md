@@ -152,7 +152,7 @@ Settings are synchronized hourly. When all volumes are detached, the settings in
   | [System Managed Components Node Selector](../../references/settings/#system-managed-components-node-selector) | [Node Selector](../../advanced-resources/deploy/node-selector/) | System-managed components |
   | [Storage Network](../../references/settings/#storage-network) | [Storage Network](../../advanced-resources/deploy/storage-network/) | Instance Manager and Backing Image components |
   | [V1 Data Engine](../../references/settings/#v1-data-engine) || Instance Manager component |
-  | [V2 Data Engine](../../references/settings/#v2-data-engine) | [V2 Data Engine (Preview Feature)](../../v2-data-engine/) | Instance Manager component |
+  | [V2 Data Engine](../../references/settings/#v2-data-engine) | [V2 Data Engine (Experimental)](../../v2-data-engine/) | Instance Manager component |
   | [Guaranteed Instance Manager CPU](../../references/settings/#guaranteed-instance-manager-cpu) || Instance Manager component |
   | [Guaranteed Instance Manager CPU for V2 Data Engine](../../references/settings/#guaranteed-instance-manager-cpu-for-v2-data-engine) || Instance Manager component |
 
