@@ -107,6 +107,8 @@ For more information, see [#9530](https://github.com/longhorn/longhorn/issues/95
 
 Since Longhorn v1.8.0, the `if-not-present` volume backup policy now ensures the latest backup contains the most recent data. If the latest backup is outdated, Longhorn will create a new backup for the volume.
 
+For more information, see [#6027](https://github.com/longhorn/longhorn/issues/6027).
+
 ## V2 Data Engine
 
 ### Longhorn System Upgrade
@@ -126,6 +128,8 @@ For existing v2 volumes, users can update their setup by following these steps:
 - Re-add the disk to `node.spec.disks` with the updated configuration.
 - Restore the v2 volumes.
 
+For more information, see [#10053](https://github.com/longhorn/longhorn/issues/10053).
+
 ### Resolved Potential Volume and Backup Data Corruption Issue
 
 A data corruption [issue](https://github.com/longhorn/longhorn/issues/10135) that affects earlier Longhorn releases has been resolved in v1.8.0. The issue involves potential continual changes to the checksum of files in a V2 volume with multiple replicas. This occurs because SPDK allocates clusters without initialization, leading to data inconsistencies across replicas. The varying data read from the volume can result in data corruption and broken backups. 
@@ -138,23 +142,25 @@ Longhorn v1.8.0 supports [configurable CPU cores](../v2-data-engine/features/con
 
 #### Scheduling
 
-- Data locality
+- [Data locality](https://github.com/longhorn/longhorn/issues/9371)
 
 #### Data Recovery
 
-- Disaster Recovery Volumes
-- Auto-Salvage Volumes
-- Delta replica rebuilding using snapshot checksum
+- [Disaster Recovery Volumes](https://github.com/longhorn/longhorn/issues/6613)
+- [Auto-Salvage Volumes](https://github.com/longhorn/longhorn/issues/8430)
+- [Delta replica rebuilding using snapshot checksum](https://github.com/longhorn/longhorn/issues/9488)
 
 #### Backing Image
 
 - Upload
 - Download
 
+For more information, see [#6341](https://github.com/longhorn/longhorn/issues/6341).
+
 #### Migration
 
-- Live Migration
+- [Live Migration](https://github.com/longhorn/longhorn/issues/6361)
 
 #### Security
 
-- Volume Encryption
+- [Volume Encryption](https://github.com/longhorn/longhorn/issues/7355)
