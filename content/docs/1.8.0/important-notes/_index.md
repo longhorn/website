@@ -17,15 +17,21 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Change in Engine Replica Timeout Behavior](#change-in-engine-replica-timeout-behavior)
   - [Talos Linux](#talos-linux)
 - [Backup](#backup)
-  - [Multiple Backup Stores Support](#multiple-backupstores-support)
+  - [Multiple Backupstores Support](#multiple-backupstores-support)
   - [Backup Data On The Remote Backup Server Might Be Deleted](#backup-data-on-the-remote-backup-server-might-be-deleted)
 - [System Backup And Restore](#system-backup-and-restore)
   - [Volume Backup Policy](#volume-backup-policy)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Change the Block Size of the Block-Type Disk using AIO Driver to 512 bytes](#change-the-block-size-of-the-block-type-disk-using-aio-driver-to-512-bytes)
-  - [Disaster Recovery Volumes](#disaster-recovery-volumes)
-  - [Auto-salvage Volumes](#auto-salvage-volumes)
+  - [Resolved Potential Volume and Backup Data Corruption Issue](#resolved-potential-volume-and-backup-data-corruption-issue)
+  - [Support for Configurable CPU Cores](#support-for-configurable-cpu-cores)
+  - [Newly Introduced Functionalities since Longhorn v1.8.0](#newly-introduced-functionalities-since-longhorn-v180)
+    - [Scheduling](#scheduling)
+    - [Data Recovery](#data-recovery)
+    - [Backing Image](#backing-image)
+    - [Migration](#migration)
+    - [Security](#security)
 
 ## Deprecation
 
@@ -120,14 +126,35 @@ For existing v2 volumes, users can update their setup by following these steps:
 - Re-add the disk to `node.spec.disks` with the updated configuration.
 - Restore the v2 volumes.
 
-### Disaster Recovery Volumes
+### Resolved Potential Volume and Backup Data Corruption Issue
 
-Disaster recovery volumes are supported from Longhorn v1.8.0.
+A data corruption [issue](https://github.com/longhorn/longhorn/issues/10135) that affects earlier Longhorn releases has been resolved in v1.8.0. The issue involves potential continual changes to the checksum of files in a V2 volume with multiple replicas. This occurs because SPDK allocates clusters without initialization, leading to data inconsistencies across replicas. The varying data read from the volume can result in data corruption and broken backups. 
 
-### Auto-salvage Volumes
+### Support for Configurable CPU Cores
 
-Auto-salvage volumes are supported from Longhorn v1.8.0.
+Longhorn v1.8.0 supports [configurable CPU cores](../v2-data-engine/features/configurable-cpu-cores) for the V2 Data Engine. The global and node-specific configuration options provide greater control and flexibility for optimizing performance and resource allocation.
 
-### Volume Encryption
+### Newly Introduced Functionalities since Longhorn v1.8.0
 
-Starting with v1.8.0, Longhorn supports encryption of V1 and V2 volumes.
+#### Scheduling
+
+- Data locality
+
+#### Data Recovery
+
+- Disaster Recovery Volumes
+- Auto-Salvage Volumes
+- Delta replica rebuilding using snapshot checksum
+
+#### Backing Image
+
+- Upload
+- Download
+
+#### Migration
+
+- Live Migration
+
+#### Security
+
+- Volume Encryption
