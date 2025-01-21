@@ -7,9 +7,9 @@ weight: 5
 
 Each minor release is supported until the next minor release becomes stable.
 
-- **Dev**: The software is under active development and has not been thoroughly tested. Upgrading from earlier versions or to later versions is not supported. Use this version only for testing purposes.
+- **Dev**: The software is under active development and has not been thoroughly tested. Upgrading from earlier versions or to later versions is not supported. "Dev" releases typically occur at the end of a sprint, and may occur when other definitions of done are met. Given the unofficial nature of the release, use the software only for testing purposes.
 
-- **Latest**: The software has passed all stages of verification and testing. All remaining known issues are considered acceptable. Use this version only for testing purposes.
+- **Latest**: The software has passed all stages of verification and testing. All remaining known issues are considered acceptable. Use the software only for testing purposes.
 
 - **Stable**: The software is considered reliable and free of critical issues. This version is recommended for general use.
 
@@ -32,7 +32,7 @@ These features have the following limitations:
 - Still in development and may be functionally incomplete, unstable, or in other ways unsuitable for production use.
 - Not supported.
 - May only be available for specific hardware architectures. Details and functionality are subject to change. As a result, upgrading to subsequent releases may be impossible and may require a fresh installation.
-- Can be removed from the product at any time. This may occur, for example, if SUSE discovers that the feature does not meet customer or market needs, or does not comply with enterprise standards.
+- Can be removed from the product at any time. This may occur, for example, if we discover that the feature does not meet customer or market needs, or does not comply with enterprise standards.
 
 > **Note**:
 > 
