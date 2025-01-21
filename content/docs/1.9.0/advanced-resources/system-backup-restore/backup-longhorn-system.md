@@ -7,11 +7,15 @@ weight: 1
 - [How to create a Longhorn system backup](#create-longhorn-system-backup)
     - [Prerequisite](#prerequisite)
     - [Configuration](#configuration)
-    - [Using Longhorn UI](#using-longhorn-ui)
-    - [Using kubectl command](#using-kubectl-command)
+    - [Single Execution](#single-execution)
+      - [Using Longhorn UI](#create-a-system-backup-using-the-longhorn-ui)
+      - [Using kubectl command](#create-a-system-backup-using-kubectl)
+    - [Recurring Job](#recurring-job)
+      - [Using Longhorn UI](#create-a-recurring-backup-job-using-the-longhorn-ui)
+      - [Using kubectl command](#create-a-recurring-backup-job-using-kubectl)
 - [How to delete Longhorn system backup](#delete-longhorn-system-backup)
-    - [Using Longhorn UI](#using-longhorn-ui-1)
-    - [Using kubectl command](#using-kubectl-command-1)
+    - [Using Longhorn UI](#delete-a-system-backup-using-the-longhorn-ui)
+    - [Using kubectl command](#delete-a-system-backup-using-kubectl)
 - [History](#history)
 
 ## Longhorn System Backup Bundle
@@ -69,7 +73,9 @@ The Longhorn system backup offers the following volume backup policies:
  - `always`: Longhorn will create a backup for all volumes, regardless of their existing backups.
  - `disabled`: Longhorn will not create any backups for volumes.
 
-### Using Longhorn UI
+### Single Execution
+
+#### Create a System Backup Using the Longhorn UI
 
 1. Go to the `System Backup` page in the `Setting` drop-down list.
 1. Click `Create` under `System Backup`.
@@ -77,7 +83,7 @@ The Longhorn system backup offers the following volume backup policies:
 1. Select a `Volume Backup Policy` for the system backup.
 1. The system backup will be ready to use when the state changes to `Ready`.
 
-### Using `kubectl` Command
+#### Create a System Backup Using `kubectl`
 
 1. Execute `kubectl create` to create a Longhorn `SystemBackup` custom resource.
    ```yaml
@@ -96,25 +102,62 @@ The Longhorn system backup offers the following volume backup policies:
    demo   v1.4.0    Ready   2022-11-24T04:23:24Z
    ```
 
+### Recurring Job
+
+#### Create a Recurring Backup Job Using the Longhorn UI
+
+1. Go to the `Recurring Job` page.
+1. Click on `Create Recurring Job`.
+1. Configure the following settings:
+   - **Name**: Specify a name for the recurring job.
+   - **Task**: Select **System Backup**.
+   - **Retain**: Specify the number of system backups that Longhorn must retain.
+   - **Cron**: Specify the cron expression (a string consisting of fields separated by whitespace characters) that defines the schedule properties.
+   - **Parameters**: Select **volume-backup-policy**.
+1. Click **OK**.
+
+Longhorn creates system backups according to the schedule defined in the **Cron** field.
+
+#### Create a Recurring Backup Job Using `kubectl`
+
+Run `kubectl create` to create a Longhorn `RecurringJob` custom resource with the task `system-backup`.
+
+Example:
+   ```yaml
+   apiVersion: longhorn.io/v1beta2
+   kind: RecurringJob
+   metadata:
+     name: demo
+     namespace: longhorn-system
+   spec:
+     task: system-backup
+     cron: '* * * * *'
+     retain: 1
+     parameters:
+       volume-backup-policy: if-not-present
+   ```
+
+Longhorn creates system backup according to the schedule defined in the `cron` field.
+
 ## Delete Longhorn System Backup
 
 You can delete the Longhorn system backup in the remote backup target using the Longhorn UI. Or with the `kubectl` command.
 
-### Using Longhorn UI
+### Delete a System Backup Using the Longhorn UI
 
 1. Go to the `System Backup` page in the `Setting` drop-down list.
 1. Delete a single system backup in the `Operation` drop-down menu next to the system backup. Or delete in batch with the `Delete` button.
 
    > **Note:** Deleting the system backup will also make a deletion in the backup store.
 
-### Using `kubectl` Command
+### Delete a System Backup Using `kubectl`
 
 1. Execute `kubectl delete` to delete a Longhorn `SystemBackup` custom resource.
    ```
    > kubectl -n longhorn-system get systembackup
    NAME   VERSION   STATE   CREATED
    demo   v1.4.0    Ready   2022-11-24T04:23:24Z
-   
+
    > kubectl -n longhorn-system delete systembackup/demo
    systembackup.longhorn.io "demo" deleted
    ```
