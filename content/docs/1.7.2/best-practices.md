@@ -1,6 +1,6 @@
 ---
 title: Best Practices
-weight: 5
+weight: 4
 ---
 
 We recommend the following setup for deploying Longhorn in production.
