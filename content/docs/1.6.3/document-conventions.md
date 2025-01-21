@@ -7,13 +7,13 @@ weight: 5
 
 Each minor release is supported until the next minor release becomes stable.
 
-- **Dev**: The software is under active development and has not been thoroughly tested. Upgrading from earlier versions or to later versions is not supported. "Dev" releases typically occur at the end of a sprint, and may occur when other definitions of done are met. Given the unofficial nature of the release, use the software only for testing purposes.
+- **Dev**: The software is under active development and has not been thoroughly tested. Upgrading from earlier releases or to later releases is not supported. "Dev" releases typically occur at the end of a sprint, and may occur when other definitions of done are met. Given the unofficial nature of the release, use the software only for testing purposes.
 
 - **Latest**: The software has passed all stages of verification and testing. All remaining known issues are considered acceptable. Use the software only for testing purposes.
 
-- **Stable**: The software is considered reliable and free of critical issues. This version is recommended for general use.
+- **Stable**: The software is considered reliable and free of critical issues. This release is recommended for general use.
 
-- **EOL**: The software has reached the end of its useful life and no further code-level maintenance is provided. You may continue to use the software within the terms of the licensing agreement. Upgrading to a stable version is recommended.
+- **EOL**: The software has reached the end of its useful life and no further code-level maintenance is provided. You may continue to use the software within the terms of the licensing agreement. Upgrading to a stable release is recommended.
 
 > **Note**:
 >
