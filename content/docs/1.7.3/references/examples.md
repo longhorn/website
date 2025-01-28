@@ -18,6 +18,7 @@ For reference, this page provides examples of Kubernetes resources that use Long
 
 ### Block Volume
 
+```yaml
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -50,9 +51,11 @@ For reference, this page provides examples of Kubernetes resources that use Long
         - name: block-vol
           persistentVolumeClaim:
             claimName: longhorn-block-vol
+```
 
 ### CSI Persistent Volume
 
+```yaml
     apiVersion: v1
     kind: PersistentVolume
     metadata:
@@ -113,9 +116,11 @@ For reference, this page provides examples of Kubernetes resources that use Long
       - name: vol
         persistentVolumeClaim:
           claimName: longhorn-vol-pvc
+```
 
 ### Deployment
 
+```yaml
     apiVersion: v1
     kind: Service
     metadata:
@@ -182,9 +187,11 @@ For reference, this page provides examples of Kubernetes resources that use Long
           - name: mysql-volume
             persistentVolumeClaim:
               claimName: mysql-pvc
+```
 
 ### Pod with PersistentVolumeClaim
 
+```yaml
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -224,12 +231,14 @@ For reference, this page provides examples of Kubernetes resources that use Long
       - name: volv
         persistentVolumeClaim:
           claimName: longhorn-volv-pvc
+```
 
 ### Pod with Generic Ephemeral Volume
 
 For more information about generic ephemeral volumes, refer to the
 [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes).
 
+```yaml
   apiVersion: v1
   kind: Pod
   metadata:
@@ -264,11 +273,13 @@ For more information about generic ephemeral volumes, refer to the
             resources:
               requests:
                 storage: 2Gi
+```
 
 ### Restore to File
 
 For more information about restoring to file, refer to [this section.](../../advanced-resources/data-recovery/recover-without-system)
 
+```yaml
     apiVersion: v1
     kind: Pod
     metadata:
@@ -317,9 +328,11 @@ For more information about restoring to file, refer to [this section.](../../adv
           hostPath:
             path: /tmp/restore
       restartPolicy: Never
+```
 
 ### Simple Pod
 
+```yaml
     apiVersion: v1
     kind: Pod
     metadata:
@@ -347,9 +360,11 @@ For more information about restoring to file, refer to [this section.](../../adv
         - name: volv
           persistentVolumeClaim:
             claimName: longhorn-simple-pvc
+```
 
 ### Simple PersistentVolumeClaim
 
+```yaml
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -361,9 +376,11 @@ For more information about restoring to file, refer to [this section.](../../adv
       resources:
         requests:
           storage: 1Gi
+```
 
 ### StatefulSet
 
+```yaml
     apiVersion: v1
     kind: Service
     metadata:
@@ -420,9 +437,11 @@ For more information about restoring to file, refer to [this section.](../../adv
           resources:
             requests:
               storage: 1Gi
+```
 
 ### StorageClass
 
+```yaml
     kind: StorageClass
     apiVersion: storage.k8s.io/v1
     metadata:
@@ -453,6 +472,8 @@ For more information about restoring to file, refer to [this section.](../../adv
       #     "isGroup":false,
       #   }
       #  ]'
+
+```
 
 Note that Longhorn supports automatic remount only for the workload pod that is managed by a controller (e.g. deployment, statefulset, daemonset, etc...).
 See [here](../../high-availability/recover-volume/) for details.
