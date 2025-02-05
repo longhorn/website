@@ -34,6 +34,8 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
     - [Backing Image](#backing-image)
     - [Migration](#migration)
     - [Security](#security)
+  - [Newly Introduced Functionalities since Longhorn v1.9.0](#newly-introduced-functionalities-since-longhorn-v190)
+    - [Networking](#networking)
 
 ## Deprecation
 
@@ -176,3 +178,9 @@ For more information, see [#6341](https://github.com/longhorn/longhorn/issues/63
 #### Security
 
 - [Volume Encryption](https://github.com/longhorn/longhorn/issues/7355)
+
+### Newly Introduced Functionalities since Longhorn v1.9.0
+
+#### Networking
+
+- [Storage Network](https://github.com/longhorn/longhorn/issues/6450)
