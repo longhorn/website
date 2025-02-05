@@ -55,3 +55,4 @@ For more information, see [Storage Network Support for Read-Write-Many (RWX) Vol
 # History
 - [Original Feature Request (since v1.3.0)](https://github.com/longhorn/longhorn/issues/2285)
 - [[FEATURE] Support storage network for RWX volumes (since v1.7.0)](https://github.com/longhorn/longhorn/issues/8184)
+- [[FEATURE] Storage network with V2 data engine (since v1.9.0)](https://github.com/longhorn/longhorn/issues/6450)
