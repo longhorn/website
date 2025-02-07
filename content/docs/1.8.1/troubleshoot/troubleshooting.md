@@ -2,48 +2,23 @@
 title: Troubleshooting Problems
 weight: 1
 ---
-
-- [Common issues](#common-issues)
-  - [Volume can be attached/detached from UI, but Kubernetes Pod/StatefulSet etc cannot use it](#volume-can-be-attacheddetached-from-ui-but-kubernetes-podstatefulset-etc-cannot-use-it)
-    - [Using with Flexvolume Plugin](#using-with-flexvolume-plugin)
 - [Troubleshooting Guide](#troubleshooting-guide)
   - [UI](#ui)
   - [Manager and Engines](#manager-and-engines)
   - [CSI driver](#csi-driver)
   - [Flexvolume Driver](#flexvolume-driver)
-
----
-
 - [Common issues](#common-issues)
   - [Volume can be attached/detached from UI, but Kubernetes Pod/StatefulSet etc cannot use it](#volume-can-be-attacheddetached-from-ui-but-kubernetes-podstatefulset-etc-cannot-use-it)
     - [Using with Flexvolume Plugin](#using-with-flexvolume-plugin)
-- [Troubleshooting Guide](#troubleshooting-guide)
-  - [UI](#ui)
-  - [Manager and Engines](#manager-and-engines)
-  - [CSI driver](#csi-driver)
-  - [Flexvolume Driver](#flexvolume-driver)
-
----
-
-> You can generate a support bundle file for offline troubleshooting. See [Support Bundle](../support-bundle) for detail.
-
-## Common issues
-### Volume can be attached/detached from UI, but Kubernetes Pod/StatefulSet etc cannot use it
-
-#### Using with Flexvolume Plugin
-Check if the volume plugin directory has been set correctly. This is automatically detected unless user explicitly set it.
-
-By default, Kubernetes uses `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/`, as stated in the [official document](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-storage/flexvolume.md/#prerequisites).
-
-Some vendors choose to change the directory for various reasons. For example, GKE uses `/home/kubernetes/flexvolume` instead.
-
-The correct directory can be found by running `ps aux|grep kubelet` on the host and check the `--volume-plugin-dir` parameter. If there is none, the default `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/` will be used.
 
 ## Troubleshooting Guide
+
+> For a more in-depth troubleshooting flow please see https://github.com/longhorn/longhorn/wiki/Troubleshooting
 
 There are a few components in Longhorn: Manager, Engine, Driver and UI. By default, all of those components run as pods in the `longhorn-system` namespace in the Kubernetes cluster.
 
 Most of the logs are included in the Support Bundle. You can click the **Generate Support Bundle** link at the bottom of the UI to download a zip file that contains Longhorn-related configuration and logs.
+See [Support Bundle](../support-bundle) for detail.
 
 One exception is the `dmesg`, which needs to be retrieved from each node by the user.
 
@@ -88,3 +63,16 @@ For even more detailed logs of Longhorn FlexVolume, run the following command on
 ```
 touch /var/log/longhorn_driver.log
 ```
+
+
+## Common issues
+### Volume can be attached/detached from UI, but Kubernetes Pod/StatefulSet etc cannot use it
+
+#### Using with Flexvolume Plugin
+Check if the volume plugin directory has been set correctly. This is automatically detected unless the user explicitly sets it.
+
+By default, Kubernetes uses `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/`, as stated in the [official document](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-storage/flexvolume.md/#prerequisites).
+
+Some vendors choose to change the directory for various reasons. For example, GKE uses `/home/kubernetes/flexvolume` instead.
+
+The correct directory can be found by running `ps aux|grep kubelet` on the host and check the `--volume-plugin-dir` parameter. If there is none, the default `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/` will be used.
