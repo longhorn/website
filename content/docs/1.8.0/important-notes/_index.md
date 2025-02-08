@@ -6,9 +6,11 @@ weight: 1
 This page lists important notes for Longhorn v{{< current-version >}}.
 Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}) for the full release note.
 
+- [Warning](#warning)
 - [Deprecation](#deprecation)
   - [Environment Check Script](#environment-check-script)
 - [General](#general)
+  - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Upgrade Check Events](#upgrade-check-events)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
   - [Install/Upgrade with Helm Controller](#installupgrade-with-helm-controller)
@@ -17,15 +19,33 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Change in Engine Replica Timeout Behavior](#change-in-engine-replica-timeout-behavior)
   - [Talos Linux](#talos-linux)
 - [Backup](#backup)
-  - [Multiple Backup Stores Support](#multiple-backupstores-support)
+  - [Multiple Backupstores Support](#multiple-backupstores-support)
   - [Backup Data On The Remote Backup Server Might Be Deleted](#backup-data-on-the-remote-backup-server-might-be-deleted)
 - [System Backup And Restore](#system-backup-and-restore)
   - [Volume Backup Policy](#volume-backup-policy)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Change the Block Size of the Block-Type Disk using AIO Driver to 512 bytes](#change-the-block-size-of-the-block-type-disk-using-aio-driver-to-512-bytes)
-  - [Disaster Recovery Volumes](#disaster-recovery-volumes)
-  - [Auto-salvage Volumes](#auto-salvage-volumes)
+  - [Resolved Potential Volume and Backup Data Corruption Issue](#resolved-potential-volume-and-backup-data-corruption-issue)
+  - [Support for Configurable CPU Cores](#support-for-configurable-cpu-cores)
+  - [Newly Introduced Functionalities since Longhorn v1.8.0](#newly-introduced-functionalities-since-longhorn-v180)
+    - [Scheduling](#scheduling)
+    - [Data Recovery](#data-recovery)
+    - [Backing Image](#backing-image)
+    - [Migration](#migration)
+    - [Security](#security)
+
+## Warning
+
+An incorrect Longhorn image tag (v1.8.x-head) was used in the [deployment manifest](https://github.com/longhorn/longhorn/blob/v1.8.0/deploy/longhorn.yaml) and the [Helm chart](https://github.com/longhorn/longhorn/blob/v1.8.0/chart/values.yaml#L40-L65). The correct tag for Longhorn v1.8.0 images is v1.8.0. For more information, see [Issue #10336](https://github.com/longhorn/longhorn/issues/10336).
+
+If you installed or upgraded Longhorn using the deployment manifest or the Helm chart from the [main Longhorn repository](https://github.com/longhorn/longhorn), perform the following actions to resolve the issue:
+
+- **New installations**: Replace v1.8.x-head with v1.8.0 in the deployment manifest or the Helm chart before deploying Longhorn.
+
+- **Upgrades**: Replace v1.8.x-head with v1.8.0 in the deployment manifest or Helm chart. Next, upgrade the Longhorn system and update the engine image for volumes that use v1.8.x-head.
+
+This issue does not affect installations and upgrades performed using the [Longhorn Helm repository](https://charts.longhorn.io/). For more details, refer to the [Install with Helm](https://longhorn.io/docs/1.8.0/deploy/install/install-with-helm/) section of the official documentation.
 
 ## Deprecation
 
@@ -34,6 +54,10 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 The functionality of the [environment check script](https://github.com/longhorn/longhorn/blob/master/scripts/environment_check.sh) (`environment_check.sh`) overlaps with that of the Longhorn CLI, which is available starting with v1.7.0. Because of this, the script is deprecated in v1.7.0 and is scheduled for removal in v1.9.0.
 
 ## General
+
+### Kubernetes Version Requirement
+
+Due to the upgrade of the CSI external snapshotter to version v8.2.0, ensure that all clusters are running Kubernetes v1.25 or later before upgrading to Longhorn v1.8.0 or any newer version.
 
 ### Upgrade Check Events
 Longhorn performs a pre-upgrade check when upgrading with Helm or Rancher App Marketplace.  If a check fails, the upgrade will stop and the reason for the check's failure will be recorded in an event.  For more detail, see [Upgrading Longhorn Manager](../deploy/upgrade/longhorn-manager).
@@ -101,6 +125,8 @@ For more information, see [#9530](https://github.com/longhorn/longhorn/issues/95
 
 Since Longhorn v1.8.0, the `if-not-present` volume backup policy now ensures the latest backup contains the most recent data. If the latest backup is outdated, Longhorn will create a new backup for the volume.
 
+For more information, see [#6027](https://github.com/longhorn/longhorn/issues/6027).
+
 ## V2 Data Engine
 
 ### Longhorn System Upgrade
@@ -120,14 +146,39 @@ For existing v2 volumes, users can update their setup by following these steps:
 - Re-add the disk to `node.spec.disks` with the updated configuration.
 - Restore the v2 volumes.
 
-### Disaster Recovery Volumes
+For more information, see [#10053](https://github.com/longhorn/longhorn/issues/10053).
 
-Disaster recovery volumes are supported from Longhorn v1.8.0.
+### Resolved Potential Volume and Backup Data Corruption Issue
 
-### Auto-salvage Volumes
+A data corruption [issue](https://github.com/longhorn/longhorn/issues/10135) that affects earlier Longhorn releases has been resolved in v1.8.0. The issue involves potential continual changes to the checksum of files in a V2 volume with multiple replicas. This occurs because SPDK allocates clusters without initialization, leading to data inconsistencies across replicas. The varying data read from the volume can result in data corruption and broken backups. 
 
-Auto-salvage volumes are supported from Longhorn v1.8.0.
+### Support for Configurable CPU Cores
 
-### Volume Encryption
+Longhorn v1.8.0 supports [configurable CPU cores](../v2-data-engine/features/configurable-cpu-cores) for the V2 Data Engine. The global and node-specific configuration options provide greater control and flexibility for optimizing performance and resource allocation.
 
-Starting with v1.8.0, Longhorn supports encryption of V1 and V2 volumes.
+### Newly Introduced Functionalities since Longhorn v1.8.0
+
+#### Scheduling
+
+- [Data locality](https://github.com/longhorn/longhorn/issues/9371)
+
+#### Data Recovery
+
+- [Disaster Recovery Volumes](https://github.com/longhorn/longhorn/issues/6613)
+- [Auto-Salvage Volumes](https://github.com/longhorn/longhorn/issues/8430)
+- [Delta replica rebuilding using snapshot checksum](https://github.com/longhorn/longhorn/issues/9488)
+
+#### Backing Image
+
+- Upload
+- Download
+
+For more information, see [#6341](https://github.com/longhorn/longhorn/issues/6341).
+
+#### Migration
+
+- [Live Migration](https://github.com/longhorn/longhorn/issues/6361)
+
+#### Security
+
+- [Volume Encryption](https://github.com/longhorn/longhorn/issues/7355)

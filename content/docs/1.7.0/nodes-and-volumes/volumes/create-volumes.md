@@ -50,7 +50,8 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
     #  ]'
     ```
 
-    In particular, starting with v1.4.0, the parameter `mkfsParams` can be used to specify filesystem format options for each StorageClass.
+    In particular, starting with v1.4.0, the parameter `mkfsParams` can be used to specify filesystem format options for each StorageClass.  
+    Parameters may be omitted from the StorageClass specification.  When the storage class is used to create a PV and a volume, parameters that are not specified will generally be set using a default value taken from the global settings.  See [here](../../../references/storage-class-parameters) for the list of storage class parameters, and [here](../../../references/settings) for the full list of global settings.
 
 2. Create a Pod that uses Longhorn volumes by running this command:
 
@@ -114,7 +115,7 @@ If the PVC names a StorageClass, Kubernetes will:
 
 ### Creating Longhorn Volumes with the Longhorn UI
 
-Since the Longhorn volume already exists while creating PV/PVC, a StorageClass is not needed for dynamically provisioning Longhorn volume. However, the field `storageClassName` should be set in PVC/PV, to be used for PVC bounding purpose. And it's unnecessary for users to create the related StorageClass object.
+Since the Longhorn volume already exists while creating PV/PVC, a StorageClass is not needed for dynamically provisioning Longhorn volume. However, the field `storageClassName` should be set in PVC/PV, to be used for PVC binding purpose. It's unnecessary for users to create the related StorageClass object.
 
 By default the StorageClass for Longhorn created PV/PVC is `longhorn-static`. Users can modify it in `Setting - General - Default Longhorn Static StorageClass Name` as they need.
 
