@@ -77,7 +77,7 @@ The Longhorn system backup offers the following volume backup policies:
 
 #### Create a System Backup Using the Longhorn UI
 
-1. Go to the `System Backup` page in the `Setting` drop-down list.
+1. Go to the `System Backup` screen in the `Setting` drop-down list.
 1. Click `Create` under `System Backup`.
 1. Give a `Name` for the system backup.
 1. Select a `Volume Backup Policy` for the system backup.
@@ -106,7 +106,7 @@ The Longhorn system backup offers the following volume backup policies:
 
 #### Create a Recurring Backup Job Using the Longhorn UI
 
-1. Go to the `Recurring Job` page.
+1. Go to the `Recurring Job` screen.
 1. Click on `Create Recurring Job`.
 1. Configure the following settings:
    - **Name**: Specify a name for the recurring job.
@@ -145,7 +145,7 @@ You can delete the Longhorn system backup in the remote backup target using the 
 
 ### Delete a System Backup Using the Longhorn UI
 
-1. Go to the `System Backup` page in the `Setting` drop-down list.
+1. Go to the `System Backup` screen in the `Setting` drop-down list.
 1. Delete a single system backup in the `Operation` drop-down menu next to the system backup. Or delete in batch with the `Delete` button.
 
    > **Note:** Deleting the system backup will also make a deletion in the backup store.
