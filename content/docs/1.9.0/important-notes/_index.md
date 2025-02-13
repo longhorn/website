@@ -22,6 +22,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Backup Data On The Remote Backup Server Might Be Deleted](#backup-data-on-the-remote-backup-server-might-be-deleted)
 - [System Backup And Restore](#system-backup-and-restore)
   - [Volume Backup Policy](#volume-backup-policy)
+  - [Recurring System Backup](#recurring-system-backup)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Change the Block Size of the Block-Type Disk using AIO Driver to 512 bytes](#change-the-block-size-of-the-block-type-disk-using-aio-driver-to-512-bytes)
@@ -112,7 +113,13 @@ For more information, see [#9530](https://github.com/longhorn/longhorn/issues/95
 
 Since Longhorn v1.8.0, the `if-not-present` volume backup policy now ensures the latest backup contains the most recent data. If the latest backup is outdated, Longhorn will create a new backup for the volume.
 
-For more information, see [#6027](https://github.com/longhorn/longhorn/issues/6027).
+For more information, see [#6027](https://github.com/longhorn/longhorn/issues/6027)
+
+### Recurring System Backup
+
+Starting with Longhorn v1.9.0, you can create a recurring job for system backup creation.
+
+For more information, see [#6534](https://github.com/longhorn/longhorn/issues/6534)
 
 ## V2 Data Engine
 
