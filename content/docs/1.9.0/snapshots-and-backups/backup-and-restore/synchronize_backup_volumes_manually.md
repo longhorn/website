@@ -18,4 +18,4 @@ Earlier Longhorn versions poll and update all backup volumes at a fixed poll int
   1. Select a backup volume.
   1. Click **Sync Backup Volume**.
 
-To check if synchronization was successful, click the name of the backup volume on the **Backup** screen.
+To check if synchronization was successful, click the name of the backup volume on the **Backup** page.

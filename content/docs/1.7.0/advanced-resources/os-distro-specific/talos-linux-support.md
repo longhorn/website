@@ -77,15 +77,15 @@ talosctl upgrade --nodes 10.20.30.40 --image ghcr.io/siderolabs/installer:v1.7.6
 
 If you were unable to include the `--preserve` option in the upgrade command, perform the following steps:
 
-1. On the Longhorn UI, go to the **Node** screen.
+1. On the Longhorn UI, go to the **Node** page.
 
 1. Select the upgraded node, and then select **Edit node and disks** in the **Operation** menu.
 
-1. On the **Edit Node and Disks** screen, set **Scheduling** to **Disable**, delete the disk, and then click **Save**.
+1. On the **Edit Node and Disks** page, set **Scheduling** to **Disable**, delete the disk, and then click **Save**.
 
 1. Select the upgraded node again, and then select **Edit node and disks** in the **Operation** menu.
 
-1. On the **Edit Node and Disks** screen, add a disk and configure the following settings:
+1. On the **Edit Node and Disks** page, add a disk and configure the following settings:
 
     - **Path**: Specify `/var/lib/longhorn/`.
     - **Storage Reserved**: Specify a value that matches your requirements. The default value is **30 Gi**. 
