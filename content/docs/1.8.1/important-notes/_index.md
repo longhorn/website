@@ -77,10 +77,10 @@ Longhorn v1.8.0 and later versions support usage of V2 volumes in Talos Linux cl
 
 ### Multiple Backupstores Support
 
-Starting with v1.8.0, Longhorn supports usage of multiple backupstores. You can configure backup targets to access backupstores on the **Setting/Backup Target** screen of the Longhorn UI. v1.8.0 improves on earlier Longhorn versions, which only allow you to use a single backup target for accessing a backupstore. Earlier versions also require you to configure the settings `backup-target`, `backup-target-credential-secret`, and `backupstore-poll-interval` for backup target management.
+Starting with v1.8.0, Longhorn supports usage of multiple backupstores. You can configure backup targets to access backupstores on the **Setting/Backup Target** page of the Longhorn UI. v1.8.0 improves on earlier Longhorn versions, which only allow you to use a single backup target for accessing a backupstore. Earlier versions also require you to configure the settings `backup-target`, `backup-target-credential-secret`, and `backupstore-poll-interval` for backup target management.
 
 > **IMPORTANT:**  
-> The settings `backup-target`, `backup-target-credential-secret`, and `backupstore-poll-interval` were removed from the global settings because backup targets can be configured on the **Setting/Backup Target** screen of the Longhorn UI. Longhorn also creates a default backup target (`default`) during installation and upgrades.
+> The settings `backup-target`, `backup-target-credential-secret`, and `backupstore-poll-interval` were removed from the global settings because backup targets can be configured on the **Setting/Backup Target** page of the Longhorn UI. Longhorn also creates a default backup target (`default`) during installation and upgrades.
 
 Longhorn creates a default backup target (`default`) during installation and upgrades. The default backup target is used for the following:
 

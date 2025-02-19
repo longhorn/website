@@ -3,19 +3,20 @@ title: Backup Longhorn System
 weight: 1
 ---
 
-- [What is in the Longhorn system backup bundle](#longhorn-system-backup-bundle)
-- [How to create a Longhorn system backup](#create-longhorn-system-backup)
-    - [Prerequisite](#prerequisite)
-    - [Configuration](#configuration)
-    - [Single Execution](#single-execution)
-      - [Using Longhorn UI](#create-a-system-backup-using-the-longhorn-ui)
-      - [Using kubectl command](#create-a-system-backup-using-kubectl)
-    - [Recurring Job](#recurring-job)
-      - [Using Longhorn UI](#create-a-recurring-backup-job-using-the-longhorn-ui)
-      - [Using kubectl command](#create-a-recurring-backup-job-using-kubectl)
-- [How to delete Longhorn system backup](#delete-longhorn-system-backup)
-    - [Using Longhorn UI](#delete-a-system-backup-using-the-longhorn-ui)
-    - [Using kubectl command](#delete-a-system-backup-using-kubectl)
+- [Longhorn System Backup Bundle](#longhorn-system-backup-bundle)
+- [Create Longhorn System Backup](#create-longhorn-system-backup)
+  - [Prerequisite](#prerequisite)
+  - [Configuration](#configuration)
+    - [Volume Backup Policy](#volume-backup-policy)
+  - [Single Execution](#single-execution)
+    - [Create a System Backup Using the Longhorn UI](#create-a-system-backup-using-the-longhorn-ui)
+    - [Create a System Backup Using `kubectl`](#create-a-system-backup-using-kubectl)
+  - [Recurring Job](#recurring-job)
+    - [Create a Recurring Backup Job Using the Longhorn UI](#create-a-recurring-backup-job-using-the-longhorn-ui)
+    - [Create a Recurring Backup Job Using `kubectl`](#create-a-recurring-backup-job-using-kubectl)
+- [Delete Longhorn System Backup](#delete-longhorn-system-backup)
+  - [Delete a System Backup Using the Longhorn UI](#delete-a-system-backup-using-the-longhorn-ui)
+  - [Delete a System Backup Using `kubectl`](#delete-a-system-backup-using-kubectl)
 - [History](#history)
 
 ## Longhorn System Backup Bundle
@@ -77,7 +78,7 @@ The Longhorn system backup offers the following volume backup policies:
 
 #### Create a System Backup Using the Longhorn UI
 
-1. Go to the `System Backup` screen in the `Setting` drop-down list.
+1. Go to the `System Backup` page in the `Setting` drop-down list.
 
 1. Click `Create` under `System Backup`.
 
@@ -111,7 +112,7 @@ The Longhorn system backup offers the following volume backup policies:
 
 #### Create a Recurring Backup Job Using the Longhorn UI
 
-1. Go to the `Recurring Job` screen.
+1. Go to the `Recurring Job` page.
 
 1. Click on `Create Recurring Job`.
 
@@ -153,7 +154,7 @@ You can delete the Longhorn system backup in the remote backup target using the 
 
 ### Delete a System Backup Using the Longhorn UI
 
-1. Go to the `System Backup` screen in the `Setting` drop-down list.
+1. Go to the `System Backup` page in the `Setting` drop-down list.
 
 1. Delete a single system backup in the `Operation` drop-down menu next to the system backup. Or delete in batch with the `Delete` button.
 
