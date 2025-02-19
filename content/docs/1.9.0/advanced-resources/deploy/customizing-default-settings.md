@@ -63,6 +63,7 @@ From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Insta
         #storage-over-provisioning-percentage:
         #storage-minimal-available-percentage:
         #upgrade-checker:
+        #upgrade-responder-url:
         #default-replica-count:
         #default-data-locality:
         #default-longhorn-static-storage-class:
