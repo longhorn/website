@@ -23,6 +23,7 @@ weight: 1
   - [Deleting Confirmation Flag](#deleting-confirmation-flag)
   - [Disable Revision Counter](#disable-revision-counter)
   - [Enable Upgrade Checker](#enable-upgrade-checker)
+  - [Upgrade Responder URL](#upgrade-responder-url)
   - [Latest Longhorn Version](#latest-longhorn-version)
   - [Allow Collecting Longhorn Usage Metrics](#allow-collecting-longhorn-usage-metrics)
   - [Pod Deletion Policy When Node is Down](#pod-deletion-policy-when-node-is-down)
@@ -259,6 +260,12 @@ Allows engine controller and engine replica to disable revision counter file upd
 > Default: `true`
 
 Upgrade Checker will check for a new Longhorn version periodically. When there is a new version available, it will notify the user in the Longhorn UI.
+
+#### Upgrade Responder URL
+
+> Default: `https://longhorn-upgrade-responder.rancher.io/v1/checkupgrade`
+
+The Upgrade Responder sends a notification whenever a new Longhorn version that you can upgrade to becomes available.
 
 #### Latest Longhorn Version
 
