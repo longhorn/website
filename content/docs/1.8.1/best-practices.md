@@ -60,9 +60,9 @@ The following Linux OS distributions and versions have been verified during the 
 |-----|------------------------------| --------
 | 1.  | Ubuntu                       | 24.04
 | 2.  | SUSE Linux Enterprise Server| 15 SP6
-| 3.  | SUSE Linux Enterprise Micro  | 6.0
+| 3.  | SUSE Linux Enterprise Micro  | 6.1
 | 4.  | Red Hat Enterprise Linux     | 9.5
-| 5.  | Oracle Linux                 | 9.4
+| 5.  | Oracle Linux                 | 9.5
 | 6.  | Rocky Linux                  | 9.5
 | 7.  | Talos Linux                  | 1.8
 | 8.  | Container-Optimized OS (GKE) | 117
@@ -97,9 +97,9 @@ We recommend running your Kubernetes cluster on one of the following versions. T
 
 | Release | Released     | End-of-life
 |---------|--------------| -----------
+| 1.32    | 11 Dec 2024  | 28 Feb 2026
 | 1.31    | 13 Aug 2024  | 28 Oct 2025
 | 1.30    | 17 Apr 2024  | 28 Jun 2025
-| 1.29    | 13 Dec 2023  | 28 Feb 2025
 
 Referenced to https://endoflife.date/kubernetes.
 
