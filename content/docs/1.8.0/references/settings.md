@@ -461,7 +461,7 @@ If the collection process is not completed within the allotted time, Longhorn co
 
 #### Fast Replica Rebuild Enabled
 
-> Default: `false`
+> Default: `true`
 
 The setting enables fast replica rebuilding feature. It relies on the checksums of snapshot disk files, so setting the snapshot-data-integrity to **enable** or **fast-check** is a prerequisite.
 
