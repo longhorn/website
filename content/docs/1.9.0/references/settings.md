@@ -285,6 +285,7 @@ This information will help us gain insights how Longhorn is being used, which wi
 - Number of disks of each device type (HDD, SSD, NVMe, unknown).
   > This value may not be accurate for virtual machines.
 - Number of disks for each Longhorn disk type (block, filesystem).
+- Host system architecture.
 - Host kernel release.
 - Host operating system (OS) distribution.
 - Kubernetes node provider.
@@ -295,6 +296,7 @@ This information will help us gain insights how Longhorn is being used, which wi
 - Number of volumes of each access mode (RWO, RWX, unknown).
 - Number of volumes of each data engine (v1, v2).
 - Number of volumes of each data locality type (disabled, best_effort, strict_local, unknown).
+- Number of volumes that are encrypted or unencrypted.
 - Number of volumes of each frontend type (blockdev, iscsi).
 - Average volume size in bytes.
 - Average volume actual size in bytes.
