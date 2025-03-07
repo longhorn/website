@@ -298,6 +298,10 @@ This information will help us gain insights how Longhorn is being used, which wi
 - Number of volumes of each data locality type (disabled, best_effort, strict_local, unknown).
 - Number of volumes that are encrypted or unencrypted.
 - Number of volumes of each frontend type (blockdev, iscsi).
+- Number of replicas.
+- Number of snapshots.
+- Number of backing images.
+- Number of orphans.
 - Average volume size in bytes.
 - Average volume actual size in bytes.
 - Average number of snapshots per volume.
