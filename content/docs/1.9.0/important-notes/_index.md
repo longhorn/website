@@ -43,9 +43,11 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 
 The functionality of the [environment check script](https://github.com/longhorn/longhorn/blob/master/scripts/environment_check.sh) (`environment_check.sh`) overlaps with that of the Longhorn CLI, which is available starting with v1.7.0. Because of this, the script is deprecated in v1.7.0 and is scheduled for removal in v1.9.0.
 
-### Kubernetes Custom Resource API longhorn.io/v1beta1
+### Deprecate `longhorn.io/v1beta1` API
 
-Since v1.9.0, custom resource `longhorn.io/v1beta1` is deprecated, and is planned to be removed at v1.10.0. Change to `longhorn.io/v1beta2` instead.
+The `v1beta1` version of the Longhorn API is deprecated in v1.9.0 and will be removed in v1.10.0. During Longhorn system upgrades, custom resources using `longhorn.io/v1beta1` are automatically migrated to `longhorn.io/v1beta2`.
+
+Deprecated APIs are no longer served and may therefore cause unexpected or unwanted behavior. Avoid using longhorn.io/v1beta1 in new code and, if possible, rewrite existing code to exclude this version.
 
 ## General
 
