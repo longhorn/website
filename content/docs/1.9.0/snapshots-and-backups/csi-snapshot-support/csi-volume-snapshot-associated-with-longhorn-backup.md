@@ -25,7 +25,11 @@ driver: driver.longhorn.io
 deletionPolicy: Delete
 parameters:
   type: bak
+  backupMode: full
 ```
+
+Longhorn performs incremental backups by default. Add the `backupMode: full` parameter to create a full backup. For more information about `backupMode`, see [Create A Backup](../../backup-and-restore/create-a-backup).
+
 For more information about `VolumeSnapshotClass`, see the kubernetes documentation for [VolumeSnapshotClasses](https://kubernetes.io/docs/concepts/storage/volume-snapshot-classes/).
 
 After that, create a Kubernetes `VolumeSnapshot` object with `volumeSnapshotClassName` points to the name of the `VolumeSnapshotClass` (`longhorn-backup-vsc`) and
