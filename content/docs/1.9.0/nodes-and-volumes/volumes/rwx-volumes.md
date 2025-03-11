@@ -28,8 +28,6 @@ It is necessary to meet the following requirements in order to use RWX volumes.
 2. The hostname of each node is unique in the Kubernetes cluster.
 
     There is a dedicated recovery backend service for NFS servers in Longhorn system. When a client connects to an NFS server, the client's information, including its hostname, will be stored in the recovery backend. When a share-manager Pod or NFS server is abnormally terminated, Longhorn will create a new one. Within the 90-seconds grace period, clients will reclaim locks using the client information stored in the recovery backend.
-    
-    > **Tip:** The [environment check script](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh) helps users to check all nodes have unique hostnames.
 
 # Creation and Usage of an RWX Volume
 

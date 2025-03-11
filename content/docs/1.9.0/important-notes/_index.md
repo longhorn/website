@@ -6,8 +6,10 @@ weight: 1
 This page lists important notes for Longhorn v{{< current-version >}}.
 Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}) for the full release note.
 
+- [Removal](#removal)
+  - [Remove Environment Check Script](#remove-environment-check-script)
 - [Deprecation](#deprecation)
-  - [Environment Check Script](#environment-check-script)
+  - [Deprecate `longhorn.io/v1beta1` API](#deprecate-longhorniov1beta1-api)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Upgrade Check Events](#upgrade-check-events)
@@ -37,11 +39,13 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Newly Introduced Functionalities since Longhorn v1.9.0](#newly-introduced-functionalities-since-longhorn-v190)
     - [Networking](#networking)
 
+## Removal
+
+### Remove Environment Check Script
+
+The environment check script (`environment_check.sh`), which was deprecated in v1.7.0, has been removed from v1.9.0. Use the [Longhorn Command Line Tool](../advanced-resources/longhornctl/) to check the Longhorn environment for potential issues.
+
 ## Deprecation
-
-### Environment Check Script
-
-The functionality of the [environment check script](https://github.com/longhorn/longhorn/blob/master/scripts/environment_check.sh) (`environment_check.sh`) overlaps with that of the Longhorn CLI, which is available starting with v1.7.0. Because of this, the script is deprecated in v1.7.0 and is scheduled for removal in v1.9.0.
 
 ### Deprecate `longhorn.io/v1beta1` API
 

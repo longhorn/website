@@ -22,7 +22,7 @@ weight: 12
       --personal
     ```
 
-> Use [this script](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/scripts/environment_check.sh) to check the Longhorn environment for potential issues.
+> Use [Longhorn Command Line Tool](../../../advanced-resources/longhornctl/) to check the Longhorn environment for potential issues.
 
 ## Installing Longhorn
 

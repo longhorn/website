@@ -8,7 +8,7 @@ weight: 8
 
 Each node in the Kubernetes cluster where Longhorn will be installed must fulfill [these requirements.](../#installation-requirements)
 
-[This script](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/scripts/environment_check.sh) can be used to check the Longhorn environment for potential issues.
+[Longhorn Command Line Tool](../../../advanced-resources/longhornctl/) can be used to check the Longhorn environment for potential issues.
 
 The initial settings for Longhorn can be customized by [editing the deployment configuration file.](../../../advanced-resources/deploy/customizing-default-settings/#using-the-longhorn-deployment-yaml-file)
 
