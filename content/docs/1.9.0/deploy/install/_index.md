@@ -40,7 +40,7 @@ Each node in the Kubernetes cluster where Longhorn is installed must fulfill the
 
 The Longhorn workloads must be able to run as root in order for Longhorn to be deployed and operated properly.
 
-[This script](#using-the-environment-check-script) can be used to check the Longhorn environment for potential issues.
+[Longhorn Command Line Tool](../../advanced-resources/longhornctl/) can be used to check the Longhorn environment for potential issues.
 
 For the minimum recommended hardware, refer to the [best practices guide.](../../best-practices/#minimum-recommended-hardware)
 
@@ -105,36 +105,22 @@ Use the `install` sub-command to install and set up the preflight dependencies b
 >
 > The documentation of the Linux distribution you are using should outline such requirements. For example, the [SLE Micro documentation](https://documentation.suse.com/sle-micro/6.0/html/Micro-transactional-updates/index.html#reference-transactional-update-usage) explains how all changes made by the `transactional-update` command become active only after the node is rebooted.
 
-### Using the Environment Check Script
-
-> **Deprecation Notice**
-> Since Longhorn v1.7.0, we have introduced the [Longhorn Command Line Tool](../../advanced-resources/longhornctl/). The functionality of the environment check script, [environment_check.sh](https://github.com/longhorn/longhorn/blob/master/scripts/environment_check.sh) overlaps with that of the Longhorn Command Line Tool. Therefore, the script has been deprecated in v1.7.0 and is scheduled for removal in v1.8.0.
-
-We've written a script to help you gather enough information about the factors.
-
-Note `jq` maybe required to be installed locally prior to running env check script.
-
-To run script:
+### Using Longhorn Command Line Tool
 
 ```shell
-curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh | bash
+longhornctl --kube-config ~/.kube/config --image longhornio/longhorn-cli:v{{< current-version >}} install preflight
 ```
 
 Example of result:
 
 ```shell
-[INFO]  Required dependencies 'kubectl jq mktemp sort printf' are installed.
-[INFO]  All nodes have unique hostnames.
-[INFO]  Waiting for longhorn-environment-check pods to become ready (0/3)...
-[INFO]  All longhorn-environment-check pods are ready (3/3).
-[INFO]  MountPropagation is enabled
-[INFO]  Checking kernel release...
-[INFO]  Checking iscsid...
-[INFO]  Checking multipathd...
-[INFO]  Checking packages...
-[INFO]  Checking nfs client...
-[INFO]  Cleaning up longhorn-environment-check pods...
-[INFO]  Cleanup completed.
+INFO[2025-03-11T08:17:57+08:00] Initializing preflight installer
+INFO[2025-03-11T08:17:57+08:00] Cleaning up preflight installer
+INFO[2025-03-11T08:17:57+08:00] Running preflight installer
+INFO[2025-03-11T08:17:57+08:00] Installing dependencies with package manager
+INFO[2025-03-11T08:18:28+08:00] Installed dependencies with package manager
+INFO[2025-03-11T08:18:28+08:00] Cleaning up preflight installer
+INFO[2025-03-11T08:18:28+08:00] Completed preflight installer. Use 'longhornctl check preflight' to check the result.
 ```
 
 ### Pod Security Policy

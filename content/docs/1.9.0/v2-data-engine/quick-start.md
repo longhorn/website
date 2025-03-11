@@ -13,7 +13,7 @@ aliases:
   - [Restart `kubelet`](#restart-kubelet)
   - [Check Environment](#check-environment)
     - [Using the Longhorn Command Line Tool](#using-the-longhorn-command-line-tool)
-    - [Using the Script](#using-the-script)
+    - [Use Longhorn Command Line Tool](#use-longhorn-command-line-tool)
 - [Installation](#installation)
   - [Install Longhorn System](#install-longhorn-system)
   - [Enable V2 Data Engine](#enable-v2-data-engine)
@@ -179,12 +179,14 @@ worker1:
   - Module uio_pci_generic is loaded
 ```
 
-#### Using the Script
+#### Use Longhorn Command Line Tool
 
 Make sure everything is correctly configured and installed by
 ```
-bash -c "$(curl -sfL https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/scripts/environment_check.sh)" -s -s
+longhornctl --kube-config ~/.kube/config --image longhornio/longhorn-cli:v{{< current-version >}} install preflight --enable-spdk
 ```
+
+See [Longhorn Command Line Tool](../../advanced-resources/longhornctl/) for more information.
 
 ## Installation
 
