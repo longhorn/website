@@ -19,6 +19,10 @@ You can prepare a V1 Data Engine backing image using any of the supported data s
 4. Restore a backing image from the backupstore, For more information, see [Backing Image Backup](../backing-image-backup).
 5. Clone a backing image.
 
+#### Volume exporting
+
+A backing image serves as the initial snapshot in the snapshot chain of a Longhorn volume. When you export a volume with an associated backing image, Longhorn merges that image with the delta changes, resulting in a new consolidated backing image.
+
 #### The checksum of a backing image
 - The checksum of a backing image is **the SHA512 checksum** of the whole backing image **file** rather than that of the actual content.
   What's the difference? When Longhorn calculates the checksum of a qcow2 file, it will read the file as a raw file instead of using the qcow library to read the correct content. In other words, users always get the correct checksum by executing `shasum -a 512 <the file path>` regardless of the file format.
