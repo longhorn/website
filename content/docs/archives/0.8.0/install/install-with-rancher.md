@@ -6,7 +6,7 @@ weight: 7
 
 One benefit of installing Longhorn through Rancher catalog is Rancher provides authentication to Longhorn UI.
 
-If there is a new version of Longhorn available, you will see an `Upgrade Available` sign on the `Catalog Apps` screen. You can click `Upgrade` button to upgrade Longhorn manager. See more about upgrade [here](../upgrades).
+If there is a new version of Longhorn available, you will see an `Upgrade Available` sign on the `Catalog Apps` page. You can click `Upgrade` button to upgrade Longhorn manager. See more about upgrade [here](../upgrades).
 
 ## Prerequisites
 
@@ -29,7 +29,7 @@ If there is a new version of Longhorn available, you will see an `Upgrade Availa
 
 1. Navigate to the Cluster and Project where you will install Longhorn. We recommended to create a new project e.g. `Storage` for Longhorn.
 {{< figure src="/img/screenshots/install/select-project.png" >}}
-2. Navigate to the `Catalog Apps` screen.
+2. Navigate to the `Catalog Apps` page.
 {{< figure src="/img/screenshots/install/apps-launch.png" >}}
 4. Find the Longhorn item in the catalog and click it.
 {{< figure src="/img/screenshots/install/longhorn.png" >}}
@@ -41,4 +41,4 @@ If there is a new version of Longhorn available, you will see an `Upgrade Availa
 8. Click the index.html link to navigate to the Longhorn dashboard.
 {{< figure src="/img/screenshots/install/dashboard.png" >}}
 
-After Longhorn has been successfully installed, you can access the Longhorn UI by navigating to the `Catalog Apps` screen.
+After Longhorn has been successfully installed, you can access the Longhorn UI by navigating to the `Catalog Apps` page.

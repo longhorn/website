@@ -37,13 +37,13 @@ See [here](../upgrade-from-v0.6.2-to-v0.7.0)
 
 ### From Longhorn App (Rancher Catalog App)
 
-On Rancher UI, navigate to the `Catalog Apps` screen and click the
+On Rancher UI, navigate to the `Catalog Apps` page and click the
 `Upgrade available` button. Do not change any of the settings. *Do not change
 any of the settings right now.* Click `Upgrade`.
 
 Access Longhorn UI. Periodically refresh the page until the version in the
-bottom left corner of the screen changes. Wait until websocket indicators in
-bottom right corner of the screen turn solid green. Navigate to
+bottom left corner of the page changes. Wait until websocket indicators in
+bottom right corner of the page turn solid green. Navigate to
 `Setting->Engine Image` and wait until the new Engine Image is `Ready`.
 
 ### From Longhorn deployment yaml
@@ -95,7 +95,7 @@ Consider deleting unimportant workloads using the old driver to reduce effort.
 CSI is the newest out-of-tree Kubernetes storage interface.
 
 1. [Backup existing volumes](#backup-existing-volumes).
-2. On Rancher UI, navigate to the `Catalog Apps` screen, locate the `Longhorn` app and click the `Up to date` button. Under `Kubernetes Driver`, select
+2. On Rancher UI, navigate to the `Catalog Apps` page, locate the `Longhorn` app and click the `Up to date` button. Under `Kubernetes Driver`, select
 `flexvolume`. We recommend leaving `Flexvolume Path` empty. Click `Upgrade`.
 3. Restore each volume by following the [restore procedure](../../users-guide/backup-and-restore/restore-statefulset). This procedure is tailored to the StatefulSet workload, but the process is approximately the same for all workloads.
 
@@ -254,7 +254,7 @@ kubectl -n ${NAMESPACE} delete settings.longhorn.rancher.io --all
 #### Upgrade from v0.1
 For Rancher users who are running Longhorn v0.1, **do not click the upgrade button in the Rancher App.**
 
-1. Delete the Longhorn App from `Catalog Apps` screen in Rancher UI.
+1. Delete the Longhorn App from `Catalog Apps` page in Rancher UI.
 2. Launch Longhorn App template version `0.3.1`.
 3. Restore Longhorn System data. This step is required for Rancher users running Longhorn App `v0.1`.
 Don't change the NAMESPACE variable below, since the newly installed Longhorn system will be installed in the `longhorn-system` namespace.

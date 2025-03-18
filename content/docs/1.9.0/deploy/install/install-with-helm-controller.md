@@ -9,7 +9,7 @@ In this section, you will learn how to install Longhorn with the HelmChart contr
 
 - Kubernetes cluster: Ensure that each node fulfills the [installation requirements](../#installation-requirements).  Cluster should be running RKE2 or K3s.
 
-> [This script](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/scripts/environment_check.sh) can be used to check the Longhorn environment for potential issues.
+> [Longhorn Command Line Tool](../../../advanced-resources/longhornctl/) can be used to check the Longhorn environment for potential issues.
 
 ### Installing Longhorn
 

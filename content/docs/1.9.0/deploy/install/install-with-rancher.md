@@ -6,13 +6,13 @@ weight: 7
 
 One benefit of installing Longhorn through Rancher Apps & Marketplace is that Rancher provides authentication to the Longhorn UI.
 
-If there is a new version of Longhorn available, you will see an `Upgrade Available` sign on the `Apps & Marketplace` screen. You can click `Upgrade` button to upgrade Longhorn manager. See more about upgrade [here](../../upgrade).
+If there is a new version of Longhorn available, you will see an `Upgrade Available` sign on the `Apps & Marketplace` page. You can click `Upgrade` button to upgrade Longhorn manager. See more about upgrade [here](../../upgrade).
 
 ## Prerequisites
 
 Each node in the Kubernetes cluster where Longhorn is installed must fulfill [these requirements.](../#installation-requirements)
 
-[This script](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/scripts/environment_check.sh) can be used to check the Longhorn environment for potential issues.
+[Longhorn Command Line Tool](../../../advanced-resources/longhornctl/) can be used to check the Longhorn environment for potential issues.
 
 ## Installation
 
@@ -22,7 +22,7 @@ Each node in the Kubernetes cluster where Longhorn is installed must fulfill [th
 1. Optional: If Rancher version is 2.5.9 or before, we recommend creating a new project for Longhorn, for example, `Storage`.
 2. Navigate to the cluster where you will install Longhorn.
     {{< figure src="/img/screenshots/install/rancher-2.6/select-project.png" >}}
-3. Navigate to the `Apps & Marketplace` screen.
+3. Navigate to the `Apps & Marketplace` page.
     {{< figure src="/img/screenshots/install/rancher-2.6/apps-launch.png" >}}
 4. Find the Longhorn item in the charts and click it.
     {{< figure src="/img/screenshots/install/rancher-2.6/longhorn.png" >}}

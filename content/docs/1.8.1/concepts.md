@@ -267,7 +267,7 @@ A backup is an object in the backupstore, which is an NFS or S3 compatible objec
 
 Because the volume replication is synchronized, and because of network latency, it is hard to do cross-region replication. The backupstore is also used as a medium to address this problem.
 
-When the backup target is configured on the Longhorn UI (**Setting > Backup Target**), Longhorn can connect to the backupstore and display a list of existing backups on the **Backup** screen.
+When the backup target is configured on the Longhorn UI (**Setting > Backup Target**), Longhorn can connect to the backupstore and display a list of existing backups on the **Backup** page.
 
 If Longhorn runs in a second Kubernetes cluster, it can also sync disaster recovery volumes to the backups in secondary storage, so that your data can be recovered more quickly in the second Kubernetes cluster.
 
@@ -338,7 +338,7 @@ After a DR volume is activated, it becomes a normal Longhorn volume and it canno
 
 ## 3.4. Backupstore Update Intervals, RTO, and RPO
 
-Incremental restoration is usually triggered by the periodic backupstore update. You can set the update interval on the backup target settings screen (**Setting > Backup Target**).
+Incremental restoration is usually triggered by the periodic backupstore update. You can set the update interval on the backup target settings page (**Setting > Backup Target**).
 
 Notice that this interval can potentially impact Recovery Time Objective (RTO). If it is too long, there may be a large amount of data for the disaster recovery volume to restore, which will take a long time.
 

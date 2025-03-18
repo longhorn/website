@@ -47,7 +47,7 @@ By default, Longhorn backs up only data that was changed since the last backup. 
 Starting with v1.7.0, Longhorn can perform full backups that upload all data blocks in the volume and overwrite existing data blocks in the backupstore.
 
 ### Create a Full Backup Using the Longhorn UI
-1. Go to the **Volume** screen.
+1. Go to the **Volume** page.
 2. Select the volume that you want to back up.
 3. Click **Create Backup**.
 4. Add appropriate labels.

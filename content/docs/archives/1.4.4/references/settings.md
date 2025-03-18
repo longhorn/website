@@ -308,7 +308,7 @@ Longhorn blocks support bundle creation when reaching the upper bound of the lim
 
 #### Fast Replica Rebuild Enabled
 
-> Default: `false`
+> Default: `true`
 
 The setting enables fast replica rebuilding feature. It relies on the checksums of snapshot disk files, so setting the snapshot-data-integrity to **enable** or **fast-check** is a prerequisite.
 

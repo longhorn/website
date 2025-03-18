@@ -58,7 +58,7 @@ spec:
 #### Clone a Volume Using a Snapshot
 1. Go to the **Volume** page.
 2. Click the name of the volume that you want to clone.
-3. In the **Snapshot and Backups** section of the details screen, identify the snapshot that you want to use and then click **Clone Volume**.
+3. In the **Snapshot and Backups** section of the details page, identify the snapshot that you want to use and then click **Clone Volume**.
 4. (Optional) Configure the settings of the new volume.
 5. Click **OK**.
 

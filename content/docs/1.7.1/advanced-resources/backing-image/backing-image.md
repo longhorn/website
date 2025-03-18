@@ -7,6 +7,9 @@ Longhorn natively supports backing images since v1.1.1.
 
 A QCOW2 or RAW image can be set as the backing/base image of a Longhorn volume, which allows Longhorn to be integrated with a VM like [Harvester](https://github.com/rancher/harvester).
 
+> **Important**:  
+> The image size must be **a multiple of 512 bytes**. Longhorn uses direct I/O, which requires alignment of file sizes with the underlying storage block size.
+
 ## Create Backing Image
 
 ### Parameters during creation
@@ -18,6 +21,10 @@ You can prepare a backing image using four different kinds of data sources.
 3. Export an existing in-cluster volume as a backing image.
 4. Restore a backing image from the backupstore, For more information, see [Backing Image Backup](../backing-image-backup).
 5. Clone a backing image.
+
+#### Volume exporting
+
+A backing image serves as the initial snapshot in the snapshot chain of a Longhorn volume. When you export a volume with an associated backing image, Longhorn merges that image with the delta changes, resulting in a new consolidated backing image.
 
 #### The checksum of a backing image
 - The checksum of a backing image is **the SHA512 checksum** of the whole backing image **file** rather than that of the actual content.
