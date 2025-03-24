@@ -45,7 +45,7 @@ For the installation requirements, go to [this section.](../install/requirements
 
 # 1. Design
 
-The Longhorn design has two layers: the data plane and the controlplane. The Longhorn Engine is a storage controller that corresponds to the data plane, and the Longhorn Manager corresponds to the controlplane.
+The Longhorn design has two layers: the data plane and the control plane. The Longhorn Engine is a storage controller that corresponds to the data plane, and the Longhorn Manager corresponds to the control plane.
 
 ## 1.1. The Longhorn Manager and the Longhorn Engine
 
