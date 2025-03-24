@@ -11,13 +11,6 @@ disableKinds = ["taxonomy", "taxonomyTerm"]
 [markup.highlight]
 style = "paraiso-dark"
 
-[markup]
-  [markup.goldmark]
-    [markup.goldmark.renderer]
-      unsafe = true
-    [markup.goldmark.parser]
-      autoHeadingID = true
-
 [params]
 description = "Cloud native distributed block storage for Kubernetes"
 tagline = "Easy to use, 100% open source, run anywhere"

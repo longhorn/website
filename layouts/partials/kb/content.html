@@ -2,7 +2,7 @@
 <section class="section">
   <div class="container">
     <div class="columns">
-      <div class="column is-four-fifths">
+      <div class="column is-three-quarters">
         <div class="docs-content">
           <div class="content is-medium has-extra-bottom-padding">
             {{ .Content }}
@@ -19,14 +19,14 @@
         </a>
       </div>
 
-      <div class="column is-one-fifth">
-        <p class="title is-size-4 is-size-5-mobile">
+      <div class="column is-one-quarter">
+        <p class="title is-size-5 is-size-5-mobile">
           Recent articles
         </p>
 
         {{ range $posts }}
         <div class="pb-2">
-        <a class="is-size-6 is-size-6-mobile" href="{{ .RelPermalink }}">
+        <a class="is-size-5 is-size-6-mobile" href="{{ .RelPermalink }}">
           {{ .Title }}
         </a>
 
