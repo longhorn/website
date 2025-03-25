@@ -64,14 +64,14 @@ The Engine and replicas are orchestrated using Kubernetes.
 In the figure below,
 
 - There are three instances with Longhorn volumes.
-- Each volume has a dedicated controller, known as the Longhorn Engine. For a V1 volume, the engine runs as a Linux process, while for a V2 volume, it operates as an SPDK logical volume.
+- Each volume has a dedicated controller, called the Longhorn Engine. For V1 volumes, the engine runs as a Linux process, while for V2 volumes, it operates as an SPDK logical volume.
 - Each Longhorn volume has two replicas. In V1, replicas run as Linux processes, while in V2, they are implemented as SPDK RAID block devices (bdevs).
 - The arrows in the figure indicate the read/write data flow between the volume, controller instance, replica instances, and disks.
 - By creating a separate Longhorn Engine for each volume, if one controller fails, the function of other volumes is not impacted.
 
 **Figure 1. Read/write Data Flow between the Volume, Longhorn Engine, Replica Instances, and Disks**
 
-{{< figure alt="read/write data flow between the volume, controller instance, replica instances, and disks" src="/img/diagrams/architecture/how-longhorn-works.svg" >}}
+{{< figure alt="read/write data flow between the volume, controller instance, replica instances, and disks" src="/img/diagrams/architecture/how-longhorn-works-with-kubernetes.svg" >}}
 
 ## 1.2. Advantages of a Microservices Based Design
 
@@ -98,7 +98,7 @@ The Kubernetes CSI plugin calls Longhorn to create volumes to create persistent 
 
 The Kubernetes cluster internally uses the CSI interface to communicate with the Longhorn CSI plugin. And the Longhorn CSI plugin communicates with the Longhorn Manager using the Longhorn API.
 
-For V1 volumes, Longhorn relies on iSCSI, which may require additional node setup, including the installation of `open-iscsi` or `iscsiadm`, depending on the distribution. V2 volumes have different prerequisites, such as certain kernel modules and huge pages.
+For V1 volumes, Longhorn relies on iSCSI, which may require additional node setup, including the installation of `open-iscsi` or `iscsiadm`, depending on the distribution. V2 volumes, on the other hand, have different prerequisites, such as the need for specific kernel modules and huge pages.
 
 ## 1.5. The Longhorn UI
 
