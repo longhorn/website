@@ -1,4 +1,4 @@
-{{ $inServerMode := site.IsServer }}
+{{ $inServerMode := eq (getenv "HUGO_ENVIRONMENT") "development" }}
 {{ $includePaths := (slice "node_modules") }}
 {{ $sass         := "sass/style.sass" }}
 {{ $cssOutput    := "css/style.css" }}
