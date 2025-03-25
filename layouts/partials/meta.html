@@ -9,8 +9,13 @@
 {{ $locale  := site.Params.locale }}
 {{ $versions := site.Params.versions }}
 {{ $latestVersion := index $versions 0 }}
-{{ $currentVersion := index (split .Page.File.Dir "/" ) 1 }}
-{{ $latestURL := $url | replaceRE $currentVersion "latest" }}
+{{ $currentVersion := "" }}
+{{ $latestURL := $url }}
+
+{{ if .Page.File }}
+  {{ $currentVersion = index (split .Page.File.Dir "/" ) 1 }}
+  {{ $latestURL = $url | replaceRE $currentVersion "latest" }}
+{{ end }}
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

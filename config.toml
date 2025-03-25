@@ -6,10 +6,13 @@ enableRobotsTXT = true
 pygmentsCodeFences = true
 pygmentsCodeFencesGuessSyntax = true
 enableGitInfo = true
-disableKinds = ["taxonomy", "taxonomyTerm"]
+disableKinds = ["taxonomy"]
 
 [markup.highlight]
 style = "paraiso-dark"
+
+[markup.goldmark.renderer]
+  unsafe = true # Add this line to allow raw HTML
 
 [params]
 description = "Cloud native distributed block storage for Kubernetes"
@@ -118,7 +121,7 @@ footer = "longhorn-horizontal-black.png"
 [outputs]
 home = ["HTML", "REDIRECTS", "RSS"]
 
-[privacy.twitter]
+[privacy.twitter.x]
 disable = false
 enableDNT = false
 simple = true
