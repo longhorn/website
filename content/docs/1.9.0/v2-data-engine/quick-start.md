@@ -159,6 +159,11 @@ INFO[2024-01-01T00:00:10Z] Cleaning up preflight installer
 INFO[2024-01-01T00:00:10Z] Completed preflight installer. Use 'longhornctl check preflight' to check the result.
 ```
 
+> **Note**:
+> Some immutable Linux distributions, such as SUSE Linux Enterprise Micro (SLE Micro), require you to reboot worker nodes after running the `install` sub-command. After the reboot, you must run the `install` sub-command again to complete the operation.
+>
+> The documentation for your Linux distribution should outline such requirements. For example, the [SLE Micro documentation](https://documentation.suse.com/sle-micro/6.0/html/Micro-transactional-updates/index.html#reference-transactional-update-usage) explains that all changes made by the `transactional-update` command become active only after the node is rebooted.
+
 After installing and setting up the preflight dependencies, you can run the `check` sub-command again to verify that all environment settings are correct.
 
 ```shell
