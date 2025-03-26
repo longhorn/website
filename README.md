@@ -6,7 +6,11 @@ This repo houses the assets used to build the website for Longhorn, available at
 
 ## Running the site locally
 
-To run the website locally, you need to have the [Hugo](https://gohugo.io) static site generator installed (installation instructions [here](https://gohugo.io/getting-started/installing/)). Once Hugo is installed:
+To run the website locally, you need to have the [Hugo](https://gohugo.io) static site generator installed (installation instructions [here](https://gohugo.io/getting-started/installing/)). You can find the latest release and pre-compiled binaries on the [Hugo releases page](https://github.com/gohugoio/hugo/releases). 
+
+**Important:** This project requires the "extended" edition of Hugo to process SCSS/SASS files.
+
+Once Hugo is installed:
 
 ```bash
 yarn install
