@@ -489,6 +489,12 @@ The value in seconds specifies the timeout of the HTTP client to the replica's f
 
 Number of seconds that Longhorn allows for the completion of replica rebuilding and snapshot cloning operations.
 
+#### Offline Replica Rebuilding
+
+> Default: `false`
+
+The setting triggers the offline replica rebuilding for all detached volumes if necessary.
+
 #### RWX Volume Fast Failover (Experimental)
 
 > Default: `false`
