@@ -45,11 +45,11 @@ For the installation requirements, go to [this section.](../deploy/install/#inst
 
 # 1. Design
 
-The Longhorn design has two layers: the data plane and the controlplane. The Longhorn Engine is a storage controller that corresponds to the data plane, and the Longhorn Manager corresponds to the controlplane.
+The Longhorn design has two layers: the data plane and the control plane. The Longhorn Engine is a storage controller that corresponds to the data plane, and the Longhorn Manager corresponds to the control plane.
 
 ## 1.1. The Longhorn Manager and the Longhorn Engine
 
-The Longhorn Manager Pod runs on each node in the Longhorn cluster as a Kubernetes [DaemonSet](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/). It is responsible for creating and managing volumes in the Kubernetes cluster, and handles the API calls from the UI or the volume plugins for Kubernetes. It follows the Kubernetes controller pattern, which is sometimes called the operator pattern.
+The Longhorn Manager Pod runs on each node in the Longhorn cluster as a Kubernetes [DaemonSet](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/). It is responsible for creating and managing volumes in the Kubernetes cluster, and handles the API calls from the Longhorn UI or the Longhorn CSI plugin. It follows the Kubernetes controller pattern, which is sometimes called the operator pattern.
 
 The Longhorn Manager communicates with the Kubernetes API server to create a new Longhorn volume [CR](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/). Then the Longhorn Manager watches the API server's response, and when it sees that the Kubernetes API server created a new Longhorn volume CR, the Longhorn Manager creates a new volume.
 
@@ -64,20 +64,20 @@ The Engine and replicas are orchestrated using Kubernetes.
 In the figure below,
 
 - There are three instances with Longhorn volumes.
-- Each volume has a dedicated controller, which is called the Longhorn Engine and runs as a Linux process.
-- Each Longhorn volume has two replicas, and each replica is a Linux process.
+- Each volume has a dedicated controller, called the Longhorn Engine. For V1 volumes, the engine runs as a Linux process, while for V2 volumes, it operates as an SPDK logical volume.
+- Each Longhorn volume has two replicas. In V1, replicas run as Linux processes, while in V2, they are implemented as SPDK RAID block devices (bdevs).
 - The arrows in the figure indicate the read/write data flow between the volume, controller instance, replica instances, and disks.
 - By creating a separate Longhorn Engine for each volume, if one controller fails, the function of other volumes is not impacted.
 
 **Figure 1. Read/write Data Flow between the Volume, Longhorn Engine, Replica Instances, and Disks**
 
-{{< figure alt="read/write data flow between the volume, controller instance, replica instances, and disks" src="/img/diagrams/architecture/how-longhorn-works.svg" >}}
+{{< figure alt="read/write data flow between the volume, controller instance, replica instances, and disks" src="/img/diagrams/architecture/how-longhorn-works-with-kubernetes.svg" >}}
 
 ## 1.2. Advantages of a Microservices Based Design
 
 In Longhorn, each Engine only needs to serve one volume, simplifying the design of the storage controllers. Because the failure domain of the controller software is isolated to individual volumes, a controller crash will only impact one volume.
 
-The Longhorn Engine is simple and lightweight enough so that we can create as many as 100,000 separate engines. Kubernetes schedules these separate engines, drawing resources from a shared set of disks and working with Longhorn to form a resilient distributed block storage system.
+The Longhorn Engine is simple and lightweight, allowing us to create thousands of separate engines. Kubernetes schedules these separate engines, drawing resources from a shared set of disks and working with Longhorn to form a resilient distributed block storage system.
 
 Because each volume has its own controller, the controller and replica instances for each volume can also be upgraded without causing a noticeable disruption in IO operations.
 
@@ -98,7 +98,7 @@ The Kubernetes CSI plugin calls Longhorn to create volumes to create persistent 
 
 The Kubernetes cluster internally uses the CSI interface to communicate with the Longhorn CSI plugin. And the Longhorn CSI plugin communicates with the Longhorn Manager using the Longhorn API.
 
-Longhorn does leverage iSCSI, so extra configuration of the node may be required. This may include the installation of open-iscsi or iscsiadm depending on the distribution.
+For V1 volumes, Longhorn relies on iSCSI, which may require additional node setup, including the installation of `open-iscsi` or `iscsiadm`, depending on the distribution. V2 volumes, on the other hand, have different prerequisites, such as the need for specific kernel modules and huge pages.
 
 ## 1.5. The Longhorn UI
 
