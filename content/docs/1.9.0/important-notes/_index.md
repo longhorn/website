@@ -12,6 +12,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Deprecate `longhorn.io/v1beta1` API](#deprecate-longhorniov1beta1-api)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
+  - [CRD Upgrade Validation](#crd-upgrade-validation)
   - [Upgrade Check Events](#upgrade-check-events)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
   - [Install/Upgrade with Helm Controller](#installupgrade-with-helm-controller)
@@ -58,6 +59,16 @@ Deprecated APIs are no longer served and may therefore cause unexpected or unwan
 ### Kubernetes Version Requirement
 
 Due to the upgrade of the CSI external snapshotter to version v8.2.0, ensure that all clusters are running Kubernetes v1.25 or later before upgrading to Longhorn v1.8.0 or any newer version.
+
+### CRD Upgrade Validation
+
+During the upgrade process, the Custom Resource Definition (CRD) may be applied after the new Longhorn manager has started. This sequencing ensures that the controller does not process objects with deprecated data or fields. However, this can result in the Longhorn manager failing during the initial upgrade phase if the CRD has not been applied yet.
+
+If the Longhorn manager crashes during the upgrade, check the logs to determine if the failure is due to the CRD not being applied. In such cases, the logs may contain error messages similar to the following:
+
+```
+time="2025-03-27T06:59:55Z" level=fatal msg="Error starting manager: upgrade resources failed: BackingImage in version \"v1beta2\" cannot be handled as a BackingImage: strict decoding error: unknown field \"spec.diskFileSpecMap\", unknown field \"spec.diskSelector\", unknown field \"spec.minNumberOfCopies\", unknown field \"spec.nodeSelector\", unknown field \"spec.secret\", unknown field \"spec.secretNamespace\"" func=main.main.DaemonCmd.func3 file="daemon.go:94"
+```
 
 ### Upgrade Check Events
 Longhorn performs a pre-upgrade check when upgrading with Helm or Rancher App Marketplace.  If a check fails, the upgrade will stop and the reason for the check's failure will be recorded in an event.  For more detail, see [Upgrading Longhorn Manager](../deploy/upgrade/longhorn-manager).
