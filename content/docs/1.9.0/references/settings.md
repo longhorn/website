@@ -969,6 +969,12 @@ data is moved to other disks.
 
 When set to true, the snapshot used by the backup will be automatically cleaned up when the backup is deleted.
 
+#### Auto Cleanup Snapshot After On-Demand Backup Completed
+
+> Default: `false`
+
+When set to true, the snapshot used by the backup will be automatically cleaned up after the on-demand backup is completed.
+
 #### V1 Data Engine
 
 > Default: `true`
