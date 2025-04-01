@@ -85,6 +85,7 @@ weight: 1
   - [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu)
   - [Disable Snapshot Purge](#disable-snapshot-purge)
   - [Auto Cleanup Snapshot When Delete Backup](#auto-cleanup-snapshot-when-delete-backup)
+  - [Auto Cleanup Snapshot After On-Demand Backup Completed](#auto-cleanup-snapshot-after-on-demand-backup-completed)
   - [V1 Data Engine](#v1-data-engine)
   - [V2 Data Engine](#v2-data-engine)
   - [Guaranteed Instance Manager CPU for V2 Data Engine](#guaranteed-instance-manager-cpu-for-v2-data-engine)
@@ -968,6 +969,12 @@ data is moved to other disks.
 > Default: `false`
 
 When set to true, the snapshot used by the backup will be automatically cleaned up when the backup is deleted.
+
+#### Auto Cleanup Snapshot After On-Demand Backup Completed
+
+> Default: `false`
+
+When set to true, the snapshot used by the backup will be automatically cleaned up after the on-demand backup is completed.
 
 #### V1 Data Engine
 
