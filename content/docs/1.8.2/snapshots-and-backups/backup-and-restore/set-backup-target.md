@@ -243,7 +243,7 @@ Make sure `NO_PROXY` contains the network addresses, network address ranges and 
 
    Here is a reference to the GCP IAM roles you have available for granting access to a serviceaccount https://cloud.google.com/storage/docs/access-control/iam-roles.
 
-> Note: Consider creating an IAM condition to reduce how many buckets this serviceaccount has object admin access to.
+> Note: Consider creating an IAM condition to reduce how many buckets this serviceaccount has object admin access to. On the Google Cloud console, go to **Cloud Storage > Buckets**, and select the target bucket. On the **Bucket details** screen, go to the **Permissions** tab, click **Grant Access**, and grant your service account Storage Object Admin permissions for the target bucket.
 
 4. Navigate to your [buckets in cloud storage](https://console.cloud.google.com/storage/browser) and select your newly created bucket.
 5. Go to the cloud storage's settings menu and navigate to the [interoperability tab](https://console.cloud.google.com/storage/settings;tab=interoperability)
@@ -290,6 +290,8 @@ stringData:
 Once the secret is created and Longhorn's settings are saved, navigate to the backup tab in Longhorn. If there are any issues, they should pop up as a toast notification.
 
 If you don't get any error messages, try creating a backup and confirm the content is pushed out to your new bucket.
+
+The **Backup Target** screen on the Longhorn UI displays the status of each backup target. If the status is **Error** and no other details are provided, you can use the **Inspect** feature of your browser to view the response data for `/v1/backuptargets`. Errors from GCP are labeled "AWS Error" (for example, "AWS Error: AccessDenied"). For more information, see [Issue #10428](https://github.com/longhorn/longhorn/issues/10428).
 
 ### Set up a Local Testing Backupstore
 Longhorn provides sample backupstore server setups for testing purposes.  You can find samples for AWS S3 (MinIO), Azure, CIFS and NFS in the `longhorn/deploy/backupstores` folder.
