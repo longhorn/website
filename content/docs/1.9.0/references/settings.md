@@ -40,6 +40,7 @@ weight: 1
   - [Fast Replica Rebuild Enabled](#fast-replica-rebuild-enabled)
   - [Timeout of HTTP Client to Replica File Sync Server](#timeout-of-http-client-to-replica-file-sync-server)
   - [Long gRPC Timeout](#long-grpc-timeout)
+  - [Offline Replica Rebuilding](#offline-replica-rebuilding)
   - [RWX Volume Fast Failover (Experimental)](#rwx-volume-fast-failover-experimental)
 - [Snapshot](#snapshot)
   - [Snapshot Data Integrity](#snapshot-data-integrity)
@@ -489,6 +490,12 @@ The value in seconds specifies the timeout of the HTTP client to the replica's f
 > Default: `86400`
 
 Number of seconds that Longhorn allows for the completion of replica rebuilding and snapshot cloning operations.
+
+#### Offline Replica Rebuilding
+
+> Default: `false`
+
+The setting enables the offline replica rebuilding for all detached volumes if necessary.
 
 #### RWX Volume Fast Failover (Experimental)
 
