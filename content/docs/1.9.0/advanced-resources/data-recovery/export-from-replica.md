@@ -83,7 +83,8 @@ If the whole Kubernetes cluster or Longhorn system goes offline, the following s
    apiVersion: v1
    kind: Pod
    metadata:
-     name: longhorn-launch
+     name: longhorn-recovery
+     namespace: longhorn-system
    spec:
      hostPID: true
      containers:
