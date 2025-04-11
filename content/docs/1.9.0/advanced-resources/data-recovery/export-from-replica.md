@@ -57,7 +57,11 @@ If the whole Kubernetes cluster or Longhorn system goes offline, the following s
     {"Size":1073741824,"Head":"volume-head-000.img","Dirty":true,"Rebuilding":false,"Parent":"","SectorSize":512,"BackingFileName":""}
    ```
    From the result above, you can see the volume size is `1073741824` (1 GiB). Note the size.
-5. To export the content of the volume, use the following command to create a single replica Longhorn volume container:
+5. To export the content of the volume, follow the instructions below based on your environment:
+
+   Docker (RKE1)
+
+   To export the content of the volume in Docker, use the following command to create a single replica Longhorn volume container:
 
    ```
    docker run -v /dev:/host/dev -v /proc:/host/proc -v <data_path>:/volume --privileged longhornio/longhorn-engine:v{{< current-version >}} launch-simple-longhorn <volume_name> <volume_size>
@@ -68,8 +72,50 @@ If the whole Kubernetes cluster or Longhorn system goes offline, the following s
    ```
    docker run -v /dev:/host/dev -v /proc:/host/proc -v /var/lib/longhorn/replicas/pvc-06b4a8a8-b51d-42c6-a8cc-d8c8d6bc65bc-d890efb2:/volume --privileged longhornio/longhorn-engine:v{{< current-version >}} launch-simple-longhorn pvc-06b4a8a8-b51d-42c6-a8cc-d8c8d6bc65bc 1073741824
    ```
+
+   Containerd (RKE2/k3s)
+
+   To export the content of the volume in RKE2/k3s, you will need to create a static pod manifest. This manifest will launch the Longhorn engine and expose the volume.
+
+   Create a file named `longhorn-recovery.yaml` under `/var/lib/rancher/rke2/agent/pod-manifests/` with the following content:
+
+   ```
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: longhorn-launch
+   spec:
+     hostPID: true
+     containers:
+     - name: engine
+       image: longhornio/longhorn-engine:v<current-version>
+       securityContext:
+         privileged: true
+       command: ["launch-simple-longhorn"]
+       args: ["<volume-name>", "<volume-size-in-bytes>"]
+       volumeMounts:
+       - name: dev
+         mountPath: /host/dev
+       - name: proc
+         mountPath: /host/proc
+       - name: data
+         mountPath: /volume
+     volumes:
+     - name: dev
+       hostPath:
+         path: /dev
+     - name: proc
+       hostPath:
+         path: /proc
+     - name: data
+       hostPath:
+         path: <host-path-to-replica>
+     restartPolicy: Never
+   ```
+  Replace `<current-version>` with the Longhorn version you are using, `<volume-name>` with the name of the volume you want to recover, and `<host-path-to-replica>` with the path to the replica directory you found in step 1.
+
 **Result:** Now you should have a block device created on `/dev/longhorn/<volume_name>` for this device, such as `/dev/longhorn/pvc-06b4a8a8-b51d-42c6-a8cc-d8c8d6bc65bc` for the example above. Now you can mount the block device to get the access to the data.
 
 > To avoid accidental change of the volume content, it's recommended to use `mount -o ro` to mount the directory as `readonly`.
 
-After you are done accessing the volume content, use `docker stop` to stop the container. The block device should disappear from the `/dev/longhorn/` directory after the container is stopped.
+After you are done accessing the volume content, use `docker stop` to stop the container. For RKE2, clean up the resources by removing the static pod manifest file `sudo rm /var/lib/rancher/rke2/agent/pod-manifests/longhorn-recovery.yaml`
