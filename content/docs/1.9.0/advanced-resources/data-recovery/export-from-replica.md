@@ -75,7 +75,7 @@ If the whole Kubernetes cluster or Longhorn system goes offline, the following s
 
    Containerd (RKE2/k3s)
 
-   To export the content of the volume in RKE2/k3s, you will need to create a static pod manifest. This manifest will launch the Longhorn engine and expose the volume.
+   To export the content of the volume in RKE2/k3s, you need to create a static pod manifest. This manifest will launch the Longhorn engine and expose the volume.
 
    Create a file named `longhorn-recovery.yaml` under `/var/lib/rancher/rke2/agent/pod-manifests/` with the following content:
 
