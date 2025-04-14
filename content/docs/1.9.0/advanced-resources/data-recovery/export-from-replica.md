@@ -113,7 +113,10 @@ If the whole Kubernetes cluster or Longhorn system goes offline, the following s
          path: <host-path-to-replica>
      restartPolicy: Never
    ```
-  Replace `<current-version>` with the Longhorn version you are using, `<volume-name>` with the name of the volume you want to recover, and `<host-path-to-replica>` with the path to the replica directory you found in step 1.
+   Replace the placeholders with the following:
+   - `<current-version>`: The version of Longhorn you are using.
+   - `<volume-name>`: The name of the volume you want to recover.
+   - `<host-path-to-replica>`: The path to the replica directory you found in Step 1.
 
 **Result:** Now you should have a block device created on `/dev/longhorn/<volume_name>` for this device, such as `/dev/longhorn/pvc-06b4a8a8-b51d-42c6-a8cc-d8c8d6bc65bc` for the example above. Now you can mount the block device to get the access to the data.
 
