@@ -32,6 +32,12 @@ weight: 3
 | longhorn_node_storage_usage_bytes | The used storage of this node | longhorn_node_storage_usage_bytes{node="worker-3"} 9.060941824e+09 |
 | longhorn_node_storage_reservation_bytes | The reserved storage for other applications and system on this node | longhorn_node_storage_reservation_bytes{node="worker-3"} 2.519618519e+10 |
 
+## Engine
+
+| Name | Description  | Example |
+|---|---|---|
+| longhorn_engine_rebuild_progress | Engine rebuild progress (0–100%). Visible only during replica rebuilding. | longhorn_engine_rebuild_progress{pvc_namespace="default",pvc="testvol",engine="testvol-e-0",rebuild_src="10.42.1.215:20036",rebuild_dst="10.42.0.131:20922"} 42 |
+
 ## Disk
 
 | Name | Description  | Example |
