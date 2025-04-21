@@ -32,10 +32,20 @@ weight: 3
 | longhorn_node_storage_usage_bytes | The used storage of this node | longhorn_node_storage_usage_bytes{node="worker-3"} 9.060941824e+09 |
 | longhorn_node_storage_reservation_bytes | The reserved storage for other applications and system on this node | longhorn_node_storage_reservation_bytes{node="worker-3"} 2.519618519e+10 |
 
+## Replica
+
+| Name | Description | Example |
+|---|---|---|
+| longhorn_replica_info | Static metadata for each Replica CR | longhorn_replica_info{replica="testvol-r-abc", volume="testvol", node="node-1", disk_path="/dev/xda", data_engine="v2"} 1 |
+| longhorn_replica_state | Current runtime state of the replica: running, stopped, error, starting, stopping, unknown | longhorn_replica_state{replica="testvol-r-abc", volume="testvol", node="node-1", state="running"} 1 |
+
 ## Engine
 
-| Name | Description  | Example |
+| Name | Description | Example |
 |---|---|---|
+| longhorn_engine_info | Static metadata for each Engine CR | longhorn_engine_info{engine="testvol-e-0", volume="testvol", node="node-1", data_engine="v2", frontend="blockdev", image="longhorn-instance-manager:latest"} 1 |
+| longhorn_engine_state | Runtime state of an engine: running, stopped, error, starting, stopping, unknown | longhorn_engine_state{engine="testvol-e-0", volume="testvol", node="node-1", state="running"} 1 |
+| longhorn_engine_replica_mode | The mode reported for each replica by the engine: RW, WO, ERR | longhorn_engine_replica_mode{volume="testvol", engine="testvol-e-0", replica="testvol-r-abc", mode="RW"} 1 |
 | longhorn_engine_rebuild_progress | Engine rebuild progress (0–100%). Visible only during replica rebuilding. | longhorn_engine_rebuild_progress{pvc_namespace="default",pvc="testvol",engine="testvol-e-0",rebuild_src="10.42.1.215:20036",rebuild_dst="10.42.0.131:20922"} 42 |
 
 ## Disk
