@@ -40,6 +40,7 @@ weight: 1
   - [Fast Replica Rebuild Enabled](#fast-replica-rebuild-enabled)
   - [Timeout of HTTP Client to Replica File Sync Server](#timeout-of-http-client-to-replica-file-sync-server)
   - [Long gRPC Timeout](#long-grpc-timeout)
+  - [Offline Replica Rebuilding](#offline-replica-rebuilding)
   - [RWX Volume Fast Failover (Experimental)](#rwx-volume-fast-failover-experimental)
 - [Snapshot](#snapshot)
   - [Snapshot Data Integrity](#snapshot-data-integrity)
@@ -490,6 +491,19 @@ The value in seconds specifies the timeout of the HTTP client to the replica's f
 
 Number of seconds that Longhorn allows for the completion of replica rebuilding and snapshot cloning operations.
 
+#### Offline Replica Rebuilding
+
+> Default: `false`
+
+Controls whether Longhorn automatically rebuilds degraded replicas while the volume is detached. This setting only takes effect if the volume-level setting is set to `ignored` or `enabled`. Available options:
+
+- **true**: Enables offline replica rebuilding for all detached volumes (unless overridden at the volume level).
+- **false**: Disables offline replica rebuilding globally (unless overridden at the volume level).
+
+> **Note:** Offline rebuilding occurs only when a volume is detached. Volumes in a faulted state will not trigger offline rebuilding.
+
+This setting allows Longhorn to automatically rebuild replicas for detached volumes when needed.
+
 #### RWX Volume Fast Failover (Experimental)
 
 > Default: `false`
@@ -595,7 +609,6 @@ Failed backups will be checked and cleaned up during backupstore polling which i
 This setting specifies how many failed backup or snapshot job histories should be retained.
 
 History will not be retained if the value is 0.
-
 
 #### Cronjob Successful Jobs History Limit
 
