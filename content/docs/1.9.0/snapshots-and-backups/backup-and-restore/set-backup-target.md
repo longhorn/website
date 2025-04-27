@@ -30,6 +30,9 @@ Longhorn also supports setting up recurring snapshot/backup jobs for volumes, vi
 
 This page covers the following topics:
 
+- [Default Backup Target](#default-backup-target)
+  - [Set the Default Backup Target Using Helm](#set-the-default-backup-target-using-helm)
+  - [Set the Default Backup Target Using a Manifest YAML File](#set-the-default-backup-target-using-a-manifest-yaml-file)
 - [Set up AWS S3 Backupstore](#set-up-aws-s3-backupstore)
 - [Set up GCP Cloud Storage Backupstore](#set-up-gcp-cloud-storage-backupstore)
 - [Set up a Local Testing Backupstore](#set-up-a-local-testing-backupstore)
@@ -365,7 +368,11 @@ To include multiple certificates, one can just concatenate the different certifi
       AWS_ENDPOINTS: aHR0cHM6Ly9taW5pby1zZXJ2aWNlLmRlZmF1bHQ6OTAwMA==
       VIRTUAL_HOSTED_STYLE: dHJ1ZQ== # true
     ```
-2. Deploy/update the secret and set it in `Settings/General/BackupTargetSecret`.
+2. Deploy/update the secret.
+3. Create correspondence backup target in `Settings > Backup Target`.
+   1. Name: The target name you want.
+   2. URL: `s3://<bucket-name>@<region>`.
+   3. Credential Secret: `s3-compatible-backup-target-secret` in this example.
 
 ### Set up NFS Backupstore
 
