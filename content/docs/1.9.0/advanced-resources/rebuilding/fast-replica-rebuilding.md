@@ -1,5 +1,5 @@
 ---
-title: Fast Replica Rebuild
+title: Fast Replica Rebuilding
 weight: 5
 ---
 

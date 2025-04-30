@@ -17,6 +17,8 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
 - [System Backup And Restore](#system-backup-and-restore)
   - [Recurring System Backup](#recurring-system-backup)
+- [Replica Rebuilding](#replica-rebuilding)
+  - [Offline Replica Rebuilding](#offline-replica-rebuilding)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Newly Introduced Functionalities since Longhorn v1.9.0](#newly-introduced-functionalities-since-longhorn-v190)
@@ -74,6 +76,14 @@ Automated checks are only performed on some upgrade paths, and the pre-upgrade c
 Starting with Longhorn v1.9.0, you can create a recurring job for system backup creation.
 
 For more information, see [#6534](https://github.com/longhorn/longhorn/issues/6534)
+
+## Replica Rebuilding
+
+### Offline Replica Rebuilding
+
+Starting with v1.9.0, Longhorn supports offline replica rebuilding, allowing degraded volumes to automatically rebuild replicas while detached.​
+
+For more information, see [Offline replica rebuilding](../advanced-resources/rebuilding/offline-replica-rebuilding) and [#8443](https://github.com/longhorn/longhorn/issues/8443).
 
 ## V2 Data Engine
 
