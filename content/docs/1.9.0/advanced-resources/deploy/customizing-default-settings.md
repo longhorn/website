@@ -89,7 +89,7 @@ From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Insta
         #backing-image-recovery-wait-interval:
         #guaranteed-instance-manager-cpu:
         #kubernetes-cluster-autoscaler-enabled:
-        #orphan-auto-deletion:
+        #orphan-resource-auto-deletion:
         #storage-network:
         #recurring-successful-jobs-history-limit:
         #recurring-failed-jobs-history-limit:
@@ -146,7 +146,7 @@ You can also provide a copy of the `values.yaml` file with the default settings 
       volumeAttachmentRecoveryPolicy: never
       nodeDownPodDeletionPolicy: do-nothing
       guaranteedInstanceManagerCpu: 15
-      orphanAutoDeletion: false
+      orphanResourceAutoDeletion: ""
     ```
 
 3. Run Helm with `values.yaml`:
