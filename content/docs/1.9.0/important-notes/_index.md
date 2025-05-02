@@ -8,6 +8,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 
 - [Removal](#removal)
   - [Remove Environment Check Script](#remove-environment-check-script)
+  - [Orphan-Auto-Deletion Setting](#orphan-auto-deletion-setting)
 - [Deprecation](#deprecation)
   - [Deprecate `longhorn.io/v1beta1` API](#deprecate-longhorniov1beta1-api)
 - [General](#general)
@@ -26,12 +27,20 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
     - [Data Recovery](#data-recovery)
     - [Networking](#networking)
     - [Backing Image](#backing-image)
+- [Resilience](#resilience)
+  - [Orphaned Instance Deletion](#orphaned-instance-deletion)
 
 ## Removal
 
 ### Remove Environment Check Script
 
 The environment check script (`environment_check.sh`), which was deprecated in v1.7.0, has been removed from v1.9.0. Use the [Longhorn Command Line Tool](../advanced-resources/longhornctl/) to check the Longhorn environment for potential issues.
+
+### Orphan-Auto-Deletion Setting
+
+The `orphan-auto-deletion` setting has been replaced by `orphan-resource-auto-deletion` in v1.9.0. To replicate the previous behavior (`orphan-auto-deletion`), include `replicaData` in the `orphan-resource-auto-deletion` value.
+
+For more information, see [Orphaned Data Cleanup](../advanced-resources/data-cleanup/orphaned-data-cleanup) and [Orphaned Instance Cleanup](../advanced-resources/data-cleanup/orphaned-instance-cleanup).
 
 ## Deprecation
 
@@ -110,3 +119,11 @@ Longhorn currently does not support live upgrading of V2 volumes. Ensure that al
 #### Backing Image
 
 - [Encryption](https://github.com/longhorn/longhorn/issues/10356)
+
+## Resilience
+
+### Orphaned Instance Deletion
+
+Starting with Longhorn v1.9.0, Longhorn includes the capability to [track the orphaned instances](../advanced-resources/data-cleanup/orphaned-instance-cleanup). These orphaned instances can be removed either automatically or manually.
+
+For more information, see [#6764](https://github.com/longhorn/longhorn/issues/6764)
