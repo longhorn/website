@@ -381,7 +381,11 @@ To include multiple certificates, one can just concatenate the different certifi
       VIRTUAL_HOSTED_STYLE: dHJ1ZQ== # true
     ```
 
-2. Deploy/update the secret and set it in `Settings/General/BackupTargetSecret`.
+2. Deploy/update the secret.
+3. Create correspondence backup target in `Settings > Backup Target`.
+   1. Name: The target name you want.
+   2. URL: `s3://<bucket-name>@<region>/`.
+   3. Credential Secret: `s3-compatible-backup-target-secret` in this example.
 
 ### Set up NFS Backupstore
 
