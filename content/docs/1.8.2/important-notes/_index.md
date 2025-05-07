@@ -8,6 +8,8 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 
 - [Deprecation](#deprecation)
   - [Environment Check Script](#environment-check-script)
+- [Breaking Change](#breaking-change)
+  - [V2 Backing Image](#v2-backing-image)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [CRD Upgrade Validation](#crd-upgrade-validation)
@@ -40,6 +42,24 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 ### Environment Check Script
 
 The functionality of the [environment check script](https://github.com/longhorn/longhorn/blob/master/scripts/environment_check.sh) (`environment_check.sh`) overlaps with that of the Longhorn CLI, which is available starting with v1.7.0. Because of this, the script is deprecated in v1.7.0 and is scheduled for removal in v1.9.0.
+
+## Breaking Change
+
+### V2 Backing Image
+
+Starting with Longhorn v1.8.2, V2 backing images are incompatible with earlier versions due to naming conflicts in the extended attributes (`xattrs`) used by SPDK backing image logical volumes. As a result, V2 backing images must be deleted and recreated during the upgrade process. Since backing images cannot be deleted while volumes using them still exist, you must first back up, delete, and later restore those volumes as the following steps:
+
+- Before upgrading to v1.8.2:
+  - Verify that backup targets are functioning properly.
+  - Create full backups of all volumes that use a V2 backing image.
+  - Detach and delete these volumes after the backups complete.
+  - In the **Backing Image** page, save the specifications of all V2 backing images, including the name and the image source.
+  - Delete all V2 backing images.
+- After upgrading:
+  - Recreate the V2 backing images using the same names and image sources.
+  - Restore the volumes from your backups.
+
+For more details, see [Issue #10805](https://github.com/longhorn/longhorn/issues/10805) and [Issue #10969](https://github.com/longhorn/longhorn/issues/10969).
 
 ## General
 
