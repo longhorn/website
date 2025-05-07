@@ -12,6 +12,8 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Deprecated Fields in CRDs](#deprecated-fields-in-crds)
 - [Deprecation](#deprecation)
   - [`longhorn.io/v1beta1` API](#longhorniov1beta1-api)
+- [Breaking Change](#breaking-change)
+  - [V2 Backing Image](#v2-backing-image)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [CRD Upgrade Validation](#crd-upgrade-validation)
@@ -59,6 +61,21 @@ The `v1beta1` version of the Longhorn API is deprecated in v1.9.0 and will be re
 
 Deprecated APIs are no longer served and may therefore cause unexpected or unwanted behavior. Avoid using longhorn.io/v1beta1 in new code and, if possible, rewrite existing code to exclude this version.
 
+## Breaking Change
+
+### V2 Backing Image
+
+Due to naming conflicts in the extended attributes (xattrs) used by SPDK backing image logical volumes, the v1.9.0 V2 backing image is incompatible with previous versions.
+
+- **Before upgrading to v1.9.0**:
+  - Backup all volumes created using a V2 backing image.
+  - Delete these volumes after backup.
+- **After upgrading**:
+  - Recreate the necessary V2 backing images.
+  - Restore and rebuild volumes from your backups.
+
+For more information, see [#6534](https://github.com/longhorn/longhorn/issues/10805)
+
 ## General
 
 ### Kubernetes Version Requirement
@@ -100,7 +117,7 @@ For more information, see [#6534](https://github.com/longhorn/longhorn/issues/65
 
 ### Offline Replica Rebuilding
 
-Starting with v1.9.0, Longhorn supports offline replica rebuilding, allowing degraded volumes to automatically rebuild replicas while detached.​
+Starting with v1.9.0, Longhorn supports offline replica rebuilding, allowing degraded volumes to automatically rebuild replicas while detached.
 
 For more information, see [Offline replica rebuilding](../advanced-resources/rebuilding/offline-replica-rebuilding) and [#8443](https://github.com/longhorn/longhorn/issues/8443).
 
