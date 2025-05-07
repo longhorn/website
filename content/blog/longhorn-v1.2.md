@@ -141,7 +141,7 @@ For the detailed explanation, please go check [here](https://longhorn.io/docs/1.
 
 ## Automatic replica rebalancing based on soft Node/Zone anti-affinity
 
-Longhorn supports automatically replica rebalancing when node status changes (on/off) based on node/zone soft anti-affinity. When replicas are scheduled unevenly on nodes or zones, the **Longhorn Replica Auto Balance** setting enables the replicas for automatic balancing when a new node is available to the cluster.
+Longhorn supports automatically replica rebalancing when node status changes (on/off) based on node/zone soft anti-affinity. When replicas are scheduled unevenly on nodes or zones, the **Longhorn Replica Auto Balance** setting enables the replicas for automatic balancing when a new node is available to the cluster or when the replica count for a volume is updated.
 
 3 options are supported globally or per volume:
 

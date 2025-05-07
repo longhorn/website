@@ -142,7 +142,7 @@ The default replica count can be changed in the [settings.](../references/settin
 
 If the current healthy replica count is less than specified replica count, Longhorn will start rebuilding new replicas.
 
-If the current healthy replica count is more than the specified replica count, Longhorn will do nothing. In this situation, if a replica fails or is deleted, Longhorn won’t start rebuilding new replicas unless the healthy replica count dips below the specified replica count.
+If the current healthy replica count is more than the specified replica count, Replica Auto Balance and Data Locality are disabled, Longhorn will do nothing. In this situation, if a replica fails or is deleted, Longhorn won’t start rebuilding new replicas unless the healthy replica count dips below the specified replica count. If Replica Auto Balance or Data Locality are set, Longhorn might delete one of the replicas.
 
 Longhorn replicas are built using Linux [sparse files,](https://en.wikipedia.org/wiki/Sparse_file) which support thin provisioning.
 

@@ -142,7 +142,7 @@ The default replica count can be changed in the [settings.](../references/settin
 
 If the current healthy replica count is less than specified replica count, Longhorn will start rebuilding new replicas.
 
-If the current healthy replica count is more than the specified replica count, Longhorn will do nothing. In this situation, if a replica fails or is deleted, Longhorn won’t start rebuilding new replicas unless the healthy replica count dips below the specified replica count.
+If the current healthy replica count is more than the specified replica count, Replica Auto Balance and Data Locality are disabled, Longhorn will do nothing. In this situation, if a replica fails or is deleted, Longhorn won’t start rebuilding new replicas unless the healthy replica count dips below the specified replica count. If Replica Auto Balance or Data Locality are set, Longhorn might delete one of the replicas.
 
 Longhorn replicas are built using Linux [sparse files,](https://en.wikipedia.org/wiki/Sparse_file) which support thin provisioning.
 
@@ -283,7 +283,7 @@ While snapshots can be hundreds of gigabytes, backups are made of 2 MB files.
 
 Each new backup of the same original volume is incremental, detecting and transmitting the changed blocks between snapshots. This is a relatively easy task because each snapshot is a [differencing](https://en.wikipedia.org/wiki/Data_differencing) file and only stores the changes from the last snapshot. This design also means that if no blocks have changed and a backup is taken, that backup in the backupstore will show as 0 bytes. However if you were to restore from that backup it would still contain the full volume data, since it would restore the necessary blocks already present on the backupstore, that are required for a backup.
 
-To avoid storing a very large number of small blocks of storage, Longhorn performs backup operations using 2 MB blocks. That means that, if any 4K block in a 2MB boundary is changed, Longhorn will back up the entire 2MB block. This offers the right balance between manageability and efficiency. 
+To avoid storing a very large number of small blocks of storage, Longhorn performs backup operations using 2 MB blocks. That means that, if any 4K block in a 2MB boundary is changed, Longhorn will back up the entire 2MB block. This offers the right balance between manageability and efficiency.
 
 **Figure 3. The Relationship between Backups in Secondary Storage and Snapshots in Primary Storage**
 
