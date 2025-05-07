@@ -137,9 +137,7 @@ In the example, we will explain how to manage orphaned replica directories ident
 
 #### Manage Orphaned Replica Directories via Longhorn UI
 
-To delete orphaned replica directories through the Longhorn UI:
-
-1. In the top navigation bar, go to `Setting > Orphaned Data > Replica Data Orphans`.
+1. In the top navigation bar, go to `Setting > Orphan Resources > Replica Data`.
 2. Review the list of orphaned replica directories grouped by node and disk.
 3. To delete a directory, click `Operation > Delete`.
 
