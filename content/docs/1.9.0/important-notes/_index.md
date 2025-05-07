@@ -7,19 +7,26 @@ This page lists important notes for Longhorn v{{< current-version >}}.
 Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}) for the full release note.
 
 - [Removal](#removal)
-  - [Remove Environment Check Script](#remove-environment-check-script)
+  - [Environment Check Script](#environment-check-script)
   - [Orphan-Auto-Deletion Setting](#orphan-auto-deletion-setting)
+  - [Deprecated Fields in CRDs](#deprecated-fields-in-crds)
 - [Deprecation](#deprecation)
-  - [Deprecate `longhorn.io/v1beta1` API](#deprecate-longhorniov1beta1-api)
+  - [`longhorn.io/v1beta1` API](#longhorniov1beta1-api)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [CRD Upgrade Validation](#crd-upgrade-validation)
   - [Upgrade Check Events](#upgrade-check-events)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
-- [System Backup And Restore](#system-backup-and-restore)
+- [Backup And Restore](#backup-and-restore)
   - [Recurring System Backup](#recurring-system-backup)
 - [Replica Rebuilding](#replica-rebuilding)
   - [Offline Replica Rebuilding](#offline-replica-rebuilding)
+- [Resilience](#resilience)
+  - [Orphaned Instance Deletion](#orphaned-instance-deletion)
+- [Performance](#performance)
+  - [Snapshot Checksum Disabled for Single-Replica Volumes](#snapshot-checksum-disabled-for-single-replica-volumes)
+- [Observability](#observability)
+  - [Improved Metrics for Replica, Engine, and Rebuild Status](#improved-metrics-for-replica-engine-and-rebuild-status)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Newly Introduced Functionalities since Longhorn v1.9.0](#newly-introduced-functionalities-since-longhorn-v190)
@@ -27,12 +34,10 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
     - [Data Recovery](#data-recovery)
     - [Networking](#networking)
     - [Backing Image](#backing-image)
-- [Resilience](#resilience)
-  - [Orphaned Instance Deletion](#orphaned-instance-deletion)
 
 ## Removal
 
-### Remove Environment Check Script
+### Environment Check Script
 
 The environment check script (`environment_check.sh`), which was deprecated in v1.7.0, has been removed from v1.9.0. Use the [Longhorn Command Line Tool](../advanced-resources/longhornctl/) to check the Longhorn environment for potential issues.
 
@@ -42,9 +47,13 @@ The `orphan-auto-deletion` setting has been replaced by `orphan-resource-auto-de
 
 For more information, see [Orphaned Data Cleanup](../advanced-resources/data-cleanup/orphaned-data-cleanup) and [Orphaned Instance Cleanup](../advanced-resources/data-cleanup/orphaned-instance-cleanup).
 
+### Deprecated Fields in CRDs
+
+Deprecated fields have been removed from the CRDs. For details, see [#6684](https://github.com/longhorn/longhorn/issues/6684).
+
 ## Deprecation
 
-### Deprecate `longhorn.io/v1beta1` API
+### `longhorn.io/v1beta1` API
 
 The `v1beta1` version of the Longhorn API is deprecated in v1.9.0 and will be removed in v1.10.0. During Longhorn system upgrades, custom resources using `longhorn.io/v1beta1` are automatically migrated to `longhorn.io/v1beta2`.
 
@@ -73,12 +82,13 @@ Longhorn performs a pre-upgrade check when upgrading with Helm or Rancher App Ma
 ### Manual Checks Before Upgrade
 
 Automated checks are only performed on some upgrade paths, and the pre-upgrade checker may not cover some scenarios.  Manual checks, performed using either kubectl or the UI, are recommended for these schenarios.  You can take mitigating actions or defer the upgrade until issues are addressed.
-- Ensure that all V2 Data Engine volumes are detached and the replicas are stopped.  The V2 Data Engine currently does not support live upgrades.
+
+- Ensure that all V2 Data Engine volumes are detached and the replicas are stopped. The V2 Data Engine currently does not support live upgrades.
 - Avoid upgrading when volumes are in the "Faulted" status.  If all the replicas are deemed unusable, they may be deleted and data may be permanently lost (if no usable backups exist).
 - Avoid upgrading if a failed BackingImage exists.  For more information, see [Backing Image](../advanced-resources/backing-image/backing-image).
 - It is recommended to create a [Longhorn system backup](../advanced-resources/system-backup-restore/backup-longhorn-system) before performing the upgrade. This ensures that all critical resources, such as volumes and backing images, are backed up and can be restored in case any issues arise.
 
-## System Backup And Restore
+## Backup And Restore
 
 ### Recurring System Backup
 
@@ -93,6 +103,30 @@ For more information, see [#6534](https://github.com/longhorn/longhorn/issues/65
 Starting with v1.9.0, Longhorn supports offline replica rebuilding, allowing degraded volumes to automatically rebuild replicas while detached.​
 
 For more information, see [Offline replica rebuilding](../advanced-resources/rebuilding/offline-replica-rebuilding) and [#8443](https://github.com/longhorn/longhorn/issues/8443).
+
+## Resilience
+
+### Orphaned Instance Deletion
+
+Starting with Longhorn v1.9.0, Longhorn includes the capability to [track the orphaned instances](../advanced-resources/data-cleanup/orphaned-instance-cleanup). These orphaned instances can be removed either automatically or manually.
+
+For more information, see [#6764](https://github.com/longhorn/longhorn/issues/6764).
+
+## Performance
+
+### Snapshot Checksum Disabled for Single-Replica Volumes
+
+Starting with v1.9.0, Longhorn won't calculate snapshot checksums by default for single-replica v1 volumes. Since snapshot checksums are primarily used for ensuring data integrity and speeding up replica rebuilding, they are unnecessary in single-replica setups and disabling them helps reduce performance overhead.
+
+For more information, see [#10518](https://github.com/longhorn/longhorn/issues/10518).
+
+## Observability
+
+### Improved Metrics for Replica, Engine, and Rebuild Status
+
+Starting with v1.9.0, Longhorn enhances observability by introducing new Prometheus metrics that expose the state and identity of Replica and Engine CRs, as well as the rebuild status. These improvements make it easier to monitor rebuild events across the entire cluster.
+
+For more information, see [#10550](https://github.com/longhorn/longhorn/issues/10550) and [#10722](https://github.com/longhorn/longhorn/issues/10722).
 
 ## V2 Data Engine
 
@@ -119,11 +153,3 @@ Longhorn currently does not support live upgrading of V2 volumes. Ensure that al
 #### Backing Image
 
 - [Encryption](https://github.com/longhorn/longhorn/issues/10356)
-
-## Resilience
-
-### Orphaned Instance Deletion
-
-Starting with Longhorn v1.9.0, Longhorn includes the capability to [track the orphaned instances](../advanced-resources/data-cleanup/orphaned-instance-cleanup). These orphaned instances can be removed either automatically or manually.
-
-For more information, see [#6764](https://github.com/longhorn/longhorn/issues/6764)
