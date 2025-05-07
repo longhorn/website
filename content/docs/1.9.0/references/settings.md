@@ -49,7 +49,7 @@ weight: 1
   - [Snapshot Maximum Count](#snapshot-maximum-count)
   - [Freeze Filesystem For Snapshot](#freeze-filesystem-for-snapshot)
 - [Orphan](#orphan)
-  - [Orphaned Data Automatic Deletion](#orphaned-data-automatic-deletion)
+  - [Orphaned Resource Automatic Deletion](#orphaned-resource-automatic-deletion)
 - [Backups](#backups)
   - [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
   - [Backup Execution Timeout](#backup-execution-timeout)
@@ -573,10 +573,17 @@ UI, a StorageClass, or direct changes to an existing volume. `freezeFilesystemFo
 
 ### Orphan
 
-#### Orphaned Data Automatic Deletion
-> Default: `false`
+#### Orphaned Resource Automatic Deletion
 
-This setting allows Longhorn to automatically delete the `orphan` resource and its orphaned data like volume replica.
+> Example: `replicaData;engineInstance;replicaInstance`
+
+This setting allows Longhorn to automatically delete orphan resources and their corresponding orphaned resources. Orphan resources located on nodes that are in down or unknown state will not be cleaned up automatically.
+
+List the enabled resource types in a semicolon-separated list. Available items are:
+
+- `replicaData`: replica data store
+- `engineInstance`: engine runtime instance
+- `replicaInstance`: replica runtime instance
 
 ### Backups
 
