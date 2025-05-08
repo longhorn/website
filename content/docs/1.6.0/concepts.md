@@ -104,7 +104,6 @@ For v1 volumes, Longhorn uses iSCSI, which may require additional configuration 
 In contrast, v2 volumes come with different prerequisites, depending on the configuration:
 - Kernel modules like `vfio_pci` and `uio_pci_generic` are required.
 - For the NVMe-TCP frontend, the `nvme_tcp` module is necessary.
-- For the UBLK frontend, both the `ublk` module and huge pages support must be enabled.
 
 ## 1.5. The Longhorn UI
 
