@@ -3,7 +3,7 @@
   weight: 1
 ---
 
-When replicas are scheduled unevenly on nodes or zones, Longhorn `Replica Auto Balance` setting enables the replicas for automatic balancing when a new node is available to the cluster.
+When replicas are scheduled unevenly on nodes or zones, Longhorn `Replica Auto Balance` setting enables the replicas for automatic balancing when a new node is available to the cluster or when the replica count for a volume is updated.
 
 ## Replica Auto Balance Settings
 
