@@ -45,7 +45,6 @@ Longhorn supports the following architectures:
 
 1. AMD64
 1. ARM64
-1. s390x (experimental)
 
 ## Operating System
 
