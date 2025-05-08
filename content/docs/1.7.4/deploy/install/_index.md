@@ -273,6 +273,9 @@ In Longhorn system, backup feature requires NFSv4, v4.1 or v4.2, and ReadWriteMa
   cat /boot/config-`uname -r`| grep CONFIG_NFS_V4_2
   ```
 
+To ensure Longhorn features function correctly, verify both that your kernel supports the required NFS versions and that the correct version is actively in use. 
+- Backup/Restore functionality requires **NFSv4.2**, **NFSv4.1**, or **NFSv4.0**.
+- ReadWriteMany (RWX) volumes require **NFSv4.1**.
 
 The command used to install a NFSv4 client differs depending on the Linux distribution.
 
