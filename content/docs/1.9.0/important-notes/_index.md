@@ -33,7 +33,6 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
     - [Performance Enhancement](#performance-enhancement)
     - [Data Recovery](#data-recovery)
     - [Networking](#networking)
-    - [Backing Image](#backing-image)
 
 ## Removal
 
@@ -149,7 +148,3 @@ Longhorn currently does not support live upgrading of V2 volumes. Ensure that al
 #### Networking
 
 - [Storage Network](https://github.com/longhorn/longhorn/issues/6450)
-
-#### Backing Image
-
-- [Encryption](https://github.com/longhorn/longhorn/issues/10356)
