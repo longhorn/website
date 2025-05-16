@@ -109,12 +109,12 @@ In the example, we will explain how to manage orphaned replica directories ident
     ```
     # kubectl -n longhorn-system edit settings.longhorn.io orphan-resource-auto-deletion
     ```
-    Then, add `replicaData` to the list by including it as one of the semicolon-separated items.
+    Then, add `replica-data` to the list by including it as one of the semicolon-separated items.
 
     ```
     # kubectl -n longhorn-system get settings.longhorn.io orphan-resource-auto-deletion
-    NAME                            VALUE         APPLIED   AGE
-    orphan-resource-auto-deletion   replicaData   true      26m
+    NAME                            VALUE          APPLIED   AGE
+    orphan-resource-auto-deletion   replica-data   true      26m
     ```
 
 7. After enabling the automatic deletion and wait for a while, the `orphan` resources and directories are deleted automatically.
