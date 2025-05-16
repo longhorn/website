@@ -43,7 +43,7 @@ The environment check script (`environment_check.sh`), which was deprecated in v
 
 ### Orphan-Auto-Deletion Setting
 
-The `orphan-auto-deletion` setting has been replaced by `orphan-resource-auto-deletion` in v1.9.0. To replicate the previous behavior (`orphan-auto-deletion`), include `replicaData` in the `orphan-resource-auto-deletion` value.
+The `orphan-auto-deletion` setting has been replaced by `orphan-resource-auto-deletion` in v1.9.0. To replicate the previous behavior (`orphan-auto-deletion`), include `replica-data` in the `orphan-resource-auto-deletion` value.
 
 For more information, see [Orphaned Data Cleanup](../advanced-resources/data-cleanup/orphaned-data-cleanup) and [Orphaned Instance Cleanup](../advanced-resources/data-cleanup/orphaned-instance-cleanup).
 

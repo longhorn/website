@@ -575,15 +575,14 @@ UI, a StorageClass, or direct changes to an existing volume. `freezeFilesystemFo
 
 #### Orphaned Resource Automatic Deletion
 
-> Example: `replicaData;engineInstance;replicaInstance`
+> Example: `replica-data;instance`
 
 This setting allows Longhorn to automatically delete orphan resources and their corresponding orphaned resources. Orphan resources located on nodes that are in down or unknown state will not be cleaned up automatically.
 
 List the enabled resource types in a semicolon-separated list. Available items are:
 
-- `replicaData`: replica data store
-- `engineInstance`: engine runtime instance
-- `replicaInstance`: replica runtime instance
+- `replica-data`: replica data store
+- `instance`: engine and replica runtime instance
 
 ### Backups
 
