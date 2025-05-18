@@ -202,8 +202,8 @@ The following example shows how to manage orphaned instances using `kubectl`.
 
     ```
     # kubectl -n longhorn-system get settings.longhorn.io orphan-resource-auto-deletion
-    NAME                            VALUE     APPLIED   AGE
-    orphan-resource-auto-deletion   nstance   true      45h
+    NAME                            VALUE      APPLIED   AGE
+    orphan-resource-auto-deletion   instance   true      45h
     ```
 
 8. After enabling the automatic deletion and wait for a while, the `orphan` resources and processes are deleted automatically.
