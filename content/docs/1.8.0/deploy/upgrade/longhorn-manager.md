@@ -7,7 +7,7 @@ weight: 1
 
 We only support upgrading to v{{< current-version >}} from v1.7.x. For other versions, please upgrade to v1.7.x first.
 
-Engine live upgrade is supported from v1.6.x to v{{< current-version >}}.
+Engine live upgrade is supported from v1.7.x to v{{< current-version >}}.
 
 For airgap upgrades when Longhorn is installed as a Rancher app, you will need to modify the image names and remove the registry URL part.
 
