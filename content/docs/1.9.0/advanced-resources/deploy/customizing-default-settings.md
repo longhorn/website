@@ -147,6 +147,7 @@ You can also provide a copy of the `values.yaml` file with the default settings 
       nodeDownPodDeletionPolicy: do-nothing
       guaranteedInstanceManagerCpu: 15
       orphanResourceAutoDeletion: ""
+      orphanResourceAutoDeletionGracePeriod: 300
     ```
 
 3. Run Helm with `values.yaml`:

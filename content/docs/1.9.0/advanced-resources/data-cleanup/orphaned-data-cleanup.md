@@ -11,6 +11,8 @@ When a user introduces a disk into a Longhorn node, it may contain replica direc
 
 Longhorn supports the detection and cleanup of orphaned replica directories. It identifies the directories and gives a list of `orphan` resources that describe those directories. By default, Longhorn does not automatically delete `orphan` resources and their directories. Users can trigger the deletion of orphaned replica directories manually or have it done automatically.
 
+When automatic orphan deletion is enabled, Longhorn automatically deletes orphaned Custom Resources (CRs) and their associated directories after the delay defined by the `orphan-resource-auto-deletion-grace-period` setting. If a user manually deletes an orphaned CR, the deletion occurs immediately and does not respect this grace period.
+
 ### Example
 
 In the example, we will explain how to manage orphaned replica directories identified by Longhorn via `kubectl` and Longhorn UI.
