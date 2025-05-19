@@ -50,6 +50,7 @@ weight: 1
   - [Freeze Filesystem For Snapshot](#freeze-filesystem-for-snapshot)
 - [Orphan](#orphan)
   - [Orphaned Resource Automatic Deletion](#orphaned-resource-automatic-deletion)
+  - [Orphaned Resource Automatic Deletion Grace Period](#orphaned-resource-automatic-deletion-grace-period)
 - [Backups](#backups)
   - [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
   - [Backup Execution Timeout](#backup-execution-timeout)
@@ -583,6 +584,14 @@ List the enabled resource types in a semicolon-separated list. Available items a
 
 - `replica-data`: replica data store
 - `instance`: engine and replica runtime instance
+
+#### Orphaned Resource Automatic Deletion Grace Period
+
+> Default: `300`
+
+Specifies the wait time, in seconds, before Longhorn automatically deletes an orphaned Custom Resource (CR) and its associated resources.
+
+> **Note:** If a user manually deletes an orphaned CR, the deletion occurs immediately and does not respect this grace period.
 
 ### Backups
 
