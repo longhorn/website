@@ -11,7 +11,7 @@ There are no deprecated or incompatible changes introduced in v{{< current-versi
 
 # Upgrade Path Enforcement and Downgrade Prevention
 
-Starting with v1.5.0, Longhorn only allows upgrades from supported versions. When you attempt to upgrade from an unsupported version, the operation automatically fails but you can revert to the previously installed version without any service interruption or downtime.
+Starting with v1.5.0, Longhorn only supports upgrades from one minor version to the next. For example, upgrading from 1.5.x to 1.6.x is supported, but skipping versions (e.g., from 1.4.x to 1.6.x) is not. If you attempt to upgrade from an unsupported version or skip a minor version, the operation will fail automatically. However, you can revert to the previously installed version without service interruption or downtime.
 
 Moreover, Longhorn does not support downgrades to earlier versions. This restriction helps prevent unexpected system behavior and issues associated with function incompatibility, deprecation, or removal.
 
