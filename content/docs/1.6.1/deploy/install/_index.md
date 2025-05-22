@@ -9,7 +9,7 @@ weight: 1
 
 Longhorn can be installed on a Kubernetes cluster in several ways:
 
-- [Rancher catalog app](./install-with-rancher)
+- [Rancher Catalog App](./install-with-rancher)
 - [kubectl](./install-with-kubectl/)
 - [Helm](./install-with-helm/)
 - [Helm Controller](./install-with-helm-controller/)
@@ -17,13 +17,13 @@ Longhorn can be installed on a Kubernetes cluster in several ways:
 - [Flux](./install-with-flux/)
 - [ArgoCD](./install-with-argocd/)
 
-To install Longhorn in an air gapped environment, refer to [this section.](../install/airgap)
+To install Longhorn in an air gapped environment, refer to [Air Gap Installation](../install/airgap).
 
-For information on customizing Longhorn's default settings, refer to [this section.](../../advanced-resources/deploy/customizing-default-settings)
+For information on customizing Longhorn's default settings, refer to [Customizing Default Settings](../../advanced-resources/deploy/customizing-default-settings).
 
-For information on deploying Longhorn on specific nodes and rejecting general workloads for those nodes, refer to the section on [taints and tolerations.](../../advanced-resources/deploy/taint-toleration)
+For information on deploying Longhorn on specific nodes and rejecting general workloads for those nodes, refer to the section on [Taints and Tolerations](../../advanced-resources/deploy/taint-toleration).
 
-# Installation Requirements
+### Installation Requirements
 
 Each node in the Kubernetes cluster where Longhorn is installed must fulfill the following requirements:
 
