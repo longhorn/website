@@ -14,6 +14,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [`longhorn.io/v1beta1` API](#longhorniov1beta1-api)
 - [Breaking Change](#breaking-change)
   - [V2 Backing Image](#v2-backing-image)
+    - [Upgrade Instructions](#upgrade-instructions)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [CRD Upgrade Validation](#crd-upgrade-validation)
@@ -161,7 +162,7 @@ Longhorn currently does not support live upgrading of V2 volumes. Ensure that al
 
 #### Performance Enhancement
 
-- [Support UBLK Frontend](../v2-data-engine/features/selective-v2-data-engine-activation)
+- [Support UBLK Frontend](../v2-data-engine/features/ublk-frontend-support)
 
 #### Data Recovery
 
