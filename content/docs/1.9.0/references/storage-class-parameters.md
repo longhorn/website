@@ -16,6 +16,7 @@ allowVolumeExpansion: true
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
 parameters:
+  backupTargetName: "default"
   numberOfReplicas: "3"
   staleReplicaTimeout: "2880"
   fromBackup: ""
@@ -233,6 +234,10 @@ A list of recurring jobs that are to be run on a volume.
   - Other values are "enabled" and "disabled".
 
 > Global setting: [Freeze File System For Snapshot](../settings#freeze-filesystem-for-snapshot).
+
+#### Backup Target Name *(field: `parameters.backupTargetName`)*
+> Default: `default`
+> More details in [default backup target](../../snapshots-and-backups/backup-and-restore/set-backup-target#default-backup-target) and [Create Volumes](../../nodes-and-volumes/volumes/create-volumes).
 
 ## Helm Installs
 
