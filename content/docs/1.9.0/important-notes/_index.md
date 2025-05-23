@@ -9,12 +9,11 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 - [Removal](#removal)
   - [Environment Check Script](#environment-check-script)
   - [Orphan-Auto-Deletion Setting](#orphan-auto-deletion-setting)
-  - [Deprecated Fields in CRDs](#deprecated-fields-in-crds)
+  - [Deprecated Fields in `longhorn.io/v1beta2` CRDs](#deprecated-fields-in-longhorniov1beta2-crds)
 - [Deprecation](#deprecation)
   - [`longhorn.io/v1beta1` API](#longhorniov1beta1-api)
 - [Breaking Change](#breaking-change)
   - [V2 Backing Image](#v2-backing-image)
-    - [Upgrade Instructions](#upgrade-instructions)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [CRD Upgrade Validation](#crd-upgrade-validation)
@@ -34,7 +33,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Newly Introduced Functionalities since Longhorn v1.9.0](#newly-introduced-functionalities-since-longhorn-v190)
     - [Performance Enhancement](#performance-enhancement)
-    - [Data Recovery](#data-recovery)
+    - [Rebuilding](#rebuilding)
     - [Networking](#networking)
 
 ## Removal
@@ -45,11 +44,11 @@ The environment check script (`environment_check.sh`), which was deprecated in v
 
 ### Orphan-Auto-Deletion Setting
 
-The `orphan-auto-deletion` setting has been replaced by `orphan-resource-auto-deletion` in v1.9.0. To replicate the previous behavior (`orphan-auto-deletion`), include `replica-data` in the `orphan-resource-auto-deletion` value.
+The `orphan-auto-deletion` setting has been replaced by `orphan-resource-auto-deletion` in v1.9.0. To replicate the previous behavior, include `replica-data` in the `orphan-resource-auto-deletion` value. During the upgrade, the original `orphan-auto-deletion` setting is automatically migrated.
 
 For more information, see [Orphaned Data Cleanup](../advanced-resources/data-cleanup/orphaned-data-cleanup) and [Orphaned Instance Cleanup](../advanced-resources/data-cleanup/orphaned-instance-cleanup).
 
-### Deprecated Fields in CRDs
+### Deprecated Fields in `longhorn.io/v1beta2` CRDs
 
 Deprecated fields have been removed from the CRDs. For details, see [#6684](https://github.com/longhorn/longhorn/issues/6684).
 
@@ -57,19 +56,15 @@ Deprecated fields have been removed from the CRDs. For details, see [#6684](http
 
 ### `longhorn.io/v1beta1` API
 
-The `v1beta1` version of the Longhorn API is deprecated in v1.9.0 and will be removed in v1.10.0. During Longhorn system upgrades, custom resources using `longhorn.io/v1beta1` are automatically migrated to `longhorn.io/v1beta2`.
+The `v1beta1` version of the Longhorn API is marked unserved and unsupported in v1.9.0 and will be removed in v1.10.0.
 
-Deprecated APIs are no longer served and may therefore cause unexpected or unwanted behavior. Avoid using longhorn.io/v1beta1 in new code and, if possible, rewrite existing code to exclude this version.
+For more details, see [Issue #10250](https://github.com/longhorn/longhorn/issues/10250).
 
 ## Breaking Change
 
 ### V2 Backing Image
 
-Starting with Longhorn v1.9.0, V2 backing images are incompatible with earlier versions due to naming conflicts in the extended attributes (`xattrs`) used by SPDK backing image logical volumes. As a result, V2 backing images must be deleted and recreated during the upgrade process.
-
-Since backing images cannot be deleted while volumes using them still exist, you must first back up, delete, and later restore those volumes.
-
-#### Upgrade Instructions
+Starting with Longhorn v1.9.0, V2 backing images are incompatible with earlier versions due to naming conflicts in the extended attributes (`xattrs`) used by SPDK backing image logical volumes. As a result, V2 backing images must be deleted and recreated during the upgrade process. Since backing images cannot be deleted while volumes using them still exist, you must first back up, delete, and later restore those volumes as the following steps:
 
 - Before upgrading to v1.9.0:
   - Verify that backup targets are functioning properly.
@@ -124,7 +119,7 @@ For more information, see [#6534](https://github.com/longhorn/longhorn/issues/65
 
 ### Offline Replica Rebuilding
 
-Starting with v1.9.0, Longhorn supports offline replica rebuilding, allowing degraded volumes to automatically rebuild replicas while detached.
+Longhorn introduces offline replica rebuilding, a feature that allows degraded volumes to automatically recover replicas even while the volume is detached. This capability minimizes the need for manual recovery steps, accelerates restoration, and ensures high data availability. By default, offline replica rebuilding is disabled. To enable it, set the `offline-replica-rebuilding` setting to `true` in the Longhorn UI or CLI.
 
 For more information, see [Offline replica rebuilding](../advanced-resources/rebuilding/offline-replica-rebuilding) and [#8443](https://github.com/longhorn/longhorn/issues/8443).
 
@@ -132,7 +127,9 @@ For more information, see [Offline replica rebuilding](../advanced-resources/reb
 
 ### Orphaned Instance Deletion
 
-Starting with Longhorn v1.9.0, Longhorn includes the capability to [track the orphaned instances](../advanced-resources/data-cleanup/orphaned-instance-cleanup). These orphaned instances can be removed either automatically or manually.
+Longhorn can now track and remove orphaned instances, which are leftover resources like replicas or engines that are no longer associated with an active volume. These instances may accumulate due to unexpected failures or incomplete cleanup.
+
+To reduce resource usage and maintain system performance, Longhorn supports both automatic and manual cleanup. By default, this feature is disabled. To enable it, set the `orphan-resource-auto-deletion` setting to `instance` in the Longhorn UI or CLI.
 
 For more information, see [#6764](https://github.com/longhorn/longhorn/issues/6764).
 
@@ -148,7 +145,7 @@ For more information, see [#10518](https://github.com/longhorn/longhorn/issues/1
 
 ### Improved Metrics for Replica, Engine, and Rebuild Status
 
-Starting with v1.9.0, Longhorn enhances observability by introducing new Prometheus metrics that expose the state and identity of Replica and Engine CRs, as well as the rebuild status. These improvements make it easier to monitor rebuild events across the entire cluster.
+Longhorn improves observability with new Prometheus metrics that expose the status and identity of Replica and Engine CRs, along with rebuild activity. These metrics make it easier to monitor rebuilds across the cluster.
 
 For more information, see [#10550](https://github.com/longhorn/longhorn/issues/10550) and [#10722](https://github.com/longhorn/longhorn/issues/10722).
 
@@ -162,14 +159,12 @@ Longhorn currently does not support live upgrading of V2 volumes. Ensure that al
 
 #### Performance Enhancement
 
-- [Support UBLK Frontend](../v2-data-engine/features/ublk-frontend-support)
+- [Support UBLK Frontend](../v2-data-engine/features/ublk-frontend-support): Support for UBLK frontend in the V2 Data Engine, which allows for better performance and resource utilization.
 
-#### Data Recovery
+#### Rebuilding
 
-- [Disaster Recovery Volumes](https://github.com/longhorn/longhorn/issues/6613)
-- [Auto-Salvage Volumes](https://github.com/longhorn/longhorn/issues/8430)
-- [Delta replica rebuilding using snapshot checksum](https://github.com/longhorn/longhorn/issues/9488)
+- [Offline Replica Rebuilding](../advanced-resources/rebuilding/offline-replica-rebuilding): Support for offline replica rebuilding, which allows degraded volumes to automatically recover replicas even while the volume is detached. This capability ensures high data availability without manual intervention.
 
 #### Networking
 
-- [Storage Network](https://github.com/longhorn/longhorn/issues/6450)
+- [Storage Network](https://github.com/longhorn/longhorn/issues/6450): Introduces support for storage networks in the V2 Data Engine to allow network segregation.
