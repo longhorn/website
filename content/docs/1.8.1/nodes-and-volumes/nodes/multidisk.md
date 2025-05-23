@@ -19,7 +19,7 @@ Longhorn will detect the storage information (e.g. maximum space, available spac
 
 A certain amount of disk space can be reserved to stop Longhorn from using it. It can be set in the `Space Reserved` field for the disk. It's useful for the non-dedicated storage disk on the node.
 
-The kubelet needs to preserve node stability when available compute resources are low. This is especially important when dealing with incompressible compute resources, such as memory or disk space. If such resources are exhausted, nodes become unstable. To avoid kubelet `Disk pressure` issue after scheduling several volumes, by default, Longhorn reserved 30% of root disk space (`/var/lib/longhorn`) to ensure node stability.
+The kubelet needs to preserve node stability when available compute resources are low. This is especially important when dealing with incompressible compute resources, such as memory or disk space. If such resources are exhausted, nodes become unstable. To avoid kubelet `Disk pressure` issue after scheduling several volumes, by default, Longhorn reserved 30% of root disk space (`/var/lib/longhorn`). This default value is defined by the [storage-reserved-percentage-for-default-disk](../../../references/settings/#storage-reserved-percentage-for-default-disk) setting to help ensure node stability.
 
 > **Note**:
 > Since Longhorn uses filesystem ID to detect duplicate mounts of the same filesystem, you cannot add a disk that has the same filesystem ID as an existing disk on the same node.
