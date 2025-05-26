@@ -6,6 +6,7 @@ weight: 1
 This page lists important notes for Longhorn v{{< current-version >}}.
 Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}) for the full release note.
 
+- [Warning](#warning)
 - [Deprecation](#deprecation)
   - [Environment Check Script](#environment-check-script)
 - [General](#general)
@@ -39,6 +40,48 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Linux Kernel on Longhorn Nodes](#linux-kernel-on-longhorn-nodes)
   - [Snapshot Creation Time As Shown in the UI Occasionally Changes](#snapshot-creation-time-as-shown-in-the-ui-occasionally-changes)
   - [Unable To Revert a Volume to a Snapshot Created Before Longhorn v1.7.0](#unable-to-revert-a-volume-to-a-snapshot-created-before-longhorn-v170)
+
+## Warning
+
+The longhorn-share-manager v1.7.3 is impacted by a [regression issue](https://github.com/nfs-ganesha/nfs-ganesha/issues/1132) in nfs-ganesha v6.0+, which causes unexpected "permission denied" errors when non-root users access RWX volumes. To resolve this issue, replace `longhorn-share-manager:v1.7.3` with the hotfixed image `longhorn-share-manager:v1.7.3-hotfix-1`.
+
+You can apply the update in one of the following ways:
+
+- **Helm or Deployment Manifest**:
+  Update the `longhorn-share-manager` image from `v1.7.3` to `v1.7.3-hotfix-1`, then perform an upgrade.
+
+- **Manual Update**:
+  Edit the `longhorn-manager` DaemonSet’s `spec.containers.command` field as shown below:
+
+  ```yaml
+    ...
+      spec:
+        containers:
+        - command:
+          - longhorn-manager
+          - -d
+          - daemon
+          - --engine-image
+          - longhornio/longhorn-engine:v1.7.3
+          - --instance-manager-image
+          - longhornio/longhorn-instance-manager:v1.7.3
+          - --share-manager-image
+          - longhornio/longhorn-share-manager:v1.7.3-hotfix-1
+          - --backing-image-manager-image
+          - longhornio/backing-image-manager:v1.7.3
+          - --support-bundle-manager-image
+          - longhornio/support-bundle-kit:v0.0.55
+          - --manager-image
+          - longhornio/longhorn-manager:v1.7.3
+          - --service-account
+          - longhorn-service-account
+          - --upgrade-version-check
+    ...
+  ```
+
+Then, the newly created RWX volumes will use the hotfixed image. For existing attached RWX volumes, you can detach and reattach them to apply the hotfix.
+
+For more information, see Longhorn [#10979](https://github.com/longhorn/longhorn/issues/10979) and [#10621](https://github.com/longhorn/longhorn/issues/10621).
 
 ## Deprecation
 
