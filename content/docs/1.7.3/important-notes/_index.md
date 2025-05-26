@@ -70,7 +70,7 @@ You can apply the update in one of the following ways:
           - --backing-image-manager-image
           - longhornio/backing-image-manager:v1.7.3
           - --support-bundle-manager-image
-          - longhornio/support-bundle-kit:v0.0.55
+          - longhornio/support-bundle-kit:v0.0.51
           - --manager-image
           - longhornio/longhorn-manager:v1.7.3
           - --service-account
