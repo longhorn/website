@@ -1,0 +1,59 @@
+---
+title: MTLS Support
+weight: 6
+---
+
+Longhorn supports MTLS to secure and encrypt the grpc communication between the control plane (longhorn-manager) and the data plane (instance-managers).
+For Certificate setup we use the Kubernetes secret mechanism in combination with an optional secret mount for the longhorn-manager/instance-manager.
+
+
+# Requirements
+In a default installation mtls is disabled to enable mtls support one needs to create a `longhorn-grpc-tls` secret in the `longhorn-system` namespace before deployment.
+The secret is specified as an optional secret mount for the longhorn-manager/instance-managers so if it does not exist when these
+components are started, mtls will not be used and a restart of the components will be required to enable tls support.
+
+The longhorn-manager has a non tls client fallback for mixed mode setups where there are old instance-managers that were started without tls support.
+
+# Self Signed Certificate Setup
+
+You should create a `ca.crt` with the CA flag set which is then used to sign the `tls.crt` this will allow you to rotate the `tls.crt` in the future without service interruptions.
+You can use [openssl](https://mariadb.com/docs/security/data-in-transit-encryption/create-self-signed-certificates-keys-openssl/)
+or [cfssl](https://github.com/cloudflare/cfssl) for the `ca.crt` as well as `tls.crt` certificate generation.
+
+The `tls.crt` certificate should use `longhorn-backend` for the common name and the below list of entries for the Subject Alternative Name.
+```text
+Common Name: longhorn-backend
+Subject Alternative Names: longhorn-backend, longhorn-backend.longhorn-system, longhorn-backend.longhorn-system.svc, longhorn-frontend, longhorn-frontend.longhorn-system, longhorn-frontend.longhorn-system.svc, longhorn-engine-manager, longhorn-engine-manager.longhorn-system, longhorn-engine-manager.longhorn-system.svc, longhorn-replica-manager, longhorn-replica-manager.longhorn-system, longhorn-replica-manager.longhorn-system.svc, longhorn-csi, longhorn-csi.longhorn-system, longhorn-csi.longhorn-system.svc, longhorn-backend, IP Address:127.0.0.1
+```
+
+# Setting up Kubernetes Secrets
+
+The `ca.crt` is the certificate of the certificate authority that was used to sign
+the `tls.crt` which will be used both by the client (longhorn-manager) and the server (instance-manager) for grpc mtls authentication.
+The `tls.key` is associated private key for the created `tls.crt`.
+
+The `longhorn-grpc-tls` yaml looks like the below example,
+If you are having trouble getting your own certificates to work you can base decode the below certificate
+and compare it against your own generated certificates via `openssl x509 -in tls.crt -text -noout`.
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: longhorn-grpc-tls
+  namespace: longhorn-system
+type: kubernetes.io/tls
+data:
+  ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUREakNDQWZhZ0F3SUJBZ0lVU2tNdUVEOC9XYXphNmpkb1NiTE1qalFqb3JFd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0h6RWRNQnNHQTFVRUF4TVViRzl1WjJodmNtNHRaM0p3WXkxMGJITXRZMkV3SGhjTk1qSXdNVEV4TWpFeApPVEF3V2hjTk1qY3dNVEV3TWpFeE9UQXdXakFmTVIwd0d3WURWUVFERXhSc2IyNW5hRzl5YmkxbmNuQmpMWFJzCmN5MWpZVENDQVNJd0RRWUpLb1pJaHZjTkFRRUJCUUFEZ2dFUEFEQ0NBUW9DZ2dFQkFNY2grbTJhUndnNEtBa0EKT0xzdzdScWlWb1VqL2VPbVhuSE9HVE5nWE4rcFh5bDlCdzVDM1J4UDYzU29qaTVvNEhkU1htVmpwZmhmNjh1YwpvNVJJeUtXM1p6cndteDhXZldEc0dNNEtnYXBvMy84N3pVQ00vdGltOHllTzFUbTZlWVhXcWdlZ2JpM1Q1WnlvCmkzRjdteFg3QlU3Z25uWGthVmJ5UU1xRkEyMDJrK25jaVhaUE9iU0tlc1NvZ20wdWsrYXFvY3N1SjJ6dk9tZG0KMXd0a3ZTUklhL3l6T25JRGlmbFRteXNhZ3oxQy9VM1JxbzJ6TjIwbWJNYUJhMmx5anVZWkdWSnNyNGh4dGhqUApIR2x1UUh2QTlKTE9kc2J0T2xmbjRZNlZpUktCSzZWMVpOeVROMVJpN3ArTXZlaWQ3cE9rNHYweC9qVTc1a0N6Clo1cGJHbGtDQXdFQUFhTkNNRUF3RGdZRFZSMFBBUUgvQkFRREFnRUdNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHcKSFFZRFZSME9CQllFRlBGc0xRbmQxOHFUTVd5djh1STk3Z2hnR2djR01BMEdDU3FHU0liM0RRRUJDd1VBQTRJQgpBUUNMcnk5a2xlSElMdDRwbzd4N0hvSldsMEswYjdwV2Y0Y3ZVeHh1bUdTYUpoQmFHNTVlZFNFSVAzajhsRGg1Cm94ZXJlbjNrRUtzeGZiQVQ0RzU3KzBaeExQSkZQcjFMM3JvcmxUVE1DS1QyY2Z1UDJ3SEIzZndWNDJpSHZSUDgKSUVqU041bFNkWjZnN1NjWFZ2RnpZNzlrbVZDQ2RNYlpGcEFuOElyTkh3L0tTUGZUajNob2VyV3ZGL3huaEo3bQpmSzUrcE5TeWR6QTA1K1Y0ODJhWGlvV2NWcWY2UHpSVndmT0tIalUrbUVDQXZMbitNSzRvN1l2VW1iN2tSUGs5CnBjU1A4N2lpN0hwRVhqZUtRaVJhZElXKzMySXp1UTFiOXRYc3BNTGF0UFA5TXNvWmY0M1EyZWw4bWd1RjRxOUcKVmVUZFZaU2hBNWNucmNRZTEySUs1MzAvCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVqekNDQTNlZ0F3SUJBZ0lVUjZWcGR5U1Z0MGp6bDcwQnIxMmdZOTB0QVNBd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0h6RWRNQnNHQTFVRUF4TVViRzl1WjJodmNtNHRaM0p3WXkxMGJITXRZMkV3SGhjTk1qSXdNVEV4TWpFeApPVEF3V2hjTk1qTXdNVEV4TWpFeE9UQXdXakFiTVJrd0Z3WURWUVFERXhCc2IyNW5hRzl5YmkxaVlXTnJaVzVrCk1Ga3dFd1lIS29aSXpqMENBUVlJS29aSXpqMERBUWNEUWdBRUxOQVVJZUsvdnppaGc3a1Q5d3E4anU4VU51c24Kc2FzdmlpS1VHQnpkblZndlNSdzNhYzd4RTRSQjlmZytjRnVUenpGaFNHRlVLVUpYaVh5d0FXZ0o4YU9DQXBBdwpnZ0tNTUE0R0ExVWREd0VCL3dRRUF3SUZvREFkQmdOVkhTVUVGakFVQmdnckJnRUZCUWNEQVFZSUt3WUJCUVVICkF3SXdEQVlEVlIwVEFRSC9CQUl3QURBZEJnTlZIUTRFRmdRVXgvaDVCOUFMSExuYWJaNjBzT2dvbnA3YlN0VXcKSHdZRFZSMGpCQmd3Rm9BVThXd3RDZDNYeXBNeGJLL3k0ajN1Q0dBYUJ3WXdnZ0lMQmdOVkhSRUVnZ0lDTUlJQgovb0lRYkc5dVoyaHZjbTR0WW1GamEyVnVaSUlnYkc5dVoyaHZjbTR0WW1GamEyVnVaQzVzYjI1bmFHOXliaTF6CmVYTjBaVzJDSkd4dmJtZG9iM0p1TFdKaFkydGxibVF1Ykc5dVoyaHZjbTR0YzNsemRHVnRMbk4yWTRJUmJHOXUKWjJodmNtNHRabkp2Ym5SbGJtU0NJV3h2Ym1kb2IzSnVMV1p5YjI1MFpXNWtMbXh2Ym1kb2IzSnVMWE41YzNSbApiWUlsYkc5dVoyaHZjbTR0Wm5KdmJuUmxibVF1Ykc5dVoyaHZjbTR0YzNsemRHVnRMbk4yWTRJWGJHOXVaMmh2CmNtNHRaVzVuYVc1bExXMWhibUZuWlhLQ0oyeHZibWRvYjNKdUxXVnVaMmx1WlMxdFlXNWhaMlZ5TG14dmJtZG8KYjNKdUxYTjVjM1JsYllJcmJHOXVaMmh2Y200dFpXNW5hVzVsTFcxaGJtRm5aWEl1Ykc5dVoyaHZjbTR0YzNsegpkR1Z0TG5OMlk0SVliRzl1WjJodmNtNHRjbVZ3YkdsallTMXRZVzVoWjJWeWdpaHNiMjVuYUc5eWJpMXlaWEJzCmFXTmhMVzFoYm1GblpYSXViRzl1WjJodmNtNHRjM2x6ZEdWdGdpeHNiMjVuYUc5eWJpMXlaWEJzYVdOaExXMWgKYm1GblpYSXViRzl1WjJodmNtNHRjM2x6ZEdWdExuTjJZNElNYkc5dVoyaHZjbTR0WTNOcGdoeHNiMjVuYUc5eQpiaTFqYzJrdWJHOXVaMmh2Y200dGMzbHpkR1Z0Z2lCc2IyNW5hRzl5YmkxamMya3ViRzl1WjJodmNtNHRjM2x6CmRHVnRMbk4yWTRJUWJHOXVaMmh2Y200dFltRmphMlZ1WkljRWZ3QUFBVEFOQmdrcWhraUc5dzBCQVFzRkFBT0MKQVFFQWV5UlhCWnI5Z1RmTGlsNGMvZElaSlVYeFh4ckFBQmtJTG55QkdNdkFqaFJoRndLZ09VU0MvMGUyeDYvTQpoTi9SWElYVzdBYUF0a25ZSHFLa3piMDZsbWhxczRHNWVjNkZRZDViSGdGbnFPOHNWNEF6WVFSRWhDZjlrWWhUClVlRnJLdDdOQllHNFNXSnNYK2M0ZzU5RlZGZkIzbTZscStoR3JaY085T2NIQ1NvVDM2SVRPeERDT3lrV002WHcKVW5zYWtaaHRwQ3lxdHlwQXZqaURNM3ZTY2txVTFNSWxLSnA1Z3lGT3k2VHVwQ01tYnRiWlRpSEtaN0ZlcmlmcwoyYng4Z0JmaldFQnEwMEhVWTdyY3RFNzFpVk11WURTczAwYTB2c1ZGQ240akppeWFnM0lHWkdud0FHQk1zR2h3ClFJcndjRHgwdy91NGR1VWRNMzBpaU1WZ0pnPT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  tls.key: LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSUwzbjZVZzlhZU1Day9XbkZ2L1pmSTlxMkIyakxnbjFRWGQwcjhIL3k2QkhvQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFTE5BVUllSy92emloZzdrVDl3cThqdThVTnVzbnNhc3ZpaUtVR0J6ZG5WZ3ZTUnczYWM3eApFNFJCOWZnK2NGdVR6ekZoU0dGVUtVSlhpWHl3QVdnSjhRPT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=
+```
+
+For more information on creating a secret, see [the Kubernetes documentation.](https://kubernetes.io/docs/concepts/configuration/secret/#creating-a-secret-manually) The secret must be created in the `longhorn-system` namespace for Longhorn to access it.
+
+> Note: Make sure to use `echo -n` when generating the base64 encoding,
+> otherwise a new line will be added at the end of the string
+> which will cause an error during loading of the certificates.
+
+
+# History
+Available since v1.3.0 [#3839](https://github.com/longhorn/longhorn/issues/3839)
