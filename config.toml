@@ -156,6 +156,11 @@ name = "Knowledge Base"
 url = "/kb"
 weight = 1
 
+[[menu.main]]
+name = "Community"
+url = "/community"
+weight = 2
+
 [mediaTypes."text/netlify"]
 delimiter = ""
 
