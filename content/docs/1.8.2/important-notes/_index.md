@@ -36,6 +36,8 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
     - [Backing Image](#backing-image)
     - [Migration](#migration)
     - [Security](#security)
+- [Regression Fixes](#regression-fixes)
+  - [Fixed a regression issue causing "permission denied" errors for non-root users accessing RWX volumes](#fixed-a-regression-issue-causing-permission-denied-errors-for-non-root-users-accessing-rwx-volumes)
 
 ## Deprecation
 
@@ -78,19 +80,24 @@ time="2025-03-27T06:59:55Z" level=fatal msg="Error starting manager: upgrade res
 ```
 
 ### Upgrade Check Events
+
 Longhorn performs a pre-upgrade check when upgrading with Helm or Rancher App Marketplace.  If a check fails, the upgrade will stop and the reason for the check's failure will be recorded in an event.  For more detail, see [Upgrading Longhorn Manager](../deploy/upgrade/longhorn-manager).
 
 ### Manual Checks Before Upgrade
+
 Automated checks are only performed on some upgrade paths, and the pre-upgrade checker may not cover some scenarios.  Manual checks, performed using either kubectl or the UI, are recommended for these schenarios.  You can take mitigating actions or defer the upgrade until issues are addressed.
+
 - Ensure that all V2 Data Engine volumes are detached and the replicas are stopped.  The V2 Data Engine currently does not support live upgrades.
 - Avoid upgrading when volumes are in the "Faulted" status.  If all the replicas are deemed unusable, they may be deleted and data may be permanently lost (if no usable backups exist).
 - Avoid upgrading if a failed BackingImage exists.  For more information, see [Backing Image](../advanced-resources/backing-image/backing-image).
 - It is recommended to create a [Longhorn system backup](../advanced-resources/system-backup-restore/backup-longhorn-system) before performing the upgrade. This ensures that all critical resources, such as volumes and backing images, are backed up and can be restored in case any issues arise.
 
 ### Install/Upgrade with Helm Controller
+
 Longhorn also supports installation or upgrade via the HelmChart controller built into RKE2 and K3s.  It allows management in a CRD YAML chart of most of the options that would normally be passed to the `helm` command-line tool. For more details on how it works, see [Install with Helm Controller](../deploy/install/install-with-helm-controller).
 
 ### Automatic Expansion of RWX Volumes
+
 In v1.8.0, Longhorn supports fully automatic online expansion of RWX volumes.  There is no need to scale down the workload or apply manual commands.  Full details are in [RWX Volume](../nodes-and-volumes/volumes/expansion/#rwx-volume)
 
 ## Resilience
@@ -201,3 +208,9 @@ For more information, see [#6341](https://github.com/longhorn/longhorn/issues/63
 #### Security
 
 - [Volume Encryption](https://github.com/longhorn/longhorn/issues/7355)
+
+## Regression Fixes
+
+### Fixed a regression issue causing "permission denied" errors for non-root users accessing RWX volumes
+
+Longhorn Share Manager v1.8.1 was affected by a [regression issue](https://github.com/nfs-ganesha/nfs-ganesha/issues/1132) in NFS-Ganesha v6.0+ that resulted in unexpected "permission denied" errors when non-root users accessed RWX volumes. This issue has been addressed in v1.8.2. For more information, see [#10621](https://github.com/longhorn/longhorn/issues/10621).
