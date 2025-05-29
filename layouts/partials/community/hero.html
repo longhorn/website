@@ -1,0 +1,19 @@
+{{ $isPost := ne .File.BaseFileName "_index" }}
+<section class="hero is-primary is-bold is-medium">
+  <div class="hero-body">
+    <div class="container">
+      <div class="docs-content">
+        <p class="title is-size-1 is-size-2-mobile{{ if $isPost }} is-spaced{{ end }}">
+          {{ .Title }}
+        </p>
+      </div>
+
+      {{ if $isPost }}
+      {{ $date := dateFormat "January 2, 2006" .Date }}
+      <p class="subtitle is-size-3 is-size-4-mobile">
+        {{ .Params.author }} | {{ $date }}
+      </p>
+      {{ end }}
+    </div>
+  </div>
+</section>
