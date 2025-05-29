@@ -1,108 +1,102 @@
-{{ $posts := where site.RegularPages "Section" "blog" }}
+<!-- Main Section -->
 <section class="section">
-  <div class="columns is-vcentered is-variable is-20">
-    <div class="column">
-      <h2 class="title is-size-5 is-size-6-mobile">Get in touch</h2>
-      <p class="text-left font-weight-light">We host monthly community meetings that are open to everybody. Subscribe to
-        <a href="https://webcal.prod.itx.linuxfoundation.org/lfx/a092M00001JWrBuQAL"><b>our calendar feed</b></a> to not
-        miss them, or view all of the events below.
-      </p>
+  <div class="container">
+    <div class="columns">
+      <!-- Main Content Only -->
+      <div class="column is-three-thirds">
+        <!-- Community Section -->
+        <div class="content mt-6">
+          <h2 class="title is-size-5 is-size-6-mobile">Get in touch</h2>
+          <p>We host monthly community meetings that are open to everybody. Subscribe to
+            <a href="https://webcal.prod.itx.linuxfoundation.org/lfx/a092M00001JWrBuQAL"><b>our calendar feed</b></a> to not
+            miss them, or view all of the events below.
+          </p>
 
-      <h2 class="title is-size-5 is-size-6-mobile mt-5">Community Channels</h2>
-      <p class="text-left font-weight-light">Connect with the Longhorn community through various platforms.</p>
-      <h3 class="title is-size-6 is-size-7-mobile mt-3 mb-2">Slack:</h3>
-      <ul>
-        <li>
-          Join the discussion on the CNCF Slack instance in the <a
-            href="https://cloud-native.slack.com/messages/longhorn" target="_blank"><b>#longhorn channel</b></a>. This is a
+          <h2 class="title is-size-5 is-size-6-mobile mt-5">Community Channels</h2>
+          <p>Connect with the Longhorn community through various platforms.</p>
+
+          <h3 class="title is-size-6 mt-3 mb-2">Slack:</h3>
+          <ul>
+            <li>
+              Join the discussion on the CNCF Slack instance in the
+              <a href="https://cloud-native.slack.com/messages/longhorn" target="_blank"><b>#longhorn channel</b></a>. This is a
           great place to learn about Longhorn, ask questions, and share your experiences.
-        </li>
-        <li>
-          <h3 class="title is-size-6 is-size-7-mobile mt-3 mb-2">Mailing Lists:</h3>
+            </li>
+          </ul>
+
+          <h3 class="title is-size-6 mt-3 mb-2">Mailing Lists:</h3>
           <ul>
             <li><a href="https://lists.cncf.io/g/cncf-longhorn-dev" target="_blank"><b>Longhorn Developers</b></a>: For
               discussions around Longhorn development.</li>
             <li><a href="https://lists.cncf.io/g/cncf-longhorn-users" target="_blank"><b>Longhorn Users</b></a>: For general
               discussions, questions, and community support.</li>
           </ul>
-        </li>
-        <li>
-          <h3 class="title is-size-6 is-size-7-mobile mt-3 mb-2">Social:</h3>
+
+          <h3 class="title is-size-6 mt-3 mb-2">Social:</h3>
           <ul>
-            <li><a href="https://x.com/longhorn_io" target="_blank"><b>X (formerly Twitter)</b></a>: Follow us for updates.
-            </li>
+            <li><a href="https://x.com/longhorn_io" target="_blank"><b>X (formerly Twitter)</b></a>: Follow us for updates.</li>
             <li><a href="https://www.linkedin.com/company/longhornio/" target="_blank"><b>LinkedIn</b></a>: Connect with the
               Longhorn community professionally.</li>
-            <li><a href="https://m.youtube.com/@LonghornCNCF" target="_blank"><b>YouTube</b></a>:
-              Watch our community meetings, tutorials, and more!</li>
+            <li><a href="https://m.youtube.com/@LonghornCNCF" target="_blank"><b>YouTube</b></a>: Watch our community meetings, tutorials, and more!</li>
             <li><a href="https://bsky.app/profile/longhornio.bsky.social" target="_blank"><b>Bluesky</b></a>: Find us on
               Bluesky.</li>
           </ul>
-        </li>
-      </ul>
 
-      <h2 class="title is-size-5 is-size-6-mobile mt-5">GitHub: Issues, Discussions & Code</h2>
-      <p class="text-left font-weight-light">
-        Our GitHub repositories are at the heart of Longhorn's development. Whether you have found a bug, have an idea
-        for
-        a new feature, or want to dive into the code, GitHub is your primary hub.
-      </p>
-      <ul class="github-links">
-        <li class="my-2">
-          <i class="fas fa-bug"></i> <strong>Reporting Bugs & Requesting Features:</strong>
-          Found an issue or have an enhancement in mind? Please use our dedicated <a
-            href="https://github.com/longhorn/longhorn/issues/new/choose" target="_blank"><b>issue tracker</b></a> to submit
+          <h2 class="title is-size-5 mt-5">GitHub: Issues, Discussions & Code</h2>
+          <p class="text-left font-weight-light">
+          Our GitHub repositories are at the heart of Longhorn's development. Whether you have found a bug, have an idea for a new feature, or want to dive into the code, GitHub is your primary hub.
+          </p>
+          <ul>
+            <li><strong>Reporting Bugs & Requesting Features:</strong>
+               Found an issue or have an enhancement in mind? Please use our dedicated <a href="https://github.com/longhorn/longhorn/issues/new/choose" target="_blank"><b>issue tracker</b></a> to submit
           detailed reports and proposals.
-        </li>
-        <li class="my-2">
-          <i class="fas fa-comments"></i> <strong>Discussions:</strong>
-          For broader questions, design ideas, or general topics that are not specific bug reports, explore the <a
-            href="https://github.com/longhorn/longhorn/discussions" target="_blank"><b>GitHub Discussions</b></a>. This is a
+            </li>
+            <li><strong>Discussions:</strong>
+              For broader questions, design ideas, or general topics that are not specific bug reports, explore the <a href="https://github.com/longhorn/longhorn/discussions" target="_blank"><b>GitHub Discussions</b></a>. This is a
           great place for community-driven conversations.
-        </li>
-        <li class="my-2">
-          <i class="fas fa-code-branch"></i> <strong>Contributing Code:</strong>
-          We welcome contributions! For minor fixes (like typos), feel free to open a Pull Request. For larger features,
+            </li>
+            <li><strong>Contributing Code:</strong>
+              We welcome contributions! For minor fixes (like typos), feel free to open a Pull Request. For larger features,
           we recommend <a href="https://github.com/longhorn/longhorn/issues/new/choose" target="_blank"><b>opening an issue
             first</b></a> to discuss the design with our maintainers. You can also check
           out our <a href="https://github.com/longhorn/longhorn/wiki/Getting-started-with-Longhorn-Development"
             target="_blank"><b>developer guide</b></a> to get started.
-        </li>
-        <li class="my-2">
-          <strong>Important:</strong> For technical support or general queries, please utilize our <a
+            </li>
+            <li><strong>Support:</strong>
+              For technical support or general queries, please utilize our <a
             href="https://cloud-native.slack.com/messages/longhorn" target="_blank"><b>Slack channels</b></a> or <a
             href="https://lists.cncf.io/g/cncf-longhorn-users" target="_blank"><b>mailing lists</b></a>. These community forums
           are designed to ensure everyone can benefit from
           shared solutions.
-        </li>
-      </ul>
+            </li>
+          </ul>
 
-      <h2 class="title is-size-5 is-size-6-mobile mt-5">Contributing</h2>
-      <p class="text-left font-weight-light">
-        We welcome community contributions to Longhorn! Contributing is not limited to writing code; we also appreciate
+          <h2 class="title is-size-5 mt-5">Contributing</h2>
+          <p>
+            We welcome community contributions to Longhorn! Contributing is not limited to writing code; we also appreciate
         filing issues, providing feedback, and suggesting new features. Many of Longhorn's features are
         community-driven.
-      </p>
-      <p class="text-left font-weight-light">
-        If you are making a small change (for example, a typo fix), feel free to submit a Pull Request directly. For
-        larger
-        changes or new features, it is best to <a href="https://github.com/longhorn/longhorn/issues/new/choose"
-          target="_blank"><b>submit a new issue</b></a> first to discuss the design with maintainers before implementing.
-      </p>
-      <p class="text-left font-weight-light">
-        When you are ready to get involved in contributing code, this <a
-          href="https://github.com/longhorn/longhorn/wiki/Getting-started-with-Longhorn-Development"
-          target="_blank"><b>developer guide</b></a> will help you get up to speed. Remember to sign off your commits!
-      </p>
-      <p class="text-left font-weight-light">
-        Feel free to join the discussion on Longhorn development in the <a
-          href="https://cloud-native.slack.com/messages/longhorn-dev" target="_blank"><b>#longhorn-dev</b></a> Slack channel.
-      </p>
+          </p>
+          <p class="text-left font-weight-light">
+            If you are making a small change (for example, a typo fix), feel free to submit a Pull Request directly. For
+            larger
+            changes or new features, it is best to <a href="https://github.com/longhorn/longhorn/issues/new/choose"
+              target="_blank"><b>submit a new issue</b></a> first to discuss the design with maintainers before implementing.
+          </p>
+          <p>
+            When you are ready to get involved in contributing code, this <a
+              href="https://github.com/longhorn/longhorn/wiki/Getting-started-with-Longhorn-Development"
+              target="_blank"><b>developer guide</b></a> will help you get up to speed. Remember to sign off your commits!
+          </p>
+          <p>
+            Feel free to join the discussion on Longhorn development in the <a
+              href="https://cloud-native.slack.com/messages/longhorn-dev" target="_blank"><b>#longhorn-dev</b></a> Slack channel.
+          </p>
 
-      <div>
-        <h2 class="title is-size-5 is-size-6-mobile mt-5">Community Events Calendar</h2>
-        <iframe src="https://zoom-lfx.platform.linuxfoundation.org/meetings/longhorn?view=month?embed=true"
-          style="width: 100%; height: 1000px; border: 1px solid #cccccc" loading="lazy" frameborder="0"></iframe>
+          <h2 class="title is-size-5 is-size-6-mobile mt-5">Community Events Calendar</h2>
+          <iframe src="https://zoom-lfx.platform.linuxfoundation.org/meetings/longhorn?view=month&embed=true"
+            style="width: 100%; height: 1000px; border: 1px solid #cccccc" loading="lazy" frameborder="0"></iframe>
+        </div>
       </div>
     </div>
   </div>
