@@ -1,3 +1,12 @@
+---
+title: What's New in Longhorn 1.9
+author: Divya Mohan
+draft: false
+date: 2025-05-29
+categories:
+  - "announcement"
+---
+
 The Longhorn team is thrilled to share the general availability of [Longhorn v1.9.0](https://github.com/longhorn/longhorn/releases/tag/v1.9.0). 
 This update is all about making your storage experience more resilient, more observable, and a lot less stressful.
 
