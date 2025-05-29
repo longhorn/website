@@ -1,0 +1,9 @@
+{{ define "title" }}
+{{ .Title }}
+{{ end }}
+
+{{ define "main" }}
+{{ partial "navbar.html" . }}
+{{ partial "community/content.html" . }}
+{{ partial "footer.html" . }}
+{{ end }}
