@@ -16,7 +16,7 @@ This doc describes what users need to do after restoring the cluster with a Ranc
 - Detect the invalid or out-of-sync replicas as long as the related volume still contains a valid replica after the restore.
 
 ## Behaviors & Requirement of Rancher restore
-- You have to restart the Kubernetes components on all nodes. Otherwise, there will be tons of resource update conflicts in Longhorn.
+According to [the Rancher restore article](https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/backup-restore-and-disaster-recovery/restore-rancher-launched-kubernetes-clusters-from-backup), you have to restart the Kubernetes components on all nodes. Otherwise, there will be tons of resource update conflicts in Longhorn.
 
 ## Actions after the restore
 - Restart all Kubernetes components for all nodes. See the above link for more details.
