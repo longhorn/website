@@ -159,7 +159,7 @@ provisioning:
   maxSize: 1700GB
 ```
 
-For detailed instructions, about `UserVolumeConfig` and `VolumeConfig`, see the Talos documentation on [Block configuration](https://www.talos.dev/v1.10/reference/configuration/block/)
+For detailed instructions on `UserVolumeConfig` and `VolumeConfig`, see the Talos documentation on [Block configuration](https://www.talos.dev/v1.10/reference/configuration/block/)
 
 ## References
 
