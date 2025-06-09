@@ -117,7 +117,7 @@ Longhorn synchronizes the replicas based on the configured settings.
 
 ### After v1.8.x
 
-The `--preserve` is no longer required, the flash if automatically set for `talosctl upgrade` command. [here](https://www.talos.dev/v1.8/introduction/what-is-new/#upgrades)
+The `--preserve` is no longer required. The flag is automatically set for `talosctl upgrade` command. [here](https://www.talos.dev/v1.8/introduction/what-is-new/#upgrades)
 
 ## Talos Linux Version v1.10.x and Later
 
