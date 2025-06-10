@@ -108,7 +108,7 @@ If you were unable to include the `--preserve` option in the upgrade command, pe
 1. On the **Edit Node and Disks** page, add a disk and configure the following settings:
 
    - **Path**: Specify `/var/lib/longhorn/`.
-   - **Storage Reserved**: Specify a value that matches your requirements. The default value is **30 Gi**.
+   - **Storage Reserved**: Specify a value that matches your requirements. By default, it is set to 30% of the disk capacity.
    - **Scheduling**: Select **Enable**.
 
 1. Click **Save**.
