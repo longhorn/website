@@ -123,7 +123,7 @@ The `--preserve` is no longer required. The flag is automatically set for `talos
 
 ### Data Path Mounts
 
-Because Talos Linux deprecated `.machine.disks` we recommend using `UserVolumeConfig` to mount a disk for Longhorn.[What's new in talos v1.10](https://www.talos.dev/v1.10/introduction/what-is-new/#user-volumes)
+Because Talos Linux deprecated `.machine.disks` we recommend using `UserVolumeConfig` to mount a disk for Longhorn. See the [What's new in Talos v1.10](https://www.talos.dev/v1.10/introduction/what-is-new/#user-volumes) for more details.
 
 You can optionally create also a `VolumeConfig` to specify the size of Talos System volumes, which is _recommended_, like this we avoid the set `defaultSettings.storageReservedPercentageForDefaultDisk`.
 
