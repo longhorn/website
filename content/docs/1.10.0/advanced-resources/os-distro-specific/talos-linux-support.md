@@ -146,7 +146,7 @@ machine:
           - rw
 ```
 
-You need to create a `UserVolumeConfig` to mount the disk for Longhorn, wich will be auitomatically mounted to `/var/mnt/longhorn` on configured node.
+You need to create a `UserVolumeConfig` to mount the disk for Longhorn, which will be automatically mounted to `/var/mnt/longhorn` on the configured node.
 
 ```
 apiVersion: v1alpha1
