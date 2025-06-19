@@ -6,6 +6,7 @@ weight: 1
 This page lists important notes for Longhorn v{{< current-version >}}.
 Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}) for the full release note.
 
+- [Warning](#warning)
 - [Removal](#removal)
   - [Environment Check Script](#environment-check-script)
   - [Orphan-Auto-Deletion Setting](#orphan-auto-deletion-setting)
@@ -35,6 +36,15 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
     - [Performance Enhancement](#performance-enhancement)
     - [Rebuilding](#rebuilding)
     - [Networking](#networking)
+
+## Warning
+
+The longhorn-manager v1.9.0 is impacted by a [regression issue](https://github.com/longhorn/longhorn/issues/11016), which causes failures of recurring jobs. To resolve this issue, replace `longhorn-manager:v1.9.0` with the hotfixed image `longhorn-manager:v1.9.0-hotfix-1`.
+
+You can apply the update in one of the following ways:
+
+- **Helm or Deployment Manifest**:
+  Update the `longhorn-manager` image from `v1.9.0` to `v1.9.0-hotfix-1`, then perform an upgrade.
 
 ## Removal
 
