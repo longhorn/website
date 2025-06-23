@@ -47,7 +47,7 @@ Recurring snapshots and backups can be configured from the `Recurring Job` page 
 
 You can also configure the recurring job by directly interacting with the Longhorn RecurringJob custom resource.
 ```yaml
-apiVersion: longhorn.io/v1beta1
+apiVersion: longhorn.io/v1beta2
 kind: RecurringJob
 metadata:
   name: snapshot-1
