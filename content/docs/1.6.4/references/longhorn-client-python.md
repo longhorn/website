@@ -3,6 +3,10 @@ title: Python Client
 weight: 2
 ---
 
+> **Warning**
+>
+> The Longhorn Python client is not officially supported. It may change at any time without notice and without guarantee of backward compatibility.
+
 Currently, you can operate Longhorn using Longhorn UI.
 We are planning to build a dedicated Longhorn CLI in the upcoming releases.
 
