@@ -790,9 +790,9 @@ See [Multiple Disks Support](../../nodes-and-volumes/nodes/multidisk/#configurat
 
 The over-provisioning percentage defines the amount of storage that can be allocated relative to the hard drive's capacity.
 
-By increasing this setting, Longhorn Manager will allow allocating a new replica to a disk as long as the total size of all replicas scheduled on the disk (**storage scheduled**) does not exceed the over-provisioning percentage of the actual usable disk capacity (**Storage Maximum** - **Storage Reserved**).
+By increasing this value, Longhorn Manager allows scheduling new replicas on a disk as long as the total size of all scheduled replicas (Storage Scheduled) does not exceed the configured over-provisioning percentage of the usable disk space (calculated as **Storage Maximum** minus **Storage Reserved**).
 
-It's worth noting that a volume replica may require more storage space than the volume's actual size, as the snapshots also require storage. You can regain space by deleting unnecessary snapshots.
+Note that a replica may consume more space than the volume’s nominal size due to snapshot data. You can free up disk space by deleting unnecessary snapshots.
 
 > **Example**
 > 
