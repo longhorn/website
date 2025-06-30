@@ -796,11 +796,11 @@ It's worth noting that a volume replica may require more storage space than the 
 
 > **Example**
 > 
-> Assume a disk has a Storage Maximum of 100GiB and a Storage Reserved of 10GiB. The actual usable disk capacity is 90GiB.
+> Suppose a disk has a Storage Maximum of 100 GiB and Storage Reserved of 10 GiB, resulting in 90 GiB of usable capacity.
 > 
-> If the Storage Over-Provisioning Percentage is set to 200%, the maximum allowed storage scheduled on this disk becomes 180GiB.
+> If the Storage Over-Provisioning Percentage is set to 200%, the maximum allowed Storage Scheduled is 180 GiB (200% of 90 GiB).
 > 
-> This means Longhorn Manager can continue scheduling replicas to this disk until the total scheduled size reaches 180GiB, even though the actual usable disk capacity is only 90GiB.
+> This means Longhorn Manager can continue scheduling replicas to this disk until the total scheduled size reaches 180 GiB, even though the actual usable space is only 90 GiB.
 
 #### Storage Reserved Percentage For Default Disk
 
