@@ -783,7 +783,11 @@ This setting is not affected by [Replica Node Level Soft Anti-Affinity](#replica
 
 > Default: `25`
 
-With the default setting of 25, the Longhorn Manager will allow scheduling new replicas only after the amount of disk space has been subtracted from the available disk space (**Storage Available**) and the available disk space is still over 25% of actual disk capacity (**Storage Maximum**). Otherwise the disk becomes unschedulable until more space is freed up.
+This setting controls the minimum free space that must remain on a disk, based on its **Storage Maximum**, before Longhorn can schedule a new replica.
+
+By default, Longhorn ensures that at least **25%** of the disk's total capacity remains free. If adding a replica would reduce the available space below this limit, the disk is temporarily marked as unavailable for scheduling until enough space is freed.
+
+This helps protect your disks from becoming too full, which can cause performance issues or storage failures. Keeping a buffer of free space helps to keep the system stable and ensures there is room for unexpected storage needs.
 
 See [Multiple Disks Support](../../nodes-and-volumes/nodes/multidisk/#configuration) for details.
 
@@ -793,9 +797,17 @@ See [Multiple Disks Support](../../nodes-and-volumes/nodes/multidisk/#configurat
 
 The over-provisioning percentage defines the amount of storage that can be allocated relative to the hard drive's capacity.
 
-By increase this setting, the Longhorn Manager will allow scheduling new replicas only after the amount of disk space has been added to the used disk space (**storage scheduled**), and the used disk space (**Storage Maximum** - **Storage Reserved**) is not over the over-provisioning percentage of the actual usable disk capacity.
+Adjusting this setting allows Longhorn Manager to schedule new replicas on a disk as long as the combined size of all replicas stays within the permitted over-provisioning percentage of the usable disk space. The usable disk space is calculated as **Storage Maximum** minus **Storage Reserved**.
 
-It's worth noting that a volume replica may require more storage space than the volume's actual size, as the snapshots also require storage. You can regain space by deleting unnecessary snapshots.
+Note that replicas may consume more space than the volume’s nominal size due to snapshot data. To reclaim disk space, you can delete snapshots that are no longer needed.
+
+> **Example**
+> 
+> Suppose a disk has a Storage Maximum of 100 GiB and Storage Reserved of 10 GiB, resulting in 90 GiB of usable capacity.
+> 
+> If the Storage Over-Provisioning Percentage is set to 200%, the maximum allowed Storage Scheduled is 180 GiB (200% of 90 GiB).
+> 
+> This means Longhorn Manager can continue scheduling replicas to this disk until the total scheduled size reaches 180 GiB, even though the actual usable space is only 90 GiB.
 
 #### Storage Reserved Percentage For Default Disk
 
