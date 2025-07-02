@@ -37,6 +37,16 @@ Assume this node has two disks and neither one has another replica: `Disk X` wit
 
 Now suppose one of the potential candidate disks has an existing replica and `Replica Disk Soft Anti-Affinity" is set to true.  In principle, Longhorn would be allowed to choose either disk, but in practice, it will avoid the existing replica and place the new replica on another disk, even if it is an otherwise inferior choice.
 
+To determine whether a disk is schedulable, Longhorn evaluates two critical conditions:
+1. **Actual Space Usage Condition** - Ensures enough usable storage remains after accounting for currently used space (actual size).
+    Formula: `(Storage Available - Actual Size) > (Storage Maximum × Minimal Available Percentage) / 100`
+
+2. **Scheduling Space Condition** - Ensures the new replica's size (plus any scheduled but not yet written data) fits within the allowed over-provisioning limit.
+    Formula: `(Size + Storage Scheduled) ≤ ((Storage Maximum - Storage Reserved) × Over Provisioning Percentage) / 100`
+
+If either condition fails, the disk will be marked unschedulable, and the replica will not be placed there.
+Note: Since no specific replica is being scheduled during this disk evaluation, both `Actual Size` and `Size` are treated as 0 in the formulas.
+
 ### Settings
 
 For more information on settings that are relevant to scheduling replicas on nodes and disks, refer to the settings reference:
