@@ -5,7 +5,7 @@ authors:
 draft: false
 date: 2024-06-28
 versions:
-- "All versions"
+- "all"
 categories:
 - "iscsi"
 - "tgt"
