@@ -5,7 +5,7 @@ authors:
 draft: false
 date: 2025-05-19
 versions:
-- "All versions"
+- "all"
 categories:
 - "orphan"
 ---
