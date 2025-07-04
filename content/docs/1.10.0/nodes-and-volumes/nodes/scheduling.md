@@ -27,15 +27,83 @@ At this time, if `Replica Node Level Soft Anti-Affinity` is un-checked and `Repl
 
 Last, Longhorn will look for an existing node with an existing zone to schedule the new replica. At this time both `Replica Node Level Soft Anti-Affinity` and `Replica Zone Level Soft Anti-Affinity` should be checked.
 
-#### Disk Selection Stage
+**Disk Evaluation**
 
-Once the node and zone stage is satisfied, Longhorn will decide whether it can schedule the replica on any disk of the node. Longhorn will check the available disks on the selected node with the matching tag, the total disk space, and the available disk space. It will also check whether another replica already exists and whether anti-affinity is set to be "hard" (no sharing) or "soft" (prefer not to share.)
+`Actual Size` and `Size` are treated as 0 in this stage.
 
-For example, after the node and zone stage, Longhorn finds `Node A` satisfies the requirements for scheduling a replica to the node. Longhorn will check all the available disks on this node.
+- **Disk X**:
+  - Available space: `1 GB`
+  - `Storage Minimal Available Percentage` : 25% (default)
+  - Minimum required available space: `(Storage Maximum × Storage Minimal Available Percentage) / 100` ➔ `(4 GB × 25) / 100 = 1 GB`
+  - Disk X not pass the **Actual Space Usage Condition**, Since available space (1 GB) is not greater than Minimum required available space (1 GB), Disk X is unschedulable unless `Storage Minimal Available Percentage` is set to 0.
+  
+- **Disk Y**:
+  - Available space: `2 GB`
+  - `Storage Minimal Available Percentage`: 10%
+  - Minimum required available space: `(Storage Maximum × Storage Minimal Available Percentage) / 100` ➔`(8 GB × 10) / 100 = 0.8 GB`
+  - Disk Y pass the **Actual Space Usage Condition**, Since available space (2 GB) is greater than minimum required available space (0.8 GB).
 
-Assume this node has two disks and neither one has another replica: `Disk X` with available space 1 GB, and `Disk Y` with available space 2 GB. And the replica Longhorn going to schedule needs 1 GB. With default `Storage Minimal Available Percentage` 25, Longhorn can only schedule the replica on `Disk Y` if this `Disk Y` matches the disk tag, otherwise Longhorn will return failure on this replica selection. But if the `Storage Minimal Available Percentage` is set to 0, and `Disk X` also matches the disk tag, Longhorn can schedule the replica on `Disk X`.
+  Next, check the **Scheduling Space Condition**
+  - Scheduled space: `2 GB`
+  - Storage Reserved: `1 GB`
+  - `Over Provisioning Percentage`: 100% (default)
+  - Max provisionable storage: 
+  `(Storage Maximum - Storage Reserved) × Over Provisioning Percentage / 100` ➔ `(8 GB - 1 GB) × 100 / 100 = 7 GB`
+  - Disk Y pass the **Scheduling Space Condition**, Since scheulded space (2 GB) is less than max provisionable storage (7 GB), Disk Y is schedulable. If Disk Y matches the disk tag, Longhorn can schedule the replica on Disk Y.
 
-Now suppose one of the potential candidate disks has an existing replica and `Replica Disk Soft Anti-Affinity" is set to true.  In principle, Longhorn would be allowed to choose either disk, but in practice, it will avoid the existing replica and place the new replica on another disk, even if it is an otherwise inferior choice.
+**Evaluating Candidate Disks for Replica** 
+
+The replica to be scheduled requires 1 GB of space, so `Size` is 1 GB. Assume that the `Actual Size` on both disks is 0.5 GB.
+
+- **Disk X**:
+  - Remain available space: `(Storage Available - Actual Size) ➔ (1 GB - 0.5 GB = 0.5 GB)`
+  - `Storage Minimal Available Percentage` : 25% (default)
+  - Minimum required available space: `(Storage Maximum × Storage Minimal Available Percentage) / 100` ➔ `(4 GB × 25) / 100 = 1 GB`
+  - Disk X not pass the **Actual Space Usage Condition**, Since no remaining available space (0.5 GB) is not greater than Minimum required available space (1 GB).
+  
+- **Disk Y**:
+  - Remain available space: `(Storage Available - Actual Size) ➔ (2 GB - 0.5 GB = 1.5 GB)`
+  - `Storage Minimal Available Percentage`: 10%
+  - Minimum required available space: `(Storage Maximum × Storage Minimal Available Percentage) / 100` ➔`(8 GB × 10) / 100 = 0.8 GB`
+  - Disk Y pass the **Actual Space Usage Condition**, Since remaining available space (1.5 GB) is greater than minimum required available space (0.8 GB).
+
+  Then check if satisfies the **Scheduling Space Condition**
+  - Scheduled space: `2 GB`
+  - Total Scheduled space: `(Size + Storage Scheduled) ➔ (1 GB + 2 GB = 3 GB)`
+  - Storage Reserved: `1 GB`
+  - `Over Provisioning Percentage`: 100% (default)
+  - Max provisionable storage: 
+  `(Storage Maximum - Storage Reserved) × Over Provisioning Percentage / 100` ➔ `(8 GB - 1 GB) × 100 / 100 = 7 GB`
+  - Disk Y pass the **Scheduling Space Condition**, Since total scheulded space (3 GB) is less than max provisionable storage (7 GB), Disk Y is schedulable. If Disk Y matches the disk tag, Longhorn can schedule the replica on Disk Y.
+
+
+**Anti-Affinity Behavior**
+
+Let’s assume both Disk X and Disk Y pass the **Actual Space Usage Condition** and **Scheduling Space Condition**, and Disk X already hosts a replica. 
+
+
+Now consider the anti-affinity setting:
+
+- **Hard Anti-Affinity**
+    - Longhorn will schedule the new replica on Disk Y to avoid co-locating replicas. 
+    - If Disk Y is unsuitable (e.g., mismatched tags), scheduling fails—replicas cannot share the same disk under hard anti-affinity.
+
+
+- **Soft Anti-Affinity**
+    - The setting `Replica Disk Soft Anti-Affinity` is enabled.
+    - Longhorn prefers to schedule the new replica on Disk Y (if it meets tag and space requirements) to avoid co-locating replicas, even if Disk X is otherwise viable.
+    - If Disk Y is unsuitable (e.g., insufficient space or mismatched tags), Longhorn may still schedule on Disk X if it meets all other conditions, as soft anti-affinity allows sharing as a fallback.
+    
+    **Soft Anti-Affinity Levels**
+    -   **Replica Disk Level Soft Anti-Affinity**  
+    Allow scheduling on disks with existing healthy replicas of the same volume
+
+    -   **Replica Node Level Soft Anti-Affinity**  
+    Allow scheduling on nodes with existing healthy replicas of the same volume
+
+    -   **Replica Zone Level Soft Anti-Affinity**  
+    Allow scheduling on zones with existing healthy replicas of the same volume
+
 
 ### Settings
 
