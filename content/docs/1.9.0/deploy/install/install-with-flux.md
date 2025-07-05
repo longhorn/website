@@ -31,7 +31,7 @@ weight: 12
     ```bash
     kubectl create ns longhorn-system
     flux create source helm longhorn-repo \
-      --url=https://charts.longhorn.io \
+      --url=https://charts.rancher.io \
       --namespace=longhorn-system \
       --export > helmrepo.yaml
     kubectl apply -f helmrepo.yaml
