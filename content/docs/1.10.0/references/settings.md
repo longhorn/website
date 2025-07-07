@@ -1,5 +1,5 @@
 ---
-title: Settings Reference
+title: Global Settings
 weight: 1
 ---
 
