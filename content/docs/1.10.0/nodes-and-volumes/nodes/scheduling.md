@@ -5,7 +5,7 @@ weight: 5
 
 In this section, you'll learn how Longhorn schedules replicas based on multiple factors.
 
-### Scheduling Policy
+## Scheduling Policy
 
 Longhorn's scheduling policy has two stages. The scheduler only goes to the next stage if the previous stage is satisfied. Otherwise, the scheduling will fail.
 
@@ -15,7 +15,7 @@ The first stage is the **node and zone selection stage.** Longhorn will filter t
 
 The second stage is the **disk selection stage.** Longhorn will filter the disks that satisfy the first stage based on the `Replica Disk Level Soft Anti-Affinity`, `Storage Minimal Available Percentage`, `Storage Over Provisioning Percentage`, and other disk-related factors like requested disk space.
 
-#### The Node and Zone Selection Stage
+### The Node and Zone Selection Stage
 
 First, Longhorn will always try to schedule the new replica on a new node with a new zone if possible. In this context, "new" means that a replica for the volume has not already been scheduled to the zone or node, and "existing" refers to a node or zone that already has a replica scheduled to it.
 
@@ -27,13 +27,17 @@ At this time, if `Replica Node Level Soft Anti-Affinity` is un-checked and `Repl
 
 Last, Longhorn will look for an existing node with an existing zone to schedule the new replica. At this time both `Replica Node Level Soft Anti-Affinity` and `Replica Zone Level Soft Anti-Affinity` should be checked.
 
-#### Disk Selection Stage
+### Disk Selection Stage
 
 Once the node and zone stage is satisfied, Longhorn will decide whether it can schedule the replica on any disk of the node. Longhorn will check the available disks on the selected node with the matching tag, the total disk space, and the available disk space. It will also check whether another replica already exists and whether anti-affinity is set to be "hard" (no sharing) or "soft" (prefer not to share.)
 
 Longhorn checks all available disks on the selected node to ensure they meet the following criteria:
 
-1. **Disk Tag Matching**: The disk must match any specified tags required for the replica.
+1. **Disk Tag Matching**: 
+    - If the volume has disk tags, the disk must match any specified tags required for the replica.  
+    - If the volume has no disk tags, behavior depends on the setting **Allow Empty Disk Selector Volume**:
+      - `true` (default): Allows the replica to be scheduled on disks **with or without tags**.
+      - `false`: Only allows the replica to be scheduled on disks **without tags**.
 2. **Available Space Check**: The disk must have sufficient available space based on the configured `Storage Minimal Available Percentage`.
 3. **Anti-Affinity Settings**:
    - **Hard Anti-Affinity**: Prevents scheduling a replica on a disk that already hosts another replica of the same volume.
@@ -43,11 +47,11 @@ Longhorn checks all available disks on the selected node to ensure they meet the
      - Formula: `(Storage Available - Actual Size) > (Storage Maximum × Minimal Available Percentage) / 100`
    - **Scheduling Space Condition**: Ensures the replica’s size (plus any scheduled but unwritten data) fits within the over-provisioning limit.
      - Formula: `(Size + Storage Scheduled) ≤ ((Storage Maximum - Storage Reserved) × Over Provisioning Percentage) / 100`
-   - **Note**: During disk evaluation, since no specific replica is being scheduled, `Actual Size` and `Size` are treated as 0 in these formulas.
+   > **Note**: During disk evaluation, since no specific replica is being scheduled, `Actual Size` and `Size` are treated as 0 in these formulas.
 
 If either condition fails or the disk does not meet tag or anti-affinity requirements, it is marked unschedulable, and Longhorn will not place the replica on that disk.
 
-**Example Scenario**
+#### Example Scenario
 Consider a node (Node A) selected during the node and zone stage, with two disks:
 - **Disk X**: 1 GB available space, 4 GB max space
 - **Disk Y**: 2 GB available space, 8 GB max space
@@ -130,7 +134,7 @@ Now consider the anti-affinity setting:
     Allow scheduling on zones with existing healthy replicas of the same volume
 
 
-### Settings
+## Settings
 
 For more information on settings that are relevant to scheduling replicas on nodes and disks, refer to the settings reference:
 
@@ -143,7 +147,7 @@ For more information on settings that are relevant to scheduling replicas on nod
 - [Allow Empty Node Selector Volume](../../../references/settings/#allow-empty-node-selector-volume)
 - [Allow Empty Disk Selector Volume](../../../references/settings/#allow-empty-disk-selector-volume)
 
-### Notice
+## Notice
 Longhorn relies on label `topology.kubernetes.io/zone=<Zone name of the node>` or `topology.kubernetes.io/region=<Region name of the node>` in the Kubernetes node object to identify the zone/region.
 
 Since these are reserved and used by Kubernetes as [well-known labels](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone).
