@@ -27,6 +27,31 @@ At this time, if `Replica Node Level Soft Anti-Affinity` is un-checked and `Repl
 
 Last, Longhorn will look for an existing node with an existing zone to schedule the new replica. At this time both `Replica Node Level Soft Anti-Affinity` and `Replica Zone Level Soft Anti-Affinity` should be checked.
 
+#### Disk Selection Stage
+
+Once the node and zone stage is satisfied, Longhorn will decide whether it can schedule the replica on any disk of the node. Longhorn will check the available disks on the selected node with the matching tag, the total disk space, and the available disk space. It will also check whether another replica already exists and whether anti-affinity is set to be "hard" (no sharing) or "soft" (prefer not to share.)
+
+Longhorn checks all available disks on the selected node to ensure they meet the following criteria:
+
+1. **Disk Tag Matching**: The disk must match any specified tags required for the replica.
+2. **Available Space Check**: The disk must have sufficient available space based on the configured `Storage Minimal Available Percentage`.
+3. **Anti-Affinity Settings**:
+   - **Hard Anti-Affinity**: Prevents scheduling a replica on a disk that already hosts another replica of the same volume.
+   - **Soft Anti-Affinity** (when enabled): Prefers scheduling the replica on a disk without an existing replica, even if it’s a less optimal choice in terms of space or other factors.
+4. **Space Conditions**: Two formulas determine if a disk is schedulable:
+   - **Actual Space Usage Condition**: Ensures sufficient usable storage remains after accounting for currently used space.
+     - Formula: `(Storage Available - Actual Size) > (Storage Maximum × Minimal Available Percentage) / 100`
+   - **Scheduling Space Condition**: Ensures the replica’s size (plus any scheduled but unwritten data) fits within the over-provisioning limit.
+     - Formula: `(Size + Storage Scheduled) ≤ ((Storage Maximum - Storage Reserved) × Over Provisioning Percentage) / 100`
+   - **Note**: During disk evaluation, since no specific replica is being scheduled, `Actual Size` and `Size` are treated as 0 in these formulas.
+
+If either condition fails or the disk does not meet tag or anti-affinity requirements, it is marked unschedulable, and Longhorn will not place the replica on that disk.
+
+**Example Scenario**
+Consider a node (Node A) selected during the node and zone stage, with two disks:
+- **Disk X**: 1 GB available space, 4 GB max space
+- **Disk Y**: 2 GB available space, 8 GB max space
+
 **Disk Evaluation**
 
 `Actual Size` and `Size` are treated as 0 in this stage.
