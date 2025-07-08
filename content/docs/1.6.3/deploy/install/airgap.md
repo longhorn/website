@@ -188,14 +188,17 @@ If you keep the images' names as recommended [here](./#recommendation), you only
     Longhorn will automatically generate a secret with the those information and use it to pull images from your private registry.
 
       ```yaml
-      defaultSettings:
-        registrySecret: <SECRET_NAME>
-
       privateRegistry:
-          registryUrl: <REGISTRY_URL>
-          registryUser: <REGISTRY_USER>
-          registryPasswd: <REGISTRY_PASSWORD>
-          registrySecret: <REGISTRY_SECRET_NAME>
+        # -- Setting that allows you to create a private registry secret.
+        createSecret: true
+        # -- URL of a private registry. When unspecified, Longhorn uses the default system registry.
+        registryUrl: <REGISTRY_URL>
+        # -- User account used for authenticating with a private registry.
+        registryUser: <REGISTRY_USER>
+        # -- Password for authenticating with a private registry.
+        registryPasswd: <REGISTRY_PASSWORD>
+        # -- Kubernetes secret that allows you to pull images from a private registry. This setting applies only when creation of private registry secrets is enabled. You must include the private registry name in the secret name.
+        registrySecret: <REGISTRY_SECRET_NAME>
       ```
 
 ### Use custom image name
@@ -256,15 +259,19 @@ If you want to use custom images' names, you can use the following steps:
     - Specify `Private registry URL`. If the registry requires authentication, specify `Private registry user`, `Private registry password`, and `Private registry secret`.
     Longhorn will automatically generate a secret with the those information and use it to pull images from your private registry.
 
-        ```yaml
-        defaultSettings:
-          registrySecret: <SECRET_NAME>
-
-        privateRegistry:
-            registryUrl: <REGISTRY_URL>
-            registryUser: <REGISTRY_USER>
-            registryPasswd: <REGISTRY_PASSWORD>
-        ```
+      ```yaml
+      privateRegistry:
+        # -- Setting that allows you to create a private registry secret.
+        createSecret: true
+        # -- URL of a private registry. When unspecified, Longhorn uses the default system registry.
+        registryUrl: <REGISTRY_URL>
+        # -- User account used for authenticating with a private registry.
+        registryUser: <REGISTRY_USER>
+        # -- Password for authenticating with a private registry.
+        registryPasswd: <REGISTRY_PASSWORD>
+        # -- Kubernetes secret that allows you to pull images from a private registry. This setting applies only when creation of private registry secrets is enabled. You must include the private registry name in the secret name.
+        registrySecret: <REGISTRY_SECRET_NAME>
+      ```
 
 3. Install Longhorn
 
