@@ -41,6 +41,9 @@ weight: 13
       name: longhorn
       namespace: argocd
     spec:
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
       project: default
       sources:
         - chart: longhorn
@@ -53,6 +56,36 @@ weight: 13
       destination:
         server: https://kubernetes.default.svc
         namespace: longhorn-system
+      # add ignoreDifferences to prevent preserveUnknownFields field from make causing the application to be out of sync
+      ignoreDifferences:
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: engineimages.longhorn.io
+          jsonPointers: ["/spec/preserveUnknownFields"]
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: engines.longhorn.io
+          jsonPointers: ["/spec/preserveUnknownFields"]
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: instancemanagers.longhorn.io
+          jsonPointers: ["/spec/preserveUnknownFields"]
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: nodes.longhorn.io
+          jsonPointers: ["/spec/preserveUnknownFields"]
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: replicas.longhorn.io
+          jsonPointers: ["/spec/preserveUnknownFields"]
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: settings.longhorn.io
+          jsonPointers: ["/spec/preserveUnknownFields"]
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: volumes.longhorn.io
+          jsonPointers: ["/spec/preserveUnknownFields"]
     EOF
     kubectl apply -f longhorn-application.yaml
     ```
