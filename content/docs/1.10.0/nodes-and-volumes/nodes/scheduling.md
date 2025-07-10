@@ -17,15 +17,52 @@ The second stage is the **disk selection stage.** Longhorn will filter the disks
 
 ### The Node and Zone Selection Stage
 
-First, Longhorn will always try to schedule the new replica on a new node with a new zone if possible. In this context, "new" means that a replica for the volume has not already been scheduled to the zone or node, and "existing" refers to a node or zone that already has a replica scheduled to it.
+Longhorn evaluates which **nodes** are suitable for scheduling a new replica. The decision is based on:
 
-At this time, if both the `Replica Node Level Soft Anti-Affinity` and `Replica Zone Level Soft Anti-Affinity` settings are un-checked, and if there is no new node with a new zone, Longhorn will not schedule the replica.
+1. **Node Tag Matching**
+    - If the volume has node selector tags, only nodes with matching tags are eligible.
+    - If the volume has **no node selector**, behavior depends on the setting **Allow Empty Node Selector Volume**:
+      - `true` (default): Allows scheduling on nodes **with or without tags**.
+      - `false`: Allows scheduling **only** on nodes **without tags**.
+2. **Cordoned Node Handling**
+    - Whether Longhorn schedules replicas on Kubernetes cordoned nodes is controlled by the setting **Disable Scheduling On Cordoned Node**:
+      - `true` (default): Cordoned nodes are **excluded** from replica scheduling.
+      - `false`: Cordoned nodes are **eligible** for scheduling.
 
-Then, Longhorn will look for a new node with an existing zone. If possible, it will schedule the new replica on the new node with an existing zone.
+3. **Anti-Affinity Rules Across Nodes and Zones**
+   
+   Longhorn prioritizes spreading replicas across different **nodes** and **zones** to improve fault tolerance. A **"new"** node or zone is one that does **not** currently host any replica of the volume, while an **"existing"** node or zone already hosts a replica of the volume. The selection logic proceeds in the following order:
+   
+    - **New Node in a New Zone**  
+      - If such a node-zone pair is found, Longhorn schedules the replica there.
+      - If **no new node in a new zone is available**, and the following conditions are met:
 
-At this time, if `Replica Node Level Soft Anti-Affinity` is un-checked and `Replica Zone Level Soft Anti-Affinity` is checked, and there is no new node with an existing zone, Longhorn will not schedule the replica.
+        | Setting                                 | Value     |
+        |-----------------------------------------|-----------|
+        | `Replica Zone Level Soft Anti-Affinity` | `false`   |
+        | `Replica Node Level Soft Anti-Affinity` | `false`   |
 
-Last, Longhorn will look for an existing node with an existing zone to schedule the new replica. At this time both `Replica Node Level Soft Anti-Affinity` and `Replica Zone Level Soft Anti-Affinity` should be checked.
+        Then Longhorn will **not** schedule the replica.
+    - **New Node in an Existing Zone**
+      - If no new node in a new zone is available, Longhorn next considers scheduling the replica on a **new node** located in a **zone that already hosts a replica**.
+      - If such a node is found, scheduling is allowed **only if** the following conditions are met:
+
+        | Setting                                 | Value   |
+        |-----------------------------------------|---------|
+        | `Replica Zone Level Soft Anti-Affinity` | `true`  |
+        | `Replica Node Level Soft Anti-Affinity` | `false` |
+
+      - If no such node exists, or if the conditions are not met, Longhorn will **not** schedule the replica.
+
+    - **Existing Node in an Existing Zone**
+      - If neither a new node in a new zone nor a new node in an existing zone is available, Longhorn will finally consider scheduling the replica on a **node and zone that already host another replica** of the same volume.
+
+      - This is allowed **only if** the following conditions are met:
+
+        | Setting                                 | Value  |
+        |-----------------------------------------|--------|
+        | `Replica Zone Level Soft Anti-Affinity` | `true` |
+        | `Replica Node Level Soft Anti-Affinity` | `true` |
 
 ### Disk Selection Stage
 
