@@ -17,7 +17,7 @@ The longhorn-manager has a non tls client fallback for mixed mode setups where t
 # Self Signed Certificate Setup
 
 You should create a `ca.crt` with the CA flag set which is then used to sign the `tls.crt` this will allow you to rotate the `tls.crt` in the future without service interruptions.
-You can use [openssl](https://mariadb.com/docs/security/data-in-transit-encryption/create-self-signed-certificates-keys-openssl/)
+You can use [openssl](https://mariadb.com/docs/server/security/securing-mariadb/securing-mariadb-encryption/data-in-transit-encryption/certificate-creation-with-openssl/)
 or [cfssl](https://github.com/cloudflare/cfssl) for the `ca.crt` as well as `tls.crt` certificate generation.
 
 The `tls.crt` certificate should use `longhorn-backend` for the common name and the below list of entries for the Subject Alternative Name.
