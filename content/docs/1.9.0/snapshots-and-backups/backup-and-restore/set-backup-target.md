@@ -360,7 +360,7 @@ To include multiple certificates, one can just concatenate the different certifi
 
 1. you want to switch to this new access style right now so that you won't need to worry about [Amazon S3 Path Deprecation Plan](https://aws.amazon.com/blogs/aws/amazon-s3-path-deprecation-plan-the-rest-of-the-story/);
 2. the backupstore you are using supports virtual-hosted-style access only, e.g., Alibaba Cloud(Aliyun) OSS;
-3. you have configured `MINIO_DOMAIN` environment variable to [enable virtual-host-style requests for the MinIO server](https://min.io/docs/minio/linux/reference/minio-mc-admin.html);
+3. you have configured `MINIO_DOMAIN` environment variable to [enable virtual-host-style requests for the MinIO server](https://min.io/docs/minio/linux/administration/object-management.html#path-vs-virtual-host-bucket-access);
 4. the error `...... error: AWS Error: SecondLevelDomainForbidden Please use virtual hosted style to access. .....` is triggered.
 
 **The way to enable virtual-hosted-style access**
