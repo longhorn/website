@@ -56,6 +56,13 @@ weight: 3
 | longhorn_disk_usage_bytes | The used storage of this disk | longhorn_disk_usage_bytes{disk="default-disk-8b28ee3134628183",node="worker-3"} 9.060941824e+09 |
 | longhorn_disk_reservation_bytes | The reserved storage for other applications and system on this disk | longhorn_disk_reservation_bytes{disk="default-disk-8b28ee3134628183",node="worker-3"} 2.519618519e+10 |
 | longhorn_disk_status | The status of this disk | longhorn_disk_status{condition="ready",condition_reason="",disk="default-disk-ca0300000000",node="worker-3"} |
+| longhorn_disk_read_throughput | Read throughput of this disk (Bytes/s) | longhorn_disk_read_throughput{disk="default-disk-8b28ee3134628183",node="worker-3",disk_path="/dev/sda"} 10485760 |
+| longhorn_disk_write_throughput | Write throughput of this disk (Bytes/s) | longhorn_disk_write_throughput{disk="default-disk-8b28ee3134628183",node="worker-3",disk_path="/dev/sda"} 2097152 |
+| longhorn_disk_read_iops | Read IOPS of this disk | longhorn_disk_read_iops{disk="default-disk-8b28ee3134628183",node="worker-3",disk_path="/dev/sda"} 200 |
+| longhorn_disk_write_iops | Write IOPS of this disk | longhorn_disk_write_iops{disk="default-disk-8b28ee3134628183",node="worker-3",disk_path="/dev/sda"} 150 |
+| longhorn_disk_read_latency | Read latency of this disk (nanoseconds) | longhorn_disk_read_latency{disk="default-disk-8b28ee3134628183",node="worker-3",disk_path="/dev/sda"} 85000 |
+| longhorn_disk_write_latency | Write latency of this disk (nanoseconds) | longhorn_disk_write_latency{disk="default-disk-8b28ee3134628183",node="worker-3",disk_path="/dev/sda"} 95000 |
+
 
 ## Instance Manager
 
