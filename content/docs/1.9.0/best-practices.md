@@ -42,6 +42,17 @@ We recommend the following setup for deploying Longhorn in production.
   - 500/250 max IOPS per volume (1 MiB I/O)
   - 500/250 max throughput per volume (MiB/s)
 
+> **Warning**: While Longhorn can function with HDDs (spinning disks) as storage, it is important to understand that **latency** plays a much more important role in volume stability than IOPS or throughput. This is especially true when multiple input-output intensive tasks are running, such as:
+>
+> - Foreground IOs to the replicas
+> - Foreground IOs from the replicas
+> - Rebuilding volumes
+> - Backups or other workloads
+>
+> The increased latency due to the use of HDDs, combined with other input-output workloads, can lead to **volume instability**. Therefore, we recommend **SSD or NVMe** drives for better performance and stability, especially for production workloads.
+>
+> The mentioned IOPS and throughput (500/250 max IOPS per volume and 500/250 max throughput per volume) are intended as general references based on the test setup but **should not be treated as hard requirements**. Latency, not just throughput, is the most important factor in ensuring system stability.
+
 ## Architecture
 
 Longhorn supports the following architectures:
