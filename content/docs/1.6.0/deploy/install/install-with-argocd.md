@@ -50,12 +50,42 @@ weight: 13
           repoURL: https://charts.longhorn.io/
           targetRevision: v{{< current-version >}} # Replace with the Longhorn version you'd like to install or upgrade to
           helm:
-            valuesObject:
+            values: |
               preUpgradeChecker:
                 jobEnabled: false
       destination:
         server: https://kubernetes.default.svc
         namespace: longhorn-system
+      # add ignoreDifferences to prevent preserveUnknownFields field from make causing the application to be out of sync
+      ignoreDifferences:
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: engineimages.longhorn.io
+          jsonPointers: ["/spec/preserveUnknownFields"]
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: engines.longhorn.io
+          jsonPointers: ["/spec/preserveUnknownFields"]
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: instancemanagers.longhorn.io
+          jsonPointers: ["/spec/preserveUnknownFields"]
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: nodes.longhorn.io
+          jsonPointers: ["/spec/preserveUnknownFields"]
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: replicas.longhorn.io
+          jsonPointers: ["/spec/preserveUnknownFields"]
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: settings.longhorn.io
+          jsonPointers: ["/spec/preserveUnknownFields"]
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: volumes.longhorn.io
+          jsonPointers: ["/spec/preserveUnknownFields"]
     EOF
     kubectl apply -f longhorn-application.yaml
     ```
