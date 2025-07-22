@@ -238,6 +238,15 @@ A list of recurring jobs that are to be run on a volume.
 > Default: `default`
 > More details in [default backup target](../../snapshots-and-backups/backup-and-restore/set-backup-target#default-backup-target) and [Create Volumes](../../nodes-and-volumes/volumes/create-volumes).
 
+#### Backup Block Size *(field: `parameters.backupBlockSize`)*
+> Default: `""`
+> Example: `"2Mi"` or `"16Mi"`
+
+Kubernetes quantity string. Specify the empty string `""` to use the global setting.
+
+> Global setting: [default backup block size](../settings#default-backup-block-size).
+> More details in [Configure The Block Size Of Backup](../../snapshots-and-backups/backup-and-restore/configure-backup-block-size)
+
 ## Helm Installs
 
 If Longhorn is installed via Helm, values in the default storage class can be set by editing the corresponding item in [values.yaml](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/chart/values.yaml).  All of the Storage Class parameters have a prefix of "persistence".  For example, `persistence.defaultNodeSelector`.
