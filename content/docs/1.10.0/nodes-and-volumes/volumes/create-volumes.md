@@ -51,8 +51,8 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
     #  ]'
     ```
 
-    In particular, starting with v1.4.0, the parameter `mkfsParams` can be used to specify filesystem format options for each StorageClass.  
-    Starting with v1.8.0, the parameter `backupTargetName` can be used to specify the backup target. The name of the default backup target (`default`) is used if `backupTargetName` is not specified.  
+    In particular, starting with v1.4.0, the parameter `mkfsParams` can be used to specify filesystem format options for each StorageClass.
+    Starting with v1.8.0, the parameter `backupTargetName` can be used to specify the backup target. The name of the default backup target (`default`) is used if `backupTargetName` is not specified.
     Parameters may be omitted from the StorageClass specification.  When the storage class is used to create a PV and a volume, parameters that are not specified will generally be set using a default value taken from the global settings.  See [here](../../../references/storage-class-parameters) for the list of storage class parameters, and [here](../../../references/settings) for the full list of global settings.
 
 2. Create a Pod that uses Longhorn volumes by running this command:
@@ -153,8 +153,8 @@ The failure results in the workload failing to use the provisioned PV and showin
 Events:
   Type     Reason              Age                From                     Message
   ----     ------              ----               ----                     -------
-  Warning  FailedAttachVolume  14s (x8 over 82s)  attachdetach-controller  AttachVolume.Attach 
-  failed for volume "pvc-e130e369-274d-472d-98d1-f6074d2725e8" : rpc error: code = Aborted 
+  Warning  FailedAttachVolume  14s (x8 over 82s)  attachdetach-controller  AttachVolume.Attach
+  failed for volume "pvc-e130e369-274d-472d-98d1-f6074d2725e8" : rpc error: code = Aborted
   desc = volume pvc-e130e369-274d-472d-98d1-f6074d2725e8 is not ready for workloads
 ```
 

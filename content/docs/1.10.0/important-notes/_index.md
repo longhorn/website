@@ -15,7 +15,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
-  - [Newly Introduced Functionalities since Longhorn v1.9.0](#newly-introduced-functionalities-since-longhorn-v190)
+  - [Newly Introduced Functionalities since Longhorn v1.10.0](#newly-introduced-functionalities-since-longhorn-v1100)
 
 ## Removal
 
@@ -68,4 +68,12 @@ Longhorn v1.10.0 and later version support usage of V1 volumes in single-stacked
 
 Longhorn currently does not support live upgrading of V2 volumes. Ensure that all V2 volumes are detached before initiating the upgrade process.
 
-### Newly Introduced Functionalities since Longhorn v1.9.0
+### Newly Introduced Functionalities since Longhorn v1.10.0
+
+## Backup And Restore
+
+### Configurable Backup Block Size
+
+Starting in Longhorn v1.10.0, users can configure the backup block size when creating a volume. This feature offers greater flexibility, allowing the block size to be adjusted based on different needs and cost considerations to balance performance, efficiency, and transmission cost.
+
+For more information, see [Create Longhorn Volumes](../nodes-and-volumes/volumes/create-volumes).

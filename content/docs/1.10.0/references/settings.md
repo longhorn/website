@@ -67,6 +67,7 @@ weight: 1
   - [Backup Compression Method](#backup-compression-method)
   - [Backup Concurrent Limit Per Backup](#backup-concurrent-limit-per-backup)
   - [Restore Concurrent Limit Per Backup](#restore-concurrent-limit-per-backup)
+  - [Default Backup Block Size](#default-backup-block-size)
 - [Scheduling](#scheduling)
   - [Allow Volume Creation with Degraded Availability](#allow-volume-creation-with-degraded-availability)
   - [Disable Scheduling On Cordoned Node](#disable-scheduling-on-cordoned-node)
@@ -726,6 +727,12 @@ This setting controls how many worker threads per backup concurrently.
 
 This setting controls how many worker threads per restore concurrently.
 
+#### Default Backup Block Size
+
+> Default: `2`
+
+Specifies the default backup block size, in MiB, used when creating a new volume. Supported values are `2` or `16`.
+
 ### Scheduling
 
 #### Allow Volume Creation with Degraded Availability
@@ -849,11 +856,11 @@ Adjusting this setting allows Longhorn Manager to schedule new replicas on a dis
 Note that replicas may consume more space than the volume’s nominal size due to snapshot data. To reclaim disk space, you can delete snapshots that are no longer needed.
 
 > **Example**
-> 
+>
 > Suppose a disk has a Storage Maximum of 100 GiB and Storage Reserved of 10 GiB, resulting in 90 GiB of usable capacity.
-> 
+>
 > If the Storage Over-Provisioning Percentage is set to 200%, the maximum allowed Storage Scheduled is 180 GiB (200% of 90 GiB).
-> 
+>
 > This means Longhorn Manager can continue scheduling replicas to this disk until the total scheduled size reaches 180 GiB, even though the actual usable space is only 90 GiB.
 
 #### Storage Reserved Percentage For Default Disk
