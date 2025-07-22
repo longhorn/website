@@ -51,8 +51,8 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
     #  ]'
     ```
 
-    In particular, starting with v1.4.0, the parameter `mkfsParams` can be used to specify filesystem format options for each StorageClass.  
-    Starting with v1.8.0, the parameter `backupTargetName` can be used to specify the backup target. The name of the default backup target (`default`) is used if `backupTargetName` is not specified.  
+    In particular, starting with v1.4.0, the parameter `mkfsParams` can be used to specify filesystem format options for each StorageClass.
+    Starting with v1.8.0, the parameter `backupTargetName` can be used to specify the backup target. The name of the default backup target (`default`) is used if `backupTargetName` is not specified.
     Parameters may be omitted from the StorageClass specification.  When the storage class is used to create a PV and a volume, parameters that are not specified will generally be set using a default value taken from the global settings.  See [here](../../../references/storage-class-parameters) for the list of storage class parameters, and [here](../../../references/settings) for the full list of global settings.
 
 2. Create a Pod that uses Longhorn volumes by running this command:
@@ -150,8 +150,8 @@ The failure results in the workload failing to use the provisioned PV and showin
 Events:
   Type     Reason              Age                From                     Message
   ----     ------              ----               ----                     -------
-  Warning  FailedAttachVolume  14s (x8 over 82s)  attachdetach-controller  AttachVolume.Attach 
-  failed for volume "pvc-e130e369-274d-472d-98d1-f6074d2725e8" : rpc error: code = Aborted 
+  Warning  FailedAttachVolume  14s (x8 over 82s)  attachdetach-controller  AttachVolume.Attach
+  failed for volume "pvc-e130e369-274d-472d-98d1-f6074d2725e8" : rpc error: code = Aborted
   desc = volume pvc-e130e369-274d-472d-98d1-f6074d2725e8 is not ready for workloads
 ```
 
@@ -166,3 +166,51 @@ Annotations:     longhorn.io/volume-scheduling-error: insufficient storage
 ...
 
 ```
+
+### Specify The Backup Block Size
+
+Longhorn uses a default backup block size of 2MiB for volume backup storage operations. Starting with v1.10.0, the backup block size can be configured during volume creation, with available options of `2Mi` and `16Mi` bytes.
+
+This setting can be configured through the volume creation UI. When creating volumes using kubectl, the `backupBlockSize` parameter must be specified in the StorageClass configuration prior to volume creation.
+
+```yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: longhorn
+provisioner: driver.longhorn.io
+parameters:
+  backupBlockSize: 16Mi
+```
+
+Once the backup block size is specified and the volume is created, this value becomes immutable, and can be viewed in both the `volumes.longhorn.io` and `backups.longhorn.io` custom resources.
+
+```yaml
+# kubectl -n longhorn-system get volume volume-test -o yaml
+
+apiVersion: longhorn.io/v1beta2
+kind: Volume
+metadata:
+  name: volume-test
+  namespace: longhorn-system
+  ...
+spec:
+  backupBlockSize: 16Mi
+  ...
+
+
+# kubectl -n longhorn-system get backup backup-975ef3fb3eed4f9e -o yaml
+
+apiVersion: longhorn.io/v1beta2
+kind: Backup
+metadata:
+  name: backup-975ef3fb3eed4f9e
+  namespace: longhorn-system
+spec:
+  backupBlockSize: 16Mi
+  ...
+```
+
+When restoring a volume from backup, the new volume can be configured with a different backup block size.
+
+**Caution**: This functionality lacks backward compatibility. Attempting to restore a backup that uses a non-default backup block size (anything other than 2MiB) on Longhorn v1.9.x or older systems will result in volume creation with file system corruption.
