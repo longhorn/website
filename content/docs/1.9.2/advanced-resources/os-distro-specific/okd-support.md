@@ -26,11 +26,11 @@ Please refer to this section [Install with Helm](../../../deploy/install/install
 
 Install Longhorn with the following settings:
 
-| Setting | Value | Example | 
+| Setting | Value | Example |
 | --- | --- | --- |
 | `openshift.enabled` | `true` | N/A |
 | `image.openshift.oauthProxy.repository` | Upstream image | `quay.io/openshift/origin-oauth-proxy` |
-| `image.openshift.oauthProxy.tag` | Version 4.1 or later | `4.15` |
+| `image.openshift.oauthProxy.tag` | Version 4.1 or later | `4.18` |
 
 ```bash
   helm install longhorn longhorn/longhorn \
@@ -38,7 +38,7 @@ Install Longhorn with the following settings:
     --create-namespace \
     --set openshift.enabled=true \
     --set image.openshift.oauthProxy.repository=quay.io/openshift/origin-oauth-proxy \
-    --set image.openshift.oauthProxy.tag=4.15
+    --set image.openshift.oauthProxy.tag=4.18
 ```
 
 ### Install With `oc` Command
@@ -49,7 +49,7 @@ Perform the following steps to install Longhorn on [OKD](https://www.okd.io/) cl
   ```
   wget https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn-okd.yaml
   ```
-1. Specify the target `oauth-proxy` container image in the `longhorn-okd.yaml` file (for example, `quay.io/openshift/origin-oauth-proxy:4.15`).
+1. Specify the target `oauth-proxy` container image in the `longhorn-okd.yaml` file (for example, `quay.io/openshift/origin-oauth-proxy:4.18`).
 
 1. Run the following command:
   ```shell
