@@ -87,6 +87,7 @@ If the whole Kubernetes cluster or Longhorn system goes offline, the following s
      namespace: longhorn-system
    spec:
      hostPID: true
+     hostNetwork: true
      containers:
      - name: engine
        image: longhornio/longhorn-engine:v<current-version>
@@ -97,10 +98,13 @@ If the whole Kubernetes cluster or Longhorn system goes offline, the following s
        volumeMounts:
        - name: dev
          mountPath: /host/dev
+         readOnly: true
        - name: proc
          mountPath: /host/proc
+         readOnly: true
        - name: data
          mountPath: /volume
+         readOnly: true
      volumes:
      - name: dev
        hostPath:
@@ -120,6 +124,6 @@ If the whole Kubernetes cluster or Longhorn system goes offline, the following s
 
 **Result:** Now you should have a block device created on `/dev/longhorn/<volume_name>` for this device, such as `/dev/longhorn/pvc-06b4a8a8-b51d-42c6-a8cc-d8c8d6bc65bc` for the example above. Now you can mount the block device to get the access to the data.
 
-> To avoid accidental change of the volume content, it's recommended to use `mount -o ro` to mount the directory as `readonly`.
+> To avoid accidental change of the volume content, it's recommended to use `mount -o ro` to mount the directory as `readonly`. Also, added readOnly: true option to manifest example to reflect read-only in mount of volume.
 
 After you are done accessing the volume content, use `docker stop` to stop the container. For RKE2, clean up the resources by removing the static pod manifest file `sudo rm /var/lib/rancher/rke2/agent/pod-manifests/longhorn-recovery.yaml`
