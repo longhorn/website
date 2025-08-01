@@ -76,3 +76,41 @@ By default, Kubernetes uses `/usr/libexec/kubernetes/kubelet-plugins/volume/exec
 Some vendors choose to change the directory for various reasons. For example, GKE uses `/home/kubernetes/flexvolume` instead.
 
 The correct directory can be found by running `ps aux|grep kubelet` on the host and check the `--volume-plugin-dir` parameter. If there is none, the default `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/` will be used.
+
+## Profiling
+
+### Engine, replica, and sync agent runtime
+
+Pprof server can be enabled dynamically for runtime profiling.
+
+To enable profiling, shell into the instance manager pod, and check the port of the runtime using `ps`:
+
+```bash
+$ ps aux | more
+
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+...
+root        1996  0.0  0.6 1990080 20996 ?       Sl   Jul25   0:05 /host/var/lib/longhorn/engine-binaries/longhornio-longhorn-engine-v1.10.0/longhorn --volume-name vol replica /host/var/lib/longhorn/replicas/vol-3004fc59 --size 1073741824 --disableRevCounter --replica-instance-name vol-r-ec7e35e4 --snapshot-max-count 250 --snapshot-max-size 0 --sync-agent-port-count 7 --listen 0.0.0.0:10000
+root        2004  0.0  0.6 1695152 22708 ?       Sl   Jul25   0:09 /host/var/lib/longhorn/engine-binaries/longhornio-longhorn-engine-v1.10.0/longhorn --volume-name vol sync-agent --listen 0.0.0.0:10002 --replica 0.0.0.0:10000 --listen-port-range 10003-10009 --replica-instance-name vol-r-ec7e35e4
+root        2031  0.0  0.6 1916348 23760 ?       Sl   Jul25   0:46 /engine-binaries/longhornio-longhorn-engine-v1.10.0/longhorn --engine-instance-name vol-e-0 controller vol --frontend tgt-blockdev --disableRevCounter --size 1073741824 --current-size 0 --engine-replica-timeout 8 --file-sync-http-client-timeout 30 --snapshot-max-count 250 --snapshot-max-size 0 --replica tcp://10.42.2.7:10000 --replica tcp://10.42.0.15:10000
+--replica tcp://10.42.1.7:10000 --listen 0.0.0.0:10010
+```
+
+And assign a port to enable the pprof server for given runtime process:
+
+```bash
+$ /host/var/lib/longhorn/engine-binaries/longhornio-longhorn-engine-v1.10.0/longhorn --url http://localhost:10002 profiler enable --port 36060
+$ /host/var/lib/longhorn/engine-binaries/longhornio-longhorn-engine-v1.10.0/longhorn --url http://localhost:10002 profiler show
+
+Profiler enabled at Addr: *:36060
+```
+
+The pprof server of sync agent (serves at port `10002`) is available at `http://localhost:36060` inside the instance manager pod in the example. Refer to the [pprof official document](https://pkg.go.dev/net/http/pprof#hdr-Usage_examples) for the profiler usage.
+
+The profiler can be disabled after profiling.
+
+```bash
+$ /host/var/lib/longhorn/engine-binaries/longhornio-longhorn-engine-v1.10.0/longhorn --url http://localhost:10002 profiler disable
+
+Profiler is disabled!
+```
