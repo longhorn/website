@@ -36,7 +36,7 @@ weight: 3
 - [System Backup](#system-backup)
 - [Thin provisioning](#thin-provisioning)
 - [Umount](#umount)
-- [Volumes (Kubernetes concept)](#volume-kubernetes-concept)
+- [Volumes (Kubernetes concept)](#volumes-kubernetes-concept)
 - [XFS](#xfs)
 - [SMB/CIFS](#smbcifs)
 
