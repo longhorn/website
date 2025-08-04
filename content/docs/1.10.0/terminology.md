@@ -36,7 +36,7 @@ weight: 3
 - [System Backup](#system-backup)
 - [Thin provisioning](#thin-provisioning)
 - [Umount](#umount)
-- [Volume (Kubernetes concept)](#volume-kubernetes-concept)
+- [Volumes (Kubernetes concept)](#volume-kubernetes-concept)
 - [XFS](#xfs)
 - [SMB/CIFS](#smbcifs)
 
@@ -197,7 +197,7 @@ Longhorn is a thin-provisioned storage system. That means a Longhorn volume will
 
 A [Linux command](https://linux.die.net/man/8/umount) that detaches the file system from the file hierarchy.
 
-### Volume (Kubernetes concept)
+### Volumes (Kubernetes concept)
 
 A volume in Kubernetes allows a pod to store files during the lifetime of the pod.
 
