@@ -11,25 +11,25 @@ We recommend the following setup for deploying Longhorn in production.
 - [Kubernetes](#kubernetes)
   - [Kubernetes Version](#kubernetes-version)
   - [CoreDNS Setup](#coredns-setup)
-- [Node and Disk Setup](#node-and-disk-setup)
+- [Nodes and Disk Setup](#node-and-disk-setup)
   - [Use a Dedicated Disk](#use-a-dedicated-disk)
   - [Minimal Available Storage and Over-provisioning](#minimal-available-storage-and-over-provisioning)
   - [Disk Space Management](#disk-space-management)
   - [Setting up Extra Disks](#setting-up-extra-disks)
 - [Configuring Default Disks Before and After Installation](#configuring-default-disks-before-and-after-installation)
-- [Volume Performance Optimization](#volume-performance-optimization)
+- [Volumes Performance Optimization](#volume-performance-optimization)
   - [IO Performance](#io-performance)
   - [Space Efficiency](#space-efficiency)
   - [Disaster Recovery](#disaster-recovery)
 - [Deploying Workloads](#deploying-workloads)
-- [Volume Maintenance](#volume-maintenance)
+- [Volumes Maintenance](#volume-maintenance)
 - [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu)
   - [V1 Data Engine](#v1-data-engine)
   - [V2 Data Engine](#v2-data-engine)
 - [StorageClass](#storageclass)
 - [Scheduling Settings](#scheduling-settings)
   - [Replica Node Level Soft Anti-Affinity](#replica-node-level-soft-anti-affinity)
-  - [Allow Volume Creation with Degraded Availability](#allow-volume-creation-with-degraded-availability)
+  - [Allow Volumes Creation with Degraded Availability](#allow-volume-creation-with-degraded-availability)
   - [Replica Auto-Balance](#replica-auto-balance)
 
 ## Minimum Recommended Hardware
@@ -118,7 +118,7 @@ Referenced to https://endoflife.date/kubernetes.
 
 Ensure that CoreDNS runs with at least 2 replicas to maintain high availability. This setup minimizes interruptions in the DNS resolution if one CoreDNS pod experiences a temporary disruption.
 
-## Node and Disk Setup
+## Nodes and Disk Setup
 
 We recommend the following setup for nodes and disks.
 
@@ -150,7 +150,7 @@ To use a directory other than the default `/var/lib/longhorn` for storage, the `
 
 The [Default node/disk configuration](../nodes-and-volumes/nodes/default-disk-and-node-config) feature can be used to customize the default disk after installation. Customizing the default configurations for disks and nodes is useful for scaling the cluster because it eliminates the need to configure Longhorn manually for each new node if the node contains more than one disk, or if the disk configuration is different for new nodes. Remember to enable `Create default disk only on labeled node` if applicable.
 
-## Volume Performance Optimization
+## Volumes Performance Optimization
 
 Before configuring workloads, ensure that you have set up the following basic requirements for optimal volume performance.
 
@@ -196,7 +196,7 @@ The following sections outline other recommendations for production environments
 
 If you're using `ext4` as the filesystem of the volume, we recommend adding a liveness check to workloads to help automatically recover from a network-caused interruption, a node reboot, or a Docker restart. See [this section](../high-availability/recover-volume) for details.
 
-## Volume Maintenance
+## Volumes Maintenance
 
 Using Longhorn's built-in backup feature is highly recommended. You can save backups to an object store such as S3 or to an NFS server. Saving to an object store is preferable because it generally offers better reliability.  Another advantage is that you do not need to mount and unmount the target, which can complicate failover and upgrades.
 
@@ -234,7 +234,7 @@ We don't recommend modifying the default StorageClass named `longhorn`, since th
 
 This setting should be set to `false` in production environment to ensure the best availability of the volume. Otherwise, one node down event may bring down more than one replicas of a volume.
 
-### Allow Volume Creation with Degraded Availability
+### Allow Volumes Creation with Degraded Availability
 
 > Recommend: `false`
 
