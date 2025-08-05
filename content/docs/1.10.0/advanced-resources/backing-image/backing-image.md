@@ -44,7 +44,7 @@ A backing image serves as the initial snapshot in the snapshot chain of a Longho
 ### The way of creating a backing image
 
 #### Create a backing image via Longhorn UI
-On **Setting > Backing Image** page, users can create backing images with any kinds of data source.
+On **Advanced > Backing Images** page, users can create backing images with any kinds of data source.
 
 #### Create a V1 Backing Image Using YAML
 You can download a file or export an existing volume as a backing image via YAML.
@@ -150,7 +150,7 @@ or utilize an existing backing image as mentioned below.
 
 #### Use an existing backing
 ##### Use an existing backing Image during volume creation
-1. Click **Setting > Backing Image** in the Longhorn UI.
+1. Click **Advanced > Backing Images** in the Longhorn UI.
 2. Click **Create Backing Image** to create a backing image with a unique name and a valid URL.
 3. Select a backing image from the list. The volume and the backing image must use the same data engine.
 4. Longhorn starts to download the backing image to disks for the replicas when a volume using the backing image is attached to a node.

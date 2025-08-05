@@ -18,7 +18,7 @@ After the disk is mounted, you can add it to Longhorn using either the  UI or th
 
 - **Using the Longhorn UI**
 
-  1. Go to the **Node** tab, select a node, and choose **Edit Disks** from the dropdown menu.
+  1. Go to the **Nodes** tab, select a node, and choose **Edit Disks** from the dropdown menu.
   2. Add the mount path of the disk to the disk list.
 
 - **Using `kubectl` Command**

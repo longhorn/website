@@ -5,7 +5,7 @@ weight: 3
 
 From the Longhorn UI, the volume can refer to recurring snapshots and backups as independent jobs or as recurring job groups.
 
-To create a recurring job, you can go to the `Recurring Job` page in Longhorn and `Create Recurring Job` or in the volume detail view in Longhorn.
+To create a recurring job, you can go to the `Recurring Jobs` page in Longhorn and `Create Recurring Job` or in the volume detail view in Longhorn.
 
 You can configure,
 - Any groups that the job should belong to

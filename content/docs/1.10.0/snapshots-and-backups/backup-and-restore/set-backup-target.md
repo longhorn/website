@@ -5,7 +5,7 @@ weight: 1
 
 A backup target is an endpoint used to access a backupstore. Backup targets can be configured on the Longhorn UI (**Settings > Backup Target**). A backupstore is a server that stores the backups of Longhorn volumes. You can use NFS, SMB/CIFS, Azure Blob Storage, and S3-compatible servers.
 
-{{< figure alt="the backup target UI page" src="/img/screenshots/backup-target/page.png" >}}
+{{< figure alt="the backup target UI page" src="/img/screenshots/backup-target/v1.10.0/page.png" >}}
 
 > **Note:**  
 > Starting with v1.8.0, Longhorn supports usage of multiple backupstores. Setting the default backup target before creating a new one is recommended.
@@ -188,9 +188,9 @@ data:
             -n longhorn-system
         ```
 
-3. On the Longhorn UI, go to **Setting > Backup Target**, and then create or edit a backup target.
+3. On the Longhorn UI, go to **Backup and Restore > Backup Targets**, and then create or edit a backup target.
 
-   {{< figure alt="edit a backup target" src="/img/screenshots/backup-target/edit.png" >}}
+   {{< figure alt="edit a backup target" src="/img/screenshots/backup-target/v1.10.0/edit.png" >}}
 
    - Set **URL** to:
 
@@ -263,7 +263,7 @@ Make sure `NO_PROXY` contains the network addresses, network address ranges and 
    - The Secret will be mapped to the `AWS_SECRET_ACCESS_KEY` field in the Kubernetes secret we create later.
    - The Storage URI will be mapped to the `AWS_ENDPOINTS` field in the Kubernetes secret we create later.
 
-9. Go to the Longhorn UI. In the top navigation bar, click **Setting/Backup Target**, and create or edit a backup target.
+9. Go to the Longhorn UI. In the top navigation bar, click **Backup and Restore/Backup Targets**, and create or edit a backup target.
 
    - Set **URL** to:
 
@@ -310,7 +310,7 @@ Longhorn provides sample backupstore server setups for testing purposes.  You ca
    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/backupstores/minio-backupstore.yaml
    ```
 
-2. Go to the Longhorn UI. click **Setting/Backup Target**, and create or edit a backup target.
+2. Go to the Longhorn UI. click **Backup and Restore/Backup Targets**, and create or edit a backup target.
 
    - Set **URL** to:
 
@@ -382,7 +382,7 @@ To include multiple certificates, one can just concatenate the different certifi
     ```
 
 2. Deploy/update the secret.
-3. Create correspondence backup target in `Settings > Backup Target`.
+3. Create correspondence backup target in `Backup and Restore > Backup Targets`.
    1. Name: The target name you want.
    2. URL: `s3://<bucket-name>@<region>/`.
    3. Credential Secret: `s3-compatible-backup-target-secret` in this example.
@@ -439,7 +439,7 @@ Before configuring a SMB/CIFS backupstore, a credential secret for the backupsto
   kubectl apply -f cifs_secret.yml
   ```
 
-On the Longhorn UI, go to **Setting > Backup Target**.
+On the Longhorn UI, go to **Backup and Restore > Backup Targets**.
 
 - Create or edit a backup target.
   - Set **URL** to:
@@ -482,7 +482,7 @@ You can find an example CIFS backupstore for testing purpose [here](https://gith
    - `Storage account name`: Maps to the `AZBLOB_ACCOUNT_NAME` field in the Kubernetes secret that you will create.
    - `Key`: Maps to the `AZBLOB_ACCOUNT_KEY` field in the Kubernetes secret that you will create.
 
-5. Go to the Longhorn UI. In the top navigation bar, click **Setting/Backup Target**, and create or edit a backup target.
+5. Go to the Longhorn UI. In the top navigation bar, click **Backup and Restore/Backup Targets**, and create or edit a backup target.
 
    - Set **URL**. The target URL should look like this:
 

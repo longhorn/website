@@ -143,7 +143,7 @@ In the example, we will explain how to manage orphaned replica directories ident
 2. Review the list of orphaned replica directories grouped by node and disk.
 3. To delete a directory, click `Operation > Delete`.
 
-By default, Longhorn does not delete orphaned replica directories automatically. To enable automatic deletion, go to `Setting > General > Orphan`.
+By default, Longhorn does not delete orphaned replica directories automatically. To enable automatic deletion, go to `Settings > Orphan`.
 
 ### Exception
 Longhorn will not create an `orphan` resource for an orphaned directory when

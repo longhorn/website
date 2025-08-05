@@ -84,7 +84,7 @@ You need to set node selector for both types of components. See more details bel
 
 3. Set the node selector for system-managed components (for example, Instance Manager, Backing Image Manager, Share Manager, CSI Driver, and Engine Image).
 
-   The node selector setting can be found at Longhorn UI under **Setting > General > System Managed Components Node Selector.**
+   The node selector setting can be found at Longhorn UI under **Settings > System Managed Components Node Selector.**
 
 4. Clean up
 

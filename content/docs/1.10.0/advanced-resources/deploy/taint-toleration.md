@@ -114,7 +114,7 @@ You need to set tolerations for both types of components. See more details below
 
 3. Set taint tolerations for system-managed components (for example, Instance Manager, Backing Image Manager, Share Manager, CSI Driver, and Engine Image).
 
-   The taint toleration setting can be found at Longhorn UI under **Setting > General > Kubernetes Taint Toleration.**
+   The taint toleration setting can be found at Longhorn UI under **Settings > Kubernetes Taint Toleration.**
 
 
 ## History

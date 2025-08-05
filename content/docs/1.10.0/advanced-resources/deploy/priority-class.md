@@ -24,7 +24,7 @@ Longhorn creates a Priority Class `longhorn-critical` and sets it as default for
 
 ### Setting Priority Class After Longhorn Installation
 
-1. Set taint Priority Class for system managed components: The Priority Class setting can be found in the Longhorn UI by clicking **Setting > General > Priority Class.**
+1. Set taint Priority Class for system managed components: The Priority Class setting can be found in the Longhorn UI by clicking **Settings > Priority Class.**
 1. Set taint Priority Class for user deployed components: modify the Helm chart or deployment YAML file depending on how you deploy Longhorn.
 
 Users can update or remove the Priority Class here, but note that this will result in recreation of all the Longhorn system components.

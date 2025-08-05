@@ -203,7 +203,7 @@ Follow the steps in Quick Installation to install Longhorn system.
 
 Enable the V2 Data Engine by changing the `v2-data-engine` setting to `true` after installation. Following this, the instance-manager pods will be automatically restarted.
 
-Or, you can enable it in `Setting > General > V2 Data Engine`.
+Or, you can enable it in `Settings > V2 Data Engine`.
 
 ### CPU and Memory Usage
 

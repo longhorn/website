@@ -46,7 +46,7 @@ You can restore the Longhorn system using Longhorn UI. Or with the `kubectl` com
 
 ### Using Longhorn UI
 
-1. Go to the `System Backup` page in the `Setting`.
+1. Go to the `System Backups` page in the `Backup and Restore`.
 1. Select a system backup to restore.
 1. Click `Restore` in the `Operation` drop-down menu.
 1. Give a `Name` for the system restore.
@@ -87,7 +87,7 @@ You can abort or remove a completed Longhorn system restore using Longhorn UI. O
 
 ### Using Longhorn UI
 
-1. Go to the `System Backup` page in the `Setting`.
+1. Go to the `System Backups` page in the `Backup and Restore`.
 1. Delete a single system restore in the `Operation` drop-down menu next to the system restore. Or delete in batch with the `Delete` button.
 
 ### Using `kubectl` Command
