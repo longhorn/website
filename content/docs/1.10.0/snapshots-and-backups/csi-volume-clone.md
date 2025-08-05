@@ -50,13 +50,15 @@ spec:
 ### Clone Volume Using the Longhorn UI
 
 #### Clone a volume
-1. Go to the **Volume** page.
+
+1. Go to the **Volumes** page.
 2. Select a volume, and then click **Clone Volume** in the **Operation** menu.
 3. (Optional) Configure the settings of the new volume.
 4. Click **OK**.
 
 #### Clone a Volume Using a Snapshot
-1. Go to the **Volume** page.
+
+1. Go to the **Volumes** page.
 2. Click the name of the volume that you want to clone.
 3. In the **Snapshot and Backups** section of the details page, identify the snapshot that you want to use and then click **Clone Volume**.
 4. (Optional) Configure the settings of the new volume.
@@ -65,7 +67,8 @@ spec:
 {{< figure src="/img/screenshots/snapshots-and-backups/clone-volume-modal.png" >}}
 
 #### Clone Multiple Volumes (Bulk Cloning)
-1. Go to the **Volume** page.
+
+1. Go to the **Volumes** page.
 2. Select the volume you want to clone.
 3. Click **Clone Volume** button on top of the table.
 4. (Optional) Configure the settings of the new volumes
@@ -78,7 +81,8 @@ spec:
 
 
 ## Volume Creation
-1. Go to the **Volume** page.
+
+1. Go to the **Volumes** page.
 2. Click **Create Volume**.
 3. Select the data source (**Volume** or **Volume Snapshot**) that you want to use.
 4. If you select **Volume Snapshot**, choose a snapshot.
@@ -88,6 +92,7 @@ spec:
 {{< figure src="/img/screenshots/snapshots-and-backups/create-volume-choose-datasource.png" >}}
 
 ## History
+
 - [GitHub Issue](https://github.com/longhorn/longhorn/issues/1815)
 - [Longhorn Enhancement Proposal](https://github.com/longhorn/longhorn/pull/2864)
 

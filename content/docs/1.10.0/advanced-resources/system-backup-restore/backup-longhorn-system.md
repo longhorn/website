@@ -78,7 +78,7 @@ The Longhorn system backup offers the following volume backup policies:
 
 #### Create a System Backup Using the Longhorn UI
 
-1. Go to the `System Backup` page in the `Setting` drop-down list.
+1. Go to the `System Backups` page in the `Backup and Restore` drop-down list.
 
 1. Click `Create` under `System Backup`.
 
@@ -112,7 +112,7 @@ The Longhorn system backup offers the following volume backup policies:
 
 #### Create a Recurring Backup Job Using the Longhorn UI
 
-1. Go to the `Recurring Job` page.
+1. Go to the `Recurring Jobs` page.
 
 1. Click on `Create Recurring Job`.
 

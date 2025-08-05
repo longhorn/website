@@ -97,7 +97,7 @@ talosctl upgrade --nodes 10.20.30.40 --image ghcr.io/siderolabs/installer:v1.7.6
 
 If you were unable to include the `--preserve` option in the upgrade command, perform the following steps:
 
-1. On the Longhorn UI, go to the **Node** page.
+1. On the Longhorn UI, go to the **Nodes** page.
 
 1. Select the upgraded node, and then select **Edit node and disks** in the **Operation** menu.
 
@@ -117,7 +117,7 @@ Longhorn synchronizes the replicas based on the configured settings.
 
 ### After v1.8.x
 
-The `--preserve` is no longer required. The flag is automatically set for `talosctl upgrade` command. [here](https://www.talos.dev/v1.8/introduction/what-is-new/#upgrades)
+The `--preserve` is no longer required. The flag is automatically set for `talosctl upgrade` command [here](https://www.talos.dev/v1.8/introduction/what-is-new/#upgrades).
 
 ## Talos Linux Version v1.10.x and Later
 

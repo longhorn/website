@@ -49,7 +49,7 @@ The `VolumeSnapshotContent` refers to a Longhorn BackingImage in its `VolumeSnap
 
 ### Viewing the Longhorn BackingImage
 
-To see the BackingImage, click **Setting > Backing Image** in the top navigation bar and click the BackingImage mentioned in the `VolumeSnapshotContent.snapshotHandle`.
+To see the BackingImage, click **Advanced > Backing Images** in the top navigation bar and click the BackingImage mentioned in the `VolumeSnapshotContent.snapshotHandle`.
 
 
 ### How the CSI Mechanism Works in this Scenario
@@ -105,7 +105,7 @@ Create a `VolumeSnapshotContent` object with the `snapshotHandle` field set to `
         - `url`: url of the BackingImage.
         - `checksum`: optional.
 
-The parameters can be retrieved from the **Setting > Backing Image** page in the Longhorn UI.
+The parameters can be retrieved from the **Advanced > Backing Images** page in the Longhorn UI.
 
 ```yaml
 apiVersion: snapshot.storage.k8s.io/v1

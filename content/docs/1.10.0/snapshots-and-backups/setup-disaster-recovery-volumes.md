@@ -82,7 +82,7 @@ Longhorn supports activation under the following conditions:
 
 ### Using Longhorn UI
 
-1. Go to the `Volume` page in the Longhorn UI of your secondary cluster.
+1. Go to the `Volumes` page in the Longhorn UI of your secondary cluster.
 2. Select the DR volume you want to activate.
 3. Click the `Activate Disaster Recovery Volume` button in the **Operation** dropdown menu.
 4. The volume will transition to the `Detached` state, and you can attach it with your workloads.

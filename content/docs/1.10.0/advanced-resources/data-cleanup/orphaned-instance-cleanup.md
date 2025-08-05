@@ -242,13 +242,14 @@ The following example shows how to manage orphaned instances using `kubectl`.
 
 #### Manage Orphaned Instances via Longhorn UI
 
-1. In the top navigation bar, go to `Settings > Orphan Resources > Instances`.
+1. In the top navigation bar, go to `Advanced > Orphaned Resources > Instances`.
 2. Review the list of orphaned instances, displaying relevant instance information.
 3. To delete an orphaned instance, click `Operation > Delete`.
 
-By default, Longhorn does not automatically delete orphaned instances. To enable automatic deletion, go to `Setting > General > Orphan`.
+By default, Longhorn does not automatically delete orphaned instances. To enable automatic deletion, go to `Settings > Orphan`.
 
 ### Exception
+
 Longhorn does not create an orphan resource in the following scenarios:
 
 - The orphaned engine or replica is rescheduled back to the node.

@@ -38,4 +38,4 @@ Once Longhorn has been installed in your Kubernetes cluster, you can access the 
 
     The Longhorn UI looks like this:
 
-    {{< figure src="/img/screenshots/getting-started/longhorn-ui.png" >}}
+    {{< figure src="/img/screenshots/getting-started/v1.10.0/longhorn-ui.png" >}}
