@@ -39,8 +39,7 @@ parameters:
 #  replicaZoneSoftAntiAffinity: "ignored"
 #  replicaDiskSoftAntiAffinity: "ignored"
 #  nfsOptions: "soft,timeo=150,retrans=3"
-#  v1DataEngine: true
-#  v2DataEngine: false
+#  dataEngine: "v1"
 #  freezeFSForSnapshot: "ignored"
 ```
 
