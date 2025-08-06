@@ -80,7 +80,7 @@ To allocate huge pages, run the following commands on each node.
 
 ### Load `nvme-tcp` Kernel Module
 
-To ensure the necessary prerequisites for NVMe are met, you can use the [Longhorn CLI](../advanced-resources/longhornctl/).
+To ensure the necessary prerequisites for NVMe are met, you can use the [Longhorn CLI](../../advanced-resources/longhornctl/).
 
 Alternatively, you can manually load the `nvme-tcp` kernel module on each Longhorn node by running the following command:
 ```
