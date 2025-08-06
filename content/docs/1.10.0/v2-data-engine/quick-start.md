@@ -49,10 +49,7 @@ For Debian and Ubuntu, please install Linux kernel extra modules before loading 
 apt install -y linux-modules-extra-`uname -r`
 ```
 
-We provide a manifest that helps you configure the kernel modules and huge pages automatically, making it easier to set up.
-```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/prerequisite/longhorn-spdk-setup.yaml
-```
+To configure the necessary kernel modules and huge pages for SPDK, you can use the [Longhorn CLI](../../advanced-resources/longhornctl/). 
 
 And also can check the log with the following command to see the installation result.
 ```
@@ -83,15 +80,12 @@ To allocate huge pages, run the following commands on each node.
 
 ### Load `nvme-tcp` Kernel Module
 
-We provide a manifest that helps you finish the deployment on each Longhorn node.
-```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/prerequisite/longhorn-nvme-cli-installation.yaml
-```
+To ensure the necessary prerequisites for NVMe are met, you can use the [Longhorn CLI](../advanced-resources/longhornctl/).
 
-Or, you can manually load `nvme-tcp` kernel module on the each Longhorn node
-  ```
-  modprobe nvme-tcp
-  ```
+Alternatively, you can manually load the `nvme-tcp` kernel module on each Longhorn node by running the following command:
+```
+modprobe nvme-tcp
+```
 
 ### Load Kernel Modules Automatically on Boot
 
