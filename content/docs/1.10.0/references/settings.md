@@ -3,6 +3,7 @@ title: Settings
 weight: 1
 ---
 
+- [Value Format Types by Supported Data Engines](#value-format-types-by-supported-data-engines)
 - [Customizing Default Settings](#customizing-default-settings)
 - [General](#general)
   - [Node Drain Policy](#node-drain-policy)
@@ -42,6 +43,9 @@ weight: 1
   - [Long gRPC Timeout](#long-grpc-timeout)
   - [Offline Replica Rebuilding](#offline-replica-rebuilding)
   - [RWX Volume Fast Failover (Experimental)](#rwx-volume-fast-failover-experimental)
+  - [Data Engine Log Level](#data-engine-log-level)
+  - [Data Engine Log Flags](#data-engine-log-flags)
+  - [Replica Rebuilding Bandwidth Limit](#replica-rebuilding-bandwidth-limit)
 - [Snapshot](#snapshot)
   - [Snapshot Data Integrity](#snapshot-data-integrity)
   - [Immediate Snapshot Data Integrity Check After Creating a Snapshot](#immediate-snapshot-data-integrity-check-after-creating-a-snapshot)
@@ -90,9 +94,28 @@ weight: 1
   - [Auto Cleanup Snapshot After On-Demand Backup Completed](#auto-cleanup-snapshot-after-on-demand-backup-completed)
   - [V1 Data Engine](#v1-data-engine)
   - [V2 Data Engine](#v2-data-engine)
-  - [Guaranteed Instance Manager CPU for V2 Data Engine](#guaranteed-instance-manager-cpu-for-v2-data-engine)
-  - [V2 Data Engine CPU Mask](#v2-data-engine-cpu-mask)
-  - [V2 Data Engine Hugepage Limit](#v2-data-engine-hugepage-limit)
+  - [Data Engine CPU Mask](#data-engine-cpu-mask)
+  - [Data Engine Hugepage Limit](#data-engine-hugepage-limit)
+
+---
+
+### Value Format Types by Supported Data Engines
+
+Each setting supports only one of the following formats, depending on its definition. The supported format determines which Data Engines can be configured and whether their values can differ.
+
+- Single value for all supported Data Engines
+  - Format: Non-JSON string (e.g., `1024`)
+  - The value applies to all supported Data Engines and must be the same across them.
+  - Data-engine-specific values are not allowed.
+- Data-engine-specific values for V1 and V2 Data Engines
+  - Format: JSON object (e.g., `{"v1": "value1", "v2": "value2"}`)
+  - Allows specifying different values for V1 and V2 Data Engines.
+- Data-engine-specific values for V1 Data Engine only
+  - Format: JSON object with `v1` key only (e.g., `{"v1": "value1"}`)
+  - Only the V1 Data Engine can be configured; the V2 Data Engine is not affected.
+- Data-engine-specific values for V2 Data Engine only
+  - Format: JSON object with `v2` key only (e.g., `{"v2": "value1"}`)
+  - Only the V2 Data Engine can be configured; the V1 Data Engine is not affected.
 
 ### Customizing Default Settings
 
@@ -215,7 +238,6 @@ The available modes are:
 
 - `strict-local`: This option enforces Longhorn keep the **only one replica** on the same node as the attached volume, and therefore, it offers higher IOPS and lower latency performance.
 
-
 #### Default Data Path
 
 > Default: `/var/lib/longhorn/`
@@ -238,22 +260,24 @@ The `storageClassName` is for persistent volumes (PVs) and persistent volume cla
 
 #### Default Replica Count
 
-> Default: `3`
+> Default: `{"v1":"3","v2":"3"}`
 
 The default number of replicas when creating the volume from Longhorn UI. For Kubernetes, update the `numberOfReplicas` in the StorageClass
 
 The recommended way of choosing the default replica count is: if you have three or more nodes for storage, use 3; otherwise use 2. Using a single replica on a single node cluster is also OK, but the high availability functionality wouldn't be available. You can still take snapshots/backups of the volume.
 
 #### Deleting Confirmation Flag
-This flag protects Longhorn from unexpected uninstallation which leads to data loss.
-Set this flag to **true** to allow Longhorn uninstallation.
-If this flag is **false**, the Longhorn uninstallation job will fail.
 
 > Default: `false`
 
+This flag is designed to prevent Longhorn from being accidentally uninstalled which will lead to data loss.
+
+- Set this flag to **true** to allow Longhorn uninstallation.
+- If this flag **false**, Longhorn uninstallation job will fail.
+
 #### Disable Revision Counter
 
-> Default: `true`
+> Default: `{"v1":"true"}`
 
 Allows engine controller and engine replica to disable revision counter file update for every data write. This improves the data path performance. See [Revision Counter](../../advanced-resources/deploy/revision_counter) for details.
 
@@ -284,6 +308,7 @@ Enabling this setting will allow Longhorn to provide valuable usage metrics to h
 This information will help us gain insights how Longhorn is being used, which will ultimately contribute to future improvements.
 
 **Node Information collected from all cluster nodes includes:**
+
 - Number of disks of each device type (HDD, SSD, NVMe, unknown).
   > This value may not be accurate for virtual machines.
 - Number of disks for each Longhorn disk type (block, filesystem).
@@ -293,6 +318,7 @@ This information will help us gain insights how Longhorn is being used, which wi
 - Kubernetes node provider.
 
 **Cluster Information collected from one of the cluster nodes includes:**
+
 - Longhorn namespace UID.
 - Number of Longhorn nodes.
 - Number of volumes of each access mode (RWO, RWX, unknown).
@@ -433,7 +459,7 @@ The default minimum number of backing image copies Longhorn maintains.
 
 #### Engine Replica Timeout
 
-> Default: `8`
+> Default: `{"v1":"8","v2":"8"}`
 
 The time in seconds a v1 engine will wait for a response from a replica before marking it as failed. Values between 8
 and 30 are allowed. The engine replica timeout is only in effect while there are I/O requests outstanding.
@@ -476,7 +502,7 @@ If the collection process is not completed within the allotted time, Longhorn co
 
 #### Fast Replica Rebuild Enabled
 
-> Default: `true`
+> Default: `{"v1":"true","v2":"true"}`
 
 The setting enables fast replica rebuilding feature. It relies on the checksums of snapshot disk files, so setting the snapshot-data-integrity to **enable** or **fast-check** is a prerequisite.
 
@@ -511,6 +537,24 @@ This setting allows Longhorn to automatically rebuild replicas for detached volu
 
 Enable improved ReadWriteMany volume HA by shortening the time it takes to recover from a node failure.
 
+#### Data Engine Log Level
+
+> Default: `{"v2":"Notice"}`
+
+Applies only to the V2 Data Engine. Specifies the log level for the Storage Performance Development Kit (SPDK) target daemon. Supported values: `Error`, `Warning`, `Notice`, `Info`, and `Debug`.
+
+#### Data Engine Log Flags
+
+> Default: `{"v2":""}`
+
+Applies only to the V2 Data Engine. Specifies the log flags for the Storage Performance Development Kit (SPDK) target daemon.
+
+#### Replica Rebuilding Bandwidth Limit
+
+> Default: `{"v2":"0"}`
+
+Applies only to the V2 Data Engine. Specifies the default write bandwidth limit, in megabytes per second (MB/s), for volume replica rebuilding.
+
 ### Snapshot
 
 #### Snapshot Data Integrity
@@ -518,13 +562,14 @@ Enable improved ReadWriteMany volume HA by shortening the time it takes to recov
 > Default: `fast-check`
 
 This setting allows users to enable or disable snapshot hashing and data integrity checking. Available options are:
+
 - **disabled**: Disable snapshot disk file hashing and data integrity checking.
 - **enabled**: Enables periodic snapshot disk file hashing and data integrity checking. To detect the filesystem-unaware corruption caused by bit rot or other issues in snapshot disk files, Longhorn system periodically hashes files and finds corrupted ones. Hence, the system performance will be impacted during the periodical checking.
 - **fast-check**: Enable snapshot disk file hashing and fast data integrity checking. Longhorn system only hashes snapshot disk files if their are not hashed or the modification time are changed. In this mode, filesystem-unaware corruption cannot be detected, but the impact on system performance can be minimized.
 
 #### Immediate Snapshot Data Integrity Check After Creating a Snapshot
 
-> Default: `false`
+> Default: `{"v1":"false","v2":"false"}`
 
 Hashing snapshot disk files impacts the performance of the system. The immediate snapshot hashing and checking can be disabled to minimize the impact after creating a snapshot.
 
@@ -544,7 +589,7 @@ Maximum snapshot count for a volume. The value should be between 2 to 250.
 
 #### Freeze Filesystem For Snapshot
 
-> Default: `false`
+> Default: `{"v2":"false"}`
 
 This setting only applies to volumes with the Kubernetes volume mode `Filesystem`. When enabled, Longhorn freezes the
 volume's filesystem immediately before creating a user-initiated snapshot. When disabled or when the Kubernetes volume
@@ -565,12 +610,6 @@ this setting if you plan to use kernels with version `5.17` or later, and ext4 o
 
 You can override this setting (using the field `freezeFilesystemForSnapshot`) for specific volumes through the Longhorn
 UI, a StorageClass, or direct changes to an existing volume. `freezeFilesystemForSnapshot` accepts the following values:
-
-> Default: `ignored`
-
-- `ignored`: Instructs Longhorn to use the global setting. This is the default option.
-- `enabled`: Enables freezing before snapshots, regardless of the global setting.
-- `disabled`: Disables freezing before snapshots, regardless of the global setting.
 
 ### Orphan
 
@@ -848,7 +887,6 @@ If you do not detach all volumes before the settings are synchronized, the setti
   | [V1 Data Engine](#v1-data-engine) || Instance Manager component |
   | [V2 Data Engine](#v2-data-engine) | [V2 Data Engine (Experimental)](../../v2-data-engine/) | Instance Manager component |
   | [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu) || Instance Manager component |
-  | [Guaranteed Instance Manager CPU for V2 Data Engine](#guaranteed-instance-manager-cpu-for-v2-data-engine) || Instance Manager component |
 
 For V1 and V2 Data Engine settings, you can disable the Data Engines only when all associated volumes are detached. For example, you can disable the V2 Data Engine only when all V2 volumes are detached (even when V1 volumes are still attached).
 
@@ -957,7 +995,6 @@ This setting allows Longhorn to use the storage network for RWX volumes.
 
 For more information, see [Storage Network](../../advanced-resources/deploy/storage-network).
 
-
 #### Remove Snapshots During Filesystem Trim
 
 > Example: `false`
@@ -972,11 +1009,11 @@ See [Trim Filesystem](../../nodes-and-volumes/volumes/trim-filesystem) for detai
 
 #### Guaranteed Instance Manager CPU
 
-> Default: `12`
+> Default: `{"v1":"12","v2":"12"}`
 
-Percentage of the total allocatable CPU resources on each node to be reserved for each instance manager pod when the V1 Data Engine is enabled. For example, Longhorn reserves 10% of the total allocatable CPU resources if you specify a value of 10. This setting is essential for maintaining engine and replica stability, especially during periods of high node workload.
+Percentage of the total allocatable CPU resources on each node to reserve for each instance manager pod. For example, a value of `10` means 10% of the total CPU on a node will be allocated to each instance manager pod on that node. This helps maintain engine and replica stability during periods of high node workload.
 
-In order to prevent an unexpected volume instance (engine/replica) crash as well as guarantee a relatively acceptable I/O performance, you can use the following formula to calculate a value for this setting:
+In order to prevent unexpected volume instance (engine/replica) crash as well as guarantee a relative acceptable IO performance, you can use the following formula to calculate a value for this setting:
 
     Guaranteed Instance Manager CPU = The estimated max Longhorn volume engine and replica count on a node * 0.1 / The total allocatable CPUs on the node * 100.
 
@@ -985,11 +1022,11 @@ The result of above calculation doesn't mean that's the maximum CPU resources th
 If it's hard to estimate the usage now, you can leave it with the default value, which is 12%. Then you can tune it when there is no running workload using Longhorn volumes.
 
 > **Warning:**
->  - Value 0 means removing the CPU requests from spec of instance manager pods.
->  - Considering the possible number of new instance manager pods in a further system upgrade, this integer value ranges from 0 to 40.
+>  - Value 0 means unsetting CPU requests for instance manager pods.
+>  - Considering the possible new instance manager pods in the further system upgrade, this float value ranges from 0 to 40.
 >  - One more set of instance manager pods may need to be deployed when the Longhorn system is upgraded. If current available CPUs of the nodes are not enough for the new instance manager pods, you need to detach the volumes using the oldest instance manager pods so that Longhorn can clean up the old pods automatically and release the CPU resources. And the new pods with the latest instance manager image will be launched then.
 >  - This global setting will be ignored for a node if the field "InstanceManagerCPURequest" on the node is set.
->  - After the setting is changed, the V1 Instance Manager pods that use this setting are automatically restarted when no instances are running.
+>  - For the v2 Data Engine, the Storage Performance Development Kit (SPDK) target daemon inside each instance manager pod uses one or more dedicated CPU cores. Setting a minimum CPU usage is critical to maintaining stability during periods of high node load.
 
 #### Disable Snapshot Purge
 
@@ -1032,26 +1069,16 @@ Setting that allows you to enable the V2 Data Engine, which is based on the Stor
 >
 > - DO NOT CHANGE THIS SETTING WITH ATTACHED VOLUMES. Longhorn will block this setting update when there are attached volumes.
 >
-> - When the V2 Data Engine is enabled, each instance-manager pod utilizes 1 CPU core. This high CPU usage is attributed to the spdk_tgt process running within each instance-manager pod. The spdk_tgt process is responsible for handling input/output (IO) operations and requires intensive polling. As a result, it consumes 100% of a dedicated CPU core to efficiently manage and process the IO requests, ensuring optimal performance and responsiveness for storage operations.
+> - When the V2 Data Engine is enabled, each instance-manager pod utilizes 1 CPU core. This high CPU usage is attributed to the Storage Performance Development Kit (SPDK) target daemon running within each instance-manager pod. The SPDK target daemon is responsible for handling input/output (IO) operations and requires intensive polling. As a result, it consumes 100% of a dedicated CPU core to efficiently manage and process the IO requests, ensuring optimal performance and responsiveness for storage operations.
 
-#### Guaranteed Instance Manager CPU for V2 Data Engine
+#### Data Engine CPU Mask
 
-> Default: `1250`
+> Default: `{"v2":"0x1"}`
 
-Number of millicpus on each node to be reserved for each instance manager pod when the V2 Data Engine is enabled. The Storage Performance Development Kit (SPDK) target daemon within each instance manager pod uses at least one CPU core. Configuring a minimum CPU usage value is essential for maintaining engine and replica stability, especially during periods of high node workload.
+Applies only to the V2 Data Engine. Specifies the CPU cores on which the Storage Performance Development Kit (SPDK) target daemon runs. The daemon is deployed in each Instance Manager pod. Ensure that the number of assigned cores does not exceed the guaranteed Instance Manager CPUs for the V2 Data Engine.
 
-> **Warning:**
->  - Specifying a value of 0 disables CPU requests for instance manager pods. You must specify an integer larger than 1000.
->  - This is a global setting. Modifying the value triggers an automatic restart of the Instance Manager pods. However, V2 Instance Manager pods that use this setting are restarted only when no instances are running.
+#### Data Engine Hugepage Limit
 
-#### V2 Data Engine CPU Mask
+> Default: `{"v2":"2048"}`
 
-> Default: `0x1`
-
-CPU cores on which the Storage Performance Development Kit (SPDK) target daemon should run. The SPDK target daemon is located in each Instance Manager pod. Ensure that the number of cores is less than or equal to the guaranteed Instance Manager CPUs for the V2 Data Engine.
-
-#### V2 Data Engine Hugepage Limit
-
-> Default: `2048`
-
-Maximum huge page size (in MiB) for the V2 Data Engine.
+Applies only to the V2 Data Engine. Specifies the hugepage size, in MiB, for the Storage Performance Development Kit (SPDK) target daemon.

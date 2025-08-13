@@ -9,7 +9,7 @@ Longhorn now supports configurable CPU cores for the v2 data engine, offering bo
 
 ## Global Configuration
 
-To set CPU cores globally, update the [v2-data-engine-cpu-mask](../../../references/settings#v2-data-engine-cpu-mask) setting using a hexadecimal encoded string. For example:
+To set CPU cores globally, update the [data-engine-cpu-mask](../../../references/settings#data-engine-cpu-mask) setting using a hexadecimal encoded string. For example:
 
 - Use 0x01 to allocate 1 core
 - Use 0x03 to allocate 2 cores
@@ -17,5 +17,4 @@ To set CPU cores globally, update the [v2-data-engine-cpu-mask](../../../referen
 
 ## Per-node Configuration
 
-For node-specific CPU core allocation, update the `spec.dataEngineSpec.v2.cpuMask` field of the instance manager with a hexadecimal encoded string. By default, this value is empty, and the v2 data engine will use the global setting specified by `v2-data-engine-cpu-mask`. When a per-node configuration is set, the v2 data engine will prioritize this value over the global setting for that specific node.
-
+For node-specific CPU core allocation, update the `spec.dataEngineSpec.v2.cpuMask` field of the instance manager with a hexadecimal encoded string. By default, this value is empty, and the v2 data engine will use the global setting specified by `data-engine-cpu-mask`. When a per-node configuration is set, the v2 data engine will prioritize this value over the global setting for that specific node.
