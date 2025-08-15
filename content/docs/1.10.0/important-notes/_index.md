@@ -69,3 +69,11 @@ Longhorn v1.10.0 and later version support usage of V1 volumes in single-stacked
 Longhorn currently does not support live upgrading of V2 volumes. Ensure that all V2 volumes are detached before initiating the upgrade process.
 
 ### Newly Introduced Functionalities since Longhorn v1.9.0
+
+## Backup And Restore
+
+### Configurable Backup Block Size
+
+Beginning with Longhorn v1.10.0, users can configure the backup block size during volume creation. This enhancement introduces a backward compatibility limitation: backups created from volumes using non-default backup block sizes (anything other than the default 2MiB) are incompatible with Longhorn v1.9.x and earlier versions. Consequently, such backups cannot be restored on clusters running these older Longhorn releases.
+
+For more information, see [Create Longhorn Volumes](../nodes-and-volumes/volumes/create-volumes).
