@@ -179,10 +179,7 @@ modprobe iscsi_tcp
 
 > **Important**: On SUSE and openSUSE, the `iscsi_tcp` module is included only in the `kernel-default` package. If the `kernel-default-base` package is installed on your system, you must replace it with `kernel-default`.
 
-We also provide an `iscsi` installer to make it easier for users to install `open-iscsi` automatically:
-```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/prerequisite/longhorn-iscsi-installation.yaml
-```
+We also provide an `iscsi` installer to make it easier for users to install `open-iscsi` automatically. You can use the [Longhorn CLI](../../advanced-resources/longhornctl/) to install the prerequisites.
 After the deployment, run the following command to check pods' status of the installer:
 ```
 kubectl -n longhorn-system get pod | grep longhorn-iscsi-installation
@@ -244,10 +241,7 @@ The command used to install a NFSv4 client differs depending on the Linux distri
 
 - For Container-Optimized OS, [the NFS is supported with the node image](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images#storage_driver_support).
 
-We also provide an `nfs` installer to make it easier for users to install `nfs-client` automatically:
-```
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/prerequisite/longhorn-nfs-installation.yaml
-```
+We also provide an `nfs` installer to make it easier for users to install `nfs-client` automatically. You can use this [Longhorn CLI](../../advanced-resources/longhornctl/) to install the prerequisite.
 After the deployment, run the following command to check pods' status of the installer:
 ```
 kubectl -n longhorn-system get pod | grep longhorn-nfs-installation
