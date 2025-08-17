@@ -123,7 +123,6 @@ By default the StorageClass for Longhorn created PV/PVC is `longhorn-static`. Us
 
 Users need to manually delete PVC and PV created by Longhorn.
 
-
 ### PV/PVC Creation for Existing Longhorn Volume
 
 Now users can create PV/PVC via our Longhorn UI for the existing Longhorn volumes.
@@ -131,17 +130,22 @@ Only detached volume can be used by a newly created pod.
 
 ### The Failure of the Longhorn Volume Creation
 
-Creating a Longhorn volume will fail if there are no available nodes, disks, or insufficient storage. The failures are categorized into:
-- insufficient storage,
-- disk not found,
-- disks are unavailable,
-- failed to retrieve scheduling settings failed to retrieve,
-- tags not fulfilled,
-- node not found,
-- nodes are unavailable,
-- none of the node candidates contains a ready engine image,
-- hard affinity cannot be satisfied,
-- replica scheduling failed.
+Creating a Longhorn volume can fail for different reasons. The issues are categorized into:
+
+- insufficient storage
+- disk not found
+- disks are unavailable
+- failed to retrieve scheduling settings failed to retrieve
+- tags not fulfilled
+- node not found
+- nodes are unavailable
+- none of the node candidates contains a ready engine image
+- hard affinity cannot be satisfied
+- replica scheduling failed
+- unused failed replica is not supported
+- replica already scheduled
+- longhorn client operation failed
+- incompatible volume size
 
 The failure results in the workload failing to use the provisioned PV and showing a warning message
 ```
