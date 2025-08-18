@@ -92,7 +92,7 @@ weight: 1
   - [Disable Snapshot Purge](#disable-snapshot-purge)
   - [Auto Cleanup Snapshot When Delete Backup](#auto-cleanup-snapshot-when-delete-backup)
   - [Auto Cleanup Snapshot After On-Demand Backup Completed](#auto-cleanup-snapshot-after-on-demand-backup-completed)
-- [Instance Manager Pod Liveness Probe Timeout](#instance-manager-pod-liveness-probe-timeout)
+  - [Instance Manager Pod Liveness Probe Timeout](#instance-manager-pod-liveness-probe-timeout)
   - [V1 Data Engine](#v1-data-engine)
   - [V2 Data Engine](#v2-data-engine)
   - [Data Engine CPU Mask](#data-engine-cpu-mask)
@@ -1054,7 +1054,7 @@ When set to true, the snapshot used by the backup will be automatically cleaned 
 
 When set to true, the snapshot used by the backup will be automatically cleaned up after the on-demand backup is completed.
 
-### Instance Manager Pod Liveness Probe Timeout
+#### Instance Manager Pod Liveness Probe Timeout
 
 > Default: `10`
 

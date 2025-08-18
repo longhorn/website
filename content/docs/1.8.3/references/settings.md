@@ -91,6 +91,7 @@ weight: 1
   - [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu)
   - [Disable Snapshot Purge](#disable-snapshot-purge)
   - [Auto Cleanup Snapshot When Delete Backup](#auto-cleanup-snapshot-when-delete-backup)
+  - [Instance Manager Pod Liveness Probe Timeout](#instance-manager-pod-liveness-probe-timeout)
 
 ### Customizing Default Settings
 
@@ -1016,3 +1017,13 @@ data is moved to other disks.
 > Default: `false`
 
 When set to true, the snapshot used by the backup will be automatically cleaned up when the backup is deleted.
+
+#### Instance Manager Pod Liveness Probe Timeout
+
+> Default: `10`
+
+In seconds. The setting specifies the timeout for the instance manager pod liveness probe. The default value is 10 seconds.
+
+> **Warning**
+>
+> When applying the setting, Longhorn will try to restart all instance-manager pods if all volumes are detached and eventually restart the instance manager pod without instances running on the instance manager.
