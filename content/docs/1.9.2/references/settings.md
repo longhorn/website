@@ -88,6 +88,7 @@ weight: 1
   - [Disable Snapshot Purge](#disable-snapshot-purge)
   - [Auto Cleanup Snapshot When Delete Backup](#auto-cleanup-snapshot-when-delete-backup)
   - [Auto Cleanup Snapshot After On-Demand Backup Completed](#auto-cleanup-snapshot-after-on-demand-backup-completed)
+  - [Instance Manager Pod Liveness Probe Timeout](#instance-manager-pod-liveness-probe-timeout)
   - [V1 Data Engine](#v1-data-engine)
   - [V2 Data Engine](#v2-data-engine)
   - [Guaranteed Instance Manager CPU for V2 Data Engine](#guaranteed-instance-manager-cpu-for-v2-data-engine)
@@ -1015,6 +1016,16 @@ When set to true, the snapshot used by the backup will be automatically cleaned 
 > Default: `false`
 
 When set to true, the snapshot used by the backup will be automatically cleaned up after the on-demand backup is completed.
+
+#### Instance Manager Pod Liveness Probe Timeout
+
+> Default: `10`
+
+In seconds. The setting specifies the timeout for the instance manager pod liveness probe. The default value is 10 seconds.
+
+> **Warning**
+>
+> When applying the setting, Longhorn will try to restart all instance-manager pods if all volumes are detached and eventually restart the instance manager pod without instances running on the instance manager.
 
 #### V1 Data Engine
 
