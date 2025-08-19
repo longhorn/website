@@ -76,7 +76,7 @@ Fast rebuilding is enabled when:
 
 - The fast replica building setting is enabled:
   - `fast-replica-rebuild-enabled: true`
-- Snapshot checksum files are created (the snapshot checksums are pre-computed) via one of the following methods::
+- Snapshot checksum files are created (the snapshot checksums are pre-computed) via one of the following methods:
   - `snapshot-data-integrity` is set to `enabled`:  scheduled job calculates checksums for all snapshots at a configured interval (default: 7 days), or
   - `snapshot-data-integrity-immediate-check-after-snapshot-creation` is set to `true`: the snapshot checksum is calculated immediately after snapshot creation.
 

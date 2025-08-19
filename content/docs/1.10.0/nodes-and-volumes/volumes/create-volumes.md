@@ -135,7 +135,6 @@ Creating a Longhorn volume can fail for different reasons. The issues are catego
 - insufficient storage
 - disk not found
 - disks are unavailable
-- failed to retrieve scheduling settings failed to retrieve
 - tags not fulfilled
 - node not found
 - nodes are unavailable
