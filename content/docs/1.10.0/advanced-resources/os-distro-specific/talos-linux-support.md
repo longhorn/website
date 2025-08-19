@@ -133,7 +133,7 @@ You need provide additional data path mounts to be accessible to the Kubernetes 
 
 These mounts are necessary to provide access to the host directories, and attach volumes required by Longhorn components.
 
-The [default data path](../../references/settings/#default-data-path) for Longhorn is `/var/lib/longhorn`. In order to use the below configuration in Talos, we must first set our default data path to `/var/mnt/longhorn`. The method to do this will depend on your [deployment method](../deploy/customizing-default-settings).
+The [default data path](../../references/settings#default-data-path) for Longhorn is `/var/lib/longhorn`. In order to use the below configuration in Talos, we must first set our default data path to `/var/mnt/longhorn`. The method to do this will depend on your [deployment method](../deploy/customizing-default-settings).
 
 ```yaml
 machine:
