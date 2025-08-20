@@ -43,6 +43,8 @@ weight: 1
   - [Long gRPC Timeout](#long-grpc-timeout)
   - [Offline Replica Rebuilding](#offline-replica-rebuilding)
   - [RWX Volume Fast Failover (Experimental)](#rwx-volume-fast-failover-experimental)
+  - [Log Level](#log-level)
+  - [Log Path](#log-path)
   - [Data Engine Log Level](#data-engine-log-level)
   - [Data Engine Log Flags](#data-engine-log-flags)
   - [Replica Rebuilding Bandwidth Limit](#replica-rebuilding-bandwidth-limit)
@@ -537,6 +539,18 @@ This setting allows Longhorn to automatically rebuild replicas for detached volu
 > Default: `false`
 
 Enable improved ReadWriteMany volume HA by shortening the time it takes to recover from a node failure.
+
+#### Log Level
+
+> Default: `Log Level`
+
+The log level Panic, Fatal, Error, Warn, Info, Debug, Trace used in longhorn manager. By default Info.
+
+#### Log Path
+
+> Default: `/var/lib/longhorn/logs/`
+
+Specifies the directory on the host where Longhorn stores log files for the instance manager pod. Currently, it is only used for instance manager pods in the v2 data engine.
 
 #### Data Engine Log Level
 
