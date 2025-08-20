@@ -55,7 +55,7 @@ The Longhorn Manager communicates with the Kubernetes API server to create a new
 
 When the Longhorn Manager is asked to create a volume, it creates a Longhorn Engine instance on the node the volume is attached to, and it creates a replica on each node where a replica will be placed. Replicas should be placed on separate hosts to ensure maximum availability.
 
-The multiple data paths of the replicas ensure high availability of the Longhorn volume.  Even if a problem happens with a certain replica or with the Engine, the problem won't affect all the replicas or the Pod's access to the volume. The Pod will still function normally.
+The multiple data paths of the replicas ensure high availability of the Longhorn volume. Even if a problem happens with a certain replica or with the Engine, the problem won't affect all the replicas or the Pod's access to the volume. The Pod will still function normally. For a given volume, if the replica count is `N`, the Longhorn volume can tolerate a maximum of `N−1` replica failures. This is because at least one healthy replica is required for the volume to remain operational.
 
 The Longhorn Engine always runs in the same node as the Pod that uses the Longhorn volume. It synchronously replicates the volume across the multiple replicas stored on multiple nodes.
 
