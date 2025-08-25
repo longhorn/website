@@ -105,6 +105,7 @@ weight: 1
   - [Data Engine CPU Mask](#data-engine-cpu-mask)
   - [Data Engine Hugepage Enabled](#data-engine-hugepage-enabled)
   - [Data Engine Memory Size](#data-engine-memory-size)
+  - [Data Engine Interrupt Mode Enabled](#data-engine-interrupt-mode-enabled)
   - [Log Path](#log-path)
 
 ---
@@ -1146,6 +1147,20 @@ Applies only to the V2 Data Engine. Enables hugepages for the Storage Performanc
 > Default: `{"v2":"2048"}`
 
 Applies only to the V2 Data Engine. Specifies the memory size, in MiB, allocated to the Storage Performance Development Kit (SPDK) target daemon. When hugepage is enabled, this defines the hugepage size; when legacy memory is used, hugepage is disabled.
+
+#### Data Engine Interrupt Mode Enabled
+
+> Default: `{"v2":"false"}`
+
+Applies only to the **V2 Data Engine**.
+
+Controls whether the Storage Performance Development Kit (SPDK) target daemon runs in **interrupt mode** or the default **polling mode**.
+
+- `true`: Enables interrupt mode, reducing CPU usage by handling I/O through interrupts.
+- `false`: Keeps polling mode enabled for maximum performance and lowest latency.
+
+> **Warning**
+> - DO NOT CHANGE THIS SETTING WITH ATTACHED VOLUMES. Longhorn will block this setting update when there are attached v2 volumes.
 
 #### Log Path
 
