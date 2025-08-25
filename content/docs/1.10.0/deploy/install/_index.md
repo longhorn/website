@@ -180,25 +180,29 @@ modprobe iscsi_tcp
 > **Important**: On SUSE and openSUSE, the `iscsi_tcp` module is included only in the `kernel-default` package. If the `kernel-default-base` package is installed on your system, you must replace it with `kernel-default`.
 
 We also provide an `iscsi` installer to make it easier for users to install `open-iscsi` automatically. You can use the [Longhorn CLI](../../advanced-resources/longhornctl/) to install the prerequisites.
-After the deployment, run the following command to check pods' status of the installer:
-```
-kubectl -n longhorn-system get pod | grep longhorn-iscsi-installation
-longhorn-iscsi-installation-49hd7   1/1     Running   0          21m
-longhorn-iscsi-installation-pzb7r   1/1     Running   0          39m
-```
-And also can check the log with the following command to see the installation result:
-```
-kubectl -n longhorn-system logs longhorn-iscsi-installation-pzb7r -c iscsi-installation
-...
-Installed:
-  iscsi-initiator-utils.x86_64 0:6.2.0.874-7.amzn2
 
-Dependency Installed:
-  iscsi-initiator-utils-iscsiuio.x86_64 0:6.2.0.874-7.amzn2
+You can use the `longhornctl check preflight` command. This command verifies your Kubernetes cluster environment to ensure it meets Longhorn's requirements. It performs a series of checks that can help identify potential issues that may prevent Longhorn from functioning correctly.
 
-Complete!
-Created symlink from /etc/systemd/system/multi-user.target.wants/iscsid.service to /usr/lib/systemd/system/iscsid.service.
-iscsi install successfully
+Example:
+```sh
+> longhornctl check preflight
+INFO[2025-08-22T12:58:40+08:00] Initializing preflight checker               
+INFO[2025-08-22T12:58:40+08:00] Cleaning up preflight checker                
+INFO[2025-08-22T12:58:42+08:00] Running preflight checker                    
+INFO[2025-08-22T12:58:49+08:00] Retrieved preflight checker result:
+ip-10-0-1-132:
+  info:
+  - Service iscsid is running
+  - NFS4 is supported
+  - Package nfs-client is installed
+  - Package open-iscsi is installed
+  - Package cryptsetup is installed
+  - Package device-mapper is installed
+  - Module dm_crypt is loaded
+  warn:
+  - Kube DNS "coredns" is set with fewer than 2 replicas; consider increasing replica count for high availability
+INFO[2025-08-22T12:58:49+08:00] Cleaning up preflight checker                
+INFO[2025-08-22T12:58:50+08:00] Completed preflight checker
 ```
 
 In rare cases, it may be required to modify the installed SELinux policy to get Longhorn working. If you are running
@@ -242,18 +246,29 @@ The command used to install a NFSv4 client differs depending on the Linux distri
 - For Container-Optimized OS, [the NFS is supported with the node image](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images#storage_driver_support).
 
 We also provide an `nfs` installer to make it easier for users to install `nfs-client` automatically. You can use this [Longhorn CLI](../../advanced-resources/longhornctl/) to install the prerequisite.
-After the deployment, run the following command to check pods' status of the installer:
-```
-kubectl -n longhorn-system get pod | grep longhorn-nfs-installation
-NAME                                  READY   STATUS    RESTARTS   AGE
-longhorn-nfs-installation-t2v9v   1/1     Running   0          143m
-longhorn-nfs-installation-7nphm   1/1     Running   0          143m
-```
-And also can check the log with the following command to see the installation result:
-```
-kubectl -n longhorn-system logs longhorn-nfs-installation-t2v9v -c nfs-installation
-...
-nfs install successfully
+
+You can use the `longhornctl check preflight` command. This command verifies your Kubernetes cluster environment to ensure it meets Longhorn's requirements. It performs a series of checks that can help identify potential issues that may prevent Longhorn from functioning correctly.
+
+Example:
+```sh
+> longhornctl check preflight
+INFO[2025-08-22T12:58:40+08:00] Initializing preflight checker               
+INFO[2025-08-22T12:58:40+08:00] Cleaning up preflight checker                
+INFO[2025-08-22T12:58:42+08:00] Running preflight checker                    
+INFO[2025-08-22T12:58:49+08:00] Retrieved preflight checker result:
+ip-10-0-1-132:
+  info:
+  - Service iscsid is running
+  - NFS4 is supported
+  - Package nfs-client is installed
+  - Package open-iscsi is installed
+  - Package cryptsetup is installed
+  - Package device-mapper is installed
+  - Module dm_crypt is loaded
+  warn:
+  - Kube DNS "coredns" is set with fewer than 2 replicas; consider increasing replica count for high availability
+INFO[2025-08-22T12:58:49+08:00] Cleaning up preflight checker                
+INFO[2025-08-22T12:58:50+08:00] Completed preflight checker
 ```
 
 ### Installing Cryptsetup and LUKS

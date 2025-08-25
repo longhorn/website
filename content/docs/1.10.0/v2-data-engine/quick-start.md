@@ -51,13 +51,6 @@ apt install -y linux-modules-extra-`uname -r`
 
 To configure the necessary kernel modules and huge pages for SPDK, you can use the [Longhorn CLI](../../advanced-resources/longhornctl/). 
 
-And also can check the log with the following command to see the installation result.
-```
-Cloning into '/tmp/spdk'...
-INFO: Requested 1024 hugepages but 1024 already allocated on node0
-SPDK environment is configured successfully
-```
-
 Or, you can install them manually by following these steps.
 - Load the kernel modules on the each Longhorn node
   ```
