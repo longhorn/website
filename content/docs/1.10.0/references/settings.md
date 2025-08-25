@@ -99,6 +99,7 @@ weight: 1
   - [V2 Data Engine](#v2-data-engine)
   - [Data Engine CPU Mask](#data-engine-cpu-mask)
   - [Data Engine Hugepage Limit](#data-engine-hugepage-limit)
+  - [Data Engine Interrupt Mode Enabled](#data-engine-interrupt-mode-enabled)
 
 ---
 
@@ -1107,3 +1108,17 @@ Applies only to the V2 Data Engine. Specifies the CPU cores on which the Storage
 > Default: `{"v2":"2048"}`
 
 Applies only to the V2 Data Engine. Specifies the hugepage size, in MiB, for the Storage Performance Development Kit (SPDK) target daemon.
+
+#### Data Engine Interrupt Mode Enabled
+
+> Default: `{"v2":"false"}`
+
+Applies only to the **V2 Data Engine**.
+
+Controls whether the Storage Performance Development Kit (SPDK) target daemon runs in **interrupt mode** or the default **polling mode**.
+
+- `true`: Enables interrupt mode, reducing CPU usage by handling I/O through interrupts.
+- `false`: Keeps polling mode enabled for maximum performance and lowest latency.
+
+> **Warning**
+> - DO NOT CHANGE THIS SETTING WITH ATTACHED VOLUMES. Longhorn will block this setting update when there are attached v2 volumes.
