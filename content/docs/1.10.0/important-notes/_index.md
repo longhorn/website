@@ -22,6 +22,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Newly Introduced Functionalities since Longhorn v1.10.0](#newly-introduced-functionalities-since-longhorn-v1100)
     - [V2 Data Engine Without Hugepage Support](#v2-data-engine-without-hugepage-support)
+    - [V2 Data Engine Interrupt Mode Support](#v2-data-engine-interrupt-mode-support)
 
 ## Removal
 
@@ -107,3 +108,11 @@ Longhorn currently does not support live upgrading of V2 volumes. Ensure that al
 #### V2 Data Engine Without Hugepage Support
 
 Longhorn v1.10.0 allows running the V2 Data Engine without Hugepage by setting `data-engine-hugepage-enabled` to `{"v2":"false"}`. This reduces memory pressure on low‑spec nodes and increases deployment flexibility, though performance may be lower than with Hugepage.
+
+#### V2 Data Engine Interrupt Mode Support
+
+Adds interrupt mode to the V2 Data Engine to help reduce CPU usage. This feature is especially beneficial for clusters with idle or low I/O workloads, where conserving CPU resources is more important than minimizing latency.
+
+While interrupt mode lowers CPU consumption, it may introduce slightly higher I/O latency compared to polling mode. In addition, the current implementation uses a hybrid approach, which still incurs a minimal, constant CPU load even when interrupts are enabled.
+
+For more information, see [Interrupt Mode](../v2-data-engine/features/interrupt-mode) for more information.
