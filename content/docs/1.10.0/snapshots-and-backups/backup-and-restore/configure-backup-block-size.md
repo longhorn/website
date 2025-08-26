@@ -35,7 +35,7 @@ To specify a custom backup block size during volume creation:
 
 1. Navigate to the **Volume** menu.
 2. Click **Create Volume**.
-3. In the volume creation dialog, select the desired **Backup Block Size**.
+3. In the volume creation dialog, inside `Advanced Configurations`, select the desired **Backup Block Size**.
 
 ## Specify The Backup Block Size In The Storage Class
 
