@@ -15,6 +15,7 @@
 
     {{ partial "css.html" . }}
     {{ partial "favicon.html" . }}
+    {{ partial "google_tag.html" . }}
   </head>
   <body{{ if and (not $isDoc) (not $isPromo) }} class="has-navbar-fixed-top"{{ end }}>
     {{ block "main" . }}{{ end }}
