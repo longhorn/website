@@ -575,7 +575,7 @@ Applies only to the V2 Data Engine. Specifies the default write bandwidth limit,
 
 #### Snapshot Data Integrity
 
-> Default: `fast-check`
+> Default: `{"v1":"fast-check","v2":"fast-check"}`
 
 This setting allows users to enable or disable snapshot hashing and data integrity checking. Available options are:
 
