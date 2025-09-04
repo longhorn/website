@@ -76,7 +76,7 @@ eweber@laptop:~/> kubectl -n longhorn-system get pod -owide | grep eweber-v126-w
 ## Best practices
 
 If you plan to apply `NoExecute` taints to nodes that run Longhorn volumes, [configure
-Longhorn](../../docs/1.7.0/advanced-resources/deploy/taint-toleration/) to tolerate them. This is
+Longhorn](../../docs/archives/1.7.0/advanced-resources/deploy/taint-toleration/) to tolerate them. This is
 best done at install time, as tolerations cannot be updated while volumes are attached.
 
 If you need to apply a `NoExecute` taint and cannot change the taint toleration setting before, drain the node first and
@@ -92,7 +92,7 @@ are two options.
 1. Remove the `NoExecute` taint and wait for the situation to resolve itself. Once the Longhorn CSI plugin restarts on
    the old node, pod termination will complete successfully. Then, follow the best practices above.
 2. Detach all volumes and [configure
-   Longhorn](../../docs/1.7.0/advanced-resources/deploy/taint-toleration/) to tolerate the applied
+   Longhorn](../../docs/archives/1.7.0/advanced-resources/deploy/taint-toleration/) to tolerate the applied
    taint. This is likely not the preferred solution, but it may be appropriate in some circumstances.
 
 ## Related information

@@ -50,7 +50,7 @@ Configure the setting [Storage Network For RWX Volume Enabled](../../../referenc
 
 When an RWX volume is created with the storage network, the NFS mount point connection must be re-established when the CSI plugin pod restarts. Longhorn provides the [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](../../../references/settings#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly) setting, which automatically deletes RWX volume workload pods when the CSI plugin pod restarts. However, the workload pod's NFS mount point could become unresponsive when the setting is disabled or the pod is not managed by a controller. In such cases, you must manually restart the CSI plugin pod.
 
-For more information, see [Storage Network Support for Read-Write-Many (RWX) Volume](../../../../1.7.0/important-notes/#storage-network-support-for-read-write-many-rwx-volumes) in Important Notes.
+For more information, see [Storage Network Support for Read-Write-Many (RWX) Volume](../../../../archives/1.7.0/important-notes/#storage-network-support-for-read-write-many-rwx-volumes) in Important Notes.
 
 # History
 - [Original Feature Request (since v1.3.0)](https://github.com/longhorn/longhorn/issues/2285)
