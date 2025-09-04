@@ -5,6 +5,14 @@ weight: 1
 
 - [Value Format Types by Supported Data Engines](#value-format-types-by-supported-data-engines)
 - [Customizing Default Settings](#customizing-default-settings)
+- [System Info](#system-info)
+  - [Default Engine Image](#default-engine-image)
+  - [Default Instance Manager Image](#default-instance-manager-image)
+  - [Default Backing Image Manager Image](#default-backing-image-manager-image)
+  - [Support Bundle Manager Image](#support-bundle-manager-image)
+  - [Current Longhorn Version](#current-longhorn-version)
+  - [Latest Longhorn Version](#latest-longhorn-version)
+  - [Stable Longhorn Versions](#stable-longhorn-versions)
 - [General](#general)
   - [Node Drain Policy](#node-drain-policy)
   - [Detach Manually Attached Volumes When Cordoned](#detach-manually-attached-volumes-when-cordoned)
@@ -18,14 +26,12 @@ weight: 1
   - [Custom Resource API Version](#custom-resource-api-version)
   - [Default Data Locality](#default-data-locality)
   - [Default Data Path](#default-data-path)
-  - [Default Engine Image](#default-engine-image)
   - [Default Longhorn Static StorageClass Name](#default-longhorn-static-storageclass-name)
   - [Default Replica Count](#default-replica-count)
   - [Deleting Confirmation Flag](#deleting-confirmation-flag)
   - [Disable Revision Counter](#disable-revision-counter)
   - [Enable Upgrade Checker](#enable-upgrade-checker)
   - [Upgrade Responder URL](#upgrade-responder-url)
-  - [Latest Longhorn Version](#latest-longhorn-version)
   - [Allow Collecting Longhorn Usage Metrics](#allow-collecting-longhorn-usage-metrics)
   - [Pod Deletion Policy When Node is Down](#pod-deletion-policy-when-node-is-down)
   - [Registry Secret](#registry-secret)
@@ -35,7 +41,6 @@ weight: 1
   - [Backing Image Recovery Wait Interval](#backing-image-recovery-wait-interval)
   - [Default Min Number Of Backing Image Copies](#default-min-number-of-backing-image-copies)
   - [Engine Replica Timeout](#engine-replica-timeout)
-  - [Support Bundle Manager Image](#support-bundle-manager-image)
   - [Support Bundle Failed History Limit](#support-bundle-failed-history-limit)
   - [Support Bundle Node Collection Timeout](#support-bundle-node-collection-timeout)
   - [Fast Replica Rebuild Enabled](#fast-replica-rebuild-enabled)
@@ -124,6 +129,45 @@ Each setting supports only one of the following formats, depending on its defini
 ### Customizing Default Settings
 
 To configure Longhorn before installing it, see [this section](../../advanced-resources/deploy/customizing-default-settings) for details.
+
+### System Info
+
+#### Default Engine Image
+
+The default engine image used by the manager. Can be changed on the manager starting command line only.
+
+Every Longhorn release will ship with a new Longhorn engine image. If the current Longhorn volumes are not using the default engine, a green arrow will show up, indicate this volume needs to be upgraded to use the default engine.
+
+#### Default Instance Manager Image
+
+The default instance manager image used by the manager. Can be changed on the manager starting command line only.
+
+#### Default Backing Image Manager Image
+
+The default backing image manager image used by the manager. Can be changed on the manager starting command line only.
+
+#### Support Bundle Manager Image
+
+Longhorn uses the support bundle manager image to generate the support bundles.
+
+There will be a default image given during installation and upgrade. You can also change it in the settings.
+
+An example of the support bundle manager image:
+> Default: `longhornio/support-bundle-kit:v0.0.14`
+
+#### Current Longhorn Version
+
+The current Longhorn version.
+
+#### Latest Longhorn Version
+
+The latest version of Longhorn available. Automatically updated by the Upgrade Checker.
+
+> Only available if `Upgrade Checker` is enabled.
+
+#### Stable Longhorn Versions
+
+The latest stable version of every minor release line. Updated by Upgrade Checker automatically.
 
 ### General
 
@@ -250,12 +294,6 @@ Default path to use for storing data on a host.
 
 Can be used with `Create Default Disk on Labeled Nodes` option, to make Longhorn only use the nodes with specific storage mounted at, for example, `/opt/longhorn` when scaling the cluster.
 
-#### Default Engine Image
-
-The default engine image used by the manager. Can be changed on the manager starting command line only.
-
-Every Longhorn release will ship with a new Longhorn engine image. If the current Longhorn volumes are not using the default engine, a green arrow will show up, indicate this volume needs to be upgraded to use the default engine.
-
 #### Default Longhorn Static StorageClass Name
 
 > Default: `longhorn-static`
@@ -296,12 +334,6 @@ Upgrade Checker will check for a new Longhorn version periodically. When there i
 > Default: `https://longhorn-upgrade-responder.rancher.io/v1/checkupgrade`
 
 The Upgrade Responder sends a notification whenever a new Longhorn version that you can upgrade to becomes available.
-
-#### Latest Longhorn Version
-
-The latest version of Longhorn available. Automatically updated by the Upgrade Checker.
-
-> Only available if `Upgrade Checker` is enabled.
 
 #### Allow Collecting Longhorn Usage Metrics
 
@@ -476,15 +508,6 @@ responsiveness with volume availability.
   other available ones. This ensures future I/O will not be held up.
 - The engine waits on the last replica (until twice the configured timeout) to prevent unnecessarily crashing as a
   result of having no available backends.
-
-#### Support Bundle Manager Image
-
-Longhorn uses the support bundle manager image to generate the support bundles.
-
-There will be a default image given during installation and upgrade. You can also change it in the settings.
-
-An example of the support bundle manager image:
-> Default: `longhornio/support-bundle-kit:v0.0.14`
 
 #### Support Bundle Failed History Limit
 
