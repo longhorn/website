@@ -13,9 +13,15 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [CRD Upgrade Validation](#crd-upgrade-validation)
   - [Upgrade Check Events](#upgrade-check-events)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
+  - [Consolidation of Longhorn Settings](#consolidation-of-longhorn-settings)
+  - [Backup and Restore](#backup-and-restore)
+    - [Configurable Backup Block Size](#configurable-backup-block-size)
+- [V1 Data Engine](#v1-data-engine)
+  - [IPv6 Support](#ipv6-support)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Newly Introduced Functionalities since Longhorn v1.10.0](#newly-introduced-functionalities-since-longhorn-v1100)
+    - [V2 Data Engine Without Hugepage Support](#v2-data-engine-without-hugepage-support)
 
 ## Removal
 
@@ -54,6 +60,34 @@ Automated checks are only performed on some upgrade paths, and the pre-upgrade c
 - Avoid upgrading if a failed BackingImage exists.  For more information, see [Backing Image](../advanced-resources/backing-image/backing-image).
 - It is recommended to create a [Longhorn system backup](../advanced-resources/system-backup-restore/backup-longhorn-system) before performing the upgrade. This ensures that all critical resources, such as volumes and backing images, are backed up and can be restored in case any issues arise.
 
+### Consolidation of Longhorn Settings
+
+Longhorn settings have been consolidated to improve manageability and user experience for V1 and V2 Data Engines. Each setting supports only one of the following formats, depending on its definition. The supported format determines which Data Engines can be configured and whether their values can differ.
+
+- Single value for all supported Data Engines
+  - Format: Non-JSON string (e.g., `1024`)
+  - The value applies to all supported Data Engines and must be the same across them.
+  - Data-engine-specific values are not allowed.
+- Data-engine-specific values for V1 and V2 Data Engines
+  - Format: JSON object (e.g., `{"v1": "value1", "v2": "value2"}`)
+  - Allows specifying different values for V1 and V2 Data Engines.
+- Data-engine-specific values for V1 Data Engine only
+  - Format: JSON object with `v1` key only (e.g., `{"v1": "value1"}`)
+  - Only the V1 Data Engine can be configured; the V2 Data Engine is not affected.
+- Data-engine-specific values for V2 Data Engine only
+  - Format: JSON object with `v2` key only (e.g., `{"v2": "value1"}`)
+  - Only the V2 Data Engine can be configured; the V1 Data Engine is not affected.
+
+For more information, see [Longhorn Settings](../references/settings).
+
+### Backup and Restore
+
+#### Configurable Backup Block Size
+
+Starting in Longhorn v1.10.0, users can configure the backup block size when creating a volume. This feature offers greater flexibility, allowing the block size to be adjusted based on different needs and cost considerations to balance performance, efficiency, and transmission cost.
+
+For more information, see [Create Longhorn Volumes](../nodes-and-volumes/volumes/create-volumes).
+
 ## V1 Data Engine
 
 ### IPv6 Support
@@ -70,10 +104,6 @@ Longhorn currently does not support live upgrading of V2 volumes. Ensure that al
 
 ### Newly Introduced Functionalities since Longhorn v1.10.0
 
-## Backup And Restore
+#### V2 Data Engine Without Hugepage Support
 
-### Configurable Backup Block Size
-
-Starting in Longhorn v1.10.0, users can configure the backup block size when creating a volume. This feature offers greater flexibility, allowing the block size to be adjusted based on different needs and cost considerations to balance performance, efficiency, and transmission cost.
-
-For more information, see [Create Longhorn Volumes](../nodes-and-volumes/volumes/create-volumes).
+Longhorn v1.10.0 allows running the V2 Data Engine without Hugepage by setting `data-engine-hugepage-enabled` to `{"v2":"false"}`. This reduces memory pressure on low‑spec nodes and increases deployment flexibility, though performance may be lower than with Hugepage.
