@@ -103,7 +103,8 @@ weight: 1
   - [Auto Cleanup Snapshot After On-Demand Backup Completed](#auto-cleanup-snapshot-after-on-demand-backup-completed)
   - [Instance Manager Pod Liveness Probe Timeout](#instance-manager-pod-liveness-probe-timeout)
   - [Data Engine CPU Mask](#data-engine-cpu-mask)
-  - [Data Engine Hugepage Limit](#data-engine-hugepage-limit)
+  - [Data Engine Hugepage Enabled](#data-engine-hugepage-enabled)
+  - [Data Engine Memory Size](#data-engine-memory-size)
   - [Log Path](#log-path)
 
 ---
@@ -1134,11 +1135,17 @@ In seconds. The setting specifies the timeout for the instance manager pod liven
 
 Applies only to the V2 Data Engine. Specifies the CPU cores on which the Storage Performance Development Kit (SPDK) target daemon runs. The daemon is deployed in each Instance Manager pod. Ensure that the number of assigned cores does not exceed the guaranteed Instance Manager CPUs for the V2 Data Engine.
 
-#### Data Engine Hugepage Limit
+#### Data Engine Hugepage Enabled
+
+> Default: `{"v2":"true"}`
+
+Applies only to the V2 Data Engine. Enables hugepages for the Storage Performance Development Kit (SPDK) target daemon. If disabled, legacy memory is used. Allocation size is set via the Data Engine Memory Size setting.
+
+#### Data Engine Memory Size
 
 > Default: `{"v2":"2048"}`
 
-Applies only to the V2 Data Engine. Specifies the hugepage size, in MiB, for the Storage Performance Development Kit (SPDK) target daemon.
+Applies only to the V2 Data Engine. Specifies the memory size, in MiB, allocated to the Storage Performance Development Kit (SPDK) target daemon. When hugepage is enabled, this defines the hugepage size; when legacy memory is used, hugepage is disabled.
 
 #### Log Path
 
