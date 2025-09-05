@@ -115,7 +115,7 @@ You can also provide a copy of the `values.yaml` file with the default settings 
 1. Obtain a copy of the `values.yaml` file from GitHub:
 
     ```shell
-    curl -Lo values.yaml https://raw.githubusercontent.com/longhorn/charts/master/charts/longhorn/values.yaml
+    curl -Lo values.yaml https://raw.githubusercontent.com/longhorn/charts/HEAD/charts/longhorn/values.yaml
     ```
 
 2. Modify the default settings in the YAML file. The following is an example snippet of `values.yaml`:
