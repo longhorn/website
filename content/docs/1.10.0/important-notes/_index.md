@@ -16,6 +16,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Newly Introduced Functionalities since Longhorn v1.10.0](#newly-introduced-functionalities-since-longhorn-v1100)
+    - [Resource Efficiency](#resource-efficiency)
 
 ## Removal
 
@@ -69,6 +70,14 @@ Longhorn v1.10.0 and later version support usage of V1 volumes in single-stacked
 Longhorn currently does not support live upgrading of V2 volumes. Ensure that all V2 volumes are detached before initiating the upgrade process.
 
 ### Newly Introduced Functionalities since Longhorn v1.10.0
+
+#### Resource Efficiency
+
+- [Interrupt Mode Support](../v2-data-engine/features/interrupt-mode): Enables interrupt mode in the V2 Data engine to reduce CPU usage. Key considerations when configuring this feature:
+  - **Volume Detachment Required**: The [data-engine-interrupt-mode-enabled](../references/settings#data-engine-interrupt-mode-enabled) setting can only be changed when no V2 volumes are attached. Longhorn blocks the update if any V2 volume is active.
+  - **Global Scope**: This is  a global setting that applies to all V2 data engine volumes.
+  - **Performance Trade-off**: Interrupt mode can lower CPU consumption but may introduce slightly higher latency compared to polling mode. Assess this trade-off based on your workload requirement.
+  - **Hybrid Implementation**: The current NVMe/TCP implementation uses a hybrid approach, which still incurs a minimal, constant CPU load even in interrupt mode.
 
 ## Backup And Restore
 
