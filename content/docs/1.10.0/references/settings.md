@@ -547,7 +547,7 @@ Number of seconds that Longhorn allows for the completion of replica rebuilding 
 
 #### Offline Replica Rebuilding
 
-> Default: `false`
+> Default: `true`
 
 Controls whether Longhorn automatically rebuilds degraded replicas while the volume is detached. This setting only takes effect if the volume-level setting is set to `ignored` or `enabled`. Available options:
 

@@ -13,6 +13,10 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [CRD Upgrade Validation](#crd-upgrade-validation)
   - [Upgrade Check Events](#upgrade-check-events)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
+- [Replica Rebuilding](#replica-rebuilding)
+  - [Offline Replica Rebuilding](#offline-replica-rebuilding)
+- [V1 Data Engine](#v1-data-engine)
+  - [IPv6 Support](#ipv6-support)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Newly Introduced Functionalities since Longhorn v1.10.0](#newly-introduced-functionalities-since-longhorn-v1100)
@@ -53,6 +57,14 @@ Automated checks are only performed on some upgrade paths, and the pre-upgrade c
 - Avoid upgrading when volumes are in the "Faulted" status.  If all the replicas are deemed unusable, they may be deleted and data may be permanently lost (if no usable backups exist).
 - Avoid upgrading if a failed BackingImage exists.  For more information, see [Backing Image](../advanced-resources/backing-image/backing-image).
 - It is recommended to create a [Longhorn system backup](../advanced-resources/system-backup-restore/backup-longhorn-system) before performing the upgrade. This ensures that all critical resources, such as volumes and backing images, are backed up and can be restored in case any issues arise.
+
+## Replica Rebuilding
+
+### Offline Replica Rebuilding
+
+Starting from v1.10.0, Longhorn enables offline replica rebuilding by default. To disable it, set the `offline-replica-rebuilding` setting to `false` in the Longhorn UI or CLI.
+
+For more information, see [Offline replica rebuilding](../advanced-resources/rebuilding/offline-replica-rebuilding), [#8443](https://github.com/longhorn/longhorn/issues/8443) and [#11204](https://github.com/longhorn/longhorn/issues/11204).
 
 ## V1 Data Engine
 
