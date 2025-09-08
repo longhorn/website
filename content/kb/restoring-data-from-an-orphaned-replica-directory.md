@@ -1,7 +1,7 @@
------
+---
 title: "Restoring Data from an Orphaned Replica Directory"
 authors:
-  - "Sushant Gaurav"
+- "Sushant Gaurav"
 draft: false
 date: 2025-09-02
 versions:
@@ -9,7 +9,7 @@ versions:
 categories:
 - "Data Recovery"
 - "Troubleshooting"
------
+---
 
 ## Applicable versions
 
