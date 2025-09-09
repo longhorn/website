@@ -16,6 +16,8 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Consolidation of Longhorn Settings](#consolidation-of-longhorn-settings)
   - [Backup and Restore](#backup-and-restore)
     - [Configurable Backup Block Size](#configurable-backup-block-size)
+- [Resilience](#resilience)
+  - [Configurable Liveness Probe for Instance Manager](#configurable-liveness-probe-for-instance-manager)
 - [V1 Data Engine](#v1-data-engine)
   - [IPv6 Support](#ipv6-support)
 - [V2 Data Engine](#v2-data-engine)
@@ -89,6 +91,14 @@ For more information, see [Longhorn Settings](../references/settings).
 Starting in Longhorn v1.10.0, users can configure the backup block size when creating a volume. This feature offers greater flexibility, allowing the block size to be adjusted based on different needs and cost considerations to balance performance, efficiency, and transmission cost.
 
 For more information, see [Create Longhorn Volumes](../nodes-and-volumes/volumes/create-volumes).
+
+## Resilience
+
+### Configurable Liveness Probe for Instance Manager
+
+You can now configure the instance-manager pod liveness probes. This allows the system to better distinguish between temporary delays and actual failures, which helps reduce unnecessary restarts and improves overall cluster stability.
+
+For more information, see [Longhorn Settings](../references/settings#instance-manager-pod-liveness-probe-timeout).
 
 ## V1 Data Engine
 
