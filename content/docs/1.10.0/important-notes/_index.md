@@ -15,6 +15,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Upgrade Check Events](#upgrade-check-events)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
   - [Consolidation of Longhorn Settings](#consolidation-of-longhorn-settings)
+  - [System Info Category in Setting](#system-info-category-in-setting)
 - [Scheduling](#scheduling)
   - [Pod Scheduling with CSIStorageCapacity](#pod-scheduling-with-csistoragecapacity)
 - [Performance](#performance)
@@ -94,6 +95,12 @@ Longhorn settings have been consolidated to improve manageability and user exper
   - Only the V2 Data Engine can be configured; the V1 Data Engine is not affected.
 
 For more information, see [Longhorn Settings](../references/settings).
+
+### System Info Category in Setting
+
+A new **System Info** category has been added to show cluster-level information more clearly.
+
+For more details, see [Issue #11656](https://github.com/longhorn/longhorn/issues/11656)
 
 ## Scheduling
 
