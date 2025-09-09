@@ -16,6 +16,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
   - [Consolidation of Longhorn Settings](#consolidation-of-longhorn-settings)
   - [System Info Category in Setting](#system-info-category-in-setting)
+  - [Volume Attachment Summary](#volume-attachment-summary)
 - [Scheduling](#scheduling)
   - [Pod Scheduling with CSIStorageCapacity](#pod-scheduling-with-csistoragecapacity)
 - [Performance](#performance)
@@ -103,6 +104,12 @@ For more information, see [Longhorn Settings](../references/settings).
 A new **System Info** category has been added to show cluster-level information more clearly.
 
 For more details, see [Issue #11656](https://github.com/longhorn/longhorn/issues/11656)
+
+### Volume Attachment Summary
+
+The UI now display a summary of attachment tickets on each volume overview page for improved visibility into volume state.
+
+For more details, see [Issue #11400](https://github.com/longhorn/longhorn/issues/11400) and [Issue #11401](https://github.com/longhorn/longhorn/issues/11401).
 
 ## Scheduling
 
