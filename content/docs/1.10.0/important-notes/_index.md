@@ -21,6 +21,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Configurable Backup Block Size](#configurable-backup-block-size)
 - [Resilience](#resilience)
   - [Configurable Liveness Probe for Instance Manager](#configurable-liveness-probe-for-instance-manager)
+  - [Backing Image Manager CR Naming](#backing-image-manager-cr-naming)
 - [V1 Data Engine](#v1-data-engine)
   - [IPv6 Support](#ipv6-support)
 - [V2 Data Engine](#v2-data-engine)
@@ -118,6 +119,12 @@ For more information, see [Create Longhorn Volumes](../nodes-and-volumes/volumes
 You can now configure the instance-manager pod liveness probes. This allows the system to better distinguish between temporary delays and actual failures, which helps reduce unnecessary restarts and improves overall cluster stability.
 
 For more information, see [Longhorn Settings](../references/settings#instance-manager-pod-liveness-probe-timeout).
+
+### Backing Image Manager CR Naming
+
+Backing Image Manager CRs now use a compact, collision-resistant naming format to reduce conflict risk.
+
+For details, see [Issue #11455](https://github.com/longhorn/longhorn/issues/11455)
 
 ## V1 Data Engine
 
