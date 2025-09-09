@@ -14,10 +14,10 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Upgrade Check Events](#upgrade-check-events)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
   - [Consolidation of Longhorn Settings](#consolidation-of-longhorn-settings)
-  - [Backup and Restore](#backup-and-restore)
-    - [Configurable Backup Block Size](#configurable-backup-block-size)
 - [Scheduling](#scheduling)
   - [Pod Scheduling with CSIStorageCapacity](#pod-scheduling-with-csistoragecapacity)
+- [Performance](#performance)
+  - [Configurable Backup Block Size](#configurable-backup-block-size)
 - [Resilience](#resilience)
   - [Configurable Liveness Probe for Instance Manager](#configurable-liveness-probe-for-instance-manager)
 - [V1 Data Engine](#v1-data-engine)
@@ -86,14 +86,6 @@ Longhorn settings have been consolidated to improve manageability and user exper
 
 For more information, see [Longhorn Settings](../references/settings).
 
-### Backup and Restore
-
-#### Configurable Backup Block Size
-
-Starting in Longhorn v1.10.0, users can configure the backup block size when creating a volume. This feature offers greater flexibility, allowing the block size to be adjusted based on different needs and cost considerations to balance performance, efficiency, and transmission cost.
-
-For more information, see [Create Longhorn Volumes](../nodes-and-volumes/volumes/create-volumes).
-
 ## Scheduling
 
 ### Pod Scheduling with CSIStorageCapacity
@@ -103,6 +95,14 @@ Longhorn now supports Kubernetes **CSIStorageCapacity**, which enables the sched
 This reduces scheduling errors and improves reliability.
 
 For more information, see [GitHub Issue #10685](https://github.com/longhorn/longhorn/issues/10685)
+
+## Performance
+
+### Configurable Backup Block Size
+
+Starting in Longhorn v1.10.0, users can configure the backup block size when creating a volume. This feature offers greater flexibility, allowing the block size to be adjusted based on different needs and cost considerations to balance performance, efficiency, and transmission cost.
+
+For more information, see [Create Longhorn Volumes](../nodes-and-volumes/volumes/create-volumes).
 
 ## Resilience
 
