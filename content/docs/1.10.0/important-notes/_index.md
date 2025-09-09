@@ -16,6 +16,8 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Consolidation of Longhorn Settings](#consolidation-of-longhorn-settings)
   - [Backup and Restore](#backup-and-restore)
     - [Configurable Backup Block Size](#configurable-backup-block-size)
+- [Scheduling](#scheduling)
+  - [Pod Scheduling with CSIStorageCapacity](#pod-scheduling-with-csistoragecapacity)
 - [Resilience](#resilience)
   - [Configurable Liveness Probe for Instance Manager](#configurable-liveness-probe-for-instance-manager)
 - [V1 Data Engine](#v1-data-engine)
@@ -91,6 +93,16 @@ For more information, see [Longhorn Settings](../references/settings).
 Starting in Longhorn v1.10.0, users can configure the backup block size when creating a volume. This feature offers greater flexibility, allowing the block size to be adjusted based on different needs and cost considerations to balance performance, efficiency, and transmission cost.
 
 For more information, see [Create Longhorn Volumes](../nodes-and-volumes/volumes/create-volumes).
+
+## Scheduling
+
+### Pod Scheduling with CSIStorageCapacity
+
+Longhorn now supports Kubernetes **CSIStorageCapacity**, which enables the scheduler to verify node storage before scheduling pods that use StorageClasses with **WaitForFirstConsumer**.
+
+This reduces scheduling errors and improves reliability.
+
+For more information, see [GitHub Issue #10685](https://github.com/longhorn/longhorn/issues/10685)
 
 ## Resilience
 
