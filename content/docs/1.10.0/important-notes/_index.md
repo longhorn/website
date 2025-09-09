@@ -19,6 +19,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Pod Scheduling with CSIStorageCapacity](#pod-scheduling-with-csistoragecapacity)
 - [Performance](#performance)
   - [Configurable Backup Block Size](#configurable-backup-block-size)
+  - [Profiling Support for Backup Sync Agent](#profiling-support-for-backup-sync-agent)
 - [Resilience](#resilience)
   - [Configurable Liveness Probe for Instance Manager](#configurable-liveness-probe-for-instance-manager)
   - [Backing Image Manager CR Naming](#backing-image-manager-cr-naming)
@@ -111,6 +112,12 @@ For more information, see [GitHub Issue #10685](https://github.com/longhorn/long
 Starting in Longhorn v1.10.0, users can configure the backup block size when creating a volume. This feature offers greater flexibility, allowing the block size to be adjusted based on different needs and cost considerations to balance performance, efficiency, and transmission cost.
 
 For more information, see [Create Longhorn Volumes](../nodes-and-volumes/volumes/create-volumes).
+
+### Profiling Support for Backup Sync Agent
+
+The backup sync agent now exposes a `pprof` server for profiling runtime resource usage during backup sync operations.
+
+For more information, see [Profiling](../troubleshoot/troubleshooting#profiling).
 
 ## Resilience
 
