@@ -24,6 +24,8 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 - [Resilience](#resilience)
   - [Configurable Liveness Probe for Instance Manager](#configurable-liveness-probe-for-instance-manager)
   - [Backing Image Manager CR Naming](#backing-image-manager-cr-naming)
+- [Security](#security)
+  - [Refined RBAC Permissions](#refined-rbac-permissions)
 - [V1 Data Engine](#v1-data-engine)
   - [IPv6 Support](#ipv6-support)
 - [V2 Data Engine](#v2-data-engine)
@@ -139,6 +141,14 @@ For more information, see [Longhorn Settings](../references/settings#instance-ma
 Backing Image Manager CRs now use a compact, collision-resistant naming format to reduce conflict risk.
 
 For details, see [Issue #11455](https://github.com/longhorn/longhorn/issues/11455)
+
+## Security
+
+### Refined RBAC Permissions
+
+RBAC permissions have been refined to minimize privileges and improve cluster security.
+
+For details, see [Issue #11345](https://github.com/longhorn/longhorn/issues/11345)
 
 ## V1 Data Engine
 
