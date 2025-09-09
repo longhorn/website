@@ -23,6 +23,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
   - [Newly Introduced Functionalities since Longhorn v1.10.0](#newly-introduced-functionalities-since-longhorn-v1100)
     - [V2 Data Engine Without Hugepage Support](#v2-data-engine-without-hugepage-support)
     - [V2 Data Engine Interrupt Mode Support](#v2-data-engine-interrupt-mode-support)
+    - [V2 Data Engine Replica Rebuild QoS](#v2-data-engine-replica-rebuild-qos)
 
 ## Removal
 
@@ -116,3 +117,9 @@ Adds interrupt mode to the V2 Data Engine to help reduce CPU usage. This feature
 While interrupt mode lowers CPU consumption, it may introduce slightly higher I/O latency compared to polling mode. In addition, the current implementation uses a hybrid approach, which still incurs a minimal, constant CPU load even when interrupts are enabled.
 
 For more information, see [Interrupt Mode](../v2-data-engine/features/interrupt-mode) for more information.
+
+#### V2 Data Engine Replica Rebuild QoS
+
+Provides Quality of Service (QoS) control for V2 volume replica rebuilds. You can configure bandwidth limits globally or per volume to prevent storage throughput overload on source and destination nodes.
+
+For more information, see [Replica Rebuild QoS](../v2-data-engine/features/replica-rebuild-qos).
