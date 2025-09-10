@@ -172,3 +172,83 @@ Here we summarize the important things related to disk space usage we have in th
     Also, notice that the extra space, up to volume nominal `size`, is required during snapshot cleanup and merge.
 
 4. An appropriate the volume nominal `size` according to the workloads.
+
+## Troubleshooting
+
+### Workload is Hitting "no space left on device" Error
+
+To address the "no space left on device" error, you need to understand that the difference between a volume being full and the node disks being full is crucial for proper storage management in Longhorn.
+
+#### Volume Full
+
+A volume is full when the filesystem mounted on it has reached its capacity limit.
+
+- Data writes fail with "no space left on device" errors.
+- The host disk for the replica of the volume may still have available space for other volumes.
+
+- **Characteristics:**
+  - The `df` command shows 100% usage for the mounted filesystem.
+  - Applications cannot write new data to the volume mount point.
+
+- **Example**
+
+    ```bash
+    $ df -h /mnt/longhorn-volume-example-dir
+    Filesystem                    Size  Used Avail Use% Mounted on
+    /dev/longhorn-volume-example   12G   12G    0  100% /mnt/longhorn-volume-example-dir
+    ```
+
+#### Node Disk Full
+
+Node disks do not have enough space to accommodate volume operations because volumes are thin-provisioned and the replica sizes on the disks continue to grow.
+
+- Data writes fail with "no space left on device" errors.
+- Volume operations, such as volume creation/expansion, snapshot creation/deletion, and replica rebuilding, may be limited.
+- Replicas of newly created volumes are prevented from being scheduled to the full disks.
+
+- **Characteristics:**
+  - Applications cannot write new data to the volume mount point even though the volume is not full.
+  - Longhorn operations for volumes on these node disks, such as replica creation, rebuilding, or snapshot operations, may fail.
+  - Volumes with replicas sharing the same node disks are affected.
+
+##### Data Integrity Protection for Disks Out-of-Space Scenarios
+
+When multiple replicas simultaneously encounter "no space left on device" errors, Longhorn implements data integrity protection. If all writable replicas are on disks that are out of space, the system preserves the maximum number of replicas that have written the same amount of data (the highest written bytes count). This ensures data consistency by:
+
+1. **Retaining** the maximum number of replicas that have written the same amount of data.  
+This avoids massive replica rebuilding operations, allows for efficient rebuilding when node disks recover from out-of-space issues and ensures that users can still read data consistently.
+2. **Marking** other replicas as **ERR** to prevent data corruption.  
+This ensures that users can read data consistently from retained replicas, and replicas marked as `ERR` will be rebuilt from retained replicas to maintain data integrity when node disks recover from out-of-space issues.
+3. **Maintaining** volume accessibility even when all underlying disks are full.
+
+For example, if replicas A, B, and C encounter space errors after writing 1MB, 2MB, and 2MB respectively, replicas B and C (having written the most data consistently) will remain active while replica A is marked as **ERR**.
+
+### Solutions
+
+When encountering the `no space left on device` error, first check whether the volume’s filesystem is full, and then check whether the disk hosting the volume replica is full.
+
+- **Check volume filesystem usage**
+
+    If the volume's filesystem usage is 100% using the following command:
+
+    ```bash
+    df -h /mnt/your-volume
+    ```
+
+    Please expand the volume or remove the unnecessary files in the filesystem first.
+
+- **Check Longhorn node disk usage**
+
+    If the disk usage is 100% using the following command or checking the Longhorn UI page `Node > Node Disk`:
+
+    ```bash
+    # Check through Longhorn UI: Node > Node Disk
+    # Or check the data path mount point
+    df -h /var/lib/longhorn # default data path
+    ```
+
+    Please follow the steps to recovery the workloads:
+
+    1. Scale down the workload.
+    2. Expand the disk size, or remove unnecessary files, for example, [orphaned replica directories](../../../advanced-resources/data-cleanup/orphaned-data-cleanup#orphaned-replica-directories) and [used backing images](../../../advanced-resources/backing-image/backing-image#clean-up-backing-images), on the disk.
+    3. Then scale up the workload.
