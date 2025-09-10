@@ -8,6 +8,7 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 
 - [Removal](#removal)
   - [`longhorn.io/v1beta1` API](#longhorniov1beta1-api)
+  - [`replica.status.evictionRequested` Field](#replicastatusevictionrequested-field)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [CRD Upgrade Validation](#crd-upgrade-validation)
@@ -36,6 +37,12 @@ Please see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current
 The `v1beta1` version of the Longhorn API is removed since Longhorn v1.10.0.
 
 For more details, see [Issue #10249](https://github.com/longhorn/longhorn/issues/10249).
+
+### `replica.status.evictionRequested` Field
+
+The deprecated `replica.status.evictionRequested` field has been removed.
+
+For more details, see [Issue #7022](https://github.com/longhorn/longhorn/issues/7022)
 
 ## General
 
