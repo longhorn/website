@@ -611,7 +611,7 @@ Hashing snapshot disk files impacts the performance of the system. The immediate
 
 #### Snapshot Data Integrity Check CronJob
 
-> Default: `0 0 */7 * *`
+> Default: `{"v1":"0 0 */7 * *","v2":"0 0 */7 * *"}`
 
 Unix-cron string format. The setting specifies when Longhorn checks the data integrity of snapshot disk files.
 > **Warning**
