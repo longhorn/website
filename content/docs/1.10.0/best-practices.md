@@ -164,19 +164,19 @@ If you have multiple physical disks and want to create a single, large logical v
     - `-n longhorn-lv` gives the new logical volume a name, `longhorn-lv`.
     - `longhorn-vg` specifies the volume group from which the new logical volume should be created.
 4. **Format and Mount the Logical Volume**: Format the new logical volume and add it to your `/etc/fstab` file to ensure it is mounted automatically on reboot.
-   - The `mkfs.ext4` command formats the logical volume with the ext4 file system:
-    ```sh
-    sudo mkfs.ext4 /dev/mapper/longhorn--vg-longhorn--lv
-    ```
-    Add the following line to `/etc/fstab` to ensure the logical volume is mounted automatically on boot and available to Longhorn:
-    ```sh
-    /dev/mapper/longhorn--vg-longhorn--lv /var/lib/longhorn ext4 defaults 0 0
-    ```
-    Finally, mount all entries listed in `/etc/fstab`, including the new filesystem:
-    ```sh
-    sudo mount -a
-    ```
-    - This mounts all filesystems listed in `/etc/fstab`, including your new Longhorn volume.
+    - The `mkfs.ext4` command formats the logical volume with the ext4 file system:
+      ```sh
+      sudo mkfs.ext4 /dev/mapper/longhorn--vg-longhorn--lv
+      ```
+    - Add the following line to `/etc/fstab` to ensure the logical volume is mounted automatically on boot and available to Longhorn:
+      ```sh
+      /dev/mapper/longhorn--vg-longhorn--lv /var/lib/longhorn ext4 defaults 0 0
+      ```
+    - Finally, mount all entries listed in `/etc/fstab`, including the new filesystem:
+      ```sh
+      sudo mount -a
+      ```
+      This mounts all filesystems listed in `/etc/fstab`, including your new Longhorn volume.
 5. **Configure Longhorn**: After the logical volume is mounted, configure Longhorn to use this new, larger mount point by adding `/var/lib/longhorn` (Longhorn's default data directory) as a disk. This tells Longhorn to use this single, aggregated volume for all its storage needs, solving the problem of a volume being too large for a single physical disk.
 
 ### Setting up Extra Disks
