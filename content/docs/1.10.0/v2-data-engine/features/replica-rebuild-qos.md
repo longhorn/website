@@ -12,7 +12,7 @@ Longhorn supports rebuild bandwidth throttling (QoS) for v2 volumes based on SPD
 * This setting can only be configured via kubectl:
 
 ```bash
-kubectl -n longhorn-system patch settings v2-data-engine-rebuilding-mbytes-per-second \
+kubectl -n longhorn-system patch settings.longhorn.io v2-data-engine-rebuilding-mbytes-per-second \
   --type=merge -p '{"value":"100"}'
 ```
 
