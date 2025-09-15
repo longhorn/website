@@ -35,6 +35,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
     - [V2 Data Engine Without Hugepage Support](#v2-data-engine-without-hugepage-support)
     - [V2 Data Engine Interrupt Mode Support](#v2-data-engine-interrupt-mode-support)
     - [V2 Data Engine Replica Rebuild QoS](#v2-data-engine-replica-rebuild-qos)
+    - [V2 Data Engine Volume Expansion](#v2-data-engine-volume-expansion)
 
 ## Removal
 
@@ -196,3 +197,9 @@ For more information, see [Interrupt Mode](../v2-data-engine/features/interrupt-
 Provides Quality of Service (QoS) control for V2 volume replica rebuilds. You can configure bandwidth limits globally or per volume to prevent storage throughput overload on source and destination nodes.
 
 For more information, see [Replica Rebuild QoS](../v2-data-engine/features/replica-rebuild-qos).
+
+#### V2 Data Engine Volume Expansion
+
+Longhorn now supports volume expansion for V2 Data Engine volumes. Users can expand the volume through the UI or by modifying the PVC manifest.
+
+For more information, see [V2 Volume Expansion](../v2-data-engine/features/volume-expansion).
