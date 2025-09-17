@@ -136,13 +136,54 @@ For the Over-provisioning percentage, it depends on how much space your volume u
 
 ### Disk Space Management
 
-Since Longhorn doesn't currently support sharding between the different disks, we recommend using [LVM](https://en.wikipedia.org/wiki/Logical_Volume_Manager_(Linux)) to aggregate all the disks for Longhorn into a single partition, so it can be easily extended in the future.
+> **Important**: Longhorn does not automatically aggregate space from multiple physical disks for a single volume.
+
+A single volume replica must fit entirely on one physical disk. Longhorn does not split a replica (a copy of your volume) across multiple disks. If you need to provision a volume larger than any single physical disk, you must first aggregate your disks into a single logical volume using a tool like [LVM](https://en.wikipedia.org/wiki/Logical_Volume_Manager_(Linux)).
+
+### Using LVM to Combine Multiple Disks for Longhorn
+
+> **Note**: If you attach two 2 TiB disks, you cannot provision a 3 TiB volume unless those disks are first combined using a tool like LVM. Attempting to do so may lead to I/O or attach errors when Longhorn runs out of space on the physical disk where the replica is scheduled.
+
+If you have multiple physical disks and want to create a single, large logical volume for Longhorn, you can use LVM (Logical Volume Manager). This is the recommended approach to create volumes that are larger than any single disk.
+
+1. **Create Physical Volumes**: Create physical volumes on each of your disks.
+    ```sh
+    sudo pvcreate /dev/sdb /dev/sdc
+    ```
+    It initializes a physical disk (or a disk partition) for use by LVM. In this command, `/dev/sdb` and `/dev/sdc` are the names of the physical disks you are preparing.
+2. **Create a Volume Group**: Combine the physical volumes into a single volume group (here, `longhorn-vg`).
+    ```sh
+    sudo vgcreate longhorn-vg /dev/sdb /dev/sdc
+    ```
+    It aggregates the storage from the physical volumes `/dev/sdb` and `/dev/sdc` into this single pool. 
+3. **Create a Logical Volume**: Create a logical volume from the volume group, using all available space.
+    ```sh
+    sudo lvcreate -l 100%FREE -n longhorn-lv longhorn-vg
+    ```
+    - `-l 100%FREE` is a crucial flag which tells LVM to use 100% of all the available free space within the `longhorn-vg` volume group. This ensures that you are utilizing the entire aggregated storage from both physical disks for your new volume.
+    - `-n longhorn-lv` gives the new logical volume a name, `longhorn-lv`.
+    - `longhorn-vg` specifies the volume group from which the new logical volume should be created.
+4. **Format and Mount the Logical Volume**: Format the new logical volume and add it to your `/etc/fstab` file to ensure it is mounted automatically on reboot.
+    - The `mkfs.ext4` command formats the logical volume with the ext4 file system:
+      ```sh
+      sudo mkfs.ext4 /dev/mapper/longhorn--vg-longhorn--lv
+      ```
+    - Add the following line to `/etc/fstab` to ensure the logical volume is mounted automatically on boot and available to Longhorn:
+      ```sh
+      /dev/mapper/longhorn--vg-longhorn--lv /var/lib/longhorn ext4 defaults 0 0
+      ```
+    - Finally, mount all entries listed in `/etc/fstab`, including the new filesystem:
+      ```sh
+      sudo mount -a
+      ```
+      This mounts all filesystems listed in `/etc/fstab`, including your new Longhorn volume.
+5. **Configure Longhorn**: After the logical volume is mounted, configure Longhorn to use this new, larger mount point by adding `/var/lib/longhorn` (Longhorn's default data directory) as a disk. This tells Longhorn to use this single, aggregated volume for all its storage needs, solving the problem of a volume being too large for a single physical disk.
 
 ### Setting up Extra Disks
 
 Any extra disks must be written in the `/etc/fstab` file to allow automatic mounting after the machine reboots.
 
-Don't use a symbolic link for the extra disks. Use `mount --bind` instead of `ln -s` and make sure it's in the `fstab` file. For details, see [the section about multiple disk support.](../nodes-and-volumes/nodes/multidisk/#use-an-alternative-path-for-a-disk-on-the-node)
+Do not use a symbolic link for the extra disks. Use `mount --bind` instead of `ln -s` and make sure it is in the `fstab` file. For details, see [the section about multiple disk support](../nodes-and-volumes/nodes/multidisk/#use-an-alternative-path-for-a-disk-on-the-node).
 
 ## Configuring Default Disks Before and After Installation
 
