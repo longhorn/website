@@ -34,6 +34,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [New Functionalities since Longhorn v1.10.0](#new-functionalities-since-longhorn-v1100)
     - [V2 Data Engine Without Hugepage Support](#v2-data-engine-without-hugepage-support)
     - [V2 Data Engine Interrupt Mode Support](#v2-data-engine-interrupt-mode-support)
+    - [V2 Data Engine Volume Clone Support](#v2-data-engine-volume-clone-support)
     - [V2 Data Engine Replica Rebuild QoS](#v2-data-engine-replica-rebuild-qos)
     - [V2 Data Engine Volume Expansion](#v2-data-engine-volume-expansion)
 
@@ -191,6 +192,10 @@ Interrupt mode has been added to the V2 Data Engine to help reduce CPU usage. Th
 While interrupt mode lowers CPU consumption, it may introduce slightly higher I/O latency compared to polling mode. In addition, the current implementation uses a hybrid approach, which still incurs a minimal, constant CPU load even when interrupts are enabled.
 
 For more information, see [Interrupt Mode](../v2-data-engine/features/interrupt-mode) for more information.
+
+#### V2 Data Engine Volume Clone Support
+Longhorn now supports volume and snapshot cloning for V2 data engine volumes.
+For more information, see [Volume Clone Support](../v2-data-engine/features/volume-clone).
 
 #### V2 Data Engine Replica Rebuild QoS
 
