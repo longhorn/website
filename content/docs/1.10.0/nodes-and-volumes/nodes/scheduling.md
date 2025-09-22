@@ -117,7 +117,7 @@ Since Disk Y passes all conditions, it is marked as a schedulable disk candidate
 Let's assume both Disk X and Disk Y pass the initial space checks and Disk X already hosts a replica for the same volume.
 
 **Hard Anti-Affinity**
-- If **hard anti-affinity** is enabled, Longhorn will not schedule the new replica on Disk X. It will instead attempt to schedule it on Disk Y.
+- Longhorn will not schedule the new replica on Disk X. It will instead attempt to schedule it on Disk Y.
 * If Disk Y is not suitable (e.g., mismatched disk tags), scheduling for this replica will fail.
 
 **Soft Anti-Affinity**
