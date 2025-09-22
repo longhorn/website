@@ -192,6 +192,8 @@ While interrupt mode lowers CPU consumption, it may introduce slightly higher I/
 
 For more information, see [Interrupt Mode](../v2-data-engine/features/interrupt-mode) for more information.
 
+> Limitation: Interrupt mode currently supports only AIO disks.
+
 #### V2 Data Engine Replica Rebuild QoS
 
 Provides Quality of Service (QoS) control for V2 volume replica rebuilds. You can configure bandwidth limits globally or per volume to prevent storage throughput overload on source and destination nodes.
