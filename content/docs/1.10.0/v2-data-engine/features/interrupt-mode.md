@@ -70,3 +70,7 @@ The current V2 volume interrupt mode uses a hybrid approach for NVMe/TCP transpo
 
 - **Setting Changes**: Cannot be modified while V2 volumes are attached
 - **Global Scope**: Applies globally; no per-volume override is available
+
+### Disk Support
+
+- Interrupt mode currently supports AIO disks only.
