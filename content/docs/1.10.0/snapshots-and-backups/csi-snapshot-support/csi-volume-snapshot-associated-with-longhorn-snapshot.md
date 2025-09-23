@@ -83,4 +83,11 @@ spec:
     requests:
       storage: 5Gi
 ```
-Note that the `spec.resources.requests.storage` value must be the same as the size of `VolumeSnapshot` object.
+
+> **Note**:
+> 1. The `spec.resources.requests.storage` value must match the size of the VolumeSnapshot object.
+> 2. If you are restoring a volume from a `VolumeSnapshot` associated with a V2 data engine volume, you can use a `StorageClass` to specify the clone mode.
+>    - Set the `cloneMode` parameter to either `full-copy` or `linked-clone`.
+>    - If `cloneMode` is not specified, the default is `full-copy`.
+>
+>    For more information, see [the V2 Volume Clone Support documentation](../../../v2-data-engine/features/volume-clone).
