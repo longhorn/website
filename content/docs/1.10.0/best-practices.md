@@ -69,7 +69,7 @@ The following Linux OS distributions and versions have been verified during the 
 | No. | OS                           | Versions
 |-----|------------------------------| --------
 | 1.  | Ubuntu                       | 24.04
-| 2.  | SUSE Linux Enterprise Server| 15 SP7
+| 2.  | SUSE Linux Enterprise Server | 15 SP7
 | 3.  | SUSE Linux Enterprise Micro  | 6.1
 | 4.  | Red Hat Enterprise Linux     | 10.0
 | 5.  | Oracle Linux                 | 9.6
