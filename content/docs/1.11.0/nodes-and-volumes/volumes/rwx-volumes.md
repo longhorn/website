@@ -37,13 +37,13 @@ Both types create a corresponding Service for each RWX volume, serving as the de
 
 ## Migratable RWX Volumes
 
-1. **Block Device Support**: The consuming application must be able to handle raw block devices (not file systems).
+1. The consuming application must be able to handle raw block devices (not file systems).
 
-2. **Kubernetes CSI Support**: The cluster must support CSI volume attachment/detachment operations for multi-attach scenarios.
+2. The cluster must support CSI volume attachment/detachment operations for multi-attach scenarios.
 
-3. **Live Migration Platform**: Typically used with platforms like KubeVirt or Harvester that coordinate the migration process.
+3. A live migration platform like KubeVirt or Harvester is typically used to coordinate the migration process.
 
-4. **Unique Node Hostnames**: Required for proper volume management during migration processes.
+4. Each node hostname must be unique in the Kubernetes cluster for proper volume management during migration processes.
 
 # Creation and Usage of an RWX Volume
 
