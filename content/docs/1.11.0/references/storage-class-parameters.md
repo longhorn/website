@@ -103,7 +103,18 @@ URL of a backup to be restored from.
 #### Migratable *(field: `parameters.migratable`)*
 > Default: `false`
 
-Allows for a Longhorn volume to be live migrated from one node to another.  Useful for volumes used by Harvester.
+Enables live migration capabilities for a Longhorn volume, allowing it to be migrated from one node to another while maintaining active I/O operations.
+
+**When to use:**
+- **`migratable: true`**: For workloads requiring live migration (e.g., KubeVirt VMs, Harvester VMs). Must be used with `ReadWriteMany` access mode and `volumeMode: Block`.
+- **`migratable: false`**: For standard volumes that don't require live migration capabilities.
+
+**Important Notes:**
+- For RWX volumes: Standard RWX volumes should use `migratable: false`, while migratable RWX volumes require `migratable: true`
+- Migratable volumes are specifically designed for virtualization platforms like KubeVirt and Harvester
+- The migration process uses dual engines and automatic rollback/confirmation based on pod lifecycle
+
+> More details in [RWX Workloads](../../nodes-and-volumes/volumes/rwx-volumes)
 
 #### Encrypted *(field: `parameters.encrypted`)*
 > Default: `false`
