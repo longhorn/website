@@ -83,8 +83,7 @@ parameters:
 > Migratable RWX volumes must have the access mode set to `ReadWriteMany`, the "migratable" flag enabled (*parameters.migratable: `true`*), and use `volumeMode: Block`.
 
 **Use Cases:**
-- KubeVirt virtual machines requiring live migration
-- Harvester VMs that need to move between nodes without downtime
+- Virtual machines requiring live migration
 - Workloads that benefit from live migration for maintenance or load balancing
 
 **Key Features:**
