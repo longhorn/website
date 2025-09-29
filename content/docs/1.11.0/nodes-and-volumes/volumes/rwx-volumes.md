@@ -10,13 +10,11 @@ Longhorn supports ReadWriteMany (RWX) volumes by exposing regular Longhorn volum
 
 Longhorn supports two types of ReadWriteMany (RWX) volumes:
 
-1. **Standard (Non-Migratable) RWX Volumes**: Traditional shared storage using NFSv4 servers in dedicated `share-manager-<volume-name>` Pods within the `longhorn-system` namespace. These volumes provide shared access across multiple nodes but cannot be live migrated.
+1. **Standard (Non-Migratable) RWX Volumes**: Traditional shared storage using NFSv4 servers in dedicated `share-manager-<volume-name>` Pods within the `longhorn-system` namespace. These volumes provide shared access across multiple nodes but cannot be live migrated. Standard RWX volumes create a corresponding Service for each RWX volume, serving as the designated endpoint for NFSv4 client connections.
 
-2. **Migratable RWX Volumes**: RWX volumes that support live migration between nodes while maintaining active I/O operations. These are designed for virtualized workloads such as KubeVirt VMs that require live migration capabilities.
+2. **Migratable RWX Volumes**: RWX volumes that support live migration between nodes while maintaining active I/O operations. These are designed for virtualized workloads such as KubeVirt VMs that require live migration capabilities. Migratable RWX volumes use direct block device access during migration.
 
 You can distinguish between migratable and non-migratable RWX volumes by checking the `volume.spec.migratable` field in the volume specification.
-
-Standard RWX volumes create a corresponding Service for each RWX volume, serving as the designated endpoint for NFSv4 client connections. Migratable RWX volumes use direct block device access during migration.
 
 {{< figure src="/img/diagrams/rwx/rwx-arch.png" >}}
 
@@ -41,7 +39,7 @@ Standard RWX volumes create a corresponding Service for each RWX volume, serving
 
 1. The cluster must support CSI volume attachment/detachment operations for multi-attach scenarios.
 
-2. A live migration platform like KubeVirt or Harvester is typically used to coordinate the migration process.
+2. A live migration platform like KubeVirt is typically used to coordinate the migration process.
 
 3. Each node hostname must be unique in the Kubernetes cluster for proper volume management during migration processes.
 
@@ -152,7 +150,7 @@ spec:
 - Suitable for applications requiring concurrent file system access
 
 ### Migratable RWX Volumes  
-- Specifically designed for live migration scenarios (KubeVirt, Harvester)
+- Specifically designed for live migration scenarios
 - **Must** use `volumeMode: Block` - file system mode is not supported
 - Require `ReadWriteMany` access mode and `migratable: true` parameter
 - Not suitable for general shared file system use cases
