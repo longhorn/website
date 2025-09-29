@@ -8,7 +8,13 @@ Longhorn supports ReadWriteMany (RWX) volumes by exposing regular Longhorn volum
 
 # Introduction
 
-Longhorn creates a dedicated `share-manager-<volume-name>` Pod within the `longhorn-system` namespace for each RWX volume that is currently in active use. The Pod facilitates the export of Longhorn volume via an internally hosted NFSv4 server. Additionally, a corresponding Service is created for each RWX volume, serving as the designated endpoint for actual NFSv4 client connections.
+Longhorn supports two types of ReadWriteMany (RWX) volumes:
+
+1. **Standard (Non-Migratable) RWX Volumes**: Traditional shared storage using NFSv4 servers in dedicated `share-manager-<volume-name>` Pods within the `longhorn-system` namespace. These volumes provide shared access across multiple nodes but cannot be live migrated.
+
+2. **Migratable RWX Volumes**: Advanced RWX volumes that support live migration between nodes while maintaining active I/O operations. These are designed for virtualized workloads such as KubeVirt VMs that require live migration capabilities.
+
+Both types create a corresponding Service for each RWX volume, serving as the designated endpoint for actual connections (NFSv4 for standard RWX, direct block device access for migratable RWX during migration).
 
 {{< figure src="/img/diagrams/rwx/rwx-arch.png" >}}
 
@@ -31,14 +37,100 @@ It is necessary to meet the following requirements in order to use RWX volumes.
 
 # Creation and Usage of an RWX Volume
 
+Longhorn supports two types of RWX volumes:
+
+## Standard (Non-Migratable) RWX Volumes
+
+**Standard RWX volumes** use NFSv4 servers in share-manager pods and are suitable for most workloads that need shared storage across multiple nodes.
+
 > **Notice**  
-> An RWX volume must have the access mode set to `ReadWriteMany` and the "migratable" flag disabled (*parameters.migratable: `false`*).
+> Standard RWX volumes must have the access mode set to `ReadWriteMany` and the "migratable" flag disabled (*parameters.migratable: `false`*).
+
+**Use Cases:**
+- Traditional shared storage scenarios
+- Applications that require concurrent read/write access from multiple nodes
+- Workloads that don't require live migration capabilities
+
+**Configuration Example:**
+```yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: longhorn-rwx-standard
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+parameters:
+  numberOfReplicas: "3"
+  staleReplicaTimeout: "2880"
+  migratable: "false"  # Explicitly disabled for standard RWX
+```
+
+## Migratable RWX Volumes
+
+**Migratable RWX volumes** support live migration from one node to another, making them ideal for virtualized workloads like KubeVirt VMs that require live migration capabilities.
+
+> **Notice**  
+> Migratable RWX volumes must have the access mode set to `ReadWriteMany`, the "migratable" flag enabled (*parameters.migratable: `true`*), and use `volumeMode: Block`.
+
+**Use Cases:**
+- KubeVirt virtual machines requiring live migration
+- Harvester VMs that need to move between nodes without downtime
+- Workloads that benefit from live migration for maintenance or load balancing
+
+**Key Features:**
+- Supports live migration between nodes
+- Uses block device mode (`volumeMode: Block`)
+- Manages dual engine instances during migration
+- Automatic migration confirmation or rollback based on pod lifecycle
+
+**Configuration Example:**
+```yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: longhorn-rwx-migratable
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+parameters:
+  numberOfReplicas: "3"
+  staleReplicaTimeout: "2880"
+  migratable: "true"   # Required for live migration support
+```
+
+**PVC Example for Migratable RWX:**
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: migratable-rwx-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: longhorn-rwx-migratable
+  volumeMode: Block  # Required for migratable RWX volumes
+  resources:
+    requests:
+      storage: 10Gi
+```
+
+## General RWX Volume Creation Steps
 
 1. For dynamically provisioned Longhorn volumes, the access mode is based on the PVC's access mode.
 2. For manually created Longhorn volumes (restore, DR volume) the access mode can be specified during creation in the Longhorn UI.
 3. When creating a PV/PVC for a Longhorn volume via the UI, the access mode of the PV/PVC will be based on the volume's access mode.
 4. One can change the Longhorn volume's access mode via the UI as long as the volume is not bound to a PVC.
 5. For a Longhorn volume that gets used by an RWX PVC, the volume access mode will be changed to RWX.
+
+## Important Considerations
+
+- **Standard RWX volumes** cannot be live migrated and should be used for traditional shared storage needs
+- **Migratable RWX volumes** are specifically designed for live migration scenarios and require block mode
+- Choose the appropriate type based on whether your workload requires live migration capabilities
+- Both types support all other RWX features like volume locality configuration and mount options
 
 ## Configuring Volume Locality for RWX Volumes
 

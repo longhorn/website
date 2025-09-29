@@ -16,3 +16,7 @@ tmp/
 .vscode
 
 .netlify
+
+# Build artifacts
+hugo
+*.tar.gz
