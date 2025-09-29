@@ -20,7 +20,7 @@ Both types create a corresponding Service for each RWX volume, serving as the de
 
 # Requirements
 
-It is necessary to meet the following requirements in order to use RWX volumes.
+## Standard RWX Volumes
 
 1. Each NFS client node needs to have a NFSv4 client installed.
 
@@ -34,6 +34,16 @@ It is necessary to meet the following requirements in order to use RWX volumes.
 2. The hostname of each node is unique in the Kubernetes cluster.
 
     There is a dedicated recovery backend service for NFS servers in Longhorn system. When a client connects to an NFS server, the client's information, including its hostname, will be stored in the recovery backend. When a share-manager Pod or NFS server is abnormally terminated, Longhorn will create a new one. Within the 90-seconds grace period, clients will reclaim locks using the client information stored in the recovery backend.
+
+## Migratable RWX Volumes
+
+1. **Block Device Support**: The consuming application must be able to handle raw block devices (not file systems).
+
+2. **Kubernetes CSI Support**: The cluster must support CSI volume attachment/detachment operations for multi-attach scenarios.
+
+3. **Live Migration Platform**: Typically used with platforms like KubeVirt or Harvester that coordinate the migration process.
+
+4. **Unique Node Hostnames**: Required for proper volume management during migration processes.
 
 # Creation and Usage of an RWX Volume
 
@@ -85,6 +95,14 @@ parameters:
 - Manages dual engine instances during migration
 - Automatic migration confirmation or rollback based on pod lifecycle
 
+**How Migration Works:**
+1. **Migration Start**: When Kubernetes requests attachment of an already-attached migratable volume to a new node, Longhorn creates a second engine on the destination node with matching replicas
+2. **Dual Engine State**: Both engines run simultaneously, with the volume accessible from both nodes during the migration period
+3. **Migration Completion**: Based on which pod is terminated:
+   - If the original pod is terminated → migration completes, volume moves to the new node
+   - If the new pod is terminated → migration rolls back, volume remains on the original node
+4. **Cleanup**: Longhorn automatically cleans up the unused engine and adjusts replica states
+
 **Configuration Example:**
 ```yaml
 kind: StorageClass
@@ -127,10 +145,24 @@ spec:
 
 ## Important Considerations
 
-- **Standard RWX volumes** cannot be live migrated and should be used for traditional shared storage needs
-- **Migratable RWX volumes** are specifically designed for live migration scenarios and require block mode
-- Choose the appropriate type based on whether your workload requires live migration capabilities
-- Both types support all other RWX features like volume locality configuration and mount options
+### Standard RWX Volumes
+- Cannot be live migrated and should be used for traditional shared storage needs
+- Use NFSv4 protocol for file system access
+- Support all standard NFS features and mount options
+- Suitable for applications requiring concurrent file system access
+
+### Migratable RWX Volumes  
+- Specifically designed for live migration scenarios (KubeVirt, Harvester)
+- **Must** use `volumeMode: Block` - file system mode is not supported
+- Require `ReadWriteMany` access mode and `migratable: true` parameter
+- During migration, the volume is temporarily accessible from two nodes
+- The consumer application must handle the block device handoff properly (typically managed by KubeVirt)
+- Not suitable for general shared file system use cases
+
+### Choosing the Right Type
+- **Use Standard RWX** when you need shared file system access without live migration
+- **Use Migratable RWX** when you need live migration capabilities for virtualized workloads
+- Both types support all other RWX features like volume locality configuration
 
 ## Configuring Volume Locality for RWX Volumes
 
