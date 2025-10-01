@@ -56,8 +56,8 @@ Longhorn supports two types of RWX volumes:
 
 **Use Cases:**
 - Traditional shared storage scenarios
-- Applications that require concurrent read/write access from multiple nodes
-- Workloads that don't require live migration capabilities
+- Applications requiring concurrent read/write access from multiple nodes
+- Workloads that do not require live migration capabilities
 
 **Configuration Example:**
 ```yaml
