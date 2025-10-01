@@ -77,14 +77,18 @@ parameters:
 
 ## Migratable RWX Volumes
 
-**Migratable RWX volumes** support live migration from one node to another, making them ideal for virtualized workloads like KubeVirt VMs that require live migration capabilities.
+**Migratable RWX volumes** are designed for workloads that need live migration capabilities, such as virtual machines managed by tools like KubeVirt. This feature allows a volume to move seamlessly from one node to another without interrupting the application.
 
 > **Notice**  
-> Migratable RWX volumes must have the access mode set to `ReadWriteMany`, the "migratable" flag enabled (*parameters.migratable: `true`*), and use `volumeMode: Block`.
+> For migratable RWX volumes to work correctly, they must be configured with:
+>   - Access Mode: `ReadWriteMany`
+>   - Parameters: `migratable: true`
+>   - Volume Mode: `volumeMode: Block`
+> This specific combination is essential for the underlying block-level synchronization required for live migration.
 
 **Use Cases:**
-- Virtual machines requiring live migration
-- Workloads that benefit from live migration for maintenance or load balancing
+- Virtual machines that require live migration for high availability or maintenance
+-  Workloads that benefit from dynamic load balancing by moving between nodes
 
 **Key Features:**
 - Supports live migration between nodes
