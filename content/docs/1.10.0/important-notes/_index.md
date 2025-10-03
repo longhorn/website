@@ -142,13 +142,14 @@ To fix this issue, you must perform a **forced downgrade** back to the **exact L
 
 ##### Downgrade Procedure (kubectl Installation)
 
-If Longhorn was installed using `kubectl`, you must patch the `current-longhorn-version` setting before downgrading.
+If Longhorn was installed using `kubectl`, you must patch the `current-longhorn-version` setting before downgrading. Replace `"v1.9.x" to the original version before upgrade in the following commands.
 
 ```bash
-# attaching annotation to allow patching current-longhorn-version
+# Attaching annotation to allow patching current-longhorn-version.
 kubectl patch settings.longhorn.io current-longhorn-version -n longhorn-system --type=merge -p='{"metadata":{"annotations":{"longhorn.io/update-setting-from-longhorn":""}}}'
-# temporarily override current version to allow old version installation
-kubectl patch settings.longhorn.io current-longhorn-version -n longhorn-system --type=merge -p='{"value":"v1.9.1"}'
+# Temporarily override current version to allow old version installation
+# Replace the value `"v1.9.x" to the original version before upgrade.
+kubectl patch settings.longhorn.io current-longhorn-version -n longhorn-system --type=merge -p='{"value":"v1.9.x"}'
 ```
 
 After modifying `current-longhorn-version`, you can proceed to downgrade to the original Longhorn v1.9.x deployment.
