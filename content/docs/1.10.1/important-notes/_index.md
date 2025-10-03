@@ -50,7 +50,9 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
 
 ### Upgrade
 
-If your Longhorn cluster was initially deployed with a version earlier than v1.3.0, the Custom Resources (CRs) were created using the `v1beta1` APIs. During the Longhorn v1.8 to v1.9 upgrade, all CRs are automatically migrated to the new `v1beta2` version. However, **before upgrading from Longhorn `v1.9` to `v1.10`, a manual CRD migration is strongly advised**. Certain operations, such as etcd restore or CRD restore, **may leave `v1beta1` data behind**, and manual migration ensures that all Longhorn CRs are properly updated.
+If your Longhorn cluster was initially deployed with a version earlier than v1.3.0, the Custom Resources (CRs) were created using the `v1beta1` APIs. While the upgrade from Longhorn v1.8 to v1.9 automatically migrates all CRs to the new `v1beta2` version, **a manual CR migration is strongly advised before upgrading from Longhorn `v1.9` to `v1.10`**.
+
+Certain operations, such as an `etcd` or CRD restore, may leave behind `v1beta1` data. Manually migrating your CRs ensures that all Longhorn data is properly updated to the `v1beta2` API, preventing potential compatibility issues and unexpected behavior with the new Longhorn version.
 
 Following the manual migration, **verify that `v1beta1` has been removed from the CRD stored versions** to ensure completion and a successful upgrade.
 
