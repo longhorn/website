@@ -50,7 +50,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
 
 ### Upgrade
 
-During the Longhorn v1.8 to v1.9 upgrade, resources are automatically migrated to the new `v1beta2` version. However, **before upgrading from Longhorn `v1.9` to `v1.10`, a manual CRD migration is strongly advised**. Certain operations, such as etcd restore or CRD restore, **may leave `v1beta1` data behind**, and manual migration ensures that all Longhorn custom resources are properly updated.
+If your Longhorn cluster was initially deployed with a version earlier than v1.3.0, the Custom Resources (CRs) were created using the `v1beta1` APIs. During the Longhorn v1.8 to v1.9 upgrade, all CRs are automatically migrated to the new `v1beta2` version. However, **before upgrading from Longhorn `v1.9` to `v1.10`, a manual CRD migration is strongly advised**. Certain operations, such as etcd restore or CRD restore, **may leave `v1beta1` data behind**, and manual migration ensures that all Longhorn CRs are properly updated.
 
 Following the manual migration, **verify that `v1beta1` has been removed from the CRD stored versions** to ensure completion and a successful upgrade.
 
@@ -132,7 +132,7 @@ With these steps completed, the Longhorn upgrade to v1.10 should now proceed wit
 
 #### Troubleshooting CRD Upgrade Failures During Upgrade to Longhorn v1.10
 
-If you did not apply the required pre-upgrade migration steps and the Custom Resources (CRs) are not fully migrated to `v1beta2`, the `longhorn-manager` Pods may fail to operate correctly. A common error message for this issue is:
+If you did not apply the required pre-upgrade migration steps and the CRs are not fully migrated to `v1beta2`, the `longhorn-manager` Pods may fail to operate correctly. A common error message for this issue is:
 
 ```
 Upgrade failed: cannot patch "backingimagedatasources.longhorn.io" with kind CustomResourceDefinition: CustomResourceDefinition.apiextensions.k8s.io "backingimagedatasources.longhorn.io" is invalid: status.storedVersions[0]: Invalid value: "v1beta1": missing from spec.versions; v1beta1 was previously a storage version, and must remain in spec.versions until a storage migration ensures no data remains persisted in v1beta1 and removes v1beta1 from status.storedVersions
