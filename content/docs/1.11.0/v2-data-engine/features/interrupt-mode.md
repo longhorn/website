@@ -29,6 +29,19 @@ Interrupt mode is particularly suitable for clusters with limited CPU resources 
 - Longhorn v1.10.0 or later
 - V2 data engine enabled
 - No attached v2 volumes when changing the setting
+- For NVMe disks, IOMMU must be enabled. To verify:
+    ```bash
+    find /sys/kernel/iommu_groups/ -type l
+    ```
+    Example output (IOMMU enabled):
+    ```
+    /sys/kernel/iommu_groups/0/devices/0000:e6:0b.1
+    /sys/kernel/iommu_groups/1/devices/0000:34:0a.6
+    /sys/kernel/iommu_groups/2/devices/0000:a0:00.0
+    ```
+    If the command returns no output, IOMMU is not enabled.
+
+    For more information, see the official [SPDK documentation](https://spdk.io/doc/system_configuration.html).
 
 ## Configuration
 
