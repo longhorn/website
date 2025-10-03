@@ -150,7 +150,7 @@ If Longhorn was installed using `kubectl`, you must patch the `current-longhorn-
 # Attaching annotation to allow patching current-longhorn-version.
 kubectl patch settings.longhorn.io current-longhorn-version -n longhorn-system --type=merge -p='{"metadata":{"annotations":{"longhorn.io/update-setting-from-longhorn":""}}}'
 # Temporarily override current version to allow old version installation
-# Replace the value `"v1.9.x" to the original version before upgrade.
+# Replace the value "v1.9.x" with the original version before upgrade.
 kubectl patch settings.longhorn.io current-longhorn-version -n longhorn-system --type=merge -p='{"value":"v1.9.x"}'
 ```
 
