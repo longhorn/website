@@ -13,7 +13,7 @@ Because the Longhorn CSI driver `csiDriver.spec.fsGroupPolicy` is set to `ReadWr
 * If non-empty, continue to the next step.
 * If empty, the Kubelet doesn't attempt to change the ownership and permission for the volume.
 1. Check `fsType` of the PV and `accessModes` of the PVC.
-* If the PV's `fsType` is defined and the PVC's `accessModes` list contains `ReadWriteOnly`, continue to the next step.
+* If the PV's `fsType` is defined and the PVC's `accessModes` list contains `ReadWriteOnce`, continue to the next step.
 * Otherwise, the Kubelet doesn't attempt to change the ownership and permission for the volume.
 1. Check `pod.spec.securityContext.fsGroupChangePolicy`.
 * If the `pod.spec.securityContext.fsGroupChangePolicy` is set to `always` or empty, the kubelet performs the following actions:
