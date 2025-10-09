@@ -19,6 +19,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Volume Attachment Summary](#volume-attachment-summary)
 - [Scheduling](#scheduling)
   - [Pod Scheduling with CSIStorageCapacity](#pod-scheduling-with-csistoragecapacity)
+  - [Replica Scheduling with Balance Algorithm](#replica-scheduling-with-balance-algorithm)
 - [Performance](#performance)
   - [Configurable Backup Block Size](#configurable-backup-block-size)
   - [Profiling Support for Backup Sync Agent](#profiling-support-for-backup-sync-agent)
@@ -124,6 +125,12 @@ Longhorn now supports Kubernetes **CSIStorageCapacity**, which enables the sched
 This reduces scheduling errors and improves reliability.
 
 For more information, see [GitHub Issue #10685](https://github.com/longhorn/longhorn/issues/10685)
+
+### Replica Scheduling with Balance Algorithm
+
+To improve data distribution and resource utilization, Longhorn introduces a **balance algorithm** that schedules replicas evenly across nodes and disks based on calculated balance scores.
+
+For more information, see [Scheduling](../nodes-and-volumes/nodes/scheduling).
 
 ## Performance
 
