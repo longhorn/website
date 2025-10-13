@@ -19,7 +19,7 @@ Once the snapshot is created you will see it in the list of snapshots for the vo
 
 The following sections will guide you through creating, listing, inspecting, and deleting Longhorn snapshots using kubectl and Kubernetes Custom Resources (CRs). 
 
-> **Note**: To run the commands in the Snapshot Management section, you need to have the volume. For more information on how to create a volume, see [Create a Volume](../nodes-and-volumes/volumes/create-volumes.md).
+> **Note**: To run the commands in the Snapshot Management section, you need to have the volume. For more information on how to create a volume, see [Create a Volume](../../nodes-and-volumes/volumes/create-volumes.md).
 
 ### 1. Creating a Snapshot
 
