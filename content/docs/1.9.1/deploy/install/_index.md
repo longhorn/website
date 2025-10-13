@@ -262,6 +262,10 @@ kubectl -n longhorn-system logs longhorn-nfs-installation-t2v9v -c nfs-installat
 nfs install successfully
 ```
 
+> **Notice:**  
+> These steps only verify that the kernel supports NFSv4, v4.1, or v4.2.  
+> To verify the NFS version in use, run `mount | grep nfs` or `nfsstat -m` to confirm the mounted version. Using the correct NFS version is required for backup and RWX volume features in Longhorn.
+
 ### Installing Cryptsetup and LUKS
 
 [Cryptsetup](https://gitlab.com/cryptsetup/cryptsetup) is an open-source utility used to conveniently set up `dm-crypt` based device-mapper targets and Longhorn uses [LUKS2](https://gitlab.com/cryptsetup/cryptsetup#luks-design) (Linux Unified Key Setup) format that is the standard for Linux disk encryption to support volume encryption.
