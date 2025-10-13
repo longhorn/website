@@ -213,16 +213,20 @@ SELinux enabled, see [the KB](../../../../kb/troubleshooting-volume-attachment-f
 
 In Longhorn system, backup feature requires NFSv4, v4.1 or v4.2, and ReadWriteMany (RWX) volume feature requires NFSv4.1. Before installing NFSv4 client userspace daemon and utilities, make sure the client kernel support is enabled on each Longhorn node.
 
-- Check `NFSv4.1` support is enabled in kernel
+- Check if `NFSv4` support is enabled in the kernel:
+  ```
+  cat /boot/config-`uname -r`| grep CONFIG_NFS_V4
+  ```
+
+- Check if `NFSv4.1` support is enabled in the kernel:
   ```
   cat /boot/config-`uname -r`| grep CONFIG_NFS_V4_1
   ```
 
-- Check `NFSv4.2` support is enabled in kernel
+- Check if `NFSv4.2` support is enabled in the kernel:
   ```
   cat /boot/config-`uname -r`| grep CONFIG_NFS_V4_2
   ```
-
 
 The command used to install a NFSv4 client differs depending on the Linux distribution.
 
@@ -270,6 +274,10 @@ ip-10-0-1-132:
 INFO[2025-08-22T12:58:49+08:00] Cleaning up preflight checker                
 INFO[2025-08-22T12:58:50+08:00] Completed preflight checker
 ```
+
+> **Notice:**  
+> These steps only verify that the kernel supports NFSv4, v4.1, or v4.2.  
+> To verify the NFS version in use, run `mount | grep nfs` or `nfsstat -m` to confirm the mounted version. Using the correct NFS version is required for backup and RWX volume features in Longhorn.
 
 ### Installing Cryptsetup and LUKS
 
