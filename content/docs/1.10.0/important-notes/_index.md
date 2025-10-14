@@ -7,6 +7,7 @@ This page summarizes the key notes for Longhorn v{{< current-version >}}.
 For the full release note, see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}).
 
 - [Warning](#warning)
+  - [HotFix](#hotfix)
   - [Upgrade](#upgrade)
     - [Migration Requirement Before Longhorn v1.10 Upgrade](#migration-requirement-before-longhorn-v110-upgrade)
     - [Migration Verification](#migration-verification)
@@ -47,6 +48,24 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
     - [V2 Data Engine Volume Expansion](#v2-data-engine-volume-expansion)
 
 ## Warning
+
+## HotFix
+
+The `longhorn-manager:v1.10.0` image is affected by a regression issue introduced by the new share-manager pod backoff logic. This bug may cause a nil pointer dereference panic in the longhorn-manager, leading to repeated crashes and failure to deploy new share-manager pods after an upgrade. To mitigate this issue, replace `longhorn-manager:v1.10.0` with the hotfixed image `longhorn-manager:v1.10.0-hotfix-1`.
+
+You can apply the update by following these steps:
+
+1. **Disable the upgrade version check**
+   - Helm users: Set `upgradeVersionCheck` to `false` in the `values.yaml` file.
+   - Manifest users: Remove the `--upgrade-version-check` flag from the deployment manifest.
+
+2. **Update the `longhorn-manager` image**
+   - Change the image tag from `v1.10.0` to `v1.10.0-hotfix-1` in the appropriate file:
+     - For Helm: Update `values.yaml`
+     - For manifests: Update the deployment manifest directly.
+
+3. **Proceed with the upgrade**
+   - Apply the changes using your standard Helm upgrade command or reapply the updated manifest.
 
 ### Upgrade
 
