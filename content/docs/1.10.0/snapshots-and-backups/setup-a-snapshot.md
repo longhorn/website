@@ -3,23 +3,23 @@
   weight: 1
 ---
 
-A [snapshot](../../concepts/#24-snapshots) is the state of a Kubernetes Volume at any given moment in time.
+A [snapshot](../../concepts/#24-snapshots) is the state of a Kubernetes volume at any given moment in time.
 
 ## Snapshot Management with UI
 
 To create a snapshot of an existing cluster, follow these steps:
 
-1. In the top navigation bar of the Longhorn UI, click **Volume.**
-2. Click the name of the volume of which you want a snapshot. This leads to the volume detail page.
+1. In the top navigation bar of the Longhorn UI, click **Volume**.
+2. Click the name of the volume for which you want to create a snapshot. This leads to the volume detail page.
 3. Click the **Take Snapshot** button
 
-Once the snapshot is created you will see it in the list of snapshots for the volume before the Volume Head.
+Once the snapshot is created, you will see it in the list of snapshots for the volume before the Volume Head.
 
 ## Snapshot Management with CLI
 
 The following sections will guide you through creating, listing, inspecting, and deleting Longhorn snapshots using kubectl and Kubernetes Custom Resources (CRs). 
 
-> **Note**: To run the commands in the Snapshot Management section, you need to have the volume. For more information on how to create a volume, see [Create a Volume](../../nodes-and-volumes/volumes/create-volumes.md).
+> **Note**: To run the commands in the Snapshot Management section, you need to have the volume. For more information on how to create a volume, see [Create a Volume]({{< relref "../nodes-and-volumes/volumes/create-volumes.md" >}}).
 
 ### 1. Creating a Snapshot
 
@@ -27,7 +27,7 @@ In the Longhorn UI, a snapshot is created with a single click. Using `kubectl`, 
 
 **Step 1** - Create the Snapshot Manifest:
 
-Create a file named `longhorn-snapshot.yaml` with the following content. This manifest creates a snapshot (Here, it is taking snapshot for the `longhorn-test-pvc` which was created previously).
+Create a file named `longhorn-snapshot.yaml` with the following content. This manifest creates a snapshot (here, it is taking a snapshot of the `longhorn-test-pvc` which was created previously).
 
 ```yaml
 apiVersion: snapshot.storage.k8s.io/v1
