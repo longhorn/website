@@ -51,7 +51,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
 
 ## HotFix
 
-The `longhorn-manager:v1.10.0` image is affected by a regression issue introduced by the new share-manager pod backoff logic. This bug may cause a nil pointer dereference panic in the longhorn-manager, leading to repeated crashes and failure to deploy new share-manager pods after an upgrade. To mitigate this issue, replace `longhorn-manager:v1.10.0` with the hotfixed image `longhorn-manager:v1.10.0-hotfix-1`.
+The `longhorn-manager:v1.10.0` image is affected by a [regression issue](https://github.com/longhorn/longhorn/issues/11939) introduced by the new share-manager pod backoff logic. This bug may cause a nil pointer dereference panic in the longhorn-manager, leading to repeated crashes and failure to deploy new share-manager pods after an upgrade. To mitigate this issue, replace `longhorn-manager:v1.10.0` with the hotfixed image `longhorn-manager:v1.10.0-hotfix-1`.
 
 You can apply the update by following these steps:
 
