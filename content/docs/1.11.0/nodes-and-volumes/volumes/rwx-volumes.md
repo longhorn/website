@@ -8,7 +8,7 @@ Longhorn supports ReadWriteMany (RWX) volumes by exposing regular Longhorn volum
 
 # Introduction
 
-Longhorn supports two types of ReadWriteMany (RWX) volumes:
+Longhorn supports two types of ReadWriteMany (RWX) volumes, each designed for specific use cases.
 
 1. **Standard (Non-Migratable) RWX Volumes**: Traditional shared storage using NFSv4.1 servers in dedicated `share-manager-<volume-name>` Pods within the `longhorn-system` namespace. These volumes provide shared access across multiple nodes but cannot be live migrated. Standard RWX volumes create a corresponding Service for each RWX volume, serving as the designated endpoint for NFSv4.1 client connections.
 
