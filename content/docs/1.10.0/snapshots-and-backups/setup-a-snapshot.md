@@ -5,7 +5,7 @@
 
 A [snapshot](../../concepts/#24-snapshots) is the state of a Kubernetes volume at any given moment in time.
 
-## Snapshot Management with UI
+## Snapshot Management via UI
 
 To create a snapshot of an existing cluster, follow these steps:
 
@@ -15,130 +15,212 @@ To create a snapshot of an existing cluster, follow these steps:
 
 Once the snapshot is created, you will see it in the list of snapshots for the volume before the Volume Head.
 
-## Snapshot Management with CLI
+## Snapshot Management with Custom Resources (CRs)
 
-The following sections will guide you through creating, listing, inspecting, and deleting Longhorn snapshots using kubectl and Kubernetes Custom Resources (CRs). 
+This section demonstrates how to create, list, restore, and delete Longhorn snapshots directly via `kubectl` using Longhorn’s **Custom Resources (CRs)**.
 
-> **Note**: To run the commands in the Snapshot Management section, you need to have the volume. For more information on how to create a volume, see [Create a Volume]({{< relref "../nodes-and-volumes/volumes/create-volumes.md" >}}).
+> **Important Note**:  
+> Longhorn uses its own `Snapshot` CRD under the `longhorn.io` API group (for example, `v1beta2`), not the generic Kubernetes `VolumeSnapshot` from `snapshot.storage.k8s.io`.  
+>  
+> Always confirm your CRD version first:
+> ```bash
+> kubectl get crd snapshots.longhorn.io -o yaml | grep version:
+> ```
+> The examples below assume `apiVersion: longhorn.io/v1beta2`.
+
 
 ### 1. Creating a Snapshot
 
-In the Longhorn UI, a snapshot is created with a single click. Using `kubectl`, you create a snapshot by applying a `VolumeSnapshot` CR. You will need to know the name of the `PersistentVolumeClaim` (PVC) you want to snapshot.
+This example shows how to create a snapshot for an existing Longhorn volume using `kubectl`.
 
-**Step 1** - Create the Snapshot Manifest:
-
-Create a file named `longhorn-snapshot.yaml` with the following content. This manifest creates a snapshot (here, it is taking a snapshot of the `longhorn-test-pvc` which was created previously).
-
-```yaml
-apiVersion: snapshot.storage.k8s.io/v1
-kind: VolumeSnapshot
-metadata:
-  name: test-pvc-snapshot
-spec:
-  volumeSnapshotClassName: longhorn
-  source:
-    persistentVolumeClaimName: longhorn-test-pvc
+In our verified example, the Longhorn volume name was:
+```
+pvc-d449abdc-5a17-4a80-a0ff-669173704060
 ```
 
-**Step 2** - Apply the Manifest:
+> Replace this with your own volume name when running the commands.  
+> You can find it with:
+> ```bash
+> kubectl get volumes.longhorn.io -n longhorn-system
+> ```
 
-Run the following command to create the snapshot:
+#### Step 1 – Prepare the manifest
+
+Create a file named `longhorn-snapshot.yaml`:
+
+```yaml
+apiVersion: longhorn.io/v1beta2
+kind: Snapshot
+metadata:
+  name: longhorn-test-snapshot
+  namespace: longhorn-system
+spec:
+  volume: pvc-d449abdc-5a17-4a80-a0ff-669173704060   # replace with your actual Longhorn volume name
+  createSnapshot: true
+  labels:
+    purpose: cli-demo
+```
+
+#### Step 2 – Apply the manifest
 
 ```bash
 kubectl apply -f longhorn-snapshot.yaml
 ```
 
-**Output**:
+Expected output:
 
-```bash
-volumesnapshot.snapshot.storage.k8s.io/test-pvc-snapshot created
+```
+snapshot.longhorn.io/longhorn-test-snapshot created
 ```
 
-### 2. Listing All Snapshots for a Volume
-
-To see the snapshots that have been created, you can list the `volumesnapshots` CRs in your cluster.
-
-Run the following command to list all snapshots:
+#### Step 3 – Verify creation
 
 ```bash
-kubectl get volumesnapshot
+kubectl get snapshots.longhorn.io -n longhorn-system
+kubectl describe snapshot.longhorn.io longhorn-test-snapshot -n longhorn-system
 ```
 
-**Output**:
+Expected output:
+
+```
+NAME                     VOLUME                                     CREATIONTIME           READYTOUSE   RESTORESIZE   SIZE   AGE
+longhorn-test-snapshot   pvc-d449abdc-5a17-4a80-a0ff-669173704060   2025-10-25T17:23:25Z   true         2147483648    0      17s
+```
+
+Sample details:
+
+```
+Spec:
+  Create Snapshot:  true
+  Labels:
+    Purpose:  cli-demo
+  Volume:     pvc-d449abdc-5a17-4a80-a0ff-669173704060
+Status:
+  Creation Time:  2025-10-25T17:23:25Z
+  Ready To Use:   true
+  Restore Size:   2147483648
+```
+
+> **Note**:
+> If the volume is **detached**, you may briefly see a warning such as:
+> `failed to take snapshot because the volume engine ... is not running. Waiting for the volume to be attached`
+> This is expected. Longhorn will automatically retry when the volume is attached, and the snapshot will complete successfully.
+
+### 2. Listing Snapshots for a Volume
+
+List all snapshot CRs in the Longhorn namespace:
 
 ```bash
-NAME                READYTOUSE   SOURCEPVC           SOURCESNAPSHOTCONTENT   RESTORESIZE   SNAPSHOTCLASS   SNAPSHOTCONTENT   CREATIONTIME   AGE
-test-pvc-snapshot                longhorn-test-pvc                                         longhorn                                         31s
+kubectl get snapshots.longhorn.io -n longhorn-system
+```
+
+Filter by volume:
+
+```bash
+kubectl get snapshots.longhorn.io -n longhorn-system --field-selector spec.volume=pvc-d449abdc-5a17-4a80-a0ff-669173704060
 ```
 
 ### 3. Restoring a Volume from a Snapshot
 
-Restoring a volume from a snapshot involves creating a new PVC with the snapshot as its data source. You must first delete the old PVC before you can restore the volume.
+Restoring involves creating a new PVC (or Longhorn volume) that references the snapshot.
 
-**Step 1** - Delete the Original PVC:
+#### Step 1 – Delete or detach the original volume
 
-If the original PVC still exists, you must delete it first.
-
-```bash
-kubectl delete pvc longhorn-test-pvc
-```
-
-**Output**:
+If you are restoring over the same name or want a clean restore:
 
 ```bash
-persistentvolumeclaim "longhorn-test-pvc" deleted
+kubectl delete pvc longhorn-test-pvc -n default
 ```
 
-**Step 2** - Create a PVC from the Snapshot:
+#### Step 2 – Create a new PVC referencing the snapshot
 
-Create a new manifest file, `longhorn-pvc-restore.yaml`, to create a new PVC that uses the snapshot as its source.
+Create `longhorn-pvc-restore.yaml`:
 
 ```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: restored-pvc
+  namespace: default
 spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: longhorn
   dataSource:
-    name: test-pvc-snapshot
-    kind: VolumeSnapshot
-    apiGroup: snapshot.storage.k8s.io
+    name: longhorn-test-snapshot      # Snapshot CR name
+    kind: Snapshot
+    apiGroup: longhorn.io
   resources:
     requests:
-      storage: 5Gi
+      storage: 2Gi
 ```
 
-**Step 3** - Apply the Manifest:
-
-Run the following command to create the new PVC:
+Apply it:
 
 ```bash
 kubectl apply -f longhorn-pvc-restore.yaml
 ```
 
-**Output**:
+Then verify:
 
 ```bash
-persistentvolumeclaim/restored-pvc created
+kubectl get pvc restored-pvc -n default
 ```
 
-You can then check the status of the new PVC with `kubectl get pvc`.
+> **Note**:
+> If you manage volumes directly (not via PVCs), you can also create a new `Volume` CR with the field:
+>
+> ```yaml
+> spec:
+>   fromSnapshot: longhorn-test-snapshot
+> ```
+
 
 ### 4. Deleting a Snapshot
 
-To delete a snapshot, you simply need to delete the `VolumeSnapshot` CR.
-
-Run the following command to delete the snapshot:
+To remove the snapshot CR:
 
 ```bash
-kubectl delete volumesnapshot test-pvc-snapshot
+kubectl delete snapshot.longhorn.io longhorn-test-snapshot -n longhorn-system
 ```
 
-**Output**:
+Expected output:
 
-```bash
-volumesnapshot.snapshot.storage.k8s.io "test-pvc-snapshot" deleted
 ```
+snapshot.longhorn.io "longhorn-test-snapshot" deleted
+```
+
+Longhorn automatically handles the cleanup of the underlying data according to its internal retention and replica policies.
+
+### Key CR Fields & Their Meanings
+
+Below are key fields for `Snapshot` CRs (Longhorn `v1beta2`):
+
+| Field                 | Location               | Description                                                         |
+| --------------------- | ---------------------- | ------------------------------------------------------------------- |
+| `spec.volume`         | `.spec.volume`         | Name of the Longhorn volume being snapshotted.                      |
+| `spec.createSnapshot` | `.spec.createSnapshot` | Boolean — triggers snapshot creation.                               |
+| `spec.labels`         | `.spec.labels`         | Optional user-defined labels for organizing or filtering snapshots. |
+| `status.createdAt`    | `.status.createdAt`    | Timestamp when the snapshot was created.                            |
+| `status.readyToUse`   | `.status.readyToUse`   | Indicates if the snapshot is available for restore operations.      |
+| `status.restoreSize`  | `.status.restoreSize`  | Size of the restored data (bytes).                                  |
+| `status.parent`       | `.status.parent`       | The parent snapshot (if part of a snapshot tree).                   |
+| `status.children`     | `.status.children`     | Child snapshots branching from this snapshot.                       |
+| `status.removed`      | `.status.removed`      | Whether the snapshot has been marked for removal/cleanup.           |
+
+> **Tip**:
+> Inspect snapshot details directly:
+>
+> ```bash
+> kubectl get snapshot.longhorn.io longhorn-test-snapshot -n longhorn-system -o yaml
+> ```
+
+### Summary
+
+| Step            | Command                                                                         | Verified Output               |
+| --------------- | ------------------------------------------------------------------------------- | ----------------------------- |
+| Create PVC      | `kubectl apply -f longhorn-test-pvc.yaml`                                       | PVC bound to Longhorn volume  |
+| Check volume    | `kubectl get volumes.longhorn.io -n longhorn-system`                            | Volume listed as detached     |
+| Create snapshot | `kubectl apply -f longhorn-snapshot.yaml`                                       | Snapshot created successfully |
+| Verify snapshot | `kubectl get snapshots.longhorn.io -n longhorn-system`                          | `ReadyToUse: true`            |
+| Delete snapshot | `kubectl delete snapshot.longhorn.io longhorn-test-snapshot -n longhorn-system` | Snapshot deleted              |
