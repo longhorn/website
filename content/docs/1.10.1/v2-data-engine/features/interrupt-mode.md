@@ -41,6 +41,8 @@ Interrupt mode is particularly suitable for clusters with limited CPU resources 
     ```
     If the command returns no output, IOMMU is not enabled.
 
+    > **Note:** IOMMU support may not be exposed on virtualized instances. If unsure, consider using a bare-metal instance, or consult your cloud provider’s documentation or support team.
+
     For more information, see the official [SPDK documentation](https://spdk.io/doc/system_configuration.html).
 
 ## Configuration
