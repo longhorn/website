@@ -5,6 +5,15 @@
 
 When replicas are scheduled unevenly on nodes or zones, Longhorn `Replica Auto Balance` setting enables the replicas for automatic balancing when a new node is available to the cluster or when the replica count for a volume is updated.
 
+## Important Limitation on Volume Status
+
+Longhorn's automatic replica balancing feature is only activated for volumes that have a robustness status of `Healthy` (`v.Status.Robustness == longhorn.VolumeRobustnessHealthy`).
+
+- **Unhealthy volumes** (for example, `Degraded`, `Faulted`) or detached volumes will not be automatically rebalanced.
+- Moving replicas for these volumes requires **manual intervention**, such as:
+  - Rebuilding the replicas.
+  - Attaching the volume if it is detached.
+
 ## Replica Auto Balance Settings
 
 ### Global setting
