@@ -8,6 +8,7 @@ When replicas are scheduled unevenly on nodes or zones, Longhorn `Replica Auto B
 ## Replica Auto Balance Settings
 
 ### Global setting
+
 Longhorn supports 3 options for global replica auto-balance setting:
 
 - `disabled`. This is the default option, no replica auto-balance will be done.
@@ -37,6 +38,7 @@ Longhorn supports 3 options for global replica auto-balance setting:
   to support even balance. Instead, Longhorn will re-schedule to balance at the node level.
 
 ### Volume specific setting
+
 Longhorn also supports setting individual volume for `Replica Auto Balance`. The setting can be specified in `volume.spec.replicaAutoBalance`, this overrules the global setting.
 
 There are 4 options available for individual volume setting:
@@ -78,7 +80,7 @@ There are 3 ways to set `Replica Auto Balance` for Longhorn volumes:
 
 You can change the global default setting for `Replica Auto Balance` inside Longhorn UI settings.
 The global setting only functions as a default value, similar to the replica count.
-It doesn't change any existing volume settings.
+It does not change any existing volume settings.
 When a volume is created without specifying `Replica Auto Balance`, Longhorn will automatically set to `ignored` to inherit from the global setting.
 
 ### Set individual volumes to auto-balance replicas using the Longhorn UI
@@ -86,6 +88,7 @@ When a volume is created without specifying `Replica Auto Balance`, Longhorn wil
 You can change the `Replica Auto Balance` setting for individual volume after creation on the volume detail page, or do multiple updates on the listed volume page.
 
 ### Set individual volumes to auto-balance replicas using a StorageClass
+
 Longhorn also exposes the `Replica Auto Balance` setting as a parameter in a StorageClass.
 You can create a StorageClass with a specified `Replica Auto Balance` setting, then create PVCs using this StorageClass.
 
@@ -114,3 +117,17 @@ For example, if the threshold is set to 75%, Longhorn will try to migrate replic
 Longhorn prioritizes balancing replicas across node and zone first. Once the node and zones are balanced, it will then consider balancing within a single node based on disk pressure.
 
 Since Longhorn v1.7.0, when rebuilding replicas on the same node, Longhorn uses local file data synchronization for more efficient data transfer.
+
+## Limitations
+
+Longhorn's automatic replica balancing feature is only activated for volumes that have a robustness status of `Healthy`.
+
+**Unhealthy volumes** or **detached volumes** will not be automatically rebalanced, even if a node has low available space.
+
+This behavior is a deliberate design choice to ensure system stability and data integrity:
+- Moving replicas or triggering automatic rebuilds on an unhealthy volume could further compromise data integrity. This design ensures replica stability and requires manual intervention so an administrator can assess the volume's condition before initiating potentially risky operations.
+- Detached volumes are not actively serving I/O. Skipping automatic rebalance for these volumes prevents unnecessary rebuilds and saves cluster resources.
+
+If a volume is unhealthy or detached, moving replicas requires manual intervention, such as:
+- Rebuilding the replicas after the volume has been inspected and/or attached.
+- Attaching the volume if it is detached (to restore a healthy state, if possible).

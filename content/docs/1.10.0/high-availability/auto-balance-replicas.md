@@ -8,6 +8,7 @@ When replicas are scheduled unevenly on nodes or zones, Longhorn `Replica Auto B
 ## Replica Auto Balance Settings
 
 ### Global setting
+
 Longhorn supports 3 options for global replica auto-balance setting:
 
 - `disabled`. This is the default option, no replica auto-balance will be done.
@@ -37,6 +38,7 @@ Longhorn supports 3 options for global replica auto-balance setting:
   to support even balance. Instead, Longhorn will re-schedule to balance at the node level.
 
 ### Volume specific setting
+
 Longhorn also supports setting individual volume for `Replica Auto Balance`. The setting can be specified in `volume.spec.replicaAutoBalance`, this overrules the global setting.
 
 There are 4 options available for individual volume setting:
@@ -86,6 +88,7 @@ When a volume is created without specifying `Replica Auto Balance`, Longhorn wil
 You can change the `Replica Auto Balance` setting for individual volume after creation on the volume detail page, or do multiple updates on the listed volume page.
 
 ### Set individual volumes to auto-balance replicas using a StorageClass
+
 Longhorn also exposes the `Replica Auto Balance` setting as a parameter in a StorageClass.
 You can create a StorageClass with a specified `Replica Auto Balance` setting, then create PVCs using this StorageClass.
 
