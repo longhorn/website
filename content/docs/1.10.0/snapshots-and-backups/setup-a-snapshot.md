@@ -47,8 +47,6 @@ metadata:
 spec:
   volume: pvc-d449abdc-5a17-4a80-a0ff-669173704060   # replace with your actual Longhorn volume name
   createSnapshot: true
-  labels:
-    purpose: cli-demo
 ```
 
 #### Step 2 – Apply the manifest
