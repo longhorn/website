@@ -5,15 +5,6 @@
 
 When replicas are scheduled unevenly on nodes or zones, Longhorn `Replica Auto Balance` setting enables the replicas for automatic balancing when a new node is available to the cluster or when the replica count for a volume is updated.
 
-## Important Limitation on Volume Status
-
-Longhorn's automatic replica balancing feature is only activated for volumes that have a robustness status of `Healthy` (`v.Status.Robustness == longhorn.VolumeRobustnessHealthy`).
-
-- **Unhealthy volumes** (for example, `Degraded`, `Faulted`) or detached volumes will not be automatically rebalanced.
-- Moving replicas for these volumes requires **manual intervention**, such as:
-  - Rebuilding the replicas.
-  - Attaching the volume if it is detached.
-
 ## Replica Auto Balance Settings
 
 ### Global setting
@@ -87,7 +78,7 @@ There are 3 ways to set `Replica Auto Balance` for Longhorn volumes:
 
 You can change the global default setting for `Replica Auto Balance` inside Longhorn UI settings.
 The global setting only functions as a default value, similar to the replica count.
-It doesn't change any existing volume settings.
+It does not change any existing volume settings.
 When a volume is created without specifying `Replica Auto Balance`, Longhorn will automatically set to `ignored` to inherit from the global setting.
 
 ### Set individual volumes to auto-balance replicas using the Longhorn UI
@@ -123,3 +114,17 @@ For example, if the threshold is set to 75%, Longhorn will try to migrate replic
 Longhorn prioritizes balancing replicas across node and zone first. Once the node and zones are balanced, it will then consider balancing within a single node based on disk pressure.
 
 Since Longhorn v1.7.0, when rebuilding replicas on the same node, Longhorn uses local file data synchronization for more efficient data transfer.
+
+## Limitations
+
+Longhorn's automatic replica balancing feature is only activated for volumes that have a robustness status of `Healthy`.
+
+**Unhealthy volumes** or **detached volumes** will not be automatically rebalanced, even if a node has low available space.
+
+This behavior is a deliberate design choice to ensure system stability and data integrity:
+- Moving replicas or triggering automatic rebuilds on an unhealthy volume could further compromise data integrity. This design ensures replica stability and requires manual intervention so an administrator can assess the volume's condition before initiating potentially risky operations.
+- Detached volumes are not actively serving I/O. Skipping automatic rebalance for these volumes prevents unnecessary rebuilds and saves cluster resources.
+
+If a volume is unhealthy or detached, moving replicas requires manual intervention, such as:
+- Rebuilding the replicas after the volume has been inspected and/or attached.
+- Attaching the volume if it is detached (to restore a healthy state, if possible).
