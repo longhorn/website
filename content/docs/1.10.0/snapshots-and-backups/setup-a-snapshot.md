@@ -21,13 +21,6 @@ This section demonstrates how to create, list, restore, and delete Longhorn snap
 
 > **Important Note**:  
 > Longhorn uses its own `Snapshot` CRD under the `longhorn.io` API group (for example, `v1beta2`), not the generic Kubernetes `VolumeSnapshot` from `snapshot.storage.k8s.io`.  
->  
-> Always confirm your CRD version first:
-> ```bash
-> kubectl get crd snapshots.longhorn.io -o yaml | grep version:
-> ```
-> The examples below assume `apiVersion: longhorn.io/v1beta2`.
-
 
 ### 1. Creating a Snapshot
 
@@ -70,7 +63,7 @@ Expected output:
 snapshot.longhorn.io/longhorn-test-snapshot created
 ```
 
-> **Note**: If the volume is temporarily detached, you might see a brief warning about the engine not running. Longhorn automatically retries, and the snapshot will complete once the volume is attached.
+> **Note**: If the volume is detached, you will see a brief warning about the engine not running. Longhorn automatically retries, and the snapshot will complete once the volume is attached.
 
 ### 2. Listing Snapshots for a Volume
 
@@ -80,62 +73,7 @@ List all snapshot CRs in the Longhorn namespace:
 kubectl get snapshots.longhorn.io -n longhorn-system
 ```
 
-Filter by volume:
-
-```bash
-kubectl get snapshots.longhorn.io -n longhorn-system --field-selector spec.volume=pvc-d449abdc-5a17-4a80-a0ff-669173704060
-```
-
-### 3. Restoring a Volume from a Snapshot
-
-Restoring involves creating a new PVC (or Longhorn volume) that references the snapshot.
-
-#### Step 1 – Delete or detach the original volume
-
-If you are restoring over the same name or want a clean restore:
-
-```bash
-kubectl delete pvc longhorn-test-pvc -n default
-```
-
-#### Step 2 – Create a new PVC referencing the snapshot
-
-Create `longhorn-pvc-restore.yaml`:
-
-```yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: restored-pvc
-  namespace: default
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn
-  dataSource:
-    name: longhorn-test-snapshot      # Snapshot CR name
-    kind: Snapshot
-    apiGroup: longhorn.io
-  resources:
-    requests:
-      storage: 2Gi
-```
-
-Apply it:
-
-```bash
-kubectl apply -f longhorn-pvc-restore.yaml
-```
-
-> **Note**:
-> If you manage volumes directly (not via PVCs), you can also create a new `Volume` CR with the field:
->
-> ```yaml
-> spec:
->   fromSnapshot: longhorn-test-snapshot
-> ```
-
-### 4. Deleting a Snapshot
+### 3. Deleting a Snapshot
 
 To remove the snapshot CR:
 
