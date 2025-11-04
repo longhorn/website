@@ -26,32 +26,30 @@ This section demonstrates how to create, list, restore, and delete Longhorn snap
 
 This section demonstrates how to create a Longhorn snapshot for an existing volume using `kubectl`.
 
-#### 1 – Prepare the manifest
+1.  **Prepare the manifest**: Create a file named `longhorn-snapshot.yaml`:
 
-Create a file named `longhorn-snapshot.yaml`:
+    ```yaml
+    apiVersion: longhorn.io/v1beta2
+    kind: Snapshot
+    metadata:
+      name: longhorn-test-snapshot
+      namespace: longhorn-system
+    spec:
+      volume: pvc-d449abdc-5a17-4a80-a0ff-669173704060   # replace with your actual Longhorn volume name
+      createSnapshot: true
+    ```
 
-```yaml
-apiVersion: longhorn.io/v1beta2
-kind: Snapshot
-metadata:
-  name: longhorn-test-snapshot
-  namespace: longhorn-system
-spec:
-  volume: pvc-d449abdc-5a17-4a80-a0ff-669173704060   # replace with your actual Longhorn volume name
-  createSnapshot: true
-```
+2.  **Apply the manifest**:
 
-#### 2 – Apply the manifest
+    ```bash
+    kubectl apply -f longhorn-snapshot.yaml
+    ```
 
-```bash
-kubectl apply -f longhorn-snapshot.yaml
-```
+    Expected output:
 
-Expected output:
-
-```
-snapshot.longhorn.io/longhorn-test-snapshot created
-```
+    ```bash
+    snapshot.longhorn.io/longhorn-test-snapshot created
+    ```
 
 > **Note**: If the volume is detached, you will see a brief warning about the engine not running. Longhorn automatically retries, and the snapshot will complete once the volume is attached.
 
