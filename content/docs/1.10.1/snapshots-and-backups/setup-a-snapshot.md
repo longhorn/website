@@ -11,7 +11,7 @@ To create a snapshot of an existing cluster, follow these steps:
 
 1. In the top navigation bar of the Longhorn UI, click **Volume**.
 2. Click the name of the volume for which you want to create a snapshot. This leads to the volume detail page.
-3. Click the **Take Snapshot** button
+3. Click the **Take Snapshot** button.
 
 Once the snapshot is created, you will see it in the list of snapshots for the volume before the Volume Head.
 
