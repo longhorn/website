@@ -19,12 +19,9 @@ Once the snapshot is created, you will see it in the list of snapshots for the v
 
 This section demonstrates how to create, list, restore, and delete Longhorn snapshots directly via `kubectl` using Longhorn’s **Custom Resources (CRs)**.
 
-> **Important Note**:  
-> Longhorn uses its own `Snapshot` CRD under the `longhorn.io` API group (for example, `v1beta2`), not the generic Kubernetes `VolumeSnapshot` from `snapshot.storage.k8s.io`.  
+> **Note**: Longhorn uses its own `Snapshot` CRD under the `longhorn.io` API group (for example, `v1beta2`), not the generic Kubernetes `VolumeSnapshot` from `snapshot.storage.k8s.io`.  
 
 ### Create a Snapshot
-
-This section demonstrates how to create a Longhorn snapshot for an existing volume using `kubectl`.
 
 1.  **Prepare the manifest**: Create a file named `longhorn-snapshot.yaml`:
 
@@ -53,17 +50,13 @@ This section demonstrates how to create a Longhorn snapshot for an existing volu
 
     > **Note**: If the volume is detached, you will see a brief warning about the engine not running. Longhorn automatically retries, and the snapshot will complete once the volume is attached.
 
-### Listing Snapshots for a Volume
-
-List all snapshot CRs in the Longhorn namespace:
+### List a Snapshot
 
 ```bash
-kubectl get snapshots.longhorn.io -l pvc-d449abdc-5a17-4a80-a0ff-669173704060 -n longhorn-system
+kubectl get snapshots.longhorn.io -l longhornvolume=pvc-840804d8-6f11-49fd-afae-54bc5be639de -n longhorn-system
 ```
 
-### Deleting a Snapshot
-
-To remove the snapshot CR:
+### Delete a Snapshot
 
 ```bash
 kubectl delete snapshot.longhorn.io longhorn-test-snapshot -n longhorn-system
@@ -75,4 +68,4 @@ Expected output:
 snapshot.longhorn.io "longhorn-test-snapshot" deleted
 ```
 
-> **Note**: Longhorn automatically handles the cleanup of the underlying data according to its internal retention and replica policies.
+> **Note**: Longhorn automatically handles the cleanup of the underlying data.
