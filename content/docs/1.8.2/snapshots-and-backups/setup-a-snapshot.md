@@ -50,7 +50,7 @@ This section demonstrates how to create, list, restore, and delete Longhorn snap
 
     > **Note**: If the volume is detached, you will see a brief warning about the engine not running. Longhorn automatically retries, and the snapshot will complete once the volume is attached.
 
-### List a Snapshot
+### List Snapshots
 
 ```bash
 kubectl get snapshots.longhorn.io -l longhornvolume=pvc-840804d8-6f11-49fd-afae-54bc5be639de -n longhorn-system
