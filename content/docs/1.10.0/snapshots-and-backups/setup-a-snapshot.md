@@ -50,15 +50,15 @@ This section demonstrates how to create a Longhorn snapshot for an existing volu
     ```bash
     snapshot.longhorn.io/longhorn-test-snapshot created
     ```
-
-> **Note**: If the volume is detached, you will see a brief warning about the engine not running. Longhorn automatically retries, and the snapshot will complete once the volume is attached.
+    
+    > **Note**: If the volume is detached, you will see a brief warning about the engine not running. Longhorn automatically retries, and the snapshot will complete once the volume is attached.
 
 ### Listing Snapshots for a Volume
 
 List all snapshot CRs in the Longhorn namespace:
 
 ```bash
-kubectl get snapshots.longhorn.io -n longhorn-system
+kubectl get snapshots.longhorn.io -l pvc-d449abdc-5a17-4a80-a0ff-669173704060 -n longhorn-system
 ```
 
 ### Deleting a Snapshot
