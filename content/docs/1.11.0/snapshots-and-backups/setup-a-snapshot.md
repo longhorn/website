@@ -32,7 +32,7 @@ This section demonstrates how to create, list, restore, and delete Longhorn snap
       name: longhorn-test-snapshot
       namespace: longhorn-system
     spec:
-      volume: pvc-d449abdc-5a17-4a80-a0ff-669173704060   # replace with your actual Longhorn volume name
+      volume: pvc-840804d8-6f11-49fd-afae-54bc5be639de   # replace with your actual Longhorn volume name
       createSnapshot: true
     ```
 
