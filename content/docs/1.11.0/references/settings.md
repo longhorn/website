@@ -618,7 +618,7 @@ This setting is useful when accessing the Longhorn API through Ingress or Gatewa
 
 **When empty** (default): URLs are constructed from HTTP request headers (`X-Forwarded-*`) or fall back to the request host.
 
-For more details, see [Manager URL for External API Access](../important-notes/#manager-url-for-external-api-access).
+For more details, see [Manager URL for External API Access](../../important-notes/#manager-url-for-external-api-access).
 
 ### Snapshot
 
