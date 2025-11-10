@@ -124,6 +124,89 @@ Let's assume both Disk X and Disk Y pass the initial space checks and Disk X alr
 - If **soft anti-affinity** is enabled, Longhorn **prefers** to schedule the replica on Disk Y to avoid co-locating replicas.
 - However, if Disk Y is unsuitable for any reason, Longhorn **may still schedule** the replica on Disk X. This allows for sharing a disk as a fallback option when no other viable candidates are available.
 
+## Schedule Algorithm
+
+After identifying the candidate disks that meet all scheduling requirements, the final step is to select the optimal disk for the replica. This selection is determined using the balance algorithm, which aims to evenly distribute replicas across nodes and disks.
+
+### Balance Factor Formula by Usable Storage: 
+
+- `Disk_Usable_Storage = (Disk.StorageAvailable - Disk.StorageReserved) - Disk.StorageScheduled`
+- Lower score = more balanced distribution.
+
+- **Formula**:
+
+    $$\text{BalanceScore}(X) = \frac{\max(X) - \min(X)}{\text{mean}(X)}$$
+
+    Where:
+    - X = set of usable storage values (per node or per disk).
+
+- **Selection process**:
+
+    1. Simulate placing the replica on each candidate node and compute the resulting balance score.
+    → Choose the node with the lowest score (most balanced distribution).
+
+    2. Within the selected node, simulate placement on each candidate disk and compute the balance score again.
+    → Choose the disk with the lowest score among them.
+
+#### Example Scenario
+
+Suppose the cluster has two nodes, and each node contains two candidate disks that are eligible for replica scheduling.
+
+Replica size = 100 GiB.
+
+| Node   | Disk | Usable Storage (GiB) |
+| ------ | ---- | -------------------- |
+| Node A | A1   | 900                  |
+| Node A | A2   | 100                  |
+| Node B | B1   | 600                  |
+| Node B | B2   | 700                  |
+
+***Step 1: Node Selection***
+- Simulate placing on Node A
+    - New totals:
+        - Node A = (900 + 100) − 100 = 900
+        - Node B = (600 + 700) = 1300
+    - Node balance score:
+$$
+BalanceScore_{NodeA} = \frac{1300 - 900}{\tfrac{1300 + 900}{2}} 
+            = \frac{400}{1100} 
+            \approx 0.364
+$$
+
+- Simulate placing on Node B
+    - New totals:
+        - Node A = (900 + 100) = 1000
+        - Node B = (600 + 700) - 1000 = 1200
+    - Node balance score:
+$$
+BalanceScore_{NodeB} = \frac{1200 - 1000}{\tfrac{1200 + 1000}{2}} 
+            = \frac{200}{1100} 
+            \approx 0.182
+$$
+
+Choose Node B (lower score, more balanced).
+
+***Step 2: Disk Selection***
+- Simulate placing on B1 (600 → 500)
+    - New disk usable: B1 = 500, B2 = 700
+    - Disk balance score:
+$$
+BalanceScore_{NodeA} = \frac{700 - 500}{\tfrac{700 + 500}{2}} 
+            = \frac{200}{600} 
+            \approx 0.333
+$$
+
+- Simulate placing on B2 (700 → 600)
+    - New disk usable: B1 = 600, B2 = 600
+    - Disk balance score:
+$$
+BalanceScore_{NodeA} = \frac{600 - 600}{\tfrac{600 + 600}{2}} 
+            = \frac{0}{600} 
+            \approx 0
+$$
+
+Choose Disk B2 (perfect balance between B1 and B2).
+
 ## Settings
 
 For more information on settings that are relevant to scheduling replicas on nodes and disks, refer to the settings reference:
