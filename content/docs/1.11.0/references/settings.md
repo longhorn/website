@@ -607,7 +607,7 @@ Applies only to the V2 Data Engine. Specifies the default write bandwidth limit,
 
 > Example: `https://longhorn.example.com` or `https://longhorn.example.com:8443`
 
-The external URL to access Longhorn Manager API. When configured, this URL is used to generate `actions` and `links` fields in API responses instead of deriving them from request headers or using internal pod IPs.
+The external URL to access the Longhorn Manager API. When configured, this URL is used to generate `actions` and `links` fields in API responses instead of deriving them from request headers or using internal pod IPs.
 
 This setting is useful when accessing the Longhorn API through Ingress or Gateway API HTTPRoute, where the API may return internal cluster IPs if the ingress controller doesn't properly set `X-Forwarded-*` headers.
 
@@ -617,12 +617,12 @@ This setting is useful when accessing the Longhorn API through Ingress or Gatewa
 - `port`: Optional port number (defaults to 80 for http, 443 for https)
 
 **Requirements**:
-- URL must not contain path, query parameters, or fragments
+- A URL must not contain a path, query parameters, or fragments
 - IPv6 addresses must be enclosed in brackets (e.g., `http://[2001:db8::1]:9500`)
 
 **When to use**:
-- Accessing Longhorn UI/API through Ingress with external URL
-- Using Gateway API HTTPRoute for external access
+- Access the Longhorn UI/API through Ingress with an external URL
+- Use Gateway API HTTPRoute for external access
 - API clients receive internal IPs in response URLs
 
 **When empty** (default): URLs are constructed from HTTP request headers (`X-Forwarded-*`) or fall back to the request host.
