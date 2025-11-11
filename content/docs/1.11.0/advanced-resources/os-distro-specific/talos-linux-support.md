@@ -5,7 +5,7 @@ weight: 5
 
 ## Requirements
 
-You must meet the following requirements before installing Longhorn on a Talos Linux cluster.
+The following requirements must be met before installing Longhorn on a Talos Linux cluster.
 
 ### System Extensions
 
@@ -14,7 +14,7 @@ Some Longhorn-dependent binary executables are not present in the default Talos 
 - `siderolabs/iscsi-tools`: this extension enables iscsid daemon and iscsiadm to be available to all nodes for the Kubernetes persistent volumes operations.
 - `siderolabs/util-linux-tools`: this extension enables linux tool to be available to all nodes. For example, the `fstrim` binary is used for Longhorn volume trimming.
 
-The most straightforward method is patching the extensions onto existing Talos Linux nodes. Alternatively, you can use the [Talos Linux Image Factory](https://factory.talos.dev/). Then, select the mentioned extensions under `System Extensions`. This approach is useful when combined with Infrastructure as Code (IaC) tools.
+The most straightforward method is to patch the extensions onto existing Talos Linux nodes. Alternatively, we can use the [Talos Linux Image Factory](https://factory.talos.dev/) and select the desired extensions under **System Extensions**. This approach is especially useful when combined with Infrastructure as Code (IaC) tools.
 
 ```yaml
 customization:
@@ -38,17 +38,17 @@ For detailed instructions, see [Pod Security Policies Disabled & Pod Security Ad
 
 ### Data Path Mounts
 
-Because Talos Linux deprecated `.machine.disks` we recommend using `UserVolumeConfig` to mount a disk for Longhorn. See the [What's new in Talos v1.10](https://www.talos.dev/v1.10/introduction/what-is-new/#user-volumes) for more details.
+Since Talos Linux deprecated `.machine.disks`, we recommend using `UserVolumeConfig` to mount a disk for Longhorn. See [What's new in Talos v1.10](https://www.talos.dev/v1.10/introduction/what-is-new/#user-volumes) for more details.
 
-You can optionally create also a `VolumeConfig` to specify the size of Talos System volumes, which is _recommended_, like this we avoid the set `defaultSettings.storageReservedPercentageForDefaultDisk`.
+Optionally, we can also create a `VolumeConfig` to specify the size of Talos system volumes. This is **recommended**, as it avoids the need to set `defaultSettings.storageReservedPercentageForDefaultDisk`.
 
-> More options of disk configuration can be found in the [Talos documentation](https://www.talos.dev/v1.10/talos-guides/configuration/disk-management/#disk-layout).
+> For more disk configuration options, see the [Talos documentation](https://www.talos.dev/v1.10/talos-guides/configuration/disk-management/#disk-layout).
 
-You need to provide additional data path mounts to be accessible to the Kubernetes Kubelet container.
+We must provide additional data path mounts to make them accessible to the Kubernetes Kubelet container.
 
-These mounts are necessary to provide access to the host directories, and attach volumes required by Longhorn components.
+These mounts allow access to host directories and attach the volumes required by Longhorn components.
 
-The [default data path](../../../references/settings#default-data-path) for Longhorn is `/var/lib/longhorn`. In order to use the below configuration in Talos, we must first set our default data path to `/var/mnt/longhorn`. The method to do this will depend on your [deployment method](../../deploy/customizing-default-settings).
+The [default data path](../../../references/settings#default-data-path) for Longhorn is `/var/lib/longhorn`. To use the configuration below in Talos, first set your default data path to `/var/mnt/longhorn`. The method to do this depends on your [deployment method](../../deploy/customizing-default-settings).
 
 ```yaml
 machine:
@@ -63,7 +63,7 @@ machine:
           - rw
 ```
 
-You need to create a `UserVolumeConfig` to mount the disk for Longhorn, which will be automatically mounted to `/var/mnt/longhorn` on the configured node.
+Next, create a `UserVolumeConfig` to mount the disk for Longhorn. It will be automatically mounted to `/var/mnt/longhorn` on the configured node.
 
 ```yaml
 apiVersion: v1alpha1
@@ -76,13 +76,13 @@ provisioning:
   maxSize: 1700GB
 ```
 
-For detailed instructions on `UserVolumeConfig` and `VolumeConfig`, see the Talos documentation on [Block configuration](https://www.talos.dev/v1.10/reference/configuration/block/). Take a look at the [Talos API Reference](https://docs.siderolabs.com/talos/v1.11/reference/api) for more details about the configuration.
+For detailed instructions on `UserVolumeConfig` and `VolumeConfig`, see the Talos documentation on [Block configuration](https://www.talos.dev/v1.10/reference/configuration/block/). Refer to the [Talos API Reference](https://docs.siderolabs.com/talos/v1.11/reference/api) for more configuration details.
 
 ## Up to Talos Linux v1.9.x
 
 ### Data Path Mounts
 
-You need provide additional data path mounts to be accessible to the Kubernetes Kubelet container.
+We need to provide additional data path mounts to be accessible to the Kubernetes Kubelet container.
 
 These mounts are necessary to provide access to the host directories, and attach volumes required by Longhorn components.
 
@@ -117,16 +117,16 @@ machine:
 ```
 
 > **Note:**
-> Talos Linux v1.7.x and earlier versions do not include the `uio_pci_generic` kernel module. If your system device supports `vfio_pci`, which is the preferred kernel module for SPDK application deployment, you are not required to install and enable the `uio_pci_generic` kernel driver. For more information, see [System Configuration User Guide](https://spdk.io/doc/system_configuration.html) in the SPDK documentation.
+> Talos Linux v1.7.x and earlier versions do not include the `uio_pci_generic` kernel module. If the system device supports `vfio_pci`, which is the preferred kernel module for SPDK application deployment, we are not required to install and enable the `uio_pci_generic` kernel driver. For more information, see [System Configuration User Guide](https://spdk.io/doc/system_configuration.html) in the SPDK documentation.
 >
-> You can use `uio_pci_generic` if `vfio_pci` is incompatible with your system or specific hardware. Future versions of Talos Linux are expected to include native support for `uio_pci_generic`. For more information, see [Issue #9236](https://github.com/siderolabs/talos/issues/9236).
+> We can use `uio_pci_generic` if `vfio_pci` is incompatible with your system or specific hardware. Future versions of Talos Linux are expected to include native support for `uio_pci_generic`. For more information, see [Issue #9236](https://github.com/siderolabs/talos/issues/9236).
 > Since 1.8.0 `uio_pci_generic` is now supported.
 
 ## Talos Linux Upgrades
 
 ### From v1.8.x Onwards
 
-The `--preserve` is no longer required. The flag is automatically set for `talosctl upgrade` command [here](https://www.talos.dev/v1.8/introduction/what-is-new/#upgrades).
+The `--preserve` flag is no longer required. It is now automatically set for the `talosctl` upgrade command, as noted [here](https://www.talos.dev/v1.8/introduction/what-is-new/#upgrades).
 
 ### Up to v1.8.x
 
@@ -139,11 +139,11 @@ talosctl upgrade --nodes 10.20.30.40 --image ghcr.io/siderolabs/installer:v1.7.6
 ```
 
 > **Caution:**
-> If you do not include the `--preserve` option, Talos wipes `/var/lib/longhorn`, destroying all replicas stored on that node.
+> If the `--preserve` option is not included, Talos wipes `/var/lib/longhorn`, destroying all replicas stored on that node.
 
 ### Recovering from an Upgraded Node without Preserving Data
 
-If you were unable to include the `--preserve` option in the upgrade command, perform the following steps:
+If we were unable to include the `--preserve` option in the upgrade command, perform the following steps:
 
 1. On the Longhorn UI, go to the **Nodes** page.
 
