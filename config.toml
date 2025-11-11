@@ -161,6 +161,11 @@ name = "Community"
 url = "/community"
 weight = 2
 
+[[menu.main]]
+name = "Enterprise"
+url = "/enterprise"
+weight = 2
+
 [mediaTypes."text/netlify"]
 delimiter = ""
 
