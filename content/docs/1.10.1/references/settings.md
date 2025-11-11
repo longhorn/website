@@ -19,6 +19,7 @@ weight: 1
   - [Automatically Clean up System Generated Snapshot](#automatically-clean-up-system-generated-snapshot)
   - [Automatically Clean up Outdated Snapshots of Recurring Backup Jobs](#automatically-clean-up-outdated-snapshots-of-recurring-backup-jobs)
   - [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly)
+  - [Blacklist for Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](#blacklist-for-automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly)
   - [Automatic Salvage](#automatic-salvage)
   - [Concurrent Automatic Engine Upgrade Per Node Limit](#concurrent-automatic-engine-upgrade-per-node-limit)
   - [Concurrent Volume Backup Restore Per Node Limit](#concurrent-volume-backup-restore-per-node-limit)
@@ -230,6 +231,14 @@ If disabled, Longhorn will not delete the workload pod that is managed by a cont
 > **Note:** This setting doesn't apply to below cases.
 > - The workload pods don't have a controller; Longhorn never deletes them.
 > - Workload pods with *cluster network* RWX volumes. The setting does not apply to such pods because the Longhorn Share Manager, which provides the RWX NFS service, has its own resilience mechanism. This mechanism ensures availability until the volume is reattached without relying on the pod lifecycle to trigger volume reattachment. The setting does apply, however, to workload pods with *storage network* RWX volumes. For more information, see [ReadWriteMany (RWX) Volume](../../nodes-and-volumes/volumes/rwx-volumes) and [Storage Network](../../advanced-resources/deploy/storage-network#limitation).
+
+#### Blacklist for Automatic Workload Pod Deletion on Unexpected Volume Detachment
+
+> Default: `""`
+
+Blacklist of controller apiVersion/kind values for the setting [Automatically Delete Workload Pod when the Volume Is Detached Unexpectedly](#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly). If a workload pod is managed by a controller whose apiVersion/kind is listed in this blacklist, Longhorn will not automatically delete the pod when its volume is unexpectedly detached. Multiple controller apiVersion/kind entries can be specified, separated by semicolons. For example: `apps/v1/StatefulSet;apps/v1/DaemonSet`.
+
+> **Note:** The controller apiVersion/kind is case sensitive and must exactly match the apiVersion/kind in the workload pod's owner reference.
 
 #### Automatic Salvage
 
