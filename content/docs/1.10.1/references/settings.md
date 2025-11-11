@@ -19,7 +19,7 @@ weight: 1
   - [Automatically Clean up System Generated Snapshot](#automatically-clean-up-system-generated-snapshot)
   - [Automatically Clean up Outdated Snapshots of Recurring Backup Jobs](#automatically-clean-up-outdated-snapshots-of-recurring-backup-jobs)
   - [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly)
-  - [Blacklist for Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](#blacklist-for-automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly)
+  - [Blacklist for Automatic Workload Pod Deletion on Unexpected Volume Detachment](#blacklist-for-automatic-workload-pod-deletion-on-unexpected-volume-detachment)
   - [Automatic Salvage](#automatic-salvage)
   - [Concurrent Automatic Engine Upgrade Per Node Limit](#concurrent-automatic-engine-upgrade-per-node-limit)
   - [Concurrent Volume Backup Restore Per Node Limit](#concurrent-volume-backup-restore-per-node-limit)
@@ -236,9 +236,9 @@ If disabled, Longhorn will not delete the workload pod that is managed by a cont
 
 > Default: `""`
 
-Blacklist of controller apiVersion/kind values for the setting [Automatically Delete Workload Pod when the Volume Is Detached Unexpectedly](#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly). If a workload pod is managed by a controller whose apiVersion/kind is listed in this blacklist, Longhorn will not automatically delete the pod when its volume is unexpectedly detached. Multiple controller apiVersion/kind entries can be specified, separated by semicolons. For example: `apps/v1/StatefulSet;apps/v1/DaemonSet`.
+Blacklist of controller api/kind values for the setting [Automatically Delete Workload Pod when the Volume Is Detached Unexpectedly](#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly). If a workload pod is managed by a controller whose api/kind is listed in this blacklist, Longhorn will not automatically delete the pod when its volume is unexpectedly detached. Multiple controller apiVersion/kind entries can be specified, separated by semicolons. For example: `apps/v1/StatefulSet;apps/v1/DaemonSet`.
 
-> **Note:** The controller apiVersion/kind is case sensitive and must exactly match the apiVersion/kind in the workload pod's owner reference.
+> **Note:** The controller api/kind is case sensitive and must exactly match the api/kind in the workload pod's owner reference.
 
 #### Automatic Salvage
 
