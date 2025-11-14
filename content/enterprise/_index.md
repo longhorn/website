@@ -26,7 +26,7 @@ It offers a hardened, fully supported storage platform for Kubernetes environmen
 - **Certified Integrations**: Certified to work seamlessly with SUSE’s cloud-native toolchain and Kubernetes stack.
 - **Lifecycle Management**: Streamlined deployment, upgrades, and monitoring through SUSE’s operational tooling.
 
-For more information about [SUSE]((https://www.suse.com))’s Longhorn-based enterprise offering, visit the [**SUSE Storage**](https://www.suse.com/products/rancher/storage) page.
+For more information about [SUSE](https://www.suse.com)’s Longhorn-based enterprise offering, visit the [**SUSE Storage**](https://www.suse.com/products/rancher/storage) page.
 
 ## Join the Community
 
