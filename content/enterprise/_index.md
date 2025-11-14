@@ -5,30 +5,29 @@ title: "The Longhorn Enterprise"
 ## Enterprise Solutions for Longhorn
 
 **Longhorn** is a vendor-neutral, open-source project under the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io).
-Contributions from individuals, users, and organizations worldwide drive its success.
-Enterprise distributions, such as **SUSE Storage**, are built on top of Longhorn, helping expand its adoption and reliability in production environments — while the upstream community continues to innovate openly.
 
-We welcome participation from any organization providing enterprise services, distributions, or commercial support built around Longhorn.
-If your company offers an enterprise-grade Longhorn-based solution, you are encouraged to contribute and be listed on this page.
+It thrives on contributions from individuals, users, and organizations around the world.
 
-To get started, please open a pull request to the [Longhorn website repository](https://github.com/longhorn/website) with your enterprise solution details, following the structure outlined here.
-The maintainers will review submissions to ensure consistency with the project’s vendor-neutral and community-first principles.
+### Become an Enterprise Partner
 
-For questions or discussions about enterprise listings, please connect with the Longhorn community on [**#longhorn**](https://cloud-native.slack.com/messages/longhorn) through the CNCF Slack.
+If your organization provides an enterprise distribution, commercial support, or professional services built on Longhorn, we encourage you to join our network.
 
-## Enterprise Solutions
-
-### SUSE Storage – Enterprise Solution for Longhorn
+## SUSE Storage – Enterprise Solution for Longhorn
 
 <!-- Logo -->
 ![SUSE Logo](/img/logos/suse-logo-primary.svg)
 
-**SUSE Storage** is an enterprise distribution built on Longhorn — combining the simplicity and agility of the community project with SUSE's proven enterprise expertise.
-It provides production-ready support, security updates, and storage lifecycle management for volumes running in demanding Kubernetes environments.
+**SUSE Storage** is an enterprise-grade distribution built on Longhorn, combining the simplicity of the open-source project with SUSE’s deep expertise in delivering reliable, production-ready infrastructure.
 
-- **Enterprise Support:** Backed by SUSE’s global support organization for mission-critical workloads.  
-- **Security and Compliance:** Regularly tested and updated for security compliance and reliability.  
-- **Certified Integrations:** Fully validated with SUSE’s cloud-native ecosystem components.  
-- **Lifecycle Management:** Simplified installation, upgrade, and monitoring workflows with SUSE tooling.  
+It offers a hardened, fully supported storage platform for Kubernetes environments. Key features include:
 
-For more information on [SUSE](https://www.suse.com)'s enterprise offering for Longhorn, visit [**SUSE Storage**](https://www.suse.com/products/rancher/storage).
+- **Enterprise Support**: Backed by SUSE’s global support organization for business-critical workloads.  
+- **Security and Compliance**: Regular updates, testing, and certification to help meet enterprise security standards.
+- **Certified Integrations**: Certified to work seamlessly with SUSE’s cloud-native toolchain and Kubernetes stack.
+- **Lifecycle Management**: Streamlined deployment, upgrades, and monitoring through SUSE’s operational tooling.
+
+For more information about [SUSE]((https://www.suse.com))’s Longhorn-based enterprise offering, visit the [**SUSE Storage**](https://www.suse.com/products/rancher/storage) page.
+
+## Join the Community
+
+If you have questions or want to discuss enterprise usage of Longhorn, join the community in the CNCF Slack channel: [#longhorn](https://cloud-native.slack.com/messages/longhorn).
