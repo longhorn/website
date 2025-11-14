@@ -306,9 +306,32 @@ Longhorn provides sample backupstore server setups for testing purposes.  You ca
 
 1. Set up a MinIO S3 server for the backupstore in the `longhorn-system` namespace.
 
-   ```shell
-   kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/backupstores/minio-backupstore.yaml
-   ```
+- Set environment variables
+
+```shell
+export AWS_ACCESS_KEY_ID="bG9uZ2hvcm4tdGVzdC1hY2Nlc3Mta2V5"
+export AWS_SECRET_ACCESS_KEY="bG9uZ2hvcm4tdGVzdC1zZWNyZXQta2V5"
+export AWS_ENDPOINTS="aHR0cHM6Ly9taW5pby1zZXJ2aWNlLmRlZmF1bHQ6OTAwMA=="
+export AWS_CERT="..."
+export AWS_CERT_KEY="..."
+```
+
+For `AWS_CERT` and `AWS_CERT_KEY` local test samples, see [MinIO backupstore manifest](https://github.com/longhorn/longhorn/blob/v1.10.x/deploy/backupstores/minio-backupstore.yaml).
+
+- Generate the Kustomize overlay
+
+```shell
+./scripts/generate-backupstore-credentials.sh minio --no-encode
+```
+
+This command creates the overlay directory under: `deploy/backupstores/overlays/generated-credentials/minio`
+
+
+- Deploy the credentials and service
+
+```shell
+kubectl apply -k deploy/backupstores/overlays/generated-credentials/minio
+```
 
 2. Go to the Longhorn UI. click **Backup and Restore/Backup Targets**, and create or edit a backup target.
 
@@ -439,6 +462,29 @@ Before configuring a SMB/CIFS backupstore, a credential secret for the backupsto
   kubectl apply -f cifs_secret.yml
   ```
 
+**Create and Deploy a Test Service with Credentials**
+
+1. Set environment variables
+
+```shell
+export CIFS_USERNAME="example-cifs-username"
+export CIFS_PASSWORD="example-cifs-password"
+```
+
+2. Generate the Kustomize overlay (Use `--no-encode` if your environment variables are already base64-encoded.)
+
+```shell
+./scripts/generate-backupstore-credentials.sh cifs
+```
+
+This command creates the overlay directory under: `deploy/backupstores/overlays/generated-credentials/cifs`
+
+3. Deploy the credentials and service
+
+```shell
+kubectl apply -k deploy/backupstores/overlays/generated-credentials/cifs
+```
+
 On the Longhorn UI, go to **Backup and Restore > Backup Targets**.
 
 - Create or edit a backup target.
@@ -528,5 +574,29 @@ You can find an example CIFS backupstore for testing purpose [here](https://gith
 
    kubectl apply -f longhorn-azblob-secret.yml
    ```
+
+**Create and Deploy a Test Service with Credentials**
+
+1. Set environment variables
+
+```shell
+export AZBLOB_ACCOUNT_NAME="example-azblob-account"
+export AZBLOB_ACCOUNT_KEY="example-azblob-key"
+export AZBLOB_ENDPOINT="http://azblob-service.default:10000"
+```
+
+2. Generate the Kustomize overlay (Use `--no-encode` if your environment variables are already base64-encoded.)
+
+```shell
+./scripts/generate-backupstore-credentials.sh azurite
+```
+
+This command creates the overlay directory under: `deploy/backupstores/overlays/generated-credentials/azurite`
+
+3. Deploy the credentials and service
+
+```shell
+kubectl apply -k deploy/backupstores/overlays/generated-credentials/azurite
+```
 
 After configuring the above settings, you can manage backups on Azure Blob storage. See [how to create backup](../create-a-backup) for details.
