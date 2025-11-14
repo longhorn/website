@@ -8,10 +8,6 @@ title: "The Longhorn Enterprise"
 
 It thrives on contributions from individuals, users, and organizations around the world.
 
-### Become an Enterprise Partner
-
-If your organization provides an enterprise distribution, commercial support, or professional services built on Longhorn, we encourage you to join our network.
-
 ## SUSE Storage – Enterprise Solution for Longhorn
 
 <!-- Logo -->
@@ -27,6 +23,10 @@ It offers a hardened, fully supported storage platform for Kubernetes environmen
 - **Lifecycle Management**: Streamlined deployment, upgrades, and monitoring through SUSE’s operational tooling.
 
 For more information about [SUSE](https://www.suse.com)’s Longhorn-based enterprise offering, visit the [**SUSE Storage**](https://www.suse.com/products/rancher/storage) page.
+
+## Become an Enterprise Partner
+
+If your organization provides an enterprise distribution, commercial support, or professional services built on Longhorn, we encourage you to join our network.
 
 ## Join the Community
 
