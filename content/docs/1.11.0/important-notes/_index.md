@@ -200,7 +200,7 @@ While interrupt mode lowers CPU consumption, it may introduce slightly higher I/
 
 For more information, see [Interrupt Mode](../v2-data-engine/features/interrupt-mode) for more information.
 
-> **Limitation:** Interrupt mode currently supports only AIO disks.
+> **Note:** In Longhorn v1.10.0, interrupt mode supports only **AIO disks**. Interrupt mode for **NVMe disks** is supported starting in v1.10.1.
 
 #### V2 Data Engine Volume Clone Support
 

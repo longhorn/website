@@ -14,6 +14,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
       - [Downgrade Procedure (kubectl Installation)](#downgrade-procedure-kubectl-installation)
       - [Downgrade Procedure (Helm Installation)](#downgrade-procedure-helm-installation)
       - [Post-Downgrade](#post-downgrade)
+- [Important Fixes](#important-fixes)
 - [Removal](#removal)
   - [`longhorn.io/v1beta1` API](#longhorniov1beta1-api)
   - [`replica.status.evictionRequested` Field](#replicastatusevictionrequested-field)
@@ -163,6 +164,34 @@ If Longhorn was installed using Helm, the downgrade is allowed by disabling the 
 ##### Post-Downgrade
 
 Once the downgrade is complete and the Longhorn system is stable on the v1.9.x version, you must immediately follow the steps outlined in the [Manual CRD Migration Guide](#migration-requirement-before-longhorn-v110-upgrade). This step is crucial to migrate all remaining `v1beta1` CRs to `v1beta2` before attempting the Longhorn v1.10 upgrade again.
+
+## Important Fixes
+
+This release includes several critical stability and performance improvements:
+
+### Goroutine Leak in Instance Manager (V2 Data Engine)
+
+Fixed a goroutine leak in the instance manager when using the V2 data engine. This issue could lead to increased memory usage and potential stability problems over time.
+
+For more details, see [Issue #11962](https://github.com/longhorn/longhorn/issues/11962).
+
+### V2 Volume Attachment Failure in Interrupt Mode
+
+Fixed an issue where V2 volumes using interrupt mode with NVMe disks could fail to complete the attachment process, causing volumes to remain stuck in the attaching state indefinitely.
+
+For more details, see [Issue #11816](https://github.com/longhorn/longhorn/issues/11816).
+
+### UI Deployment Failure on IPv4-Only Nodes
+
+Fixed a bug introduced in v1.10.0 where the Longhorn UI failed to deploy on nodes with only IPv4 enabled. The UI now correctly supports IPv4-only configurations without requiring IPv6.
+
+For more details, see [Issue #11875](https://github.com/longhorn/longhorn/issues/11875).
+
+### Share Manager Excessive Memory Usage
+
+Fixed excessive memory consumption in the share manager for RWX (ReadWriteMany) volumes. The component now maintains stable memory usage under normal operation.
+
+For more details, see [Issue #12043](https://github.com/longhorn/longhorn/issues/12043).
 
 ## Removal
 
@@ -319,7 +348,7 @@ While interrupt mode lowers CPU consumption, it may introduce slightly higher I/
 
 For more information, see [Interrupt Mode](../v2-data-engine/features/interrupt-mode) for more information.
 
-> **Limitation:** Interrupt mode currently supports only AIO disks.
+> **Note:** In Longhorn v1.10.0, interrupt mode supports only **AIO disks**. Interrupt mode for **NVMe disks** is supported starting in v1.10.1.
 
 #### V2 Data Engine Volume Clone Support
 
