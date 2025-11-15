@@ -42,13 +42,13 @@ Set the setting [Storage Network](../../../references/settings#storage-network).
 >
 > Longhorn is not aware of the updates. Hence this will cause malfunctioning and error. Instead, you can create a new NetworkAttachmentDefinition custom resource and update it to the setting.
 
-### Setting Storage Network For RWX Volumes
+### Setting Endpoint Network For RWX Volumes
 
-Configure the setting [Storage Network For RWX Volume Enabled](../../../references/settings#storage-network-for-rwx-volume-enabled).
+Configure the setting [Endpoint Network For RWX Volume](../../../references/settings#endpoint-network-for-rwx-volume).
 
 # Limitation
 
-When an RWX volume is created with the storage network, the NFS mount point connection must be re-established when the CSI plugin pod restarts. Longhorn provides the [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](../../../references/settings#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly) setting, which automatically deletes RWX volume workload pods when the CSI plugin pod restarts. However, the workload pod's NFS mount point could become unresponsive when the setting is disabled or the pod is not managed by a controller. In such cases, you must manually restart the CSI plugin pod.
+When an RWX volume is attached with the endpoint network, the NFS mount point connection must be re-established when the CSI plugin pod restarts. Longhorn provides the [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](../../../references/settings#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly) setting, which automatically deletes RWX volume workload pods when the CSI plugin pod restarts. However, the workload pod's NFS mount point could become unresponsive when the setting is disabled or the pod is not managed by a controller. In such cases, you must manually restart the CSI plugin pod.
 
 For more information, see [Storage Network Support for Read-Write-Many (RWX) Volume](../../../../archives/1.7.0/important-notes/#storage-network-support-for-read-write-many-rwx-volumes) in Important Notes.
 
@@ -56,3 +56,4 @@ For more information, see [Storage Network Support for Read-Write-Many (RWX) Vol
 - [Original Feature Request (since v1.3.0)](https://github.com/longhorn/longhorn/issues/2285)
 - [[FEATURE] Support storage network for RWX volumes (since v1.7.0)](https://github.com/longhorn/longhorn/issues/8184)
 - [[FEATURE] Storage network with V2 data engine (since v1.9.0)](https://github.com/longhorn/longhorn/issues/6450)
+- [[FEATURE] Support extra network interface (not only storage network) on the share manager pod (since v1.11.0)](https://github.com/longhorn/longhorn/issues/10269)

@@ -96,7 +96,7 @@ weight: 1
   - [System Managed Components Node Selector](#system-managed-components-node-selector)
   - [Kubernetes Cluster Autoscaler Enabled (Experimental)](#kubernetes-cluster-autoscaler-enabled-experimental)
   - [Storage Network](#storage-network)
-  - [Storage Network For RWX Volume Enabled](#storage-network-for-rwx-volume-enabled)
+  - [Endpoint Network for RWX Volume](#endpoint-network-for-rwx-volume)
   - [Remove Snapshots During Filesystem Trim](#remove-snapshots-during-filesystem-trim)
   - [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu)
   - [Disable Snapshot Purge](#disable-snapshot-purge)
@@ -230,7 +230,7 @@ If disabled, Longhorn will not delete the workload pod that is managed by a cont
 
 > **Note:** This setting doesn't apply to below cases.
 > - The workload pods don't have a controller; Longhorn never deletes them.
-> - Workload pods with *cluster network* RWX volumes. The setting does not apply to such pods because the Longhorn Share Manager, which provides the RWX NFS service, has its own resilience mechanism. This mechanism ensures availability until the volume is reattached without relying on the pod lifecycle to trigger volume reattachment. The setting does apply, however, to workload pods with *storage network* RWX volumes. For more information, see [ReadWriteMany (RWX) Volume](../../nodes-and-volumes/volumes/rwx-volumes) and [Storage Network](../../advanced-resources/deploy/storage-network#limitation).
+> - Workload pods with *cluster network* RWX volumes. The setting does not apply to such pods because the Longhorn Share Manager, which provides the RWX NFS service, has its own resilience mechanism. This mechanism ensures availability until the volume is reattached without relying on the pod lifecycle to trigger volume reattachment. The setting does apply, however, to workload pods with *endpoint network* RWX volumes. For more information, see [ReadWriteMany (RWX) Volume](../../nodes-and-volumes/volumes/rwx-volumes) and [Storage Network](../../advanced-resources/deploy/storage-network#limitation).
 
 #### Blacklist for Automatic Workload Pod Deletion on Unexpected Volume Detachment
 
@@ -391,6 +391,7 @@ This information will help us gain insights how Longhorn is being used, which wi
     - Registry Secret
     - Snapshot Data Integrity CronJob
     - Storage Network
+    - Endpoint Network For RWX Volume
     - System Managed Components Node Selector
     - Taint Toleration
   - Included as it is:
@@ -436,7 +437,6 @@ This information will help us gain insights how Longhorn is being used, which wi
     - Snapshot Data Integrity
     - Snapshot DataIntegrity Immediate Check After Snapshot Creation
     - Storage Minimal Available Percentage
-    - Storage Network For RWX Volume Enabled
     - Storage Over Provisioning Percentage
     - Storage Reserved Percentage For Default Disk
     - Support Bundle Failed History Limit
@@ -1052,22 +1052,24 @@ See [Kubernetes Cluster Autoscaler Support](../../high-availability/k8s-cluster-
 
 The storage network uses Multus NetworkAttachmentDefinition to segregate the in-cluster data traffic from the default Kubernetes cluster network.
 
-By default, the this setting applies only to RWO (Read-Write-Once) volumes. For RWX (Read-Write-Many) volumes, see [Storage Network for RWX Volume Enabled](#storage-network-for-rwx-volume-enabled) setting.
+By default, this setting applies only to Longhorn's data-plan traffic path. For RWX (Read-Write-Many) volume endpoint traffic, see [Endpoint Network for RWX Volume](#endpoint-network-for-rwx-volume).
 
 > **Warning:** This setting should change after all Longhorn volumes are detached because some pods that run Longhorn system components are recreated to apply the setting. When all volumes are detached, Longhorn attempts to restart all Instance Manager and Backing Image Manager pods immediately. When volumes are in use, Longhorn components are not restarted, and you need to reconfigure the settings after detaching the remaining volumes; otherwise, you can wait for the setting change to be reconciled in an hour.
 
 See [Storage Network](../../advanced-resources/deploy/storage-network) for details.
 
-#### Storage Network For RWX Volume Enabled
+#### Endpoint Network for RWX Volume
 
-> Default: `false`
+> Example: `kube-system/demo-172-16-0-0`
 
-This setting allows Longhorn to use the storage network for RWX volumes.
+Specify a Multus NetworkAttachmentDefinition to provide a dedicated network for mounting RWX (ReadWriteMany) volumes.
+
+Leave this blank to use the default Kubernetes cluster network.
 
 > **Warning:**
 > This setting should change after all Longhorn RWX volumes are detached because some pods that run Longhorn components are recreated to apply the setting. When all RWX volumes are detached, Longhorn attempts to restart all CSI plugin pods immediately. When volumes are in use, pods that run Longhorn components are not restarted, so the settings must be reconfigured after the remaining volumes are detached. If you are unable to manually reconfigure the settings, you can opt to wait because settings are synchronized hourly.
 >
-> The RWX volumes are mounted with the storage network within the CSI plugin pod container network namespace. As a result, restarting the CSI plugin pod may lead to unresponsive RWX volume mounts. When this occurs, you must restart the workload pod to re-establish the mount connection. Alternatively, you can enable the [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly) setting.
+> The RWX volumes are mounted with the endpoint network within the CSI plugin pod container network namespace. As a result, restarting the CSI plugin pod may lead to unresponsive RWX volume mounts. When this occurs, you must restart the workload pod to re-establish the mount connection. Alternatively, you can enable the [Automatically Delete Workload Pod when The Volume Is Detached Unexpectedly](#automatically-delete-workload-pod-when-the-volume-is-detached-unexpectedly) setting.
 
 For more information, see [Storage Network](../../advanced-resources/deploy/storage-network).
 
