@@ -33,3 +33,27 @@ In `Node` page, Longhorn will show the space allocation, schedule, and usage inf
 `Used` column: The left part indicates the currently used space of this node. The whole bar indicates the total space of the node.
 
 Notice that the allocable space may be greater than the actual available space of the node when setting `Storage Over Provisioning Percentage` to a value greater than 100. If the volumes are heavily used and lots of historical data will be stored in the volume snapshots, please be careful about using a large value for this setting. For more info about the setting, see [here](../../../references/settings/#storage-over-provisioning-percentage) for details. 
+
+### Disk Schedulability Status and Troubleshooting Message
+
+When a disk becomes **unschedulable**, Longhorn exposes the underlying reason directly in the UI.
+On the **Node** page, if a disk’s internal `Schedulable` condition is `False`, the UI displays the exact message from `node.diskStatus[x].conditions[Schedulable]`.
+This information is essential for diagnosing issues related to space limits or over-provisioning.
+
+**Example Troubleshooting Message:**
+
+```
+Disk default-disk-1030100000000 (/var/lib/longhorn/) on the node ip-192-168-203-144.ap-southeast-1.compute.internal is not schedulable for more replica; Scheduling space condition failed: ScheduledTotal = 4294967296 (Size + StorageScheduled) is greater than ProvisionedLimit = -64504221696 (100% of StorageMax - StorageReserved).
+```
+
+**How to interpret this message:**
+
+- **`ScheduledTotal`**: The total space currently *scheduled* for replicas (both existing and pending) on this disk.
+  > **Note**: This does not represent the actual disk usage.
+
+- **`ProvisionedLimit`**: The **maximum allowed scheduling capacity** for this disk. It is derived from:
+  - the disk’s physical size (`StorageMax`)
+  - its reserved space (`StorageReserved`)
+  - multiplied by the cluster’s `Storage Over Provisioning Percentage`
+
+When `ScheduledTotal` exceeds `ProvisionedLimit`, the disk becomes unschedulable and will not accept new replicas until the disk configuration or cluster settings are adjusted.
