@@ -10,9 +10,16 @@ Longhorn supports ReadWriteMany (RWX) volumes by exposing regular Longhorn volum
 
 Longhorn supports two types of ReadWriteMany (RWX) volumes, each designed for specific use cases.
 
-1. **Standard (Non-Migratable) RWX Volumes**: Traditional shared storage using NFSv4.1 servers in dedicated `share-manager-<volume-name>` Pods within the `longhorn-system` namespace. These volumes provide shared access across multiple nodes but cannot be live migrated. Standard RWX volumes create a corresponding Service for each RWX volume, serving as the designated endpoint for NFSv4.1 client connections.
+### 1. Standard (Non-Migratable NFSv4.1-based) RWX Volumes
 
-2. **Migratable RWX Volumes**: RWX volumes that support live migration between nodes while maintaining active I/O operations. These are designed for virtualized workloads such as KubeVirt VMs that require live migration capabilities. Migratable RWX volumes use direct block device access during migration.
+These are traditional shared volumes that utilize dedicated NFSv4.1 servers, running in `share-manager-<volume-name>` Pods within the `longhorn-system` namespace. Each volume creates a corresponding Service that acts as the network endpoint for NFSv4.1 client connections. While these volumes provide shared access across multiple nodes, they **do not support live migration**.
+
+### 2. Migratable RWX Volumes
+
+Designed for virtualized workloads like KubeVirt VMs, these volumes support live migration between nodes while maintaining active I/O operations. This is crucial for ensuring service uptime during node maintenance or failover events. Unlike their NFS-based counterparts, these volumes utilize **direct block device access** during migration, which allows volume data to be moved seamlessly without interrupting the workload.
+
+### How to Distinguish Between Volume Types
+
 
 You can distinguish between migratable and non-migratable RWX volumes by checking the `volume.spec.migratable` field in the volume specification.
 
