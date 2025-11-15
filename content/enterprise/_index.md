@@ -2,20 +2,12 @@
 title: "The Longhorn Enterprise"
 ---
 
-## Enterprise Solutions for Longhorn
-
-**Longhorn** is a vendor-neutral, open-source project under the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io).
-
-It thrives on contributions from individuals, users, and organizations around the world.
-
 ## SUSE Storage – Enterprise Solution for Longhorn
 
-<!-- Logo -->
-![SUSE Logo](/img/logos/suse-logo-primary.svg)
+**Longhorn** is a vendor-neutral, open-source project under the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/)
+, supported by a global community of contributors, users, and organizations.
 
-**SUSE Storage** is an enterprise-grade distribution built on Longhorn, combining the simplicity of the open-source project with SUSE’s deep expertise in delivering reliable, production-ready infrastructure.
-
-It offers a hardened, fully supported storage platform for Kubernetes environments. Key features include:
+To meet enterprise requirements in production environments, SUSE provides **SUSE Storage**, an enterprise-ready distribution built on Longhorn that combines the simplicity of the upstream project with SUSE's deep expertise in delivering reliable, production-grade infrastructure. It offers additional support, security, and lifecycle management beyond the upstream project, providing a hardened, fully supported storage platform for Kubernetes environments. Key features include:
 
 - **Enterprise Support**: Backed by SUSE’s global support organization for business-critical workloads.  
 - **Security and Compliance**: Regular updates, testing, and certification to help meet enterprise security standards.
@@ -23,6 +15,9 @@ It offers a hardened, fully supported storage platform for Kubernetes environmen
 - **Lifecycle Management**: Streamlined deployment, upgrades, and monitoring through SUSE’s operational tooling.
 
 For more information about [SUSE](https://www.suse.com)’s Longhorn-based enterprise offering, visit the [**SUSE Storage**](https://www.suse.com/products/rancher/storage) page.
+
+<!-- Logo -->
+![SUSE Logo](/img/logos/suse-logo-primary.svg)
 
 ## Become an Enterprise Partner
 
