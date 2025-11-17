@@ -18,7 +18,7 @@ Migratable RWX volumes are often misunderstood or overlooked in deployments invo
 
 Generic RWX volumes provide shared filesystem access across multiple nodes. They use dedicated NFSv4.1 servers that run in `share-manager-<volume-name>` Pods within the `longhorn-system` namespace. Each RWX volume is paired with a corresponding Service that exposes the NFS endpoint to clients.
 
-These volumes are ideal for workloads that need concurrent file access but do **not** require live migration. In live migration scenarios, a volume must remain continuously accessible as a VM moves between nodes. Generic RWX volumes cannot maintain this continuity, so they are not suitable for workloads that depend on live migration.
+These volumes are ideal for workloads that need concurrent file access but do **not** require live migration. In live migration scenarios, a volume must remain continuously accessible as a VM moves between nodes.
 
 **Characteristics**:
 - Not capable of [live migration](https://kubevirt.io/user-guide/compute/live_migration/).
