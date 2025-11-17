@@ -5,16 +5,36 @@ weight: 4
 
 Longhorn supports ReadWriteMany (RWX) volumes by exposing regular Longhorn volumes via NFSv4 servers that reside in share-manager pods.
 
+## Introduction
 
-# Introduction
+Longhorn provides two types of RWX volumes, each optimized for different workload requirements.
 
-Longhorn creates a dedicated `share-manager-<volume-name>` Pod within the `longhorn-system` namespace for each RWX volume that is currently in active use. The Pod facilitates the export of Longhorn volume via an internally hosted NFSv4 server. Additionally, a corresponding Service is created for each RWX volume, serving as the designated endpoint for actual NFSv4 client connections.
+- **Generic (Non-Migratable) RWX Volumes**
 
-{{< figure src="/img/diagrams/rwx/rwx-arch.png" >}}
+  Generic RWX volumes provide traditional shared filesystem access across multiple nodes. They use dedicated NFSv4.1 servers running in `share-manager-<volume-name>` Pods within the longhorn-system namespace. Each RWX volume is paired with a corresponding Service that exposes the NFS endpoint to clients.
 
-# Requirements
+  These volumes are ideal for workloads that need concurrent file access but do not require live migration. Live migration means volumes are only accessible from the source workload during the migration. After migration completes, the destination workload will take over access, and the source workload will be terminated. Workload services continue uninterrupted during this period. 
 
-It is necessary to meet the following requirements in order to use RWX volumes.
+  Characteristics:
+  - Not capable of [live migration](https://kubevirt.io/user-guide/compute/live_migration/)
+  - Use NFSv4.1 for filesystem–based sharing
+  - Suitable for general shared storage and multi-node file access workloads
+
+  {{< figure src="/img/diagrams/rwx/rwx-arch.png" >}}
+
+- **Migratable RWX Volumes**
+
+  Migratable RWX volumes are designed specifically for virtualized workloads such as KubeVirt VMs that require [live migration](https://kubevirt.io/user-guide/compute/live_migration/) while maintaining ongoing I/O operations. These volumes enable seamless VM movement between nodes during maintenance, failover, or rebalancing operations without service disruption.
+
+  **Characteristics**:
+  - Designed for live migration scenarios.
+  - Require `volumeMode: Block` (`Filesystem` mode is not supported).
+  - Require ReadWriteMany access mode and `volume.spec.migratable: true`.
+  - Not intended for general shared filesystem workloads
+
+> **Note**: You can distinguish migratable RWX volumes from non-migratable ones by checking the `volume.spec.migratable` field in the volume specification.
+
+## Requirements for Generic (Non-Migratable) RWX Volumes
 
 1. Each NFS client node needs to have a NFSv4 client installed.
 
@@ -29,7 +49,7 @@ It is necessary to meet the following requirements in order to use RWX volumes.
 
     There is a dedicated recovery backend service for NFS servers in Longhorn system. When a client connects to an NFS server, the client's information, including its hostname, will be stored in the recovery backend. When a share-manager Pod or NFS server is abnormally terminated, Longhorn will create a new one. Within the 90-seconds grace period, clients will reclaim locks using the client information stored in the recovery backend.
 
-# Creation and Usage of an RWX Volume
+## Creation and Usage of Generic (Non-Migratable) RWX Volumes
 
 > **Notice**  
 > An RWX volume must have the access mode set to `ReadWriteMany` and the "migratable" flag disabled (*parameters.migratable: `false`*).
@@ -40,7 +60,7 @@ It is necessary to meet the following requirements in order to use RWX volumes.
 4. One can change the Longhorn volume's access mode via the UI as long as the volume is not bound to a PVC.
 5. For a Longhorn volume that gets used by an RWX PVC, the volume access mode will be changed to RWX.
 
-## Configuring Volume Locality for RWX Volumes
+## Configuring Volume Locality for Generic (Non-Migratable) RWX Volumes
 
 Longhorn provides new settings that allow you to precisely control the data locality of RWX volumes (through identification of associated Share Manager pods). These granular settings work with related global settings to provide optimal performance, resilience, and adherence to organizational policies or constraints.
 
@@ -95,7 +115,7 @@ You can also use the StorageClass parameter `shareManagerTolerations` to allow m
   ```
   In this example, the Share Manager pods will tolerate the `nodetype=storage:NoSchedule` taint on nodes, allowing them to be scheduled on those nodes.
 
-## Configuring Volume Mount Options
+## Configuring Volume Mount Options for Generic (Non-Migratable) RWX Volumes
 
 An RWX volume is accessible only when mounted via NFS. By default Longhorn uses NFS version 4.1 with the `softerr` mount option, a `timeo` value of "600", and a `retrans` value of "5".
 
@@ -141,7 +161,7 @@ Example:
 
 For more information, see [#6655](https://github.com/longhorn/longhorn/issues/6655).
 
-# Failure Handling
+## Failure Handling for Generic (Non-Migratable) RWX Volumes
 
 1. share-manager Pod is abnormally terminated
 
@@ -165,8 +185,7 @@ For more information, see [#6655](https://github.com/longhorn/longhorn/issues/66
     Longhorn supports a feature that can improve availability by shortening the time it takes to recover from a failure of the node on which the volume's share-manager NFS server pod is running.  The feature uses a direct heartbeat to monitor the server. If the server is unresponsive it acts to create a new one faster than the usual sequence. It also configures the NFS server differently, to shorten the recovery grace period from 90 to 30 seconds.  
     More details are at [RWX Volume Fast Failover](../../../high-availability/rwx-volume-fast-failover).
 
-
-# Migration from Previous External Provisioner
+## Migration from Previous External Provisioner
 
 The below PVC creates a Kubernetes job that can copy data from one volume to another.
 
@@ -214,7 +233,7 @@ spec:
             claimName: data-target-pvc # change to data target PVC
 ```
 
+## History
 
-# History
-* Available since v1.0.1 [External provisioner](https://github.com/Longhorn/Longhorn/issues/1183)
-* Available since v1.1.0 [Native RWX support](https://github.com/Longhorn/Longhorn/issues/1470)
+- Available since v1.0.1 [External provisioner](https://github.com/Longhorn/Longhorn/issues/1183)
+- Available since v1.1.0 [Native RWX support](https://github.com/Longhorn/Longhorn/issues/1470)
