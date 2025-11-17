@@ -9,28 +9,28 @@ Longhorn supports ReadWriteMany (RWX) volumes by exposing regular Longhorn volum
 
 Longhorn provides two types of RWX volumes, each optimized for different workload requirements.
 
-- **Generic (Non-Migratable) RWX Volumes**
+### Generic (Non-Migratable) RWX Volumes
 
-  Generic RWX volumes provide traditional shared filesystem access across multiple nodes. They use dedicated NFSv4.1 servers running in `share-manager-<volume-name>` Pods within the longhorn-system namespace. Each RWX volume is paired with a corresponding Service that exposes the NFS endpoint to clients.
+Generic RWX volumes provide shared filesystem access across multiple nodes. They use dedicated NFSv4.1 servers that run in `share-manager-<volume-name>` Pods within the `longhorn-system` namespace. Each RWX volume is paired with a corresponding Service that exposes the NFS endpoint to clients.
 
-  These volumes are ideal for workloads that need concurrent file access but do not require live migration. Live migration means volumes are only accessible from the source workload during the migration. After migration completes, the destination workload will take over access, and the source workload will be terminated. Workload services continue uninterrupted during this period. 
+These volumes are ideal for workloads that need concurrent file access but do **not** require live migration. In live migration scenarios, a volume must remain continuously accessible as a VM moves between nodes. Generic RWX volumes cannot maintain this continuity, so they are not suitable for workloads that depend on live migration.
 
-  Characteristics:
-  - Not capable of [live migration](https://kubevirt.io/user-guide/compute/live_migration/)
-  - Use NFSv4.1 for filesystem–based sharing
-  - Suitable for general shared storage and multi-node file access workloads
+**Characteristics**:
+- Not capable of [live migration](https://kubevirt.io/user-guide/compute/live_migration/).
+- Use NFSv4.1 for filesystem–based sharing.
+- Suitable for general shared storage and multi-node file access workloads.
 
-  {{< figure src="/img/diagrams/rwx/rwx-arch.png" >}}
+{{< figure src="/img/diagrams/rwx/rwx-arch.png" >}}
 
-- **Migratable RWX Volumes**
+### Migratable RWX Volumes
 
-  Migratable RWX volumes are designed specifically for virtualized workloads such as KubeVirt VMs that require [live migration](https://kubevirt.io/user-guide/compute/live_migration/) while maintaining ongoing I/O operations. These volumes enable seamless VM movement between nodes during maintenance, failover, or rebalancing operations without service disruption.
+Migratable RWX volumes are designed specifically for virtualized workloads such as KubeVirt VMs that require [live migration](https://kubevirt.io/user-guide/compute/live_migration/) while maintaining ongoing I/O operations. These volumes enable seamless VM movement between nodes during maintenance, failover, or rebalancing operations without service disruption.
 
-  **Characteristics**:
-  - Designed for live migration scenarios.
-  - Require `volumeMode: Block` (`Filesystem` mode is not supported).
-  - Require ReadWriteMany access mode and `volume.spec.migratable: true`.
-  - Not intended for general shared filesystem workloads
+**Characteristics**:
+- Designed for live migration scenarios.
+- Require `volumeMode: Block` (`Filesystem` mode is not supported).
+- Require ReadWriteMany access mode and `volume.spec.migratable: true`.
+- Not intended for general shared filesystem workloads.
 
 > **Note**: You can distinguish migratable RWX volumes from non-migratable ones by checking the `volume.spec.migratable` field in the volume specification.
 
