@@ -31,8 +31,6 @@ These volumes are ideal for workloads that need concurrent file access but do **
 
 Migratable RWX volumes are designed specifically for virtualized workloads such as KubeVirt VMs that require [live migration](https://kubevirt.io/user-guide/compute/live_migration/) while maintaining ongoing I/O operations. These volumes enable seamless VM movement between nodes during maintenance, failover, or rebalancing operations without service disruption.
 
-Unlike Generic RWX volumes which use an NFSv4 server for file-based sharing, Migratable RWX volumes use Longhorn's native block-device replication mechanism optimized for block storage semantics and live migration protocols.
-
 **Characteristics**:
 - Designed for live migration scenarios.
 - Require `volumeMode: Block` (`Filesystem` mode is not supported).
@@ -40,45 +38,6 @@ Unlike Generic RWX volumes which use an NFSv4 server for file-based sharing, Mig
 - Not intended for general shared filesystem workloads.
 
 > **Note**: You can distinguish migratable RWX volumes from non-migratable ones by checking the `volume.spec.migratable` field in the volume specification.
-
-#### When to use Migratable RWX volumes
-
-- **KubeVirt VMs**: Required when you need the ability to perform a live migration of a running VM.
-- **Block Mode**: Must be used with applications or VMs that consume **block storage** (`volumeMode: Block`).
-
-#### When not to use Migratable RWX volumes
-
-- **General Shared Filesystem**: They are **not** intended for general shared filesystem workloads (for example, sharing logs or configuration files between multiple application containers). Use Generic RWX volumes for this purpose.
-- **Filesystem Mode**: They do not support the `Filesystem` volume mode.
-
-#### Configuration requirements
-
-To create a Migratable RWX volume, you **must** ensure the following characteristics and parameters are met. Note that the **Migratable Flag** is set via the **StorageClass**, not the PVC manifest:
-
-| Parameter | Setting | Description |
-| :--- | :--- | :--- |
-| **Access Mode** | `ReadWriteMany` | Required for shared access by multiple nodes |
-| **Volume Mode** | `volumeMode: Block` | Must be block storage. Filesystem mode is rejected |
-| **Migratable Flag** | `migratable: "true"` (StorageClass parameter) | Causes the Longhorn Volume to be created with `volume.spec.migratable: true`. This field is set on the Longhorn Volume, not the PVC |
-
-#### Example PVC configuration (for KubeVirt VM disk):
-
-```yaml
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: kvm-migratable-disk
-spec:
-  accessModes:
-    - ReadWriteMany # Required
-  volumeMode: Block # Required for migratable volumes
-  resources:
-    requests:
-      storage: 50Gi
-  storageClassName: longhorn-migratable-rwx
-```
-
-When used with KubeVirt, this PVC should be attached to the VM as a `disk` or `volume` using `volumeMode: block` so the VM can use it as its root or data disk during live migration.
 
 ## Requirements for Generic (Non-Migratable) RWX Volumes
 
