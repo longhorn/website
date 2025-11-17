@@ -45,6 +45,7 @@ parameters:
 ```
 
 ## Built-in Fields
+
 Some fields are common to all Kubernetes storage classes.
 See also [Kubernetes Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes).
 
@@ -53,26 +54,32 @@ Specifies the plugin that will be used for dynamic creation of persistent volume
 > See [Kubernetes Storage Class: Provisioner](https://kubernetes.io/docs/concepts/storage/storage-classes/#provisioner).
 
 #### Allow Volume Expansion *(field: `allowVolumeExpansion`)*
+
 > Default: `true`
 > See [Kubernetes Storage Class: Allow Volume Expansion](https://kubernetes.io/docs/concepts/storage/storage-classes/#allow-volume-expansion).
 
 #### Reclaim Policy *(field: `reclaimPolicy`)*
+
 > Default: `Delete`
 > See [Kubernetes Storage Class: Reclaim Policy](https://kubernetes.io/docs/concepts/storage/storage-classes/#reclaim-policy).
 
 #### Mount Options *(field: `mountOptions`)*
+
 > Default `[]`
 > See [Kubernetes Storage Class: Mount Options](https://kubernetes.io/docs/concepts/storage/storage-classes/#mount-options).
 
 #### Volume Binding Mode *(field: `volumeBindingMode`)*
+
 > Default `Immediate`
 > See [Kubernetes Storage Class: Volume Binding Mode](https://kubernetes.io/docs/concepts/storage/storage-classes/#volume-binding-mode).
 
 ## Longhorn-specific Parameters
+
 Note that some of these parameters also exist and may be specified in global settings.  When a volume is provisioned with Kubernetes against a particular StorageClass, StorageClass parameters override the global settings.
 These fields will be applied for new volume creation only.  If a StorageClass is modified, neither Longhorn nor Kubernetes is responsible for propagating changes to its parameters back to volumes previously created with it.
 
 #### Number Of Replicas *(field: `parameters.numberOfReplicas`)*
+
 > Default: `3`
 
 The desired number of copies (replicas) for redundancy.
@@ -82,34 +89,48 @@ The desired number of copies (replicas) for redundancy.
 > Global setting: [Default Replica Count](../settings#default-replica-count).
 
 #### Stale Replica Timeout *(field: `parameters.staleReplicaTimeout`)*
+
 > Default: `30`
 
 Minutes after a replica is marked unhealthy before it is deemed useless for rebuilds and is just deleted.
 
 #### From Backup *(field: `parameters.fromBackup`)*
+
 > Default: `""`
 > Example: `"s3://backupbucket@us-east-1?volume=minio-vol01&backup=backup-eeb2782d5b2f42bb"`
 
 URL of a backup to be restored from.
 
 #### FS Type *(field: `parameters.fsType`)*
+
 > Default: `ext4`
 > For more details, see [Creating Longhorn Volumes with Kubernetes](../../nodes-and-volumes/volumes/create-volumes#creating-longhorn-volumes-with-kubectl)
 
 #### Mkfs Params *(field: `parameters.mkfsParams`)*
+
 > Default: `""`
 > For more details, see [Creating Longhorn Volumes with Kubernetes](../../nodes-and-volumes/volumes/create-volumes#creating-longhorn-volumes-with-kubectl)
 
 #### Migratable *(field: `parameters.migratable`)*
+
 > Default: `false`
 
-Allows for a Longhorn volume to be live migrated from one node to another.  Useful for volumes used by Harvester.
+Enables live migration capabilities for a Longhorn volume, allowing it to be migrated from one node to another while maintaining active I/O operations.
+
+**When to use:**
+
+- **`migratable: true`**: For workloads requiring live migration. Must be used with `ReadWriteMany` access mode and `volumeMode: Block`.
+- **`migratable: false`**: For standard volumes that don't require live migration capabilities.
+
+> More details in [ReadWriteMany (RWX) Volume](../../nodes-and-volumes/volumes/rwx-volumes)
 
 #### Encrypted *(field: `parameters.encrypted`)*
+
 > Default: `false`
 > More details in [Encrypted Volumes](../../advanced-resources/security/volume-encryption)
 
 #### Data Locality *(field: `parameters.dataLocality`)*
+
 > Default: `disabled`
 
 If enabled, try to keep the data on the same node as the workload for better performance.
@@ -121,16 +142,19 @@ If enabled, try to keep the data on the same node as the workload for better per
 >  More details in [Data Locality](../../high-availability/data-locality).
 
 #### Replica Auto-Balance *(field: `parameters.replicaAutoBalance`)*
+
 > Default: `ignored`
 
 If enabled, move replicas to more lightly-loaded nodes.
-  - "ignored" means use the global setting.
-  - Other options are "disabled", "least-effort", "best-effort".
+
+- "ignored" means use the global setting.
+- Other options are "disabled", "least-effort", "best-effort".
 
 > Global setting: [Replica Auto Balance](../settings#replica-auto-balance)
 > More details in [Auto Balance Replicas](../../high-availability/auto-balance-replicas).
 
 #### Disk Selector *(field: `parameters.diskSelector`)*
+
 > Default: `""`
 > Example: `"ssd,fast"`
 
@@ -138,6 +162,7 @@ A list of tags to select which disks are candidates for replica placement.
 > More details in [Storage Tags](../../nodes-and-volumes/nodes/storage-tags)
 
 #### Node Selector *(field: `parameters.nodeSelector`)*
+
 > Default: `""`
 > Example: `"storage,fast"`
 
@@ -145,6 +170,7 @@ A list of tags to select which nodes are candidates for replica placement.
 > More details in [Storage Tags](../../nodes-and-volumes/nodes/storage-tags)
 
 #### Recurring Job Selector *(field: `parameters.recurringJobSelector`)*
+
 > Default: `""`
 > Example:  `[{"name":"backup", "isGroup":true}]`
 
@@ -152,22 +178,27 @@ A list of recurring jobs that are to be run on a volume.
 >  More details in [Recurring Snapshots and Backups](../../snapshots-and-backups/scheduling-backups-and-snapshots)
 
 #### Backing Image Name *(field: `parameters.backingImageName`)*
+
 > Default: `""`
 > See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Backing Image Checksum *(field: `parameters.backingImageChecksum`)*
+
 > Default: `""`
 > See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Backing Image Data Source Type *(field: `parameters.backingImageDataSourceType`)*
+
 > Default: `""`
 > See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Backing Image Data Source Parameters *(field: `parameters.backingImageDataSourceParameters`)*
+
 > Default: `""`
 > See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc)
 
 #### Unmap Mark Snap Chain Removed *(field: `parameters.unmapMarkSnapChainRemoved`)*
+
 > Default: `ignored`
 
   - "ignored" means use the global setting.
@@ -177,12 +208,14 @@ A list of recurring jobs that are to be run on a volume.
 > More details in [Trim Filesystem](../../nodes-and-volumes/volumes/trim-filesystem).
 
 #### Disable Revision Counter *(field: `parameters.disableRevisionCounter`)*
+
 > Default: `true`
 
 > Global setting: [Disable Revision Counter](../settings#disable-revision-counter).
 > More details in [Revision Counter](../../advanced-resources/deploy/revision_counter).
 
 #### Replica Soft Anti-Affinity *(field: `parameters.replicaSoftAntiAffinity`)*
+
 > Default: `ignored`
 
   - "ignored" means use the global setting.
@@ -192,6 +225,7 @@ A list of recurring jobs that are to be run on a volume.
 > More details in [Scheduling](../../nodes-and-volumes/nodes/scheduling) and [Best Practices](../../best-practices#replica-node-level-soft-anti-affinity).
 
 #### Replica Zone Soft Anti-Affinity *(field: `parameters.replicaZoneSoftAntiAffinity`)*
+
 > Default: `ignored`
 
   - "ignored" means use the global setting.
@@ -201,6 +235,7 @@ A list of recurring jobs that are to be run on a volume.
 > More details in [Scheduling](../../nodes-and-volumes/nodes/scheduling).
 
 #### Replica Disk Soft Anti-Affinity *(field: `parameters.replicaDiskSoftAntiAffinity`)*
+
 > Default: `ignored`
 
   - "ignored" means use the global setting.
@@ -210,15 +245,17 @@ A list of recurring jobs that are to be run on a volume.
 > More details in [Scheduling](../../nodes-and-volumes/nodes/scheduling).
 
 #### NFS Options *(field: `parameters.nfsOptions`)*
+
 > Default: `""`
 > Example: `"hard,sync"`
 
   - Overrides for NFS mount of RWX volumes to the share-manager.  Use this field with caution.
   - Note:  Built-in options vary by release.  Check your release details before setting this.
 
-> More details in [RWX Workloads](../../nodes-and-volumes/volumes/rwx-volumes#configuring-volume-mount-options)
+> More details in [ReadWriteMany (RWX) Volume](../../nodes-and-volumes/volumes/rwx-volumes#configuring-volume-mount-options-for-generic-non-migratable-rwx-volumes).
 
 #### Data Engine *(field: `parameters.dataEngine`)*
+
 > Default: `"v1"`
 
   - Specify "v2" to enable the V2 Data Engine (experimental feature in v1.6.0). When unspecified, Longhorn uses the default value ("v1").
@@ -227,6 +264,7 @@ A list of recurring jobs that are to be run on a volume.
 > More details in [V2 Data Engine Quick Start](../../v2-data-engine/quick-start#create-a-storageclass).
 
 #### Freeze Filesystem For Snapshot *(field: `parameters.freezeFilesystemForSnapshot`)*
+
 > Default: `ignored`
 
   - "ignored" instructs Longhorn to use the global setting.
@@ -235,10 +273,12 @@ A list of recurring jobs that are to be run on a volume.
 > Global setting: [Freeze File System For Snapshot](../settings#freeze-filesystem-for-snapshot).
 
 #### Backup Target Name *(field: `parameters.backupTargetName`)*
+
 > Default: `default`
 > More details in [default backup target](../../snapshots-and-backups/backup-and-restore/set-backup-target#default-backup-target) and [Create Volumes](../../nodes-and-volumes/volumes/create-volumes).
 
 #### Backup Block Size *(field: `parameters.backupBlockSize`)*
+
 > Default: `""`
 > Example: `"2Mi"` or `"16Mi"`
 
