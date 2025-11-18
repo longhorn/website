@@ -9,16 +9,11 @@ Longhorn supports ReadWriteMany (RWX) volumes by exposing regular Longhorn volum
 
 Longhorn provides two types of RWX volumes, each optimized for different workload requirements:
 
-- **Generic (Non-Migratable) RWX Volumes** - traditional NFS-based shared filesystem volumes.
-- **Migratable RWX Volumes** - specialized RWX volumes designed for KubeVirt VM live migration.
-
-Migratable RWX volumes are often misunderstood or overlooked in deployments involving virtualization platforms such as KubeVirt. Users sometimes incorrectly set `spec.migratable: true` on volumes that are not intended for migration, or remain unaware that Longhorn supports KubeVirt live migration at all.  
-
 ### Generic (Non-Migratable) RWX volumes
 
 Generic RWX volumes provide shared filesystem access across multiple nodes. They use dedicated NFSv4.1 servers that run in `share-manager-<volume-name>` Pods within the `longhorn-system` namespace. Each RWX volume is paired with a corresponding Service that exposes the NFS endpoint to clients.
 
-These volumes are ideal for workloads that need concurrent file access but do **not** require live migration. In live migration scenarios, a volume must remain continuously accessible as a VM moves between nodes.
+These volumes are ideal for workloads that need concurrent file access but do not require live migration. Live migration means volumes are only accessible from the source workload during the migration. After migration completes, the destination workload will take over access, and the source workload will be terminated. Workload services continue uninterrupted during this period. 
 
 **Characteristics**:
 - Not capable of [live migration](https://kubevirt.io/user-guide/compute/live_migration/).
