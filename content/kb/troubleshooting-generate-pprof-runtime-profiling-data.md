@@ -20,7 +20,7 @@ Not able to investigate the longhorn-manager performance bottlenecks from the ex
 
 ## Solution
 
-To invesigate the longhorn-manager performance bottlenecks, the runtime CPU profiling data can be collected by pprof.
+To investigate the longhorn-manager performance bottlenecks, the runtime CPU profiling data can be collected by pprof.
 
 1. Forward the port 6060 from the longhorn-manager pod to local port 6060:
    ```
