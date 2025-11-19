@@ -14,7 +14,7 @@ categories:
 
 All Longhorn versions.
 
-## Symptons
+## Symptoms
 
 The `iscsi.service` systemd service may add about 2-3 minutes to the boot up 
 time of a node if the node is restarted with longhorn volumes attached to it.
