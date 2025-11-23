@@ -7,6 +7,16 @@ In this tutorial, you'll learn how to create Kubernetes persistent storage resou
 
 > This section assumes that you understand how Kubernetes persistent storage works. For more information, see the [Kubernetes documentation.](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 
+## Access Modes
+
+Longhorn supports the following Kubernetes PersistentVolume access modes:
+
+- **ReadWriteOnce (RWO)**: The volume can be mounted as read-write by a single node. Multiple pods on the same node can access the volume. This is the default and most common access mode.
+- **ReadWriteOncePod (RWOP)**: The volume can be mounted as read-write by a single pod in the entire cluster. This provides the strongest isolation guarantee, ensuring only one pod can access the volume at any time. Ideal for stateful workloads requiring single-writer access.
+- **ReadWriteMany (RWX)**: The volume can be mounted as read-write by many nodes simultaneously, enabling shared access across multiple pods. See [ReadWriteMany (RWX) Volume](../rwx-volumes) for more details.
+
+> **Note**: ReadOnlyMany (ROX) is not supported by Longhorn. For read-only access from multiple pods, consider using ReadWriteMany with read-only mount options in your pod specification.
+
 ### Creating Longhorn Volumes with kubectl
 
 First, you will create a Longhorn StorageClass. The Longhorn StorageClass contains the parameters to provision PVs.

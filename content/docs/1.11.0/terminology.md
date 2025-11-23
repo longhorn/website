@@ -56,7 +56,7 @@ Longhorn backups are saved to the backupstore, which is external to the Kubernet
 
 Longhorn accesses the backupstore at the endpoint configured in the backuptarget.
 
-### Backup target 
+### Backup target
 
 A backup target is the endpoint used to access a backupstore in Longhorn.
 
