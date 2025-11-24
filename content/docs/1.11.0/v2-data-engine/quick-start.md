@@ -67,76 +67,78 @@ To allocate huge pages, run the following commands on each node.
   echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
   ```
 
-### Enable HugePages Permanently (Recommended)
+### Enable HugePages
 
 Huge page allocations made using `/sys/kernel/mm/hugepages/...` are not persistent and will be reset after reboot.
 
+#### Permanently (Recommended)
+
 To pre-allocate huge pages permanently, configure the kernel boot parameters.
 
-#### 1. Update GRUB configuration
+1. **Update GRUB configuration**
 
-Edit `/etc/default/grub` and add the required huge page parameters.
+    Edit `/etc/default/grub` and add the required huge page parameters.
 
-Example for allocating **1024 × 2 MiB** pages (2 GiB total):
+    Example for allocating **1024 × 2 MiB** pages (2 GiB total):
 
-```bash
-GRUB_CMDLINE_LINUX="hugepagesz=2M hugepages=1024"
-```
+    ```bash
+    GRUB_CMDLINE_LINUX="hugepagesz=2M hugepages=1024"
+    ```
 
-If the node already has parameters, append rather than overwrite.
+    If the node already has parameters, append rather than overwrite.
 
-#### 2. Apply the GRUB configuration
+2. **Apply the GRUB configuration**
 
-On BIOS systems:
+    On BIOS systems:
 
-```bash
-sudo update-grub
-```
+    ```bash
+    sudo update-grub
+    ```
 
-On RHEL/SUSE (GRUB2):
+    On RHEL/SUSE (GRUB2):
 
-```bash
-sudo grub2-mkconfig -o /boot/grub2/grub.cfg
-```
+    ```bash
+    sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+    ```
 
-On UEFI systems:
+    On UEFI systems:
 
-```bash
-sudo grub2-mkconfig -o /boot/efi/EFI/<distro>/grub.cfg
-```
+    ```bash
+    sudo grub2-mkconfig -o /boot/efi/EFI/<distro>/grub.cfg
+    ```
 
-#### 3. Reboot the node
+3. **Reboot the node**
 
-```bash
-sudo reboot
-```
+    ```bash
+    sudo reboot
+    ```
 
-#### 4. Verify the huge pages
+4. **Verify the huge pages**
 
-```bash
-grep Huge /proc/meminfo
-```
+    ```bash
+    grep Huge /proc/meminfo
+    ```
 
-Expected output:
+    Expected output:
 
-```
-HugePages_Total:    1024
-Hugepagesize:       2048 kB
-```
+    ```
+    HugePages_Total:    1024
+    Hugepagesize:       2048 kB
+    ```
 
-#### 5. Verify the huge pages resources
+5. **Verify the huge pages resources**
 
-```bash
-kubectl describe node <node-name>
-```
+    ```bash
+    kubectl describe node <node-name>
+    ```
 
-Expected in **Capacity** and **Allocatable**:
+    Expected in **Capacity** and **Allocatable**:
 
-```
-hugepages-2Mi: 2Gi
-```
+    ```
+    hugepages-2Mi: 2Gi
+    ```
 
-### Alternative: Using sysctl (not recommended for persistent allocation)
+#### Alternative: Using sysctl (not recommended for persistent allocation)
 
 Adding this line to `/etc/sysctl.conf`:
 
