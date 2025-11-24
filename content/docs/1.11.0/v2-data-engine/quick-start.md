@@ -7,7 +7,7 @@ aliases:
 
 **Table of Contents**
 - [Prerequisites](#prerequisites)
-  - [Configure Kernel Modules](#configure-kernel-modules)
+  - [Load Kernel Modules](#load-kernel-modules)
     - [Load `nvme-tcp` Kernel Module](#load-nvme-tcp-kernel-module)
     - [Load Kernel Modules Automatically on Boot](#load-kernel-modules-automatically-on-boot)
   - [Enable HugePages](#enable-hugepages)
@@ -43,7 +43,7 @@ This tutorial will guide you through the process of configuring the environment 
 
 ## Prerequisites
 
-### Configure Kernel Modules
+### Load Kernel Modules
 
 For Debian and Ubuntu, please install Linux kernel extra modules before loading the kernel modules
 
@@ -58,14 +58,6 @@ Or, you can install them manually by following these steps.
   ```
   modprobe vfio_pci
   modprobe uio_pci_generic
-  ```
-
-- Configure huge pages
-SPDK uses huge pages for enhancing performance and minimizing memory overhead. You must configure 2 MiB-sized huge pages on each Longhorn node to enable usage of huge pages. Specifically, 1024 pages (equivalent to a total of 2 GiB) must be available on each Longhorn node.
-
-To allocate huge pages, run the following commands on each node.
-  ```
-  echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
   ```
 
 #### Load `nvme-tcp` Kernel Module
@@ -88,7 +80,16 @@ Reference:
 
 ### Enable HugePages
 
-Huge page allocations made using `/sys/kernel/mm/hugepages/...` are not persistent and will be reset after reboot.
+#### Configure huge pages
+
+SPDK uses huge pages for enhancing performance and minimizing memory overhead. You must configure 2 MiB-sized huge pages on each Longhorn node to enable usage of huge pages. Specifically, 1024 pages (equivalent to a total of 2 GiB) must be available on each Longhorn node.
+
+To allocate huge pages, run the following commands on each node.
+  ```
+  echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+  ```
+
+Huge page allocations made using `/sys/kernel/mm/hugepages/...` are not persistent and will be reset after reboot. To make the huge page allocation persistent, you have two options:
 
 #### Permanently (Recommended)
 
