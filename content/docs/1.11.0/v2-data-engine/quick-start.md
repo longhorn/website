@@ -45,6 +45,7 @@ This tutorial will guide you through the process of configuring the environment 
 ### Configure Kernel Modules and Huge Pages
 
 For Debian and Ubuntu, please install Linux kernel extra modules before loading the kernel modules
+
 ```
 apt install -y linux-modules-extra-`uname -r`
 ```
@@ -59,17 +60,91 @@ Or, you can install them manually by following these steps.
   ```
 
 - Configure huge pages
-SPDK leverages huge pages for enhancing performance and minimizing memory overhead. You must configure 2 MiB-sized huge pages on each Longhorn node to enable usage of huge pages. Specifically, 1024 pages (equivalent to a total of 2 GiB) must be available on each Longhorn node.
+SPDK uses huge pages for enhancing performance and minimizing memory overhead. You must configure 2 MiB-sized huge pages on each Longhorn node to enable usage of huge pages. Specifically, 1024 pages (equivalent to a total of 2 GiB) must be available on each Longhorn node.
 
 To allocate huge pages, run the following commands on each node.
   ```
   echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
   ```
 
-  To make the change permanent, add the following line to the file /etc/sysctl.conf.
-  ```
-  echo "vm.nr_hugepages=1024" >> /etc/sysctl.conf
-  ```
+### Enable HugePages Permanently (Recommended)
+
+Huge page allocations made using `/sys/kernel/mm/hugepages/...` are not persistent and will be reset after reboot.
+
+To pre-allocate huge pages permanently, configure the kernel boot parameters.
+
+#### 1. Update GRUB configuration
+
+Edit `/etc/default/grub` and add the required huge page parameters.
+
+Example for allocating **1024 × 2 MiB** pages (2 GiB total):
+
+```bash
+GRUB_CMDLINE_LINUX="hugepagesz=2M hugepages=1024"
+```
+
+If the node already has parameters, append rather than overwrite.
+
+#### 2. Apply the GRUB configuration
+
+On BIOS systems:
+
+```bash
+sudo update-grub
+```
+
+On RHEL/SUSE (GRUB2):
+
+```bash
+sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+```
+
+On UEFI systems:
+
+```bash
+sudo grub2-mkconfig -o /boot/efi/EFI/<distro>/grub.cfg
+```
+
+#### 3. Reboot the node
+
+```bash
+sudo reboot
+```
+
+#### 4. Verify the huge pages
+
+```bash
+grep Huge /proc/meminfo
+```
+
+Expected output:
+
+```
+HugePages_Total:    1024
+Hugepagesize:       2048 kB
+```
+
+#### 5. Verify the huge pages resources
+
+```bash
+kubectl describe node <node-name>
+```
+
+Expected in **Capacity** and **Allocatable**:
+
+```
+hugepages-2Mi: 2Gi
+```
+
+### Alternative: Using sysctl (not recommended for persistent allocation)
+
+Adding this line to `/etc/sysctl.conf`:
+
+```bash
+vm.nr_hugepages=1024
+```
+
+This **does not persist** across reboot on many distributions because huge pages must be allocated early in the boot process. Use only when GRUB modification is not allowed.
 
 ### Load `nvme-tcp` Kernel Module
 
@@ -301,5 +376,3 @@ Create a Pod that uses Longhorn volumes using V2 Data Engine by running this com
 ```
 kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/v2/pod_with_pvc.yaml
 ```
-
-Or, if you are creating a volume on Longhorn UI, please specify the `Data Engine` as `v2`.
