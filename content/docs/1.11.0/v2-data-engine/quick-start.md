@@ -7,9 +7,10 @@ aliases:
 
 **Table of Contents**
 - [Prerequisites](#prerequisites)
-  - [Configure Kernel Modules and Huge Pages](#configure-kernel-modules-and-huge-pages)
-  - [Load `nvme-tcp` Kernel Module](#load-nvme-tcp-kernel-module)
-  - [Load Kernel Modules Automatically on Boot](#load-kernel-modules-automatically-on-boot)
+  - [Configure Kernel Modules](#configure-kernel-modules)
+    - [Load `nvme-tcp` Kernel Module](#load-nvme-tcp-kernel-module)
+    - [Load Kernel Modules Automatically on Boot](#load-kernel-modules-automatically-on-boot)
+  - [Enable HugePages](#enable-hugepages)
   - [Restart `kubelet`](#restart-kubelet)
   - [Check Environment](#check-environment)
     - [Using the Longhorn Command Line Tool](#using-the-longhorn-command-line-tool)
@@ -42,7 +43,7 @@ This tutorial will guide you through the process of configuring the environment 
 
 ## Prerequisites
 
-### Configure Kernel Modules and Huge Pages
+### Configure Kernel Modules
 
 For Debian and Ubuntu, please install Linux kernel extra modules before loading the kernel modules
 
@@ -66,6 +67,24 @@ To allocate huge pages, run the following commands on each node.
   ```
   echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
   ```
+
+#### Load `nvme-tcp` Kernel Module
+
+To ensure the necessary prerequisites for NVMe are met, you can use the [Longhorn CLI](../../advanced-resources/longhornctl/).
+
+Alternatively, you can manually load the `nvme-tcp` kernel module on each Longhorn node by running the following command:
+```
+modprobe nvme-tcp
+```
+
+#### Load Kernel Modules Automatically on Boot
+
+Rather than manually loading kernel modules `vfio_pci`, `uio_pci_generic` and `nvme-tcp` each time after reboot, you can streamline the process by configuring automatic module loading during the boot sequence. For detailed instructions, please consult the manual provided by your operating system.
+
+Reference:
+- [SUSE/OpenSUSE: Loading kernel modules automatically on boot](https://documentation.suse.com/sles/15-SP4/html/SLES-all/cha-mod.html#sec-mod-modprobe-d)
+- [Ubuntu: Configure kernel modules to load at boot](https://manpages.ubuntu.com/manpages/jammy/man5/modules-load.d.5.html)
+- [RHEL: Loading kernel modules automatically at system boot time](https://access.redhat.com/documentation/zh-tw/red_hat_enterprise_linux/8/html/managing_monitoring_and_updating_the_kernel/managing-kernel-modules_managing-monitoring-and-updating-the-kernel)
 
 ### Enable HugePages
 
@@ -147,24 +166,6 @@ vm.nr_hugepages=1024
 ```
 
 This **does not persist** across reboot on many distributions because huge pages must be allocated early in the boot process. Use only when GRUB modification is not allowed.
-
-### Load `nvme-tcp` Kernel Module
-
-To ensure the necessary prerequisites for NVMe are met, you can use the [Longhorn CLI](../../advanced-resources/longhornctl/).
-
-Alternatively, you can manually load the `nvme-tcp` kernel module on each Longhorn node by running the following command:
-```
-modprobe nvme-tcp
-```
-
-### Load Kernel Modules Automatically on Boot
-
-Rather than manually loading kernel modules `vfio_pci`, `uio_pci_generic` and `nvme-tcp` each time after reboot, you can streamline the process by configuring automatic module loading during the boot sequence. For detailed instructions, please consult the manual provided by your operating system.
-
-Reference:
-- [SUSE/OpenSUSE: Loading kernel modules automatically on boot](https://documentation.suse.com/sles/15-SP4/html/SLES-all/cha-mod.html#sec-mod-modprobe-d)
-- [Ubuntu: Configure kernel modules to load at boot](https://manpages.ubuntu.com/manpages/jammy/man5/modules-load.d.5.html)
-- [RHEL: Loading kernel modules automatically at system boot time](https://access.redhat.com/documentation/zh-tw/red_hat_enterprise_linux/8/html/managing_monitoring_and_updating_the_kernel/managing-kernel-modules_managing-monitoring-and-updating-the-kernel)
 
 ### Restart `kubelet`
 
