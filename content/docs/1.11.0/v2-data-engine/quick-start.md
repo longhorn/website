@@ -8,8 +8,6 @@ aliases:
 **Table of Contents**
 - [Prerequisites](#prerequisites)
   - [Load Kernel Modules](#load-kernel-modules)
-    - [Load `nvme-tcp` Kernel Module](#load-nvme-tcp-kernel-module)
-    - [Load Kernel Modules Automatically on Boot](#load-kernel-modules-automatically-on-boot)
   - [Enable HugePages](#enable-hugepages)
   - [Restart `kubelet`](#restart-kubelet)
   - [Check Environment](#check-environment)
@@ -58,20 +56,10 @@ Or, you can install them manually by following these steps.
   ```
   modprobe vfio_pci
   modprobe uio_pci_generic
+  modprobe nvme-tcp
   ```
 
-#### Load `nvme-tcp` Kernel Module
-
-To ensure the necessary prerequisites for NVMe are met, you can use the [Longhorn CLI](../../advanced-resources/longhornctl/).
-
-Alternatively, you can manually load the `nvme-tcp` kernel module on each Longhorn node by running the following command:
-```
-modprobe nvme-tcp
-```
-
-#### Load Kernel Modules Automatically on Boot
-
-Rather than manually loading kernel modules `vfio_pci`, `uio_pci_generic` and `nvme-tcp` each time after reboot, you can streamline the process by configuring automatic module loading during the boot sequence. For detailed instructions, please consult the manual provided by your operating system.
+Alternatively, rather than manually loading kernel modules `vfio_pci`, `uio_pci_generic` and `nvme-tcp` each time after reboot, you can streamline the process by configuring automatic module loading during the boot sequence. For detailed instructions, please consult the manual provided by your operating system.
 
 Reference:
 - [SUSE/OpenSUSE: Loading kernel modules automatically on boot](https://documentation.suse.com/sles/15-SP4/html/SLES-all/cha-mod.html#sec-mod-modprobe-d)
