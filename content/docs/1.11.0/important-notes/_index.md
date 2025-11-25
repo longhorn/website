@@ -26,6 +26,8 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
 - [Resilience](#resilience)
   - [Configurable Liveness Probe for Instance Manager](#configurable-liveness-probe-for-instance-manager)
   - [Backing Image Manager CR Naming](#backing-image-manager-cr-naming)
+- [Monitoring](#monitoring)
+  - [Disk Health Monitoring](#disk-health-monitoring)
 - [Security](#security)
   - [Refined RBAC Permissions](#refined-rbac-permissions)
 - [V1 Data Engine](#v1-data-engine)
@@ -159,6 +161,23 @@ For more information, see [Longhorn Settings](../references/settings#instance-ma
 Backing Image Manager CRs now use a compact, collision-resistant naming format to reduce conflict risk.
 
 For details, see [Issue #11455](https://github.com/longhorn/longhorn/issues/11455)
+
+## Monitoring
+
+### Disk Health Monitoring
+
+Starting with Longhorn v1.11.0, disk health monitoring is available for both V1 and V2 data engines. Longhorn collects health data from disks and exposes it through Prometheus metrics and Longhorn `Node` Custom Resources.
+
+**Key Features:**
+- Automatic health data collection every 10 minutes
+- Disk health status and detailed attributes exposed as Prometheus metrics
+- Health data available in `nodes.longhorn.io` Custom Resources
+
+> **Note:**
+> - SMART data may not be fully available in virtualized or cloud environments (e.g., AWS EBS), which may result in zero values for certain attributes.
+> - Available health attributes vary depending on disk type and hardware.
+
+For more information, see [Disk Health Monitoring](../monitoring/disk-heath).
 
 ## Security
 
