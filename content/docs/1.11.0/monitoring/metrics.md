@@ -62,7 +62,8 @@ weight: 3
 | longhorn_disk_write_iops | Write IOPS of this disk | longhorn_disk_write_iops{disk="default-disk-8b28ee3134628183",node="worker-3",disk_path="/dev/sda"} 150 |
 | longhorn_disk_read_latency | Read latency of this disk (nanoseconds) | longhorn_disk_read_latency{disk="default-disk-8b28ee3134628183",node="worker-3",disk_path="/dev/sda"} 85000 |
 | longhorn_disk_write_latency | Write latency of this disk (nanoseconds) | longhorn_disk_write_latency{disk="default-disk-8b28ee3134628183",node="worker-3",disk_path="/dev/sda"} 95000 |
-
+| longhorn_disk_health | Disk health status (1 = healthy, 0 = unhealthy). See [Disk Health Monitoring](../disk-heath) for details | longhorn_disk_health{disk="default-disk-8b28ee3134628183",node="worker-3"} 1 |
+| longhorn_disk_health_attribute_raw | Raw SMART health attribute value for the disk. Available only when SMART data is supported. See [Disk Health Monitoring](../disk-heath) for details | longhorn_disk_health_attribute_raw{attribute="Temperature Celsius",attribute_id="",disk="default-disk-db0dcb3d43bdcd05",node="longhorn-worker"} 37 |
 
 ## Instance Manager
 
