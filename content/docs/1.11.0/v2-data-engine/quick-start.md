@@ -79,7 +79,7 @@ To allocate huge pages, run the following commands on each node.
 
 Huge page allocations made using `/sys/kernel/mm/hugepages/...` are not persistent and will be reset after reboot. To make the huge page allocation persistent, you have two options:
 
-#### Permanently (Recommended)
+##### Permanently (Recommended)
 
 To pre-allocate huge pages permanently, configure the kernel boot parameters.
 
@@ -146,7 +146,7 @@ To pre-allocate huge pages permanently, configure the kernel boot parameters.
     hugepages-2Mi: 2Gi
     ```
 
-#### Alternative: Using sysctl (not recommended for persistent allocation)
+##### Alternative: Using sysctl (not recommended for persistent allocation)
 
 Adding this line to `/etc/sysctl.conf`:
 
