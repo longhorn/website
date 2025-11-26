@@ -110,6 +110,7 @@ weight: 1
   - [Data Engine Memory Size](#data-engine-memory-size)
   - [Data Engine Interrupt Mode Enabled](#data-engine-interrupt-mode-enabled)
   - [Log Path](#log-path)
+  - [Snapshot Heavy Task Concurrent Limit](#snapshot-heavy-task-concurrent-limit)
 
 ---
 
@@ -1192,3 +1193,12 @@ Controls whether the Storage Performance Development Kit (SPDK) target daemon ru
 > Default: `/var/lib/longhorn/logs/`
 
 Specifies the directory on the host where Longhorn stores log files for the instance manager pod. Currently, it is only used for instance manager pods in the v2 data engine.
+
+
+#### Snapshot Heavy Task Concurrent Limit
+
+> Default: `5`
+
+- `< 1`: unlimited concurrent heavy snapshot tasks
+
+This setting controls how many snapshot heavy task operations (such as purge and clone) can run concurrently per node. This is a best-effort mechanism: due to the distributed nature of the system, temporary oversubscription may occur. The limiter reduces worst-case overload but does not guarantee perfect enforcement.
