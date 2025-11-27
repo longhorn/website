@@ -14,7 +14,12 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
       - [Downgrade Procedure (kubectl Installation)](#downgrade-procedure-kubectl-installation)
       - [Downgrade Procedure (Helm Installation)](#downgrade-procedure-helm-installation)
       - [Post-Downgrade](#post-downgrade)
+  - [HotFix](#hotfix)
 - [Important Fixes](#important-fixes)
+  - [Goroutine Leak in Instance Manager (V2 Data Engine)](#goroutine-leak-in-instance-manager-v2-data-engine)
+  - [V2 Volume Attachment Failure in Interrupt Mode](#v2-volume-attachment-failure-in-interrupt-mode)
+  - [UI Deployment Failure on IPv4-Only Nodes](#ui-deployment-failure-on-ipv4-only-nodes)
+  - [Share Manager Excessive Memory Usage](#share-manager-excessive-memory-usage)
 - [Removal](#removal)
   - [`longhorn.io/v1beta1` API](#longhorniov1beta1-api)
   - [`replica.status.evictionRequested` Field](#replicastatusevictionrequested-field)
@@ -164,6 +169,24 @@ If Longhorn was installed using Helm, the downgrade is allowed by disabling the 
 ##### Post-Downgrade
 
 Once the downgrade is complete and the Longhorn system is stable on the v1.9.x version, you must immediately follow the steps outlined in the [Manual CRD Migration Guide](#migration-requirement-before-longhorn-v110-upgrade). This step is crucial to migrate all remaining `v1beta1` CRs to `v1beta2` before attempting the Longhorn v1.10 upgrade again.
+
+### HotFix
+
+The `longhorn-manager:v1.10.1` image is affected by a [regression issue](https://github.com/longhorn/longhorn/issues/12233) where an nil pointer dereference could occur under certain conditions, potentially leading to unexpected crashes. To mitigate this issue, replace `longhorn-manager:v1.10.1` with the hotfixed image `longhorn-manager:v1.10.1-hotfix-1`.
+
+You can apply the update by following these steps:
+
+1. **Disable the upgrade version check**
+   - Helm users: Set `upgradeVersionCheck` to `false` in the `values.yaml` file.
+   - Manifest users: Remove the `--upgrade-version-check` flag from the deployment manifest.
+
+2. **Update the `longhorn-manager` image**
+   - Change the image tag from `v1.10.1` to `v1.10.1-hotfix-1` in the appropriate file:
+     - For Helm: Update `values.yaml`
+     - For manifests: Update the deployment manifest directly.
+
+3. **Proceed with the upgrade**
+   - Apply the changes using your standard Helm upgrade command or reapply the updated manifest.
 
 ## Important Fixes
 
