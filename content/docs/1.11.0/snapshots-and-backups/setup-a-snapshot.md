@@ -17,17 +17,16 @@ Once the snapshot is created, you will see it in the list of snapshots for the v
 
 ### Understanding the Snapshot Chain Visualization
 
-On the **Volumes** page, the **Snapshots and Backups** section displays the snapshot history as a chain. By default, the **Show System Snapshots** option is **enabled**, meaning all system-created snapshots are displayed automatically.
+On the **Volume Details** page, the **Snapshots and Backups** section displays the snapshot history as a chain. By default, the **Show System Snapshots** option is **enabled**, meaning all system-created snapshots are displayed automatically.
 
 Each snapshot in the chain is color-coded to indicate its type or status, following a specific priority (highest status is displayed if multiple apply). 
-| Snapshot Type | Color Code (Hex) | Description | Priority (1 = Highest) |
+| Snapshot Type | Color | Description | Priority (1 = Highest) |
 | :--- | :--- | :--- | :--- |
-| **Error** | `#F15354` (Red) | Indicates a snapshot that failed during creation or has an issue. | 1 |
-| **Removed** | `#cccccc` (Light Grey) | A snapshot that has been marked for removal or successfully deleted. | 2 |
-| **System-created** | `#F1C40` (Orange/Yellow) | Snapshots automatically created by Longhorn, often for recurring jobs or internal operations. | 3 |
-| **Backup** | `#33AB65` (Green) | A snapshot that has been backed up to a configured backup target. | 4 |
-| **Default** (User-created) | `#3085d5` (Blue) | A standard, user-initiated snapshot taken manually using the **Take Snapshot** button. | 5 |
-
+| **Error** | Red | Indicates a snapshot that failed during creation or has an issue. | 1 |
+| **Removed** | Light Grey | A snapshot that has been marked for removal or successfully deleted. | 2 |
+| **System-created** | Orange/Yellow | Snapshots automatically created by Longhorn, often for recurring jobs or internal operations. | 3 |
+| **Backup** | Green | A snapshot that has been backed up to a configured backup target. | 4 |
+| **Default** (User-created) | Blue | A standard, user-initiated snapshot taken manually using the **Take Snapshot** button. | 5 |
 Below is an example of the snapshot chain visualization:
 
 {{< figure src="/img/diagrams/snapshot/snapshot_volumes_page.png" >}}
