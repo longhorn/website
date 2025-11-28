@@ -174,7 +174,7 @@ Once the downgrade is complete and the Longhorn system is stable on the v1.9.x v
 
 The `longhorn-manager:v1.10.1` image is affected by a [regression issue](https://github.com/longhorn/longhorn/issues/12233) where an nil pointer dereference could occur under certain conditions, potentially leading to unexpected crashes. To mitigate this issue, replace `longhorn-manager:v1.10.1` with the hotfixed image `longhorn-manager:v1.10.1-hotfix-1`.
 
-You can apply the update by following these steps:
+Follow these steps to apply the update:
 
 1. **Disable the upgrade version check**
    - Helm users: Set `upgradeVersionCheck` to `false` in the `values.yaml` file.
