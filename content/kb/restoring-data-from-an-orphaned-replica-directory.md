@@ -13,7 +13,7 @@ categories:
 
 ## Applicable versions
 
-Longhorn v1.10.x versions.
+All Longhorn versions.
 
 ## Overview
 
@@ -54,13 +54,11 @@ Each replica directory contains a `volume.meta` file that stores the volume's si
 
 In this example, the volume size is `1073741824` bytes (1 GiB).
 
-### 3. Create a temporary volume container and access the data
+### 3. Export a volume from the single replica directory and access the data
 
-To expose the orphaned replica directory as a block device, use the Longhorn `launch-simple-longhorn` helper. This temporarily runs a Longhorn engine instance that presents the replica as a readable block device on the host.
+To expose the replica directory as a block device, see the detailed steps in [Exporting a Volume from a Single Replica](https://longhorn.io/docs/v<current-version>/advanced-resources/data-recovery/export-from-replica/).
 
-For detailed instructions — including methods, examples, and cleanup steps — see [Recovering Volume Data with `launch-simple-longhorn`](https://longhorn.io/docs/v<current-version>/advanced-resources/data-recovery/export-from-replica/).
-
-After starting the helper, a block device will appear at:
+Then, a block device will appear at:
 
 ```
 /dev/longhorn/<volume_name>
@@ -74,11 +72,11 @@ mount -o ro /dev/longhorn/<volume_name> /mnt/recovered-data
 
 Once mounted, you can copy the data to a new location or a new Longhorn volume.
 
-### 5. Clean up
+### 4. Clean up
 
 After you have restored your data, stop the temporary container you created in Step 3.
 
-First, find the container ID:
+First, unmount the mount point, then find the container ID:
 
 ```sh
 # docker ps
