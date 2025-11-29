@@ -111,6 +111,7 @@ weight: 1
   - [Data Engine Interrupt Mode Enabled](#data-engine-interrupt-mode-enabled)
   - [Log Path](#log-path)
   - [Snapshot Heavy Task Concurrent Limit](#snapshot-heavy-task-concurrent-limit)
+  - [System Managed CSI Components Resource Limits](#system-managed-csi-components-resource-limits)
 
 ---
 
@@ -1194,7 +1195,6 @@ Controls whether the Storage Performance Development Kit (SPDK) target daemon ru
 
 Specifies the directory on the host where Longhorn stores log files for the instance manager pod. Currently, it is only used for instance manager pods in the v2 data engine.
 
-
 #### Snapshot Heavy Task Concurrent Limit
 
 > Default: `5`
@@ -1202,3 +1202,31 @@ Specifies the directory on the host where Longhorn stores log files for the inst
 - `< 1`: unlimited concurrent heavy snapshot tasks
 
 This setting controls how many snapshot heavy task operations (such as purge and clone) can run concurrently per node. This is a best-effort mechanism: due to the distributed nature of the system, temporary oversubscription may occur. The limiter reduces worst-case overload but does not guarantee perfect enforcement.
+
+#### System Managed CSI Components Resource Limits
+
+> Default: `""`
+
+This setting allows you to configure CPU and memory requests/limits for CSI attacher, provisioner, resizer, snapshotter, and plugin components. Supported components: csi-attacher, csi-provisioner, csi-resizer, csi-snapshotter, longhorn-csi-plugin, node-driver-registrar, longhorn-liveness-probe
+
+Notice that Changing resource limits will cause CSI components to restart, which may temporarily affect volume provisioning and attach/detach operations until the components are ready. The value should be a JSON object with component names as keys and ResourceRequirements as values. For example:
+```json
+{
+  "csi-attacher": {
+    "requests": {"cpu": "100m", "memory": "128Mi"},
+    "limits": {"cpu": "200m", "memory": "256Mi"}
+  },
+  "csi-provisioner": {
+    "requests": {"cpu": "100m", "memory": "128Mi"},
+    "limits": {"cpu": "200m", "memory": "256Mi"}
+  },
+  "longhorn-csi-plugin": {
+    "requests": {"cpu": "100m", "memory": "128Mi"},
+    "limits": {"cpu": "200m", "memory": "256Mi"}
+  },
+  "node-driver-registrar": {
+    "requests": {"cpu": "50m", "memory": "64Mi"},
+    "limits": {"cpu": "100m", "memory": "128Mi"}
+  }
+}
+```
