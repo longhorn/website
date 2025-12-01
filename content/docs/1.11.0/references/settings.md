@@ -1207,9 +1207,14 @@ This setting controls how many snapshot heavy task operations (such as purge and
 
 > Default: `""`
 
-This setting allows you to configure CPU and memory requests/limits for CSI attacher, provisioner, resizer, snapshotter, and plugin components. Supported components: csi-attacher, csi-provisioner, csi-resizer, csi-snapshotter, longhorn-csi-plugin, node-driver-registrar, longhorn-liveness-probe
+This setting allows you to configure CPU and memory requests/limits for system-managed CSI components. Supported components include:
+`csi-attacher`, `csi-provisioner`, `csi-resizer`, `csi-snapshotter`, `longhorn-csi-plugin`, `node-driver-registrar`, and `longhorn-liveness-probe`.
 
-Notice that Changing resource limits will cause CSI components to restart, which may temporarily affect volume provisioning and attach/detach operations until the components are ready. The value should be a JSON object with component names as keys and ResourceRequirements as values. For example:
+The value must be a JSON object with component names as keys and Kubernetes `ResourceRequirements` (`requests` and `limits`) as values. Only the components defined in the JSON object will have their resource requirements overridden; all others will continue using Longhorn’s defaults.
+
+> **Note:** Updating resource limits will restart the affected CSI components. During this period, new volume provisioning, expansion, snapshot, or attach/detach operations may be temporarily delayed. Existing mounted volumes remain usable.
+
+**Example**:
 ```json
 {
   "csi-attacher": {
