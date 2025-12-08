@@ -6,174 +6,243 @@ weight: 3
 - [Attach/Reattach](#attachreattach)
 - [Backup](#backup)
 - [Backupstore](#backupstore)
-- [Backup target](#backup-target)
-- [Backup volume](#backup-volume)
-- [Block storage](#block-storage)
+- [Backup Target](#backup-target)
+- [Backup Volume](#backup-volume)
+- [Block Storage](#block-storage)
+- [block-type Disks](#block-type-disks)
 - [CRD](#crd)
+- [Cross-Cluster Disaster Recovery](#cross-cluster-disaster-recovery)
 - [CSI Driver](#csi-driver)
 - [Disaster Recovery Volumes (DR volume)](#disaster-recovery-volumes-dr-volume)
 - [ext4](#ext4)
-- [Frontend expansion](#frontend-expansion)
+- [Frontend Expansion](#frontend-expansion)
 - [Instance Manager](#instance-manager)
-- [Longhorn volume](#longhorn-volume)
+- [Longhorn Engine](#longhorn-engine)
+- [Longhorn Manager](#longhorn-manager)
+- [Longhorn Volume](#longhorn-volume)
+- [Maintenance Mode](#maintenance-mode)
 - [Mount](#mount)
 - [NFS](#nfs)
-- [Object storage](#object-storage)
-- [Offline expansion](#offline-expansion)
+- [Object Storage](#object-storage)
+- [Offline Expansion](#offline-expansion)
 - [Overprovisioning](#overprovisioning)
 - [PersistentVolume](#persistentvolume)
 - [PersistentVolumeClaim](#persistentvolumeclaim)
-- [Primary backups](#primary-backups)
+- [Primary Backups](#primary-backups)
+- [Read Index](#read-index)
+- [Recurring Snapshots](#recurring-snapshots)
 - [Remount](#remount)
 - [Replica](#replica)
 - [S3](#s3)
-- [Salvage a volume](#salvage-a-volume)
-- [Secondary backups](#secondary-backups)
+- [Salvage a Volume](#salvage-a-volume)
+- [Secondary Backups](#secondary-backups)
+- [SMB/CIFS](#smbcifs)
 - [Snapshot](#snapshot)
-- [Stable identity](#stable-identity)
+- [Snapshot Data Integrity](#snapshot-data-integrity)
+- [Stable Identity](#stable-identity)
 - [StatefulSet](#statefulset)
 - [StorageClass](#storageclass)
 - [System Backup](#system-backup)
-- [Thin provisioning](#thin-provisioning)
+- [Thin Provisioning](#thin-provisioning)
 - [Umount](#umount)
-- [Volumes (Kubernetes concept)](#volumes-kubernetes-concept)
+- [V2 Data Engine](#v2-data-engine)
+- [Volumes (Kubernetes Concept)](#volumes-kubernetes-concept)
 - [XFS](#xfs)
-- [SMB/CIFS](#smbcifs)
 
 ### Attach/Reattach
 
-To attach a block device is to make it appear on the Linux node, e.g. `/dev/longhorn/testvol`
-
-If the volume engine dies unexpectedly, Longhorn will reattach the volume.
+To attach a block device is to make it appear on the Linux node (for example, `/dev/longhorn/testvol`).  
+If the volume engine dies unexpectedly, Longhorn will automatically reattach the volume.
 
 ### Backup
 
-A backup is an object in the backupstore. The backupstore may contain volume backups and system backups.
+A backup is an object stored in the backupstore. The backupstore may contain both volume backups and system backups.
 
 ### Backupstore
 
-Longhorn backups are saved to the backupstore, which is external to the Kubernetes cluster. The backupstore can be either NFS shares or an S3 compatible server.
+The backupstore is the external storage location where Longhorn backups are saved.  
+It can be either an NFS share or an S3-compatible object store.  
+Longhorn connects to the backupstore through the configured backup target.
 
-Longhorn accesses the backupstore at the endpoint configured in the backuptarget.
+### Backup Target
 
-### Backup target
+The backup target is the endpoint used to access a backupstore in Longhorn.
 
-A backup target is the endpoint used to access a backupstore in Longhorn.
+### Backup Volume
 
-### Backup volume
+A backup volume represents all backups associated with a single original Longhorn volume.  
+It is stored in the backupstore and visible in the **Backup** page of the Longhorn UI.
 
-A backup volume is the backup that maps to one original volume, and it is located in the backupstore. Backup volumes can be viewed on the **Backup** page in the Longhorn UI. The backup volume will contain multiple backups for the same volume.
+Backup volumes contain multiple backups for the same volume.  
+Backups are created from snapshots and capture the state of the volume at the time the snapshot was taken.  
+They do not include the snapshot chain or history of changes.
 
-Backups can be created from snapshots. They contain the state of the volume at the time the snapshot was created, but they don't contain snapshots, so they do not contain the history of changes to the volume data. While backups are made of 2 MB files, snapshots can be terabytes.
+Backups are stored as 2 MiB blocks in object storage.
 
-Backups are made of 2 MB blocks in an object store.
+For more details on how snapshots and backups work, see the [concepts documentation](../concepts/#241-how-snapshots-work).
 
-For a longer explanation of how snapshots and backups work, refer to the [conceptual documentation.](../concepts/#241-how-snapshots-work)
+### Block Storage
 
-### Block storage
+A storage approach in which data is stored in fixed-size blocks, each identified by a memory address.
 
-An approach to storage in which data stored in fixed-size blocks. Each block is distinguished based on a memory address.
+### block-type Disks
+
+A block-type disk is required for Longhorn’s V2 Data Engine volumes, as opposed to the filesystem-type disks used for V1 volumes.
 
 ### CRD
 
-A Kubernetes [custom resource definition.](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
+A Kubernetes [custom resource definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/).
+
+### Cross-Cluster Disaster Recovery
+
+Cross-cluster disaster recovery allows data from a primary Kubernetes cluster to be quickly recovered in a second, separate cluster using backups.
 
 ### CSI Driver
 
-The Longhorn CSI Driver is a [container storage interface](https://kubernetes-csi.github.io/docs/drivers.html) that can be used with Kubernetes. The CSI driver for Longhorn volumes is named `driver.longhorn.io`.
+The Longhorn CSI Driver implements the Kubernetes [Container Storage Interface](https://kubernetes-csi.github.io/docs/drivers.html).
+
+The CSI driver name for Longhorn volumes is `driver.longhorn.io`.
 
 ### Disaster Recovery Volumes (DR volume)
 
-A DR volume is a special volume that stores data in a backup cluster in case the whole main cluster goes down. DR volumes are used to increase the resiliency of Longhorn volumes.
+A Disaster Recovery (DR) volume is a special volume used to maintain a copy of data in a backup cluster so the workload can recover if the primary cluster becomes unavailable. DR volumes are used to increase the resiliency of Longhorn volumes.
 
-Each backup volume in the backupstore maps to one original volume in the Kubernetes cluster. Likewise, each DR volume maps to a backup volume in the backupstore.
+Each backup volume in the backupstore corresponds to one original volume, and each DR volume corresponds to a backup volume. Similarly, each DR volume maps to a backup volume in the backupstore.
 
-DR volumes can be created to accurately reflect backups of a Longhorn volume, but they cannot be used as a normal Longhorn volume until they are activated.
+DR volumes can be created to accurately reflect backups of a Longhorn volume but cannot function as normal Longhorn volumes until they are activated.
 
 ### ext4
 
-A file system for Linux. Longhorn supports ext4 for storage.
+A Linux file system supported by Longhorn for storage.
 
-### Frontend expansion
+### Frontend Expansion
 
-The frontend here is referring to the block device exposed by the Longhorn volume.
+“Frontend” refers to the block device exposed by a Longhorn volume.
 
 ### Instance Manager
 
-The Longhorn component for controller/replica instance lifecycle management.
+The Longhorn component responsible for managing the lifecycle of controller and replica instances.
 
-### Longhorn volume
+### Longhorn Engine
 
-A Longhorn volume is a Kubernetes volume that is replicated and managed by the Longhorn Manager. For each volume, the Longhorn Manager also creates:
+The Longhorn Engine is a data plane component of Longhorn. It is a dedicated storage controller that runs for each volume, synchronously replicating data to its replicas.
 
-- An instance of the Longhorn Engine
-- Replicas of the volume, where each replica consists of a series of snapshots of the volume
+### Longhorn Manager
 
-Each replica contains a chain of snapshots, which record the changes in the volume's history. Three replicas are created by default, and they are usually stored on separate nodes for high availability.
+The Longhorn Manager is the control plane component of Longhorn. It is a Kubernetes DaemonSet responsible for managing volumes, handling API calls, and orchestrating Longhorn Engines.
+
+### Longhorn Volume
+
+A Longhorn volume is a Kubernetes volume managed and replicated by Longhorn.
+
+For each volume, Longhorn Manager creates:
+- a Longhorn Engine instance  
+- multiple replicas, each containing a snapshot chain representing the volume’s history
+
+Each replica contains a chain of snapshots which record the changes in the volume’s history.
+By default, three replicas are created and distributed across different nodes to ensure high availability.
+
+### Maintenance Mode
+
+A volume attachment mode that attaches the volume without enabling the frontend (block device or iSCSI), primarily used to revert a volume from a snapshot.
 
 ### Mount
 
-A Linux command to mount the block device to a certain directory on the node, e.g. `mount /dev/longhorn/testvol /mnt`
+A Linux command used to attach a block device to a directory on the node (for example, `mount /dev/longhorn/testvol /mnt`).
 
 ### NFS
 
-A [distributed file system protocol](https://en.wikipedia.org/wiki/Network_File_System) that allows you to access files over a computer network, similar to the way that local storage is accessed. Longhorn supports using NFS as a backupstore for secondary storage.
+A [distributed file system protocol](https://en.wikipedia.org/wiki/Network_File_System) that allows network-based file access.  
+Longhorn supports using NFS as a backupstore for secondary storage.
 
-### Object storage
+### Object Storage
 
-Data storage architecture that manages data as objects. Each object typically includes the data itself, a variable amount of metadata, and a globally unique identifier.  Longhorn volumes can be backed up to S3 compatible object storage.
+A data storage architecture that manages data as objects, each containing the data, a variable amount of metadata and a global unique identifier.  
+Longhorn supports backing up volumes to S3-compatible object stores.
 
-### Offline expansion
+### Offline Expansion
 
-In an offline volume expansion, the volume is detached.
+A volume expansion performed while the volume is detached.
 
 ### Overprovisioning
 
-Overprovisioning allows a server to view more storage capacity than has been physically reserved. That means we can schedule a total of 750 GiB Longhorn volumes on a 200 GiB disk with 50G reserved for the root file system. The **Storage Over Provisioning Percentage** can be configured in the Longhorn [settings.](../references/settings)
+Overprovisioning allows more logical storage to be allocated than the physical capacity available.
+
+For example, a node with 200 GiB of disk space (with 50 GiB reserved for the OS) could provision 750 GiB of Longhorn volumes.  
+
+The **Storage Over Provisioning Percentage** is configurable in Longhorn [settings](../references/settings).
 
 ### PersistentVolume
 
-A PersistentVolume (PV) is a Kubernetes resource that represents piece of storage in the cluster that has been provisioned by an administrator or dynamically provisioned using Storage Classes. It is a cluster-level resource, and is required for pods to use persistent storage that is independent of the lifecycle of any individual pod. For more information, see the official [Kubernetes documentation about persistent volumes.](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
+A PersistentVolume (PV) is a Kubernetes resource that represents a piece of storage in the cluster. It may be provisioned manually or dynamically using StorageClasses.
+
+It is a cluster-level resource and is required for pods to use persistent storage that is independent of the pod lifecycle.
+
+For more information, see the Kubernetes documentation on [persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
 
 ### PersistentVolumeClaim
 
-A PersistentVolumeClaim (PVC) is a request for storage by a user. Pods can request specific levels of resources (CPU and Memory) by using a PVC for storage. Claims can request specific sizes and access modes (e.g., they can be mounted once read/write or many times read-only).
+A PersistentVolumeClaim (PVC) is a user request for storage. Pods can request specific levels of resources (CPU and Memory) by using a PVC for storage. 
+Claims specify desired size and access modes (for example, ReadWriteOnce or ReadOnlyMany).  
+Pods use PVCs to obtain persistent storage.
 
-For more information, see the official [Kubernetes documentation.](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
+See the official [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
 
-### Primary backups
+### Primary Backups
 
-The replicas of each Longhorn volume on a Kubernetes cluster can be considered primary backups.
+The replicas of a Longhorn volume within the Kubernetes cluster can be considered primary backups.
+
+### Read Index
+
+The read index is an in-memory data structure used by each replica to improve read performance.  
+It records which differencing disk (snapshot) contains the valid data for each 4K block.
+
+### Recurring Snapshots
+
+Recurring snapshots allow Longhorn to automatically create and retain snapshots at a specified frequency (for example, hourly or daily).
 
 ### Remount
 
-In a remount, Longhorn will detect and mount the filesystem for the volume after the reattachment.
+After reattachment, Longhorn automatically detects and mounts the filesystem of the volume.
 
 ### Replica
 
-A replica consists of a chain of snapshots, showing a history of the changes in the data within a volume.
+A replica is a copy of a Longhorn volume, consisting of a snapshot chain that records the history of changes.
 
 ### S3
 
 [Amazon S3](https://aws.amazon.com/s3/) is an object storage service.
 
-### Salvage a volume
+### Salvage a Volume
 
-The salvage operation is needed when all replicas become faulty, e.g. due to a network disconnection.
+Salvage operation is required when all replicas become faulty (for example, due to network disconnection).  
+During salvage, Longhorn tries to identify any usable replicas and then uses them to recover the volume.
 
-When salvaging a volume, Longhorn will try to figure out which replica(s) are usable, then use them to recover the volume.
+### Secondary Backups
 
-### Secondary backups
+Backups stored external to the Kubernetes cluster, on S3 or NFS.
 
-Backups external to the Kubernetes cluster, on S3 or NFS.
+### SMB/CIFS
+
+A [network file-sharing protocol](https://en.wikipedia.org/wiki/Network_File_System) that provides remote file access similar to local storage.  
+Longhorn supports using SMB/CIFS as a backupstore for secondary storage.
 
 ### Snapshot
 
-A snapshot in Longhorn captures the state of a volume at the time the snapshot is created. Each snapshot only captures changes that overwrite data from earlier snapshots, so a sequence of snapshots is needed to fully represent the full state of the volume. Volumes can be restored from a snapshot. For a longer explanation of snapshots, refer to the [conceptual documentation.](../concepts)
+A snapshot captures the state of a volume at the time the snapshot is created. 
+Each snapshot stores only the changes that overwrite earlier data, so a chain of snapshots is required to represent the full state.
 
-### Stable identity
+Volumes can be restored from snapshots.
 
-[StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) have a stable identity, which means that Kubernetes won't force delete the Pod for the user.
+See the [concepts documentation](../concepts) for more details.
+
+### Snapshot Data Integrity
+
+Snapshot Data Integrity is a Longhorn feature that hashes snapshot disk files and periodically checks their integrity to detect filesystem-unaware corruption, such as bit rot.
+
+### Stable Identity
+
+[StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) have a stable identity, meaning Kubernetes will not force-delete the pod for the user.
 
 ### StatefulSet
 
@@ -181,33 +250,37 @@ A [Kubernetes resource](https://kubernetes.io/docs/concepts/workloads/controller
 
 ### StorageClass
 
-A Kubernetes resource that can be used to automatically provision a PersistentVolume for a pod. For more information, refer to the [Kubernetes documentation.](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource)
+A [Kubernetes resource](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource) used to automatically provision PersistentVolumes for pods.
 
 ### System Backup
 
-Longhorn uploads the system backup to the backupstore. Each system backup contains the system backup resource bundle of the Longhorn system.
+A system backup contains a bundle of Longhorn system resources and is stored in the backupstore.
 
-See [Longhorn System Backup Bundle](../advanced-resources/system-backup-restore/backup-longhorn-system/#longhorn-system-backup-bundle) for details.
+See the [Longhorn System Backup Bundle](../advanced-resources/system-backup-restore/backup-longhorn-system/#longhorn-system-backup-bundle) for details.
 
-### Thin provisioning
+### Thin Provisioning
 
-Longhorn is a thin-provisioned storage system. That means a Longhorn volume will only take the space it needs at the moment. For example, if you allocated a 20 GB volume but only use 1 GB of it, the actual data size on your disk would be 1GB. 
+Longhorn volumes are thin-provisioned: they consume only the storage used.  
+For example, a 20 GiB volume that stores 1 GiB of data uses only 1 GiB of disk space.
 
 ### Umount
 
-A [Linux command](https://linux.die.net/man/8/umount) that detaches the file system from the file hierarchy.
+A [Linux command](https://linux.die.net/man/8/umount) that detaches a file system from the file hierarchy.
 
-### Volumes (Kubernetes concept)
+### V2 Data Engine
 
-A volume in Kubernetes allows a pod to store files during the lifetime of the pod.
+The V2 Data Engine is an experimental data plane implementation in Longhorn.  
+It uses SPDK, requires huge pages, and uses block-type disks to achieve improved performance.
 
-These files will still be available after a container crashes, but they will not be available past the lifetime of a pod. To get storage that is still available after the lifetime of a pod, a Kubernetes [PersistentVolume (PV)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistent-volumes) is required.
+### Volumes (Kubernetes Concept)
 
-For more information, see the Kubernetes documentation on [volumes.](https://kubernetes.io/docs/concepts/storage/volumes/)
+A Kubernetes volume allows a pod to store files during its lifetime.  
+These files persist across container restarts but not when the pod is deleted.
+
+To preserve storage beyond the pod lifecycle, a [PersistentVolume (PV)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistent-volumes) is required.
+
+See the [Kubernetes documentation - Volumes](https://kubernetes.io/docs/concepts/storage/volumes/) for more details.
 
 ### XFS
-A [file system](https://en.wikipedia.org/wiki/XFS) supported by most Linux distributions. Longhorn supports XFS for storage.
 
-### SMB/CIFS
-
-A [network file system protocol](https://en.wikipedia.org/wiki/Network_File_System) that allows you to access files over a computer network, similar to the way that local storage is accessed. Longhorn supports using SMB/CIFS as a backupstore for secondary storage.
+A high-performance Linux [file system](https://en.wikipedia.org/wiki/XFS) supported by Longhorn for storage.
