@@ -9,13 +9,14 @@ weight: 3
 - [Backup Target](#backup-target)
 - [Backup Volume](#backup-volume)
 - [Block Storage](#block-storage)
-- [block-type Disks](#block-type-disks)
+- [Block-Type Disks](#block-type-disks)
 - [CRD](#crd)
 - [Cross-Cluster Disaster Recovery](#cross-cluster-disaster-recovery)
 - [CSI Driver](#csi-driver)
 - [Disaster Recovery Volumes (DR volume)](#disaster-recovery-volumes-dr-volume)
 - [ext4](#ext4)
-- [Frontend Expansion](#frontend-expansion)
+- [Filesystem-Type Disks](#filesystem-type-disks)
+- [Frontend](#frontend)
 - [Instance Manager](#instance-manager)
 - [Longhorn Engine](#longhorn-engine)
 - [Longhorn Manager](#longhorn-manager)
@@ -66,7 +67,7 @@ Longhorn connects to the backupstore through the configured backup target.
 
 ### Backup Target
 
-The backup target is the endpoint used to access a backupstore in Longhorn.
+A backup target is the endpoint used to access a backupstore in Longhorn.
 
 ### Backup Volume
 
@@ -77,7 +78,7 @@ Backup volumes contain multiple backups for the same volume.
 Backups are created from snapshots and capture the state of the volume at the time the snapshot was taken.  
 They do not include the snapshot chain or history of changes.
 
-Backups are stored as 2 MiB blocks in object storage.
+Backups are stored as 2 MiB blocks in object storage by default.
 
 For more details on how snapshots and backups work, see the [concepts documentation](../concepts/#241-how-snapshots-work).
 
@@ -85,9 +86,9 @@ For more details on how snapshots and backups work, see the [concepts documentat
 
 A storage approach in which data is stored in fixed-size blocks, each identified by a memory address.
 
-### block-type Disks
+### Block-Type Disks
 
-A block-type disk is required for Longhorn’s V2 Data Engine volumes, as opposed to the filesystem-type disks used for V1 volumes.
+A block-type disk is required for Longhorn's V2 Data Engine volumes, as opposed to the filesystem-type disks used for V1 volumes.
 
 ### CRD
 
@@ -95,11 +96,11 @@ A Kubernetes [custom resource definition](https://kubernetes.io/docs/concepts/ex
 
 ### Cross-Cluster Disaster Recovery
 
-Cross-cluster disaster recovery allows data from a primary Kubernetes cluster to be quickly recovered in a second, separate cluster using backups.
+Cross-cluster disaster recovery allows data from a primary Kubernetes cluster to be recovered, separate cluster using backups.
 
 ### CSI Driver
 
-The Longhorn CSI Driver implements the Kubernetes [Container Storage Interface](https://kubernetes-csi.github.io/docs/drivers.html).
+The Longhorn CSI Driver is a [container storage interface](https://kubernetes-csi.github.io/docs/drivers.html) that can be used with Kubernetes. The CSI driver for Longhorn volumes is named `driver.longhorn.io`.
 
 The CSI driver name for Longhorn volumes is `driver.longhorn.io`.
 
@@ -107,17 +108,21 @@ The CSI driver name for Longhorn volumes is `driver.longhorn.io`.
 
 A Disaster Recovery (DR) volume is a special volume used to maintain a copy of data in a backup cluster so the workload can recover if the primary cluster becomes unavailable. DR volumes are used to increase the resiliency of Longhorn volumes.
 
-Each backup volume in the backupstore corresponds to one original volume, and each DR volume corresponds to a backup volume. Similarly, each DR volume maps to a backup volume in the backupstore.
+Each backup volume in the backupstore corresponds to one original volume, and each DR volume corresponds to a backup volume.
 
 DR volumes can be created to accurately reflect backups of a Longhorn volume but cannot function as normal Longhorn volumes until they are activated.
 
 ### ext4
 
-A Linux file system supported by Longhorn for storage.
+A widely-used Linux file system supported by Longhorn for storage.
 
-### Frontend Expansion
+### Filesystem-Type Disks
 
-“Frontend” refers to the block device exposed by a Longhorn volume.
+A filesystem-type disk contains a filesystem (for example, ext4 or xfs) and is used for Longhorn's Data Engine volumes.
+
+### Frontend
+
+Frontend refers to the block device exposed by a Longhorn volume.
 
 ### Instance Manager
 
@@ -129,7 +134,7 @@ The Longhorn Engine is a data plane component of Longhorn. It is a dedicated sto
 
 ### Longhorn Manager
 
-The Longhorn Manager is the control plane component of Longhorn. It is a Kubernetes DaemonSet responsible for managing volumes, handling API calls, and orchestrating Longhorn Engines.
+The Longhorn Manager is the control plane component of Longhorn. It is a Kubernetes DaemonSet responsible for managing volumes, handling API calls, and orchestrating Longhorn Engines, Replicas and other CRs.
 
 ### Longhorn Volume
 
@@ -144,7 +149,7 @@ By default, three replicas are created and distributed across different nodes to
 
 ### Maintenance Mode
 
-A volume attachment mode that attaches the volume without enabling the frontend (block device or iSCSI), primarily used to revert a volume from a snapshot.
+A volume attachment mode that attaches the volume without enabling the frontend, primarily used to revert a volume from a snapshot.
 
 ### Mount
 
@@ -157,7 +162,7 @@ Longhorn supports using NFS as a backupstore for secondary storage.
 
 ### Object Storage
 
-A data storage architecture that manages data as objects, each containing the data, a variable amount of metadata and a global unique identifier.  
+A data storage architecture that manages data as objects, each containing the data, a variable amount of metadata and a globally unique identifier.  
 Longhorn supports backing up volumes to S3-compatible object stores.
 
 ### Offline Expansion
@@ -224,7 +229,7 @@ Backups stored external to the Kubernetes cluster, on S3 or NFS.
 
 ### SMB/CIFS
 
-A [network file-sharing protocol](https://en.wikipedia.org/wiki/Network_File_System) that provides remote file access similar to local storage.  
+A [network file-sharing protocol](https://en.wikipedia.org/wiki/Server_Message_Block) that provides remote file access similar to local storage.  
 Longhorn supports using SMB/CIFS as a backupstore for secondary storage.
 
 ### Snapshot
