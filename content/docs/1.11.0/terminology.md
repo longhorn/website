@@ -118,7 +118,7 @@ A widely-used Linux file system supported by Longhorn for storage.
 
 ### Filesystem-Type Disks
 
-A filesystem-type disk contains a filesystem (for example, ext4 or xfs) and is used for Longhorn's Data Engine volumes.
+A filesystem-type disk contains a filesystem (for example, ext4 or xfs) and is used for Longhorn's V1 Data Engine volumes.
 
 ### Frontend
 
