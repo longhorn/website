@@ -14,9 +14,9 @@ weight: 3
 - [Cross-Cluster Disaster Recovery](#cross-cluster-disaster-recovery)
 - [CSI Driver](#csi-driver)
 - [Disaster Recovery Volumes (DR volume)](#disaster-recovery-volumes-dr-volume)
-- [ext4](#ext4)
-- [Filesystem-Type Disks](#filesystem-type-disks)
-- [Frontend](#frontend)
+- [Ext4](#ext4)
+- [File System-Type Disks](#file-system-type-disks)
+- [Front-end](#front-end)
 - [Instance Manager](#instance-manager)
 - [Longhorn Engine](#longhorn-engine)
 - [Longhorn Manager](#longhorn-manager)
@@ -46,6 +46,7 @@ weight: 3
 - [System Backup](#system-backup)
 - [Thin Provisioning](#thin-provisioning)
 - [Umount](#umount)
+- [V1 Data Engine](#v1-data-engine)
 - [V2 Data Engine](#v2-data-engine)
 - [Volumes (Kubernetes Concept)](#volumes-kubernetes-concept)
 - [XFS](#xfs)
@@ -88,7 +89,7 @@ A storage approach in which data is stored in fixed-size blocks, each identified
 
 ### Block-Type Disks
 
-A block-type disk is required for Longhorn's V2 Data Engine volumes, as opposed to the filesystem-type disks used for V1 volumes.
+A block-type disk is an unformatted block device that Longhorn uses directly for V2 Data Engine volumes.
 
 ### CRD
 
@@ -96,7 +97,7 @@ A Kubernetes [custom resource definition](https://kubernetes.io/docs/concepts/ex
 
 ### Cross-Cluster Disaster Recovery
 
-Cross-cluster disaster recovery allows data from a primary Kubernetes cluster to be recovered, separate cluster using backups.
+Cross-cluster disaster recovery allows data from a primary Kubernetes cluster to be recovered on a separate cluster using backups.
 
 ### CSI Driver
 
@@ -106,23 +107,23 @@ The CSI driver name for Longhorn volumes is `driver.longhorn.io`.
 
 ### Disaster Recovery Volumes (DR volume)
 
-A Disaster Recovery (DR) volume is a special volume used to maintain a copy of data in a backup cluster so the workload can recover if the primary cluster becomes unavailable. DR volumes are used to increase the resiliency of Longhorn volumes.
+A DR volume is a special volume used to maintain a copy of data in a backup cluster so the workload can recover if the primary cluster becomes unavailable. DR volumes are used to increase the resiliency of Longhorn volumes.
 
 Each backup volume in the backupstore corresponds to one original volume, and each DR volume corresponds to a backup volume.
 
 DR volumes can be created to accurately reflect backups of a Longhorn volume but cannot function as normal Longhorn volumes until they are activated.
 
-### ext4
+### Ext4
 
-A widely-used Linux file system supported by Longhorn for storage.
+A Linux file system supported by Longhorn for storage.
 
-### Filesystem-Type Disks
+### File System-Type Disks
 
-A filesystem-type disk contains a filesystem (for example, ext4 or xfs) and is used for Longhorn's V1 Data Engine volumes.
+A file system-type disk is a block device formatted with an extent-based file system (such as `ext4` or XFS). Longhorn mounts it and stores v1 Data Engine replica data.
 
-### Frontend
+### Front-end
 
-Frontend refers to the block device exposed by a Longhorn volume.
+Front-end refers to the block device exposed by a Longhorn volume.
 
 ### Instance Manager
 
@@ -149,7 +150,7 @@ By default, three replicas are created and distributed across different nodes to
 
 ### Maintenance Mode
 
-A volume attachment mode that attaches the volume without enabling the frontend, primarily used to revert a volume from a snapshot.
+A volume attachment mode that attaches the volume without enabling the front-end, primarily used to revert a volume from a snapshot.
 
 ### Mount
 
@@ -157,8 +158,12 @@ A Linux command used to attach a block device to a directory on the node (for ex
 
 ### NFS
 
-A [distributed file system protocol](https://en.wikipedia.org/wiki/Network_File_System) that allows network-based file access.  
-Longhorn supports using NFS as a backupstore for secondary storage.
+A [distributed file system protocol](https://en.wikipedia.org/wiki/Network_File_System) that provides network-based file access.
+
+Longhorn supports using NFS in two cases:
+
+- As a backupstore for secondary storage.
+- As the underlying file system for RWX volumes.
 
 ### Object Storage
 
@@ -208,11 +213,11 @@ Recurring snapshots allow Longhorn to automatically create and retain snapshots 
 
 ### Remount
 
-After reattachment, Longhorn automatically detects and mounts the filesystem of the volume.
+After reattachment, Longhorn automatically detects and mounts the file system of the volume.
 
 ### Replica
 
-A replica is a copy of a Longhorn volume, consisting of a snapshot chain that records the history of changes.
+A replica is a Longhorn volume data store that consists of a history of the changes in the data within a volume.
 
 ### S3
 
@@ -225,7 +230,7 @@ During salvage, Longhorn tries to identify any usable replicas and then uses the
 
 ### Secondary Backups
 
-Backups stored external to the Kubernetes cluster, on S3 or NFS.
+Backups stored external to the Kubernetes cluster, on S3, NFS or CIFS.
 
 ### SMB/CIFS
 
@@ -243,11 +248,11 @@ See the [concepts documentation](../concepts) for more details.
 
 ### Snapshot Data Integrity
 
-Snapshot Data Integrity is a Longhorn feature that hashes snapshot disk files and periodically checks their integrity to detect filesystem-unaware corruption, such as bit rot.
+Snapshot Data Integrity is a Longhorn feature that hashes snapshot disk files and periodically checks their integrity to detect file system-unaware corruption, such as bit rot.
 
 ### Stable Identity
 
-[StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) have a stable identity, meaning Kubernetes will not force-delete the pod for the user.
+[StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) have a stable identity, meaning Kubernetes will not force-delete the Pod for the user.
 
 ### StatefulSet
 
@@ -272,10 +277,13 @@ For example, a 20 GiB volume that stores 1 GiB of data uses only 1 GiB of disk s
 
 A [Linux command](https://linux.die.net/man/8/umount) that detaches a file system from the file hierarchy.
 
+### V1 Data Engine
+
+The V1 Data Engine is the original data plane component of Longhorn. It uses host file system sparse files for thin provisioning, with volumes composed of replicas, supporting snapshots and backups.
+
 ### V2 Data Engine
 
-The V2 Data Engine is an experimental data plane implementation in Longhorn.  
-It uses SPDK, requires huge pages, and uses block-type disks to achieve improved performance.
+The V2 Data Engine is Longhorn's data plane. It utilizes SPDK and huge pages, and uses block devices to provide higher performance.
 
 ### Volumes (Kubernetes Concept)
 
@@ -288,4 +296,4 @@ See the [Kubernetes documentation - Volumes](https://kubernetes.io/docs/concepts
 
 ### XFS
 
-A high-performance Linux [file system](https://en.wikipedia.org/wiki/XFS) supported by Longhorn for storage.
+A [file system](https://en.wikipedia.org/wiki/XFS) supported by most Linux distributions. Longhorn supports XFS for storage.
