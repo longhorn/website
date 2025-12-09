@@ -42,6 +42,12 @@ parameters:
 #  nfsOptions: "soft,timeo=150,retrans=3"
 #  dataEngine: "v1"
 #  freezeFSForSnapshot: "ignored"
+# allowedTopologies:
+#   - matchLabelExpressions:
+#       - key: topology.kubernetes.io/zone
+#         values:
+#           - us-central-1a
+#           - us-central-1b
 ```
 
 ## Built-in Fields
@@ -72,6 +78,12 @@ Specifies the plugin that will be used for dynamic creation of persistent volume
 
 > Default `Immediate`
 > See [Kubernetes Storage Class: Volume Binding Mode](https://kubernetes.io/docs/concepts/storage/storage-classes/#volume-binding-mode).
+
+#### Allowed Topologies *(field: `allowedTopologies`)*
+
+> See [Kubernetes Storage Class: Allowed Topologies](https://kubernetes.io/docs/concepts/storage/storage-classes/#allowed-topologies).
+
+Restricts where volumes may be provisioned by matching node labels. Longhorn will set PV `nodeAffinity` from this field via CSI `accessibleTopology`. Do not combine `allowedTopologies` with `parameters.dataLocality: strict-local`, because the resulting PV `nodeAffinity` becomes immutable and conflicts with Longhorn strict-local pinning.
 
 ## Longhorn-specific Parameters
 
