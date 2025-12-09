@@ -56,7 +56,7 @@ In this example, the volume size is `1073741824` bytes (1 GiB).
 
 ### 3. Export a volume from the single replica directory and access the data
 
-To expose the replica directory as a block device, see the detailed steps in [Exporting a Volume from a Single Replica](https://longhorn.io/docs/v<current-version>/advanced-resources/data-recovery/export-from-replica/).
+To expose the replica directory as a block device, see the detailed steps in [Exporting a Volume from a Single Replica](https://longhorn.io/docs/1.10.0/advanced-resources/data-recovery/export-from-replica/).
 
 Then, a block device will appear at:
 
