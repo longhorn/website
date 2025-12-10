@@ -81,9 +81,13 @@ Specifies the plugin that will be used for dynamic creation of persistent volume
 
 #### Allowed Topologies *(field: `allowedTopologies`)*
 
-> See [Kubernetes Storage Class: Allowed Topologies](https://kubernetes.io/docs/concepts/storage/storage-classes/#allowed-topologies).
+> See the Kubernetes reference: [StorageClass — Allowed Topologies](https://kubernetes.io/docs/concepts/storage/storage-classes/#allowed-topologies).
 
-Restricts where volumes may be provisioned by matching node labels. Longhorn will set PV `nodeAffinity` from this field via CSI `accessibleTopology`. Do not combine `allowedTopologies` with `parameters.dataLocality: strict-local`, because the resulting PV `nodeAffinity` becomes immutable and conflicts with Longhorn strict-local pinning.
+Specifies the set of nodes where volumes may be provisioned by matching node labels.
+Longhorn uses this field to populate the PV’s `nodeAffinity` via the CSI `accessibleTopology` field.
+
+Do **not** use `allowedTopologies` together with `parameters.dataLocality: strict-local`.
+The resulting PV `nodeAffinity` becomes immutable and will conflict with Longhorn’s strict-local volume pinning.
 
 ## Longhorn-specific Parameters
 
