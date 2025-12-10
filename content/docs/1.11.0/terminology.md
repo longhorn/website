@@ -15,8 +15,8 @@ weight: 3
 - [CSI Driver](#csi-driver)
 - [Disaster Recovery Volumes (DR volume)](#disaster-recovery-volumes-dr-volume)
 - [Ext4](#ext4)
-- [File System-Type Disks](#file-system-type-disks)
-- [Front-end](#front-end)
+- [Filesystem-Type Disks](#filesystem-type-disks)
+- [Frontend](#frontend)
 - [Instance Manager](#instance-manager)
 - [Longhorn Engine](#longhorn-engine)
 - [Longhorn Manager](#longhorn-manager)
@@ -63,8 +63,8 @@ A backup is an object stored in the backupstore. The backupstore may contain bot
 ### Backupstore
 
 The backupstore is the external storage location where Longhorn backups are saved.  
-It can be either an NFS share or an S3-compatible object store.  
-Longhorn connects to the backupstore through the configured backup target.
+It can be either an NFS share, CIFS share, or an S3-compatible object store.  
+Longhorn connects to a backupstore through a configured backup target.
 
 ### Backup Target
 
@@ -115,27 +115,27 @@ DR volumes can be created to accurately reflect backups of a Longhorn volume but
 
 ### Ext4
 
-A Linux file system supported by Longhorn for storage.
+A Linux filesystem supported by Longhorn for storage.
 
-### File System-Type Disks
+### Filesystem-Type Disks
 
-A file system-type disk is a block device formatted with an extent-based file system (such as `ext4` or XFS). Longhorn mounts it and stores v1 Data Engine replica data.
+A filesystem-type disk is a block device formatted with an extent-based filesystem (such as `ext4` or XFS). Longhorn mounts it and stores v1 Data Engine replica data.
 
-### Front-end
+### Frontend
 
-Front-end refers to the block device exposed by a Longhorn volume.
+Frontend refers to a block device exposed by a Longhorn volume.
 
 ### Instance Manager
 
-The Longhorn component responsible for managing the lifecycle of controller and replica instances.
+The Longhorn component responsible for managing the lifecycle of engine and replica instances.
 
 ### Longhorn Engine
 
-The Longhorn Engine is a data plane component of Longhorn. It is a dedicated storage controller that runs for each volume, synchronously replicating data to its replicas.
+A Longhorn Engine is a data plane component of Longhorn. It is a per-volume storage controller responsible for synchronously replicating data to the volume’s replicas.
 
 ### Longhorn Manager
 
-The Longhorn Manager is the control plane component of Longhorn. It is a Kubernetes DaemonSet responsible for managing volumes, handling API calls, and orchestrating Longhorn Engines, Replicas and other CRs.
+The Longhorn Manager is the control plane component of Longhorn. It runs as a Kubernetes DaemonSet. It is responsible for managing volumes, handling API requests, and orchestrating Longhorn Engines, Replicas, and other custom resources (CRs).
 
 ### Longhorn Volume
 
@@ -145,12 +145,11 @@ For each volume, Longhorn Manager creates:
 - a Longhorn Engine instance  
 - multiple replicas, each containing a snapshot chain representing the volume’s history
 
-Each replica contains a chain of snapshots which record the changes in the volume’s history.
 By default, three replicas are created and distributed across different nodes to ensure high availability.
 
 ### Maintenance Mode
 
-A volume attachment mode that attaches the volume without enabling the front-end, primarily used to revert a volume from a snapshot.
+A volume attachment mode that attaches the volume without enabling the frontend, primarily used to revert a volume from a snapshot.
 
 ### Mount
 
@@ -158,12 +157,12 @@ A Linux command used to attach a block device to a directory on the node (for ex
 
 ### NFS
 
-A [distributed file system protocol](https://en.wikipedia.org/wiki/Network_File_System) that provides network-based file access.
+A [distributed filesystem protocol](https://en.wikipedia.org/wiki/Network_File_System) that provides network-based file access.
 
 Longhorn supports using NFS in two cases:
 
 - As a backupstore for secondary storage.
-- As the underlying file system for RWX volumes.
+- As the underlying filesystem for RWX volumes.
 
 ### Object Storage
 
@@ -213,7 +212,7 @@ Recurring snapshots allow Longhorn to automatically create and retain snapshots 
 
 ### Remount
 
-After reattachment, Longhorn automatically detects and mounts the file system of the volume.
+After reattachment, Longhorn automatically detects and mounts the filesystem of the volume.
 
 ### Replica
 
@@ -248,7 +247,7 @@ See the [concepts documentation](../concepts) for more details.
 
 ### Snapshot Data Integrity
 
-Snapshot Data Integrity is a Longhorn feature that hashes snapshot disk files and periodically checks their integrity to detect file system-unaware corruption, such as bit rot.
+Snapshot Data Integrity is a Longhorn feature that hashes snapshot disk files and periodically checks their integrity to detect filesystem-unaware corruption, such as bit rot.
 
 ### Stable Identity
 
@@ -270,16 +269,16 @@ See the [Longhorn System Backup Bundle](../advanced-resources/system-backup-rest
 
 ### Thin Provisioning
 
-Longhorn volumes are thin-provisioned: they consume only the storage used.  
+Longhorn is a thin-provisioned storage system. That means a Longhorn volume will only take the space it needs at the moment.
 For example, a 20 GiB volume that stores 1 GiB of data uses only 1 GiB of disk space.
 
 ### Umount
 
-A [Linux command](https://linux.die.net/man/8/umount) that detaches a file system from the file hierarchy.
+A [Linux command](https://linux.die.net/man/8/umount) that detaches a filesystem from the file hierarchy.
 
 ### V1 Data Engine
 
-The V1 Data Engine is the original data plane component of Longhorn. It uses host file system sparse files for thin provisioning, with volumes composed of replicas, supporting snapshots and backups.
+The V1 Data Engine is the original data plane component of Longhorn. It uses host filesystem sparse files for thin provisioning, with volumes composed of replicas, supporting snapshots and backups.
 
 ### V2 Data Engine
 
@@ -296,4 +295,4 @@ See the [Kubernetes documentation - Volumes](https://kubernetes.io/docs/concepts
 
 ### XFS
 
-A [file system](https://en.wikipedia.org/wiki/XFS) supported by most Linux distributions. Longhorn supports XFS for storage.
+A [filesystem](https://en.wikipedia.org/wiki/XFS) supported by most Linux distributions. Longhorn supports XFS for storage.
