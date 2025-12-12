@@ -172,7 +172,19 @@ Once the downgrade is complete and the Longhorn system is stable on the v1.9.x v
 
 ### HotFix
 
-The `longhorn-manager:v1.10.1` image is affected by a [regression issue](https://github.com/longhorn/longhorn/issues/12233) that can trigger a nil-pointer dereference under certain conditions, potentially causing unexpected crashes. To mitigate this issue, replace `longhorn-manager:v1.10.1` with the hotfixed image `longhorn-manager:v1.10.1-hotfix-1`.
+The `longhorn-manager:v1.10.1` image is affected by
+
+- Regression:
+  - [\[BUG\] invalid memory address or nil pointer dereference](https://github.com/longhorn/longhorn/issues/12233) that can trigger a nil-pointer dereference under certain conditions, potentially causing unexpected crashes.
+  - [\[BUG\] Block Mode Volume Migration Stuck](https://github.com/longhorn/longhorn/issues/12311) that can cause block mode volume migration to get stuck indefinitely.
+- Day-one issues:
+  - V2 volume clone:
+    - [\[BUG\] V2 Volume CSI Clone Slowness Caused by VolumeAttachment Webhook](https://github.com/longhorn/longhorn/issues/12328) that can lead to significant delays during V2 volume cloning operations.
+    - [\[BUG\] [Bug] A cloned volume cannot be attached to a workload](https://github.com/longhorn/longhorn/issues/12206) that prevents cloned volumes from being attached to workloads.
+  - Replica auto-balance:
+    - [\[BUG\] Replica auto balance disk pressure threshold stalled with stopped volumes](https://github.com/longhorn/longhorn/issues/10837) that can cause the replica auto-balance feature to stall when volumes are stopped under disk pressure conditions.
+
+To mitigate the issues, replace `longhorn-manager:v1.10.1` with the hotfixed image `longhorn-manager:v1.10.1-hotfix-2`.
 
 Follow these steps to apply the update:
 
@@ -181,7 +193,7 @@ Follow these steps to apply the update:
    - Manifest users: Remove the `--upgrade-version-check` flag from the deployment manifest.
 
 2. **Update the `longhorn-manager` image**
-   - Change the image tag from `v1.10.1` to `v1.10.1-hotfix-1` in the appropriate file:
+   - Change the image tag from `v1.10.1` to `v1.10.1-hotfix-2` in the appropriate file:
      - For Helm: Update `values.yaml`
      - For manifests: Update the deployment manifest directly.
 
