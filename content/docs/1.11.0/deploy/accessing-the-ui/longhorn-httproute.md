@@ -40,10 +40,10 @@ Install Longhorn with HTTPRoute enabled:
 helm install longhorn longhorn/longhorn \
   --namespace longhorn-system \
   --create-namespace \
-  --set httproute.enabled=true \
-  --set httproute.parentRefs[0].name=my-gateway \
-  --set httproute.parentRefs[0].namespace=default \
-  --set httproute.hostnames[0]=longhorn.example.com
+  --set "httproute.enabled=true" \
+  --set "httproute.parentRefs[0].name=my-gateway" \
+  --set "httproute.parentRefs[0].namespace=default" \
+  --set "httproute.hostnames[0]=longhorn.example.com"
 ```
 
 ## Advanced Configuration
