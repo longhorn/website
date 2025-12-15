@@ -23,13 +23,13 @@ Gateway API is the successor to Ingress, offering more expressive routing capabi
 
 The following Helm values control HTTPRoute generation:
 
-| Parameter | Type | Default | Description |
+| Key | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `httproute.enabled` | bool | `false` | Enable HTTPRoute generation for Longhorn UI |
 | `httproute.parentRefs` | list | `[]` | Gateway references specifying which Gateway(s) should handle this route |
 | `httproute.hostnames` | list | `[]` | List of hostnames for the HTTPRoute |
 | `httproute.path` | string | `"/"` | Path for accessing Longhorn UI |
-| `httproute.pathType` | string | `"PathPrefix"` | Path match type: `Exact` or `PathPrefix` |
+| `httproute.pathType` | string | `"PathPrefix"` | Path match type: `Exact`, `PathPrefix`, or `RegularExpression` |
 | `httproute.annotations` | object | `{}` | Annotations for the HTTPRoute resource |
 
 ## Basic Installation
