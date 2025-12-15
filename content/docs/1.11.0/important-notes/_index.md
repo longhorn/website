@@ -6,6 +6,7 @@ weight: 1
 This page summarizes the key notes for Longhorn v{{< current-version >}}.
 For the full release note, see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}).
 
+- [Behavior Change](#behavior-change)
 - [Removal](#removal)
   - [`longhorn.io/v1beta1` API](#longhorniov1beta1-api)
   - [`replica.status.evictionRequested` Field](#replicastatusevictionrequested-field)
@@ -40,6 +41,12 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
     - [V2 Data Engine Volume Clone Support](#v2-data-engine-volume-clone-support)
     - [V2 Data Engine Replica Rebuild QoS](#v2-data-engine-replica-rebuild-qos)
     - [V2 Data Engine Volume Expansion](#v2-data-engine-volume-expansion)
+
+## Behavior Change
+
+### Cloned Volume Health After Efficient Cloning
+
+With efficient cloning, a newly cloned volume can remain detached with a clone status of `copy-completed-awaiting-healthy` until robustness is confirmed. To bring the cloned volume to a healthy state and transition the clone status to `completed`, enable offline replica rebuilding or attach the volume to trigger replica rebuilding.
 
 ## Removal
 
