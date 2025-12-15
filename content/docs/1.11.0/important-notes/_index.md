@@ -46,7 +46,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
 
 ### Cloned Volume Health After Efficient Cloning
 
-With efficient cloning, a newly cloned volume can remain detached with a clone status of `copy-completed-awaiting-healthy` until robustness is confirmed. To bring the cloned volume to a healthy state and transition the clone status to `completed`, enable offline replica rebuilding or attach the volume to trigger replica rebuilding.
+With efficient cloning enabled, a newly cloned and detached volume is degraded and has only one replica, with its clone status set to `copy-completed-awaiting-healthy`. To bring the volume to a healthy state, transition the clone status to `completed` and rebuild the remaining replica by either enabling offline replica rebuilding or attaching the volume to trigger replica rebuilding. See [Issue #12341](https://github.com/longhorn/longhorn/issues/12341) and [Issue #12328](https://github.com/longhorn/longhorn/issues/12328).
 
 ## Removal
 
