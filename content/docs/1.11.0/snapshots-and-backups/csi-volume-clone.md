@@ -78,7 +78,7 @@ spec:
 **Note**:
 > - The Longhorn UI pre-fills certain fields and prevents you from modifying the values to ensure that those match the settings of the source volume.
 > - Longhorn automatically attaches the new volume, clones the source volume, and then detaches the new volume.
-> - After the clone completes and the new volume is detached, the clone status can show `copy-completed-awaiting-healthy` while robustness is unknown. To bring the cloned volume to a healthy state, enable offline replica rebuilding or attach the volume to trigger replica rebuilding; the clone status will then transition to `completed`.
+ > - With efficient cloning enabled, a newly cloned and detached volume is degraded and has only one replica, with its clone status set to `copy-completed-awaiting-healthy`. To bring the volume to a healthy state, transition the clone status to `completed` and rebuild the remaining replica by either enabling offline replica rebuilding or attaching the volume to trigger replica rebuilding. See [Issue #12341](https://github.com/longhorn/longhorn/issues/12341) and [Issue #12328](https://github.com/longhorn/longhorn/issues/12328).
 
 
 ## Volume Creation
