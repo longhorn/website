@@ -3,6 +3,23 @@ title: ReadWriteMany (RWX) Volume
 weight: 4
 ---
 
+- [Introduction](#introduction)
+  - [Generic (Non-Migratable) RWX volumes](#generic-non-migratable-rwx-volumes)
+  - [Migratable RWX volumes](#migratable-rwx-volumes)
+- [Requirements for Generic (Non-Migratable) RWX Volumes](#requirements-for-generic-non-migratable-rwx-volumes)
+- [Creation and Usage of Generic (Non-Migratable) RWX Volumes](#creation-and-usage-of-generic-non-migratable-rwx-volumes)
+- [Configuring Volume Locality for Generic (Non-Migratable) RWX Volumes](#configuring-volume-locality-for-generic-non-migratable-rwx-volumes)
+  - [`shareManagerNodeSelector`](#sharemanagernodeselector)
+  - [`allowedTopologies`](#allowedtopologies)
+  - [`shareManagerTolerations`](#sharemanagertolerations)
+- [Configuring Volume Mount Options for Generic (Non-Migratable) RWX Volumes](#configuring-volume-mount-options-for-generic-non-migratable-rwx-volumes)
+  - [Notes](#notes)
+- [Failure Handling for Generic (Non-Migratable) RWX Volumes](#failure-handling-for-generic-non-migratable-rwx-volumes)
+- [Migration from Previous External Provisioner](#migration-from-previous-external-provisioner)
+- [History](#history)
+
+---
+
 Longhorn supports ReadWriteMany (RWX) volumes by exposing regular Longhorn volumes via NFSv4 servers that reside in share-manager pods.
 
 ## Introduction
@@ -16,17 +33,23 @@ Generic RWX volumes provide shared filesystem access across multiple nodes. They
 These volumes are ideal for workloads that need concurrent file access but do not require live migration. Live migration means volumes are only accessible from the source workload during the migration. After migration completes, the destination workload will take over access, and the source workload will be terminated. Workload services continue uninterrupted during this period. 
 
 **Characteristics**:
+
 - Not capable of [live migration](https://kubevirt.io/user-guide/compute/live_migration/).
 - Use NFSv4.1 for filesystem–based sharing.
 - Suitable for general shared storage and multi-node file access workloads.
 
 {{< figure src="/img/diagrams/rwx/rwx-arch.png" >}}
 
+> **Notice: Deferred Share-Manager Pod Image Updates on Active RWX Volumes**
+>
+> Following a Longhorn system upgrade, when a Generic (Non-Migratable) RWX volume remains attached, modifications to the `spec.image` of the corresponding `share-manager` pod will not take effect immediately. The updated image is applied only after the volume is detached, at which point the pod is recreated with the new share-manager image. This behavior ensures volume stability and prevents disruption of active I/O operations.
+
 ### Migratable RWX volumes
 
 Migratable RWX volumes are designed specifically for virtualized workloads such as KubeVirt VMs that require [live migration](https://kubevirt.io/user-guide/compute/live_migration/) while maintaining ongoing I/O operations. These volumes enable seamless VM movement between nodes during maintenance, failover, or rebalancing operations without service disruption.
 
 **Characteristics**:
+
 - Designed for live migration scenarios.
 - Require `volumeMode: Block` (`Filesystem` mode is not supported).
 - Require ReadWriteMany access mode and a StorageClass with `migratable: "true"` (which sets `volume.spec.migratable=true` on the Longhorn volume).
