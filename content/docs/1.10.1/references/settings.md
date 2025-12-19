@@ -829,7 +829,7 @@ Enable this setting automatically rebalances replicas when discovered an availab
 
 The available global options are:
 
-- `disabled`. This is the default option. No replica auto-balance will be done.
+- `disabled`. This is the default option. No Replica Auto Balance will be done.
 
 - `least-effort`. This option instructs Longhorn to balance replicas for minimal redundancy.
 
@@ -844,7 +844,7 @@ The available volume spec options are:
 
 - `ignored`. This is the default option that instructs Longhorn to inherit from the global setting.
 
-- `disabled`. This option instructs Longhorn no replica auto-balance should be done."
+- `disabled`. This option instructs Longhorn no Replica Auto Balance should be done."
 
 - `least-effort`. This option instructs Longhorn to balance replicas for minimal redundancy.
 
@@ -864,7 +864,7 @@ To disable this setting, set the value to **0**.
 
 This setting takes effect only when the following conditions are met:
 
-- [Replica Auto Balance](#replica-auto-balance) is set to **best-effort**. To disable this setting (disk pressure threshold) when replica auto-balance is set to best-effort, set the value of this setting to **0**.
+- [Replica Auto Balance](#replica-auto-balance) is set to **best-effort**. To disable this setting (disk pressure threshold) when Replica Auto Balance is set to best-effort, set the value of this setting to **0**.
 - At least one other disk on the node has sufficient available space.
 
 This setting is not affected by [Replica Node Level Soft Anti-Affinity](#replica-node-level-soft-anti-affinity), which can prevent Longhorn from rebuilding a replica on the same node. Regardless of that setting's value, this setting still allows Longhorn to attempt replica rebuilding on a different disk on the same node for migration purposes.

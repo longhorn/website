@@ -212,7 +212,7 @@ Drawbacks:
 - The drain operation is significantly slower than for other behaviors. Every replica must be rebuilt on another node
   before it can complete. Drain timeout must be adjusted as appropriate for the amount of data that will move during
   rebuilding.
-- The drain operation is data-intensive, especially when replica auto balance is enabled, as evicted replicas may be
+- The drain operation is data-intensive, especially when Replica Auto Balance is enabled, as evicted replicas may be
   moved back to the drained node when/if it comes back online.
 - Like all of these policies, it triggers on cordon, not on drain. If a user regularly cordons nodes without draining
   them, replicas will be rebuilt pointlessly.
