@@ -747,7 +747,7 @@ The available volume spec options are:
 
 - `ignored`. This is the default option that instructs Longhorn to inherit from the global setting.
 
-- `disabled`. This option instructs Longhorn no Replica Auto Balance should be done."
+- `disabled`. This option instructs Longhorn not to perform Replica Auto Balance.
 
 - `least-effort`. This option instructs Longhorn to balance replicas for minimal redundancy.
 

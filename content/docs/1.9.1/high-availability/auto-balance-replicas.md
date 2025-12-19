@@ -45,7 +45,7 @@ There are 4 options available for individual volume setting:
 
 - `Ignored`. This is the default option that instructs Longhorn to inherit from the global setting.
 
-- `disabled`. This option instructs Longhorn no Replica Auto Balance should be done.
+- `disabled`. This option instructs Longhorn not to perform Replica Auto Balance.
 
 - `least-effort`. This option instructs Longhorn to balance replicas for minimal redundancy.
   For example, after adding node-2, a volume with 4 off-balanced replicas will only rebalance 1 replica.
