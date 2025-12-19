@@ -9,9 +9,9 @@ When replicas are scheduled unevenly on nodes or zones, Longhorn `Replica Auto B
 
 ### Global setting
 
-Longhorn supports 3 options for global replica auto-balance setting:
+Longhorn supports 3 options for global Replica Auto Balance setting:
 
-- `disabled`. This is the default option, no replica auto-balance will be done.
+- `disabled`. This is the default option, no Replica Auto Balance will be done.
 
 - `least-effort`. This option instructs Longhorn to balance replicas for minimal redundancy.
   For example, after adding node-2, a volume with 4 off-balanced replicas will only rebalance 1 replica.
@@ -45,7 +45,7 @@ There are 4 options available for individual volume setting:
 
 - `Ignored`. This is the default option that instructs Longhorn to inherit from the global setting.
 
-- `disabled`. This option instructs Longhorn no replica auto-balance should be done.
+- `disabled`. This option instructs Longhorn no Replica Auto Balance should be done.
 
 - `least-effort`. This option instructs Longhorn to balance replicas for minimal redundancy.
   For example, after adding node-2, a volume with 4 off-balanced replicas will only rebalance 1 replica.

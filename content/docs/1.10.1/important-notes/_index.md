@@ -182,7 +182,7 @@ The `longhorn-manager:v1.10.1` image is affected by
     - [\[BUG\] V2 Volume CSI Clone Slowness Caused by VolumeAttachment Webhook](https://github.com/longhorn/longhorn/issues/12328) that can lead to significant delays during V2 volume cloning operations.
     - [\[BUG\] [Bug] A cloned volume cannot be attached to a workload](https://github.com/longhorn/longhorn/issues/12206) that prevents cloned volumes from being attached to workloads.
   - Replica auto-balance:
-    - [\[BUG\] Replica auto balance disk pressure threshold stalled with stopped volumes](https://github.com/longhorn/longhorn/issues/10837) that can cause the replica auto-balance feature to stall when volumes are stopped under disk pressure conditions.
+    - [\[BUG\] Replica auto balance disk pressure threshold stalled with stopped volumes](https://github.com/longhorn/longhorn/issues/10837) that can cause the Replica Auto Balance feature to stall when volumes are stopped under disk pressure conditions.
 
 To mitigate the issues, replace `longhorn-manager:v1.10.1` with the hotfixed image `longhorn-manager:v1.10.1-hotfix-2`.
 
