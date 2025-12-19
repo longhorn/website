@@ -12,6 +12,7 @@ Volume conditions describe the current status of a volume and potential issues t
     Longhorn allows you to create a maximum of 250 snapshots for each volume. For more information about configuring the maximum snapshot count, see [Snapshot Space Management](../../../snapshots-and-backups/snapshot-space-management).
 - `Restore`: Longhorn is restoring the volume from a backup.
 - `WaitForBackingImage`: The replicas have not started because the backing images must first be synced with their disks.
+- `OfflineRebuildingInProgress`: The volume is being rebuilt using offline rebuilding.
 
 ## Engine Conditions
 
