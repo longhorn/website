@@ -607,7 +607,7 @@ Applies only to the V2 Data Engine. Specifies the default write bandwidth limit,
 
 #### Manager URL
 
-> Default: `` (empty)
+> Default: ""
 
 > Example: `https://longhorn.example.com` or `https://longhorn.example.com:8443`
 
