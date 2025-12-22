@@ -18,6 +18,8 @@ weight: 3
 | longhorn_volume_write_latency | Write latency of this volume (ns) | longhorn_volume_write_latency{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 100000 |
 | longhorn_volume_file_system_read_only | This metric indicates that the volume is now in read-only mode. The metric is either 1 or no record for each volume | longhorn_volume_file_system_read_only{node="worker-2",pvc="testvol",pvc_namespace="default",volume="testvol"} 1
 
+| longhorn_volume_last_backup_at | Unix timestamp of the last successful backup of this volume, or 0 if no such backup exists | longhorn_volume_last_backup_at{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 1.766365578e+09 |
+
 ## Node
 
 | Name | Description  | Example |
