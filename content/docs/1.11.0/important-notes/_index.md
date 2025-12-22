@@ -18,6 +18,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Consolidation of Longhorn Settings](#consolidation-of-longhorn-settings)
   - [System Info Category in Setting](#system-info-category-in-setting)
   - [Volume Attachment Summary](#volume-attachment-summary)
+  - [Manager URL for External API Access](#manager-url-for-external-api-access)
 - [Scheduling](#scheduling)
   - [Pod Scheduling with CSIStorageCapacity](#pod-scheduling-with-csistoragecapacity)
   - [Replica Scheduling with Balance Algorithm](#replica-scheduling-with-balance-algorithm)
@@ -124,6 +125,21 @@ For more details, see [Issue #11656](https://github.com/longhorn/longhorn/issues
 The UI now display a summary of attachment tickets on each volume overview page for improved visibility into volume state.
 
 For more details, see [Issue #11400](https://github.com/longhorn/longhorn/issues/11400) and [Issue #11401](https://github.com/longhorn/longhorn/issues/11401).
+
+### Manager URL for External API Access
+
+Longhorn v{{< current-version >}} introduces the `manager-url` setting that allows explicit configuration of the external URL for accessing the Longhorn Manager API.
+
+**Background**: When Longhorn Manager is accessed through Ingress or Gateway API HTTPRoute, API responses may contain internal cluster IPs (e.g., `10.42.x.x:9500`) in the `actions` and `links` fields. This occurs when the ingress controller does not properly set `X-Forwarded-*` headers, causing the API to fall back to the internal pod IP.
+
+**Solution**: Configure the `manager-url` setting with your external URL (e.g., `https://longhorn.example.com`). The Manager will inject proper forwarded headers to ensure API responses contain correct external URLs.
+
+**Configuration**:
+- **Via Helm**: `--set defaultSettings.managerUrl="https://longhorn.example.com"`
+- **Via kubectl**: `kubectl -n longhorn-system patch settings.longhorn.io manager-url --type='merge' -p '{"value":"https://longhorn.example.com"}'`
+- **Via UI**: Settings > General > Manager URL
+
+For more details, see [Manager URL](../references/settings#manager-url).
 
 ## Scheduling
 
