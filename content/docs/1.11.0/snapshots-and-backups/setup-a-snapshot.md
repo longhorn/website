@@ -87,7 +87,7 @@ snapshot.longhorn.io "longhorn-test-snapshot" deleted
 
 > **Note**: Longhorn automatically handles the cleanup of the underlying data.
 
-##### Data Engine Behavioral Differences
+## Data Engine Behavioral Differences
 
 When deleting a snapshot that is the direct parent of the **Volume Head** (the current active state), the behavior of the Snapshot Custom Resource (CR) depends on the Data Engine being used:
 
