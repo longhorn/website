@@ -20,6 +20,7 @@ Once the snapshot is created, you will see it in the list of snapshots for the v
 On the **Volume Details** page, the **Snapshots and Backups** section displays the snapshot history as a chain. By default, the **Show System Snapshots** option is **enabled**, meaning all system-created snapshots are displayed automatically.
 
 Each snapshot in the chain is color-coded to indicate its type or status, following a specific priority (highest status is displayed if multiple apply). 
+
 | Snapshot Type | Color | Description | Priority (1 = Highest) |
 | :--- | :--- | :--- | :--- |
 | **Error** | Red | Indicates a snapshot that failed during creation or has an issue. | 1 |
@@ -85,3 +86,15 @@ snapshot.longhorn.io "longhorn-test-snapshot" deleted
 ```
 
 > **Note**: Longhorn automatically handles the cleanup of the underlying data.
+
+##### Data Engine Behavioral Differences
+
+When deleting a snapshot that is the direct parent of the **Volume Head** (the current active state), the behavior of the Snapshot Custom Resource (CR) depends on the Data Engine being used:
+
+| Behavior | v1 Data Engine | v2 Data Engine (SPDK) |
+| :--- | :--- | :--- |
+| **CR Persistence** | The Snapshot CR **remains** in the system. | The Snapshot CR is **immediately removed**. |
+| **Status Fields** | `READYTOUSE` becomes `false` and the snapshot is marked as `Removed`. | Not applicable, because the Snapshot CR is deleted. |
+| **Explanation** | v1 volumes cannot physically merge the parent of a live volume head immediately. The CR remains to track the snapshot data until a later merge or cleanup operation. | v2 volumes support live merging of the parent snapshot into the volume head, allowing for immediate cleanup of both data and metadata. |
+
+This difference is expected. If you are using a **v2 volume** and the Snapshot CR disappears immediately after a deletion command, this indicates that the SPDK-based data engine has successfully merged the parent snapshot into the volume head and finalized the deletion. For **v1 volumes**, the snapshot remains visible but unusable until the volume is detached or the snapshot chain is later cleaned up by the engine.
