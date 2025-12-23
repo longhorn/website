@@ -97,4 +97,4 @@ When deleting a snapshot that is the direct parent of the **Volume Head** (the c
 | **Status Fields** | `READYTOUSE` becomes `false` and the snapshot is marked as `Removed`. | Not applicable, because the Snapshot CR is deleted. |
 | **Explanation** | v1 volumes cannot physically merge the parent of a live volume head immediately. The CR remains to track the snapshot data until a later merge or cleanup operation. | v2 volumes support live merging of the parent snapshot into the volume head, allowing for immediate cleanup of both data and metadata. |
 
-This difference is expected. If you are using a **v2 volume** and the Snapshot CR disappears immediately after a deletion command, this indicates that the SPDK-based data engine has successfully merged the parent snapshot into the volume head and finalized the deletion. For **v1 volumes**, the snapshot remains visible but unusable until the volume is detached or the snapshot chain is later cleaned up by the engine.
+This behavioral difference is expected. In **v2 volumes**, the immediate disappearance of the Snapshot CR indicates that the SPDK-based engine has successfully finalized the deletion and merged the data.
