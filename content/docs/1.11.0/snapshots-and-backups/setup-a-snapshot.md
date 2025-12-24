@@ -91,10 +91,10 @@ snapshot.longhorn.io "longhorn-test-snapshot" deleted
 
 When deleting a snapshot that is the direct parent of the **Volume Head** (the current active state), the behavior of the Snapshot Custom Resource (CR) depends on the Data Engine being used:
 
-| Behavior | v1 Data Engine | v2 Data Engine (SPDK) |
+| Behavior | v1 Data Engine | v2 Data Engine |
 | :--- | :--- | :--- |
 | **CR Persistence** | The Snapshot CR **remains** in the system. | The Snapshot CR is **immediately removed**. |
 | **Status Fields** | `READYTOUSE` becomes `false` and the snapshot is marked as `Removed`. | Not applicable, because the Snapshot CR is deleted. |
 | **Explanation** | v1 volumes cannot physically merge the parent of a live volume head immediately. The CR remains to track the snapshot data until a later merge or cleanup operation. | v2 volumes support live merging of the parent snapshot into the volume head, allowing for immediate cleanup of both data and metadata. |
 
-This behavioral difference is expected. In **v2 volumes**, the immediate disappearance of the Snapshot CR indicates that the SPDK-based engine has successfully finalized the deletion and merged the data.
+This behavioral difference is expected. In **v2 volumes**, the immediate disappearance of the Snapshot CR indicates that the engine has successfully finalized the deletion and merged the data.
