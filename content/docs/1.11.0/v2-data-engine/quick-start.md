@@ -333,7 +333,7 @@ losetup -j blockfile
 
 > **Note:**
 >
-> Starting from version 1.11.0, Longhorn prevents adding block disks that contain an existing filesystem or partition table to avoid unexpected data loss. Ensure the disk is clean before adding it by running:
+> Starting with version 1.11.0, Longhorn prevents adding block disks that contain an existing file system or partition table to avoid unexpected data loss. Ensure the disk is clean before adding it by running:
 > ```
 > wipefs -a /path/to/block/device
 > ```
