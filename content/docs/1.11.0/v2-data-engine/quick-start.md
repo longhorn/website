@@ -339,7 +339,7 @@ losetup -j blockfile
 > ```
 > If the disk contains an existing filesystem or partition table, the disk add operation will fail.
 
-You can add the disk by navigating to the Node UI page and specify the `Disk Type` as `Block`. Next, provide the block device's path in the `Path` field.
+You can add the disk by navigating to the Node UI page and specifying the `Disk Type` as `Block`. Next, provide the block device's path in the `Path` field.
 
 Or, edit the `node.longhorn.io` resource.
 ```
