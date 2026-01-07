@@ -68,7 +68,7 @@ If the workload has been shut down and the volume is stuck flapping, follow thes
 
 ### 1. Clear the Migration Metadata
 
-Force the volume to drop the migration reference in its status subresource. This stops the controller from attempting to finalize a non-existent migration.
+Force the volume to drop the migration reference in its status subresource. This stops the controller from attempting to finalize a nonexistent migration.
 
 ```bash
 kubectl patch -n longhorn-system volume <VOLUME_NAME> \
