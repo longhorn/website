@@ -55,38 +55,6 @@ Automated pre-upgrade checks do not cover all scenarios. Manual checks via kubec
 - Avoid upgrading if a failed BackingImage exists. See [Backing Image](../advanced-resources/backing-image/backing-image) for details.
 - Creating a [Longhorn system backup](../advanced-resources/system-backup-restore/backup-longhorn-system) before upgrading is recommended to ensure recoverability.
 
-### Consolidation of Longhorn Settings
-
-Settings have been consolidated for easier management across V1 and V2 Data Engines. Each setting now uses one of the following formats:
-
-- Single value for all supported Data Engines
-  - Format: Non-JSON string (e.g., `1024`)
-  - The value applies to all supported Data Engines and must be the same across them.
-  - Data-engine-specific values are not allowed.
-- Data-engine-specific values for V1 and V2 Data Engines
-  - Format: JSON object (e.g., `{"v1": "value1", "v2": "value2"}`)
-  - Allows specifying different values for V1 and V2 Data Engines.
-- Data-engine-specific values for V1 Data Engine only
-  - Format: JSON object with `v1` key only (e.g., `{"v1": "value1"}`)
-  - Only the V1 Data Engine can be configured; the V2 Data Engine is not affected.
-- Data-engine-specific values for V2 Data Engine only
-  - Format: JSON object with `v2` key only (e.g., `{"v2": "value1"}`)
-  - Only the V2 Data Engine can be configured; the V1 Data Engine is not affected.
-
-For more information, see [Longhorn Settings](../references/settings).
-
-### System Info Category in Setting
-
-A new **System Info** category has been added to show cluster-level information more clearly.
-
-For more details, see [Issue #11656](https://github.com/longhorn/longhorn/issues/11656)
-
-### Volume Attachment Summary
-
-The UI now display a summary of attachment tickets on each volume overview page for improved visibility into volume state.
-
-For more details, see [Issue #11400](https://github.com/longhorn/longhorn/issues/11400) and [Issue #11401](https://github.com/longhorn/longhorn/issues/11401).
-
 ### Manager URL for External API Access
 
 Longhorn v{{< current-version >}} introduces the `manager-url` setting that allows explicit configuration of the external URL for accessing the Longhorn Manager API.
