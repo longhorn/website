@@ -125,6 +125,13 @@ For more details, see [Fast Replica Rebuilding](./fast-replica-rebuilding).
     1. Manually disable `auto-cleanup-system-generated-snapshot before doing maintenance` before performing maintenance.
     2. Take user-created snapshots of all volumes before starting maintenance.
     3. Use a recurring job to take snapshots regularly.
+- **Scale Replica Rebuilding**
+  - **Why it matters**:  
+    Scale replica rebuilding allows a rebuilding replica to fetch snapshots from multiple healthy replicas concurrently, significantly improving rebuild performance for certain workload patterns.
+  - **How to enable**:  
+    Set `replica-rebuild-concurrent-sync-limit` > 1 to allow multiple healthy replicas to start sync servers. The rebuilding replica then fetches different snapshots from different source replicas simultaneously. This feature is particularly beneficial for volumes with scattered small data chunks and holes in their snapshots.
+    
+    For more details, see [Scale Replica Rebuilding](./scale-replica-rebuilding).
 
 ## Use Cases
 
@@ -166,6 +173,7 @@ If a worker node is drained for short-term maintenance and then quickly restored
 | `snapshot-data-integrity-immediate-check-after-snapshot-creation` | `false` | If enabled, checksums are computed immediately after snapshot creation. |
 | `replica-replenishment-wait-interval` | `600` |    Time in seconds to wait before creating a new replica, allowing reuse of failed replicas. |
 | `concurrent-replica-rebuild-per-node-limit` | `5` | Limits the number of concurrent replica rebuilds per node. |
+| `replica-rebuild-concurrent-sync-limit` | `1` | Maximum number of healthy replicas that can sync to a rebuilding replica concurrently. Range: 1-5. Setting to 1 disables scale rebuilding. |
 | `offline-replica-rebuilding` | `false` | Determines if degraded replicas are rebuilt while the volume is detached. |
 ||||
 
@@ -195,3 +203,7 @@ If a worker node is drained for short-term maintenance and then quickly restored
   - Default: `5`
     - **High limit**: May overload node resources and slow down rebuilds and workloads.
     - **Low limit**: Reduces resource strain but may increase total rebuild duration due to queuing.
+- **[replica-rebuild-concurrent-sync-limit](../../references/settings#replica-rebuild-concurrent-sync-limit)**
+  - Default: `1`
+    - When set to `1`, scale rebuilding is disabled and only traditional single-source rebuilding is used with minimal resource consumption. When set to values 2-5, enables scale rebuilding with multiple source replicas, providing significant performance improvement for volumes. However, higher values increase CPU consumption on source and destination replicas.
+    - This setting can be overridden by `volume.spec.RebuildConcurrentSyncLimit` on a per-volume basis.
