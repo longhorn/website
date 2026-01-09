@@ -94,6 +94,7 @@ weight: 1
   - [V1 Data Engine](#v1-data-engine)
   - [V2 Data Engine](#v2-data-engine)
   - [Concurrent Replica Rebuild Per Node Limit](#concurrent-replica-rebuild-per-node-limit)
+  - [Replica Rebuild Concurrent Sync Limit](#replica-rebuild-concurrent-sync-limit)
   - [Concurrent Backing Image Replenish Per Node Limit](#concurrent-backing-image-replenish-per-node-limit)
   - [Kubernetes Taint Toleration](#kubernetes-taint-toleration)
   - [Priority Class](#priority-class)
@@ -1033,6 +1034,18 @@ Typically, Longhorn can block the replica starting once the current rebuilding c
 >  - The old setting "Disable Replica Rebuild" is replaced by this setting.
 >  - Different from relying on replica starting delay to limit the concurrent rebuilding, if the rebuilding is disabled, replica object replenishment will be directly skipped.
 >  - When the value is 0, the eviction and data locality feature won't work. But this shouldn't have any impact to any current replica rebuild and backup restore.
+
+#### Replica Rebuild Concurrent Sync Limit
+
+> Default: `{"v1":"1"}`
+
+This setting defines the maximum number of healthy replicas (from 1 to 5) that can concurrently synchronize snapshots to a single rebuilding replica, enabling scaled replica rebuilding.
+
+When set to `1` (default), only one source replica syncs to the rebuilding replica at a time, which is the traditional single-source rebuilding behavior. When set to a higher value (e.g., `2` to `5`), multiple healthy replicas can sync different snapshots to the rebuilding replica simultaneously, potentially reducing rebuild time.
+
+**Per-volume override:** This setting can be overridden for individual volumes through the Longhorn UI or by modifying the `spec.rebuildConcurrentSyncLimit` field in the Volume custom resource.
+
+For more details, see [Scale Replica Rebuilding](../../advanced-resources/rebuilding/scale-replica-rebuilding).
 
 #### Concurrent Backing Image Replenish Per Node Limit
 
