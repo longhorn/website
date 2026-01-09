@@ -53,7 +53,7 @@ grep "profile: cis" /etc/rancher/rke2/config.yaml
 
 **Description**:
 
-Ensure required kernel modules (`dm_crypt`, `iscsi_tcp`) and tools are loaded and restricted to root/privileged execution.
+Ensure the required kernel modules (`dm_crypt`, `iscsi_tcp`) and tools are loaded and restricted to root/privileged execution.
 
 **Discussion**:
 
@@ -71,7 +71,7 @@ longhornctl check preflight
 
 **Remediation/Fix**:
 
-Install required packages and enable the iSCSI daemon on the host:
+Install the required packages and enable the iSCSI daemon on the host:
 
 ```bash
 # SUSE/OpenSUSE
@@ -120,7 +120,7 @@ Encrypt data-at-rest using `dm_crypt` and Kubernetes Secrets.
 
 **Discussion**:
 
-Encryption protects volume data against unauthorized access if physical media is compromised. Longhorn utilizes `dm_crypt` and `cryptsetup` on the node. Encryption configuration is managed via StorageClass parameters referencing a Kubernetes Secret.
+Encryption protects volume data against unauthorized access if the physical media is compromised. Longhorn uses `dm_crypt` and `cryptsetup` on the node. Encryption configuration is managed through StorageClass parameters referencing a Kubernetes Secret.
 
 **Audit/Check**:
 
@@ -194,7 +194,7 @@ This section isolates storage traffic and enforces strict network policies to pr
 
 **Description**:
 
-Isolate Longhorn namespace traffic using explicit Allow lists.
+Isolate the Longhorn namespace traffic using explicit Allow lists.
 
 **Discussion**:
 
