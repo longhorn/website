@@ -13,6 +13,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Upgrade Check Events](#upgrade-check-events)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
+  - [Manager URL for External API Access](#manager-url-for-external-api-access)
 - [Scheduling](#scheduling)
   - [Replica Scheduling with Balance Algorithm](#replica-scheduling-with-balance-algorithm)
 - [Monitoring](#monitoring)
@@ -50,6 +51,21 @@ Automated pre-upgrade checks do not cover all scenarios. Manual checks via kubec
 - Avoid upgrading when volumes are "Faulted", as unusable replicas may be deleted, causing permanent data loss if no backups exist.
 - Avoid upgrading if a failed BackingImage exists. See [Backing Image](../advanced-resources/backing-image/backing-image) for details.
 - Creating a [Longhorn system backup](../advanced-resources/system-backup-restore/backup-longhorn-system) before upgrading is recommended to ensure recoverability.
+
+### Manager URL for External API Access
+
+Longhorn v{{< current-version >}} introduces the `manager-url` setting that allows explicit configuration of the external URL for accessing the Longhorn Manager API.
+
+**Background**: When Longhorn Manager is accessed through Ingress or Gateway API HTTPRoute, API responses may contain internal cluster IPs (e.g., `10.42.x.x:9500`) in the `actions` and `links` fields. This occurs when the ingress controller does not properly set `X-Forwarded-*` headers, causing the API to fall back to the internal pod IP.
+
+**Solution**: Configure the `manager-url` setting with your external URL (e.g., `https://longhorn.example.com`). The Manager will inject proper forwarded headers to ensure API responses contain correct external URLs.
+
+**Configuration**:
+- **Via Helm**: `--set defaultSettings.managerUrl="https://longhorn.example.com"`
+- **Via kubectl**: `kubectl -n longhorn-system patch settings.longhorn.io manager-url --type='merge' -p '{"value":"https://longhorn.example.com"}'`
+- **Via UI**: Settings > General > Manager URL
+
+For more details, see [Manager URL](../references/settings#manager-url).
 
 ## Scheduling
 
