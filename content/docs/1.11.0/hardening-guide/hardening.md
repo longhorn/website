@@ -4,38 +4,30 @@ This guide provides security controls and remediation steps for hardening a stan
 
 ## 1. Infrastructure & Node Security
 
-This section aligns the underlying Kubernetes nodes with CIS benchmarks and ensures secure kernel configurations for storage operations.
+This section hardens the underlying Kubernetes nodes to ensure they meet CIS benchmark requirements and provide a stable, secure foundation for Longhorn storage operations.
 
 ### 1.1 RKE2/K3s CIS Profile Enforcement
 
-**Description**:
+#### Overview
 
-Configure the Kubernetes distribution to enforce Center for Internet Security (CIS) benchmarks by applying specific security profiles and kernel parameters.
+This control ensures that the Kubernetes distribution (RKE2 or K3s) is running with a CIS benchmark profile and that kernel defaults are protected from runtime modification. These settings enforce hardened defaults for kubelet, kube-apiserver, and host kernel behavior.
 
-**Discussion**:
+For Longhorn, enforcing CIS profiles is critical because storage components interact directly with the host kernel, block devices, and network stack. Misaligned kernel behavior can lead to data corruption or node instability.
 
-RKE2 and K3s are hardened by default but require manual intervention to fully pass CIS controls. Hardened clusters restrict functionality, such as Pod Security Standards and kernel defaults. Specifically, RKE2 must be started with a CIS profile flag, and the host kernel must be configured to panic on specific errors to prevent data corruption during instability.
+#### Security Recommendation
 
-**Audit/Check**:
+Run RKE2/K3s with a CIS profile enabled and enforce kernel defaults using `protect-kernel-defaults`. Configure kernel panic behavior to fail fast during unrecoverable errors.
 
-Verify the RKE2 configuration uses the CIS profile and checks kernel parameters:
+#### Configuration
 
-```bash
-grep "profile: cis" /etc/rancher/rke2/config.yaml
-```
-
-*Pass*: Output includes `profile: "cis-1.23"` (or compliant version) and `protect-kernel-defaults: true`.
-
-**Remediation/Fix**:
-
-1. Create or update `/etc/rancher/rke2/config.yaml` on all nodes:
+1. Create or update `/etc/rancher/rke2/config.yaml` on **all nodes**:
 
     ```yaml
     profile: "cis-1.23"
     protect-kernel-defaults: true
     ```
 
-2. Apply the required kernel parameters as defined in the RKE2 hardening guide:
+2. Apply the required kernel parameters as defined in the RKE2 hardening guidance:
 
     ```bash
     cat << EOF > /etc/sysctl.d/60-rke2-cis.conf
@@ -44,175 +36,216 @@ grep "profile: cis" /etc/rancher/rke2/config.yaml
     kernel.panic=10
     kernel.panic_on_oops=1
     EOF
+
     systemctl restart systemd-sysctl
     ```
 
-3. Restart the RKE2 service.
+3. Restart the RKE2 service on each node.
+
+#### Verification
+
+Verify that the RKE2 configuration uses the CIS profile and checks kernel parameters:
+
+```bash
+grep "profile: cis" /etc/rancher/rke2/config.yaml
+```
+
+**Pass**: Output includes `profile: "cis-1.23"` (or another compliant CIS version) and `protect-kernel-defaults: true`.
+
+#### Impact / Notes
+
+- Enabling CIS profiles may restrict pod capabilities, hostPath usage, and sysctl overrides.
+- Kernel panic settings favor data integrity over availability by rebooting nodes during fatal kernel errors.
+- All nodes must be configured consistently.
 
 ### 1.2 Host-Level Kernel Dependencies
 
-**Description**:
+#### Overview
 
-Ensure the required kernel modules (`dm_crypt`, `iscsi_tcp`) and tools are loaded and restricted to root/privileged execution.
+Longhorn requires specific kernel modules and host utilities to attach, encrypt, and manage block devices. In CIS-hardened environments, these dependencies are not guaranteed to be present or loaded by default.
 
-**Discussion**:
+Failure to load these modules results in Longhorn volume attachment failures and node-level errors.
 
-Longhorn requires `iscsi_tcp` for volume attachment and `dm_crypt` for volume encryption. In hardened environments, verify these are loaded to prevent startup failures. The `longhornctl` tool validates these preflight requirements.
+#### Security Recommendation
 
-**Audit/Check**:
+Ensure that required kernel modules (`iscsi_tcp`, `dm_crypt`) and supporting packages are installed, loaded, and restricted to privileged execution on the host.
 
-Run the Longhorn CLI preflight check:
+#### Configuration
+
+1. Install required packages and enable the iSCSI daemon:
+
+      ```bash
+      # SUSE / openSUSE
+      zypper install -y open-iscsi cryptsetup device-mapper
+      systemctl enable --now iscsid
+      ```
+
+2. Load the required kernel modules:
+
+      ```bash
+      modprobe iscsi_tcp dm_crypt
+      ```
+
+#### Verification
+
+Run the Longhorn preflight check:
 
 ```bash
 longhornctl check preflight
 ```
 
-*Pass*: Output confirms `Successfully probed module iscsi_tcp` and `Successfully probed module dm_crypt`.
+**Pass**: Output includes:
 
-**Remediation/Fix**:
+- `Successfully probed module iscsi_tcp`
+- `Successfully probed module dm_crypt`
 
-Install the required packages and enable the iSCSI daemon on the host:
+#### Impact / Notes
 
-```bash
-# SUSE/OpenSUSE
-zypper install -y open-iscsi cryptsetup device-mapper
-systemctl enable --now iscsid
-modprobe iscsi_tcp dm_crypt
-```
+- These modules must be present on **every node** that can host Longhorn replicas.
+- Module loading requires root privileges and must comply with node hardening policies.
 
 ## 2. Storage & Data Integrity
 
-This section secures data at rest and ensures Longhorn components operate within filesystem constraints enforced by CIS benchmarks.
+This section secures data at rest and ensures Longhorn components operate correctly under filesystem and permission constraints imposed by CIS benchmarks.
 
 ### 2.1 Backupstore Non-Root Filesystem Compliance
 
-**Description**:
+#### Overview
 
-Configure backup targets to avoid restricted root directories (`/root`).
+CIS-hardened systems restrict write access to root-owned directories such as `/root`. Longhorn backupstore components (for example, MinIO-based backup targets) may fail if they rely on default paths under `/root`.
 
-**Discussion**:
+This control ensures backupstores operate from non-root, writable paths that comply with hardened filesystem policies.
 
-CIS-hardened clusters restrict access to the root filesystem. Automation logs indicate that default backupstore configurations targeting `/root` fail due to permission errors. Components must utilize non-root paths (for example, `/storage`) to function correctly in hardened environments.
+#### Security Recommendation
 
-**Audit/Check**:
+Configure all backupstore components to use non-root filesystem paths (for example, `/storage` or `/tmp`) and explicitly define certificate locations.
 
-Inspect backupstore deployment manifests for host paths mounting `/root`:
+#### Configuration
+
+Refactor backupstore configurations as follows:
+
+1. **MinIO Home Directory** 
+
+    - Change from `/root` to `/storage`.
+
+2. **Certificate Mounts** 
+    
+    - Change from `/root/certs` to `/tmp/certs`.
+
+3. **Server Flags**
+
+    - Explicitly define certificate paths using flags such as `--certs-dir` instead of relying on defaults.
+
+#### Verification
+
+Inspect Longhorn manifests for restricted root paths:
 
 ```bash
 kubectl get deployment -n longhorn-system -o yaml | grep "path: /root"
 ```
 
-*Pass*: No output returning `/root` mounts.
+**Pass**: No output referencing `/root`.
 
-**Remediation/Fix**:
+#### Impact / Notes
 
-Refactor backupstore configurations to use compliant paths as validated in hardened cluster tests:
-
-1. **MinIO Home:** Change from `/root` to `/storage`.
-2. **Certificate Mounts:** Change from `/root/certs` to `/tmp/certs`.
-3. **Server Flags:** Explicitly define cert paths using flags like `--certs-dir` rather than relying on defaults.
+- Backupstore pods may need to be restarted after path changes.
+- Ensure selected directories are writable and comply with SELinux/AppArmor policies where applicable.
 
 ### 2.2 Volume Encryption (LUKS)
 
-**Description**:
+#### Overview
 
-Encrypt data-at-rest using `dm_crypt` and Kubernetes Secrets.
+Volume encryption protects data at rest if physical disks or nodes are compromised. Longhorn implements encryption using `dm_crypt` (LUKS) on the host and manages keys through Kubernetes Secrets.
 
-**Discussion**:
+#### Security Recommendation
 
-Encryption protects volume data against unauthorized access if the physical media is compromised. Longhorn uses `dm_crypt` and `cryptsetup` on the node. Encryption configuration is managed through StorageClass parameters referencing a Kubernetes Secret.
+Enable Longhorn volume encryption using LUKS and store encryption keys in Kubernetes Secrets scoped to the `longhorn-system` namespace.
 
-**Audit/Check**:
+#### Configuration
 
-Verify the StorageClass includes encryption parameters:
+1. Create the encryption secret:
+
+      ```bash
+      kubectl create secret generic longhorn-crypto \
+        --from-literal=CRYPTO_KEY_VALUE="<PROVISION_KEY>" \
+        --from-literal=CRYPTO_KEY_PROVIDER="secret" \
+        --namespace longhorn-system
+      ```
+
+2. Define the encrypted StorageClass:
+
+      ```yaml
+      kind: StorageClass
+      apiVersion: storage.k8s.io/v1
+      metadata:
+        name: longhorn-crypto
+      provisioner: driver.longhorn.io
+      parameters:
+        encrypted: "true"
+        csi.storage.k8s.io/provisioner-secret-name: "longhorn-crypto"
+        csi.storage.k8s.io/provisioner-secret-namespace: "longhorn-system"
+        csi.storage.k8s.io/node-publish-secret-name: "longhorn-crypto"
+        csi.storage.k8s.io/node-publish-secret-namespace: "longhorn-system"
+      ```
+
+#### Verification
 
 ```bash
 kubectl get storageclass longhorn-crypto -o yaml
 ```
 
-*Pass*: Output includes `encrypted: "true"`.
+**Pass**: Output includes `encrypted: "true"`.
 
-**Remediation/Fix**:
+#### Impact / Notes
 
-1. Create the secret in `longhorn-system`:
-    ```bash
-    kubectl create secret generic longhorn-crypto \
-      --from-literal=CRYPTO_KEY_VALUE="<PROVISION_KEY>" \
-      --from-literal=CRYPTO_KEY_PROVIDER="secret" \
-      --namespace longhorn-system
-    ```
-    
-2. Define the StorageClass:
-    ```yaml
-    kind: StorageClass
-    apiVersion: storage.k8s.io/v1
-    metadata:
-      name: longhorn-crypto
-    provisioner: driver.longhorn.io
-    parameters:
-      encrypted: "true"
-      csi.storage.k8s.io/provisioner-secret-name: "longhorn-crypto"
-      csi.storage.k8s.io/provisioner-secret-namespace: "longhorn-system"
-      csi.storage.k8s.io/node-publish-secret-name: "longhorn-crypto"
-      csi.storage.k8s.io/node-publish-secret-namespace: "longhorn-system"
-    ```
+- Encryption introduces minor CPU overhead during I/O operations.
+- Encryption keys must be backed up securely; loss of keys results in permanent data loss.
 
 ### 2.3 Snapshot Data Integrity
 
-**Description**:
+#### Overview
 
-Enable periodic hashing and integrity checks for snapshot disk files.
+Snapshot data integrity checks detect silent data corruption (bit rot) that may not be visible to the filesystem. Longhorn can hash snapshot files to detect unexpected changes.
 
-**Discussion**:
+#### Security Recommendation
 
-To detect filesystem-unaware corruption (bit rot), Longhorn can hash snapshot files. The `fast-check` mode minimizes performance impact by only hashing files if metadata changes are detected.
+Enable snapshot data integrity checks using `fast-check` mode to balance performance and protection.
 
-**Audit/Check**:
-
-Check the global setting:
-
-```bash
-kubectl -n longhorn-system get setting snapshot-data-integrity
-```
-
-*Pass*: Value is `fast-check` or `enabled`.
-
-**Remediation/Fix**:
-
-Apply the setting via `kubectl`:
+#### Configuration
 
 ```bash
 kubectl -n longhorn-system patch setting snapshot-data-integrity \
   --type=merge -p '{"value": "fast-check"}'
 ```
 
+#### Verification
+
+```bash
+kubectl -n longhorn-system get setting snapshot-data-integrity
+```
+
+**Pass**: Value is `fast-check` or `enabled`.
+
+#### Impact / Notes
+
+- `fast-check` hashes snapshots only when metadata changes are detected.
+- Full integrity checking increases I/O overhead.
+
 ## 3. Network & Access Control
 
-This section isolates storage traffic and enforces strict network policies to prevent unauthorized lateral movement.
+This section restricts network communication to reduce lateral movement and isolate storage traffic.
 
 ### 3.1 Network Policy Enforcement
 
-**Description**:
+#### Overview
 
-Isolate the Longhorn namespace traffic using explicit Allow lists.
+In default-deny network environments, Longhorn components require explicit NetworkPolicies to communicate with each other and with backup targets.
 
-**Discussion**:
+#### Security Recommendation
 
-Hardened environments often operate under a "Default Deny" policy. Logs from hardened cluster testing confirm that explicit policies are required for backupstores and Longhorn components to communicate. Without these policies, operations like backups will fail due to dropped packets.
+Apply explicit ingress and egress NetworkPolicies to the `longhorn-system` namespace to allow only required traffic.
 
-**Audit/Check**:
-
-Verify active NetworkPolicies in the namespace:
-
-```bash
-kubectl -n longhorn-system get networkpolicies
-```
-
-*Pass*: Policies allow traffic for `longhorn-manager`, `instance-manager`, and backup targets (for example, MinIO/NFS).
-
-**Remediation/Fix**:
-
-Apply a NetworkPolicy that explicitly allows Longhorn internal traffic and backup target access. Ensure NFS ports are defined if using NFS backupstores.
+#### Configuration
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -233,7 +266,6 @@ spec:
     ports:
     - port: 9500
       protocol: TCP
-  # Add egress rules for Backup Target (for example, NFS port 2049)
   egress:
   - to:
     - ipBlock:
@@ -243,32 +275,48 @@ spec:
       protocol: TCP
 ```
 
+#### Verification
+
+```bash
+kubectl -n longhorn-system get networkpolicies
+```
+
+**Pass**: Policies exist and allow Longhorn internal and backup traffic.
+
+#### Impact / Notes
+
+- Incorrect policies will break backups and replica communication.
+- NFS, S3, or MinIO ports must be explicitly allowed.
+
 ### 3.2 Storage Network Isolation
 
-**Description**:
+#### Overview
 
-Segregate storage replication traffic to a dedicated interface.
+Storage replication traffic can be isolated to a dedicated network interface to reduce attack surface and prevent interference with control plane traffic.
 
-**Discussion**:
+#### Security Recommendation
 
-Isolating storage traffic prevents interference with control plane traffic and enhances security by restricting data replication to a specific network. This is configured via the `Storage Network` setting using a Multus NetworkAttachmentDefinition.
+Configure Longhorn to use a dedicated storage network via Multus.
 
-**Audit/Check**:
+#### Configuration
 
-Verify the storage network setting:
+1. Ensure a `NetworkAttachmentDefinition` exists.
+2. Apply the Longhorn setting:
+
+      ```bash
+      kubectl -n longhorn-system patch setting storage-network \
+        --type=merge -p '{"value": "kube-system/storage-net"}'
+      ```
+
+#### Verification
 
 ```bash
 kubectl -n longhorn-system get setting storage-network
 ```
 
-*Pass*: Value is set to a valid Multus definition (for example, `kube-system/storage-net`).
+**Pass**: Value references a valid Multus network.
 
-**Remediation/Fix**:
+#### Impact / Notes
 
-1. Ensure a NetworkAttachmentDefinition exists in the target namespace.
-2. Update the Longhorn setting:
-    ```bash
-    kubectl -n longhorn-system patch setting storage-network \
-      --type=merge -p '{"value": "kube-system/storage-net"}'
-    ```
-    *Note*: This will restart Instance Manager pods.
+- Instance Manager pods will restart when this setting changes.
+- Network misconfiguration may prevent replica synchronization.
