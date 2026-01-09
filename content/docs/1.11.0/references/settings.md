@@ -56,6 +56,7 @@ weight: 1
   - [Manager URL](#manager-url)
   - [Default Ublk Queue Depth](#default-ublk-queue-depth)
   - [Default Ublk Number Of Queue](#default-ublk-number-of-queue)
+  - [Node Disk Health Monitoring](#node-disk-health-monitoring)
 - [Snapshot](#snapshot)
   - [Snapshot Data Integrity](#snapshot-data-integrity)
   - [Immediate Snapshot Data Integrity Check After Creating a Snapshot](#immediate-snapshot-data-integrity-check-after-creating-a-snapshot)
@@ -647,6 +648,12 @@ The default depth of each queue for Ublk frontend. This setting applies to volum
 > Default: `{"v2":"1"}`
 
 The default the number of queues for ublk frontend. This setting applies to volumes using the V2 Data Engine with Ublk front end.
+
+#### Node Disk Health Monitoring
+
+> Default: `true`
+
+Controls whether Longhorn monitors and records health information for node disks. When disabled, disk health checks and status updates are skipped.
 
 ### Snapshot
 

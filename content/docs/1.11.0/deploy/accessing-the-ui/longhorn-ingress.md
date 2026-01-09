@@ -3,6 +3,8 @@
   weight: 1
 ---
 
+As of November 2025, the Kubernetes project has [announced the retirement of the ingress-nginx controller](https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/). While it is used here as a configuration example, users are encouraged to explore maintained alternatives such as Traefik, HAProxy, or other Gateway API-compliant controllers.
+
 If you install Longhorn on a Kubernetes cluster with kubectl or Helm, you will need to create an Ingress to allow external traffic to reach the Longhorn UI.
 
 Authentication is not enabled by default for kubectl and Helm installations. In these steps, you'll learn how to create an Ingress with basic authentication using annotations for the nginx ingress controller.
@@ -168,4 +170,5 @@ You will need to create an ELB (Elastic Load Balancer) to expose the nginx Ingre
 2. Create an ELB by following [these steps.](https://kubernetes.github.io/ingress-nginx/deploy/#aws)
 
 ## References
+
 https://kubernetes.github.io/ingress-nginx/

@@ -49,7 +49,7 @@ For Debian and Ubuntu, please install Linux kernel extra modules before loading 
 apt install -y linux-modules-extra-`uname -r`
 ```
 
-To configure the necessary kernel modules and huge pages for SPDK, you can use the [Longhorn CLI](../../advanced-resources/longhornctl/). 
+To configure the necessary kernel modules and huge pages for SPDK, you can use the [Longhorn CLI](../../advanced-resources/longhornctl/).
 
 Or, you can install them manually by following these steps.
 - Load the kernel modules on the each Longhorn node
@@ -242,7 +242,7 @@ worker1:
 
 Make sure everything is correctly configured and installed by
 ```
-longhornctl --kube-config ~/.kube/config --image longhornio/longhorn-cli:v{{< current-version >}} install preflight --enable-spdk
+longhornctl --kubeconfig ~/.kube/config --image longhornio/longhorn-cli:v{{< current-version >}} install preflight --enable-spdk
 ```
 
 See [Longhorn Command Line Tool](../../advanced-resources/longhornctl/) for more information.
@@ -331,7 +331,15 @@ losetup -j blockfile
 
 #### Add disks to `node.longhorn.io`
 
-You can add the disk by navigating to the Node UI page and specify the `Disk Type` as `Block`. Next, provide the block device's path in the `Path` field.
+> **Note:**
+>
+> Starting with version 1.11.0, Longhorn prevents adding block disks that contain an existing file system or partition table to avoid unexpected data loss. Ensure the disk is clean before adding it by running:
+> ```
+> wipefs -a /path/to/block/device
+> ```
+> If the disk contains an existing filesystem or partition table, the disk add operation will fail.
+
+You can add the disk by navigating to the Node UI page and specifying the `Disk Type` as `Block`. Next, provide the block device's path in the `Path` field.
 
 Or, edit the `node.longhorn.io` resource.
 ```
