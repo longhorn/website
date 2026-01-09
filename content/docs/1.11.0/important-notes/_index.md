@@ -16,6 +16,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Manager URL for External API Access](#manager-url-for-external-api-access)
 - [Scheduling](#scheduling)
   - [Replica Scheduling with Balance Algorithm](#replica-scheduling-with-balance-algorithm)
+  - [Supports StorageClass `allowedTopologies`](#supports-storageclass-allowedtopologies)
 - [Monitoring](#monitoring)
   - [Disk Health Monitoring](#disk-health-monitoring)
 - [Rebuilding](#rebuilding)
@@ -76,6 +77,12 @@ For more details, see [Manager URL](../references/settings#manager-url).
 To improve data distribution and resource utilization, Longhorn introduces a **balance algorithm** that schedules replicas evenly across nodes and disks based on calculated balance scores.
 
 For more information, see [Scheduling](../nodes-and-volumes/nodes/scheduling).
+
+### Supports StorageClass `allowedTopologies`
+
+Longhorn CSI now supports StorageClass `allowedTopologies`, enabling Kubernetes to automatically restrict pod and volume scheduling to nodes where Longhorn is available.
+
+For more information, see [Longhorn #12261](https://github.com/longhorn/longhorn/issues/12261) and [Storage Class Parameters](../references/storage-class-parameters).
 
 ## Monitoring
 
