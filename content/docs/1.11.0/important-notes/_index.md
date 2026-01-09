@@ -18,6 +18,8 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Replica Scheduling with Balance Algorithm](#replica-scheduling-with-balance-algorithm)
 - [Monitoring](#monitoring)
   - [Disk Health Monitoring](#disk-health-monitoring)
+- [Rebuilding](#rebuilding)
+  - [Scale Replica Rebuilding](#scale-replica-rebuilding)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
 
@@ -93,6 +95,14 @@ Starting with Longhorn v1.11.0, disk health monitoring is available for both V1 
 > - Available health attributes vary depending on disk type and hardware.
 
 For more information, see [Disk Health Monitoring](../monitoring/disk-heath).
+
+## Rebuilding
+
+### Scale Replica Rebuilding
+
+Starting with Longhorn v1.11.0, a new **scale replica rebuilding** feature allows a rebuilding replica to fetch snapshot data from multiple healthy replicas concurrently, potentially improving rebuild performance.
+
+For more information, see [Scale Replica Rebuilding](../advanced-resources/rebuilding/scale-replica-rebuilding).
 
 ## V2 Data Engine
 
