@@ -12,6 +12,10 @@ Longhorn creates a dedicated `share-manager-<volume-name>` Pod within the `longh
 
 {{< figure src="/img/diagrams/rwx/rwx-arch.png" >}}
 
+> **Notice: Deferred Share-Manager Pod Image Updates on Active RWX Volumes**
+>
+> Following a Longhorn system upgrade, when a Generic (Non-Migratable) RWX volume remains attached, modifications to the `spec.image` of the corresponding `share-manager` pod will not take effect immediately. The updated image is applied only after the volume is detached, at which point the pod is recreated with the new share-manager image. This behavior ensures volume stability and prevents disruption of active I/O operations.
+
 # Requirements
 
 It is necessary to meet the following requirements in order to use RWX volumes.
