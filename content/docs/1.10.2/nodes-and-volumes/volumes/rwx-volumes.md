@@ -5,12 +5,15 @@ weight: 4
 
 Longhorn supports ReadWriteMany (RWX) volumes by exposing regular Longhorn volumes via NFSv4 servers that reside in share-manager pods.
 
-
 # Introduction
 
 Longhorn creates a dedicated `share-manager-<volume-name>` Pod within the `longhorn-system` namespace for each RWX volume that is currently in active use. The Pod facilitates the export of Longhorn volume via an internally hosted NFSv4 server. Additionally, a corresponding Service is created for each RWX volume, serving as the designated endpoint for actual NFSv4 client connections.
 
 {{< figure src="/img/diagrams/rwx/rwx-arch.png" >}}
+
+> **Notice: Deferred Share-Manager Pod Image Updates on Active RWX Volumes**
+>
+> Following a Longhorn system upgrade, when a Generic (Non-Migratable) RWX volume remains attached, modifications to the `spec.image` of the corresponding `share-manager` pod will not take effect immediately. The updated image is applied only after the volume is detached, at which point the pod is recreated with the new share-manager image. This behavior ensures volume stability and prevents disruption of active I/O operations.
 
 # Requirements
 
