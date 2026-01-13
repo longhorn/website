@@ -95,7 +95,7 @@ status:
           lastTransitionTime:
 ```
 
-> **Note**: The reserved space configured is stored under `spec.disks.<disk-name>.storageReserved`.
+> **Note**: The reserved space value configured for the disk is stored under `spec.disks.<disk-name>.storageReserved`.
 
 These values map directly to those shown in the Longhorn UI.
 
@@ -105,7 +105,7 @@ These values map directly to those shown in the Longhorn UI.
 kubectl get nodes.longhorn.io ubuntu-lh-2 -n longhorn-system -o json | jq -r '
 .status.diskStatus
 | to_entries[]
-| "Disk: \(.key) Schedulable: \(.value.conditions[] | select(.type=="Schedulable") | .status) Message: \(.value.conditions[] | select(.type=="Schedulable") | .message)"'
+| "Disk: \(.key) Schedulable: \(.value.conditions[] | select(.type==\"Schedulable\") | .status) Message: \(.value.conditions[] | select(.type==\"Schedulable\") | .message)"'
 
 # replace ubuntu-lh-2 with your node name
 
@@ -116,12 +116,25 @@ kubectl get nodes.longhorn.io ubuntu-lh-2 -n longhorn-system -o json | jq -r '
 ### View node disk metrics in table format
 
 ```bash
-kubectl get nodes.longhorn.io -n longhorn-system \
-  -o custom-columns=NODE:.metadata.name,DISK:.status.diskStatus.*.diskPath,AVAILABLE:.status.diskStatus.*.storageAvailable,MAX:.status.diskStatus.*.storageMaximum,RESERVED:.spec.disks.*.storageReserved,SCHEDULED:.status.diskStatus.*.storageScheduled | column -t
+kubectl get nodes.longhorn.io -n longhorn-system -o json | jq -r '
+  .items[]
+  | . as $node
+  | .status.diskStatus
+  | to_entries[]
+  | [
+      $node.metadata.name,
+      .value.diskPath,
+      .value.storageAvailable,
+      .value.storageMaximum,
+      ($node.spec.disks[.key].storageReserved // "N/A"),
+      .value.storageScheduled
+    ]
+  | @tsv
+' | column -t
 
 # Sample Output:
-# NODE         DISK                AVAILABLE    MAX          RESERVED     SCHEDULED
 # ubuntu-lh-2  /var/lib/longhorn/  36175872000  51409092608  15422727782  2147483648
+# ubuntu-lh-2  /mnt/extra-disk    10000000000  20000000000  5000000000   1000000000
 ```
 
 ### Modify disk reserved space
@@ -136,14 +149,14 @@ kubectl get nodes.longhorn.io ubuntu-lh-2 -n longhorn-system -o yaml > lh-node.y
 # replace ubuntu-lh-2 with your node name
 ```
 
-2. Locate your disk entry under `spec.disks` and edit:
+2. Locate your disk entry under `spec.disks` and edit (`lh-node.yaml`):
 
 ```yaml
 spec:
   disks:
     default-disk-xxxx:
       path: /var/lib/longhorn/
-      storageReserved: 15422727782   # update this value with something appropriate like 21474836480
+      storageReserved: 15422727782   # update this value to your desired reserved space in bytes (for example, 21474836480 for 20 GiB). Choose a value based on how much disk space you want to reserve for the system or other applications.
 ```
 
 3. Apply the changes:
