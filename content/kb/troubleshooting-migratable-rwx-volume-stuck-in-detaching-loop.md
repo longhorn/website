@@ -5,21 +5,10 @@ authors:
 draft: false
 date: 2026-01-06
 versions:
-- ">= v1.4.2 and <= v1.7.0"
+- "< v1.10.0"
 categories:
 - "Migratable RWX volume"
 ---
-
-## Applicable versions
-
-**Confirmed working with**:
-
-- Longhorn `v1.4.2` (Harvester `v1.1.x` to `v1.2.x` upgrades)
-
-**Potentially applicable to**:
-
-- Longhorn versions prior to `v1.7.0`
-- Environments using Migratable RWX volumes with VM live migration
 
 ## Symptoms
 
@@ -56,17 +45,26 @@ Status:
   Attachment Ticket Statuses: <nil>
 ```
 
-## Reason
+## Root Cause
 
-This issue occurs when a live migration is interrupted—often by powering off the VM, a node failure, or an upgrade interruption—specifically during the "engine switching" phase.
+This issue occurs when a Migratable RWX live migration is interrupted commonly due to a VM being powered off, a node failure, or an upgrade event - specifically during the engine switching phase of the migration.
 
-Longhorn expects to switch the frontend from the source engine to the destination engine. If the workload is stopped during this transition, the engines may vanish, leaving the Volume Controller unable to find a "current" engine to finalize the switch. Because the `VolumeAttachment` CR still exists and holds a finalizer, the controller enters a reconciliation loop it cannot complete, causing the flapping state.
+During this phase, Longhorn expects to switch the frontend from the source engine to the destination engine. If the workload is stopped while this transition is in progress, both engines may be cleaned up or enter transient states.
+
+As a result:
+
+- The Volume object retains a non-empty `status.currentMigrationNodeID`.
+- The Volume Controller continues attempting to finalize a migration that no longer exists.
+- The controller cannot identify a valid current engine.
+- The volume enters an endless attach/detach reconciliation loop.
+
+In this scenario, the presence of a `VolumeAttachment` resource is a symptom rather than the root cause.
 
 ## Workaround
 
-If the workload has been shut down and the volume is stuck flapping, follow these steps to manually clear the migration metadata and "ghost" attachment.
+If the workload or VM has already been shut down and the volume is stuck flapping, manually clear the stale migration metadata from the Volume status.
 
-### 1. Clear the Migration Metadata
+### 1. Clear the `volume.status.currentMigrationNodeID`
 
 Force the volume to drop the migration reference in its status subresource. This stops the controller from attempting to finalize a nonexistent migration.
 
@@ -77,25 +75,7 @@ kubectl patch -n longhorn-system volume <VOLUME_NAME> \
   -p '{"status":{"currentMigrationNodeID":""}}'
 ```
 
-### 2. Remove the VolumeAttachment Finalizer
-
-The "ghost" LHVA prevents the volume from reaching a steady `detached` state. Manually remove the finalizer to allow the resource to be cleaned up.
-
-```bash
-kubectl patch -n longhorn-system volumeattachments.longhorn.io <VOLUME_NAME> \
-  --type=merge \
-  -p '{"metadata":{"finalizers":null}}'
-```
-
-### 3. Delete the Orphaned LHVA
-
-If the resource does not disappear automatically after stripping the finalizer, delete it manually:
-
-```bash
-kubectl delete volumeattachments.longhorn.io -n longhorn-system <VOLUME_NAME>
-```
-
-### 4. Verify State
+### 2. Verify State
 
 Confirm the volume has transitioned to the `detached` state.
 
@@ -106,9 +86,3 @@ pvc-840804...     detached   unknown
 ```
 
 You can now safely restart the VM or workload.
-
-## Related Information
-
-- [KB: Troubleshooting: Migratable RWX volume migration stuck](https://longhorn.io/kb/troubleshooting-rwx-volume-migration-stuck/) - For cases where migration tickets are present and "Satisfied" but the node is stuck in pre-drain.
-- [Longhorn Issue #12238](https://github.com/longhorn/longhorn/issues/12238)
-- Fixed in **Longhorn v1.7.0+**, which includes more robust handling for orphaned migration engines.
