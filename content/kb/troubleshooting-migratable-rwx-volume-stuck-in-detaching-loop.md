@@ -89,6 +89,5 @@ You can now safely restart the VM or workload.
 
 ## References
 
-- [KB: Troubleshooting: Migratable RWX volume migration stuck](https://longhorn.io/kb/troubleshooting-rwx-volume-migration-stuck/) - For cases where migration tickets are present and "Satisfied" but the node is stuck in pre-drain.
-- [Longhorn Issue #12238](https://github.com/longhorn/longhorn/issues/12238), and [Longhorn Issue #11479](https://github.com/longhorn/longhorn/issues/11479).
-- Fixed in **Longhorn v1.7.0+**, which includes more robust handling for orphaned migration engines.
+- [Longhorn Issue #12238](https://github.com/longhorn/longhorn/issues/12238)
+- [Longhorn Issue #11479](https://github.com/longhorn/longhorn/issues/11479)
