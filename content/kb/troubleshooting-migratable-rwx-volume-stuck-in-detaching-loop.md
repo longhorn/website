@@ -12,7 +12,7 @@ categories:
 
 ## Symptoms
 
-During a VM live migration or a cluster upgrade, a volume becomes stuck in an endless loop of flipping between `attaching` and `detaching` states. Unlike standard migration hangs where the volume stays `attached`, this loop prevents the volume from being used or cleanly detached.
+During a VM live migration or a cluster upgrade, a volume becomes stuck in an endless loop of flipping between `attaching` and `detaching` states.
 
 **Example volume state**: The volume remains stuck in `detaching` even if no workload is running.
 
@@ -86,3 +86,9 @@ pvc-840804...     detached   unknown
 ```
 
 You can now safely restart the VM or workload.
+
+## References
+
+- [KB: Troubleshooting: Migratable RWX volume migration stuck](https://longhorn.io/kb/troubleshooting-rwx-volume-migration-stuck/) - For cases where migration tickets are present and "Satisfied" but the node is stuck in pre-drain.
+- [Longhorn Issue #12238](https://github.com/longhorn/longhorn/issues/12238), and [Longhorn Issue #11479](https://github.com/longhorn/longhorn/issues/11479).
+- Fixed in **Longhorn v1.7.0+**, which includes more robust handling for orphaned migration engines.
