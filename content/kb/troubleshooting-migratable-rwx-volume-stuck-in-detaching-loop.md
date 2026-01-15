@@ -12,7 +12,15 @@ categories:
 
 ## Symptoms
 
-During a VM live migration or a cluster upgrade, a volume becomes stuck in an endless loop of flipping between `attaching` and `detaching` states.
+During a VM live migration or a cluster upgrade, a Migratable RWX volume may become stuck in an infinite reconciliation loop. While the volume appears to be unused, it fails to stay in a stable `detached` state, preventing any new workload from attaching to it.
+
+**Observed Behavior**:
+
+- **State Flapping**: The volume state continuously flips between `detached` and `detaching`.
+  - When an attach is attempted, Longhorn updates `status.currentNodeID`.
+  - Because a migration is internally marked as `"in-progress"` (due to stale metadata), Longhorn immediately tries to transition the volume to `detaching` to clean up, then back to `detached`.
+- **Metadata Mismatch**: The Volume `Spec.MigrationNodeID` is empty (`""`), but `Status.CurrentMigrationNodeID` still holds the ID of a previous migration target node.
+- **Missing Resources**: Associated Kubernetes `VolumeAttachment` objects have been removed, yet the Longhorn Volume object behaves as if a migration finalization is required.
 
 **Example volume state**: The volume remains stuck in `detaching` even if no workload is running.
 
