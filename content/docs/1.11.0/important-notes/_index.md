@@ -24,6 +24,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Scale Replica Rebuilding](#scale-replica-rebuilding)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
+  - [SPDK UBLK Performance Parameters](#spdk-ublk-performance-parameters)
 
 ## Deprecation
 
@@ -123,3 +124,18 @@ For more information, see [Scale Replica Rebuilding](../advanced-resources/rebui
 ### Longhorn System Upgrade
 
 Live upgrades of V2 volumes are **not supported**. Ensure all V2 volumes are detached before upgrading.
+
+### SPDK UBLK Performance Parameters
+
+Starting with Longhorn v1.11.0, the SPDK UBLK frontend exposes performance-tuning parameters that can be configured globally or per-volume:
+
+- **Queue Depth** (`ublkQueueDepth`): The depth of each I/O queue for the UBLK frontend. Default: `128`
+- **Number of Queues** (`ublkNumberOfQueue`): The number of I/O queues for the UBLK frontend. Default: `1`
+
+These parameters can be configured:
+
+- **Globally**: Via the `Default Ublk Queue Depth` and `Default Ublk Number Of Queue` settings (see [Settings](../references/settings#default-ublk-queue-depth))
+- **Per-volume**: Via the `ublkQueueDepth` and `ublkNumberOfQueue` volume parameters
+- **StorageClass**: Via the `ublkQueueDepth` and `ublkNumberOfQueue` parameters in the StorageClass definition
+
+For more information, see [Longhorn#11039](https://github.com/longhorn/longhorn/issues/11039).
