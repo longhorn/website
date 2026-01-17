@@ -14,6 +14,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Upgrade Check Events](#upgrade-check-events)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
   - [Manager URL for External API Access](#manager-url-for-external-api-access)
+  - [Gateway API HTTPRoute Support](#gateway-api-httproute-support)
 - [Scheduling](#scheduling)
   - [Replica Scheduling with Balance Algorithm](#replica-scheduling-with-balance-algorithm)
   - [Supports StorageClass `allowedTopologies`](#supports-storageclass-allowedtopologies)
@@ -69,6 +70,12 @@ Longhorn v{{< current-version >}} introduces the `manager-url` setting that allo
 - **Via UI**: Settings > General > Manager URL
 
 For more details, see [Manager URL](../references/settings#manager-url).
+
+### Gateway API HTTPRoute Support
+
+Longhorn v{{< current-version >}} introduces native support for [Gateway API HTTPRoute](https://gateway-api.sigs.k8s.io/api-types/httproute/) as a modern alternative to Ingress for exposing the Longhorn UI.
+
+For detailed setup instructions, prerequisites, and advanced configuration, see [Create an HTTPRoute with Gateway API](../deploy/accessing-the-ui/longhorn-httproute).
 
 ## Scheduling
 
