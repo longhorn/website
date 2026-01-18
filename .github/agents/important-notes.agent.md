@@ -4,7 +4,7 @@
 # To make this agent available, merge this file into the default repository branch.
 # For format details, see: https://gh.io/customagents/config
 
-name:longhorn-important-notes-agent
+name: longhorn-important-notes-agent
 description: Agent for automating Longhorn documentation updates and important notes.
 ---
 
