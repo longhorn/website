@@ -23,6 +23,8 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Disk Health Monitoring](#disk-health-monitoring)
 - [Rebuilding](#rebuilding)
   - [Scale Replica Rebuilding](#scale-replica-rebuilding)
+- [Access Mode Supportability](#access-mode-supportability)
+  - [ReadWriteOncePod Access Mode](#readwriteoncepod-access-mode)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [SPDK UBLK Performance Parameters](#spdk-ublk-performance-parameters)
@@ -125,6 +127,14 @@ For more information, see [Disk Health Monitoring](../monitoring/disk-heath).
 Starting with Longhorn v1.11.0, a new **scale replica rebuilding** feature allows a rebuilding replica to fetch snapshot data from multiple healthy replicas concurrently, potentially improving rebuild performance.
 
 For more information, see [Scale Replica Rebuilding](../advanced-resources/rebuilding/scale-replica-rebuilding).
+
+## Access Mode Supportability
+
+### ReadWriteOncePod Access Mode
+
+Longhorn v{{< current-version >}} introduces support for the **ReadWriteOncePod (RWOP)** access mode, addressing the need for stricter single-pod volume access guarantees in stateful workloads. Unlike ReadWriteOnce (RWO), which permits multiple pods on the same node to mount a volume, RWOP ensures that only one pod across the entire cluster can access the volume at any given time. This enforcement is managed by the Kubernetes scheduler, which prevents additional pods from being scheduled if they request the same RWOP volume. This capability is particularly valuable for stateful applications requiring exclusive write access, such as databases or other workloads where concurrent access could lead to data corruption or consistency issues.
+
+For more information, see [Access Modes](../nodes-and-volumes/volumes/create-volumes#access-modes) and [Longhorn #9727](https://github.com/longhorn/longhorn/issues/9727).
 
 ## V2 Data Engine
 
