@@ -15,6 +15,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
   - [Manager URL for External API Access](#manager-url-for-external-api-access)
   - [Gateway API HTTPRoute Support](#gateway-api-httproute-support)
+  - [Concurrent Job Limit for Snapshot Operations](#concurrent-job-limit-for-snapshot-operations)
 - [Scheduling](#scheduling)
   - [Replica Scheduling with Balance Algorithm](#replica-scheduling-with-balance-algorithm)
   - [Supports StorageClass `allowedTopologies`](#supports-storageclass-allowedtopologies)
@@ -77,6 +78,12 @@ For more details, see [Manager URL](../references/settings#manager-url).
 Longhorn v{{< current-version >}} introduces native support for [Gateway API HTTPRoute](https://gateway-api.sigs.k8s.io/api-types/httproute/) as a modern alternative to Ingress for exposing the Longhorn UI.
 
 For detailed setup instructions, prerequisites, and advanced configuration, see [Create an HTTPRoute with Gateway API](../deploy/accessing-the-ui/longhorn-httproute).
+
+### Concurrent Job Limit for Snapshot Operations
+
+Longhorn v{{< current-version >}} introduces the **Snapshot Heavy Task Concurrent Limit** to prevent disk exhaustion and resource contention. This setting limits concurrent heavy operations—such as snapshot purge and clone—per node by queuing additional tasks until ongoing ones complete. By controlling these processes, the system reduces the risk of storage spikes typically triggered by snapshot merges.
+
+For further details, refer to [Snapshot Heavy Task Concurrent Limit](../references/settings#snapshot-heavy-task-concurrent-limit) and [Longhorn #11635](https://github.com/longhorn/longhorn/issues/11635).
 
 ## Scheduling
 
