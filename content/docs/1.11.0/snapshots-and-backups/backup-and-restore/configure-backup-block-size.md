@@ -59,5 +59,3 @@ parameters:
 When restoring a volume from a backup, the restored volume can be configured with a different backup block size than the original.
 
 **Caution**: Longhorn versions prior to v1.10 lack forward compatibility and cannot restore backups created by v1.10 or later. Restoring a backup with a non-default backup block size (anything other than 2 MiB) on Longhorn v1.9.x or older will result in a volume being created with file system corruption.
-
-
