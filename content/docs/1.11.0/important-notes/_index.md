@@ -25,6 +25,8 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Scale Replica Rebuilding](#scale-replica-rebuilding)
 - [Access Mode Supportability](#access-mode-supportability)
   - [ReadWriteOncePod Access Mode](#readwriteoncepod-access-mode)
+- [Command Line Tool](#command-line-tool)
+  - [Package Manager Detection for Unsupported Distributions](#package-manager-detection-for-unsupported-distributions)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [SPDK UBLK Performance Parameters](#spdk-ublk-performance-parameters)
@@ -132,9 +134,17 @@ For more information, see [Scale Replica Rebuilding](../advanced-resources/rebui
 
 ### ReadWriteOncePod Access Mode
 
-Longhorn v{{< current-version >}} introduces support for the **ReadWriteOncePod (RWOP)** access mode, addressing the need for stricter single-pod volume access guarantees in stateful workloads. Unlike ReadWriteOnce (RWO), which permits multiple pods on the same node to mount a volume, RWOP ensures that only one pod across the entire cluster can access the volume at any given time. This enforcement is managed by the Kubernetes scheduler, which prevents additional pods from being scheduled if they request the same RWOP volume. This capability is particularly valuable for stateful applications requiring exclusive write access, such as databases or other workloads where concurrent access could lead to data corruption or consistency issues.
+Longhorn v{{< current-version >}} introduces support for the **ReadWriteOncePod (RWOP)** access mode, addressing the need for stricter single-pod volume access guarantees in stateful workloads. Unlike ReadWriteOnce (RWO), which permits multiple pods on the same node to mount a volume, RWOP ensures that only one pod across the entire cluster can access the volume at any given time. This capability is particularly valuable for stateful applications requiring exclusive write access, such as databases or other workloads where concurrent access could lead to data corruption or consistency issues.
 
 For more information, see [Access Modes](../nodes-and-volumes/volumes/create-volumes#access-modes) and [Longhorn #9727](https://github.com/longhorn/longhorn/issues/9727).
+
+## Command Line Tool
+
+### Package Manager Detection for Unsupported Distributions
+
+Longhorn v{{< current-version >}} enhances the Longhorn CLI preflight install and check behavior. When `/etc/os-release` does not match a known distribution, the CLI attempts to detect a supported package manager and continues in a compatibility mode.
+
+For more information, see [Longhorn #12153](https://github.com/longhorn/longhorn/issues/12153).
 
 ## V2 Data Engine
 
@@ -155,4 +165,4 @@ These parameters can be configured:
 - **Per-volume**: Via the `ublkQueueDepth` and `ublkNumberOfQueue` volume parameters
 - **StorageClass**: Via the `ublkQueueDepth` and `ublkNumberOfQueue` parameters in the StorageClass definition
 
-For more information, see [Longhorn#11039](https://github.com/longhorn/longhorn/issues/11039).
+For more information, see [Longhorn #11039](https://github.com/longhorn/longhorn/issues/11039).
