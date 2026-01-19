@@ -1,4 +1,4 @@
-# Longhorn Hardening Guide (v1.11)
+# Longhorn Hardening Guide
 
 This guide provides security controls and remediation steps for hardening a standalone Longhorn storage system on RKE2/K3s. It prioritizes findings from Longhorn hardened cluster logs to address compliance failures in restricted environments.
 
@@ -10,9 +10,18 @@ This section hardens the underlying Kubernetes nodes to ensure they meet CIS ben
 
 #### Overview
 
-This control ensures that the Kubernetes distribution (RKE2 or K3s) is running with a CIS benchmark profile and that kernel defaults are protected from runtime modification. These settings enforce hardened defaults for kubelet, kube-apiserver, and host kernel behavior.
+The Center for Internet Security (CIS) Kubernetes Benchmark is an industry-standard set of best practices for securely configuring Kubernetes clusters. Implementing these benchmarks is critical because they provide a prescriptive roadmap for reducing the attack surface of the control plane and worker nodes, ensuring that default settings which often prioritize ease of use over security are hardened against exploitation.
 
-For Longhorn, enforcing CIS profiles is critical because storage components interact directly with the host kernel, block devices, and network stack. Misaligned kernel behavior can lead to data corruption or node instability.
+This control (a specific security technical safeguard) ensures that the Kubernetes distribution (RKE2 or K3s) is running with a CIS benchmark profile and that kernel defaults are protected from runtime modification. These settings enforce hardened defaults for kubelet, kube-apiserver, and host kernel behavior.
+
+For Longhorn, compliance with CIS profiles is especially important because its storage components operate close to the host kernel, block devices, and networking stack. Inconsistent or weakened kernel settings can directly impact I/O behavior, isolation guarantees, and network reliability, increasing the risk of data corruption, performance degradation, or node instability.
+
+**References**:
+
+- [CIS Kubernetes Benchmark](https://www.cisecurity.org/benchmark/kubernetes)
+- [RKE2 CIS Hardening Guide](https://docs.rke2.io/security/hardening_guide)
+- [K3s CIS Hardening Self-Assessment](https://docs.k3s.io/security/self-assessment)
+- [Rancher Security Hardening Guides and Benchmark Versions](https://ranchermanager.docs.rancher.com/reference-guides/rancher-security#hardening-guides-and-benchmark-versions)
 
 #### Security Recommendation
 
@@ -23,9 +32,12 @@ Run RKE2/K3s with a CIS profile enabled and enforce kernel defaults using `prote
 1. Create or update `/etc/rancher/rke2/config.yaml` on **all nodes**:
 
     ```yaml
-    profile: "cis-1.23"
+    profile: "cis"
+    # For specific CIS versions 1.24 and older, use profile: "cis-1.23"
     protect-kernel-defaults: true
     ```
+
+    - **Why this is necessary**: The `profile` flag automates the application of CIS-compliant configurations to the kubelet and API server. The `protect-kernel-defaults: true` setting is a security safeguard that prevents the Kubernetes service from starting if the host's kernel parameters differ from the hardened requirements, ensuring a "secure-by-default" boot sequence.
 
 2. Apply the required kernel parameters as defined in the RKE2 hardening guidance:
 
@@ -40,7 +52,12 @@ Run RKE2/K3s with a CIS profile enabled and enforce kernel defaults using `prote
     systemctl restart systemd-sysctl
     ```
 
+    - **Why this is necessary**:
+      - **Memory Management (`vm.*`)**: Settings like `vm.overcommit_memory=1` provide more predictable memory allocation, reducing the risk of the Out-Of-Memory (OOM) killer terminating critical Longhorn replica processes.
+      - **Panic Behavior (`kernel.panic*`)**: Forcing a reboot on "oops" or panics ensures that a compromised or unstable node does not continue to send faulty storage heartbeats or corrupted data blocks to the rest of the Longhorn cluster.
+
 3. Restart the RKE2 service on each node.
+    - **Why this is necessary**: Kubernetes components only read their configuration files during the initialization phase. A restart is required to transition the cluster from a "standard" state to a "hardened" state.
 
 #### Verification
 
