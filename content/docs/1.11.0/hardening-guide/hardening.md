@@ -125,50 +125,7 @@ longhornctl check preflight
 
 This section secures data at rest and ensures Longhorn components operate correctly under filesystem and permission constraints imposed by CIS benchmarks.
 
-### 2.1 Backupstore Non-Root Filesystem Compliance
-
-#### Overview
-
-CIS-hardened systems restrict write access to root-owned directories such as `/root`. Longhorn backupstore components (for example, MinIO-based backup targets) may fail if they rely on default paths under `/root`.
-
-This control ensures backupstores operate from non-root, writable paths that comply with hardened filesystem policies.
-
-#### Security Recommendation
-
-Configure all backupstore components to use non-root filesystem paths (for example, `/storage` or `/tmp`) and explicitly define certificate locations.
-
-#### Configuration
-
-Refactor backupstore configurations as follows:
-
-1. **MinIO Home Directory** 
-
-    - Change from `/root` to `/storage`.
-
-2. **Certificate Mounts** 
-    
-    - Change from `/root/certs` to `/tmp/certs`.
-
-3. **Server Flags**
-
-    - Explicitly define certificate paths using flags such as `--certs-dir` instead of relying on defaults.
-
-#### Verification
-
-Inspect Longhorn manifests for restricted root paths:
-
-```bash
-kubectl get deployment -n longhorn-system -o yaml | grep "path: /root"
-```
-
-**Pass**: No output referencing `/root`.
-
-#### Impact / Notes
-
-- Backupstore pods may need to be restarted after path changes.
-- Ensure selected directories are writable and comply with SELinux/AppArmor policies where applicable.
-
-### 2.2 Volume Encryption (LUKS)
+### 2.1 Volume Encryption (LUKS)
 
 #### Overview
 
@@ -218,7 +175,7 @@ kubectl get storageclass longhorn-crypto -o yaml
 - Encryption introduces minor CPU overhead during I/O operations.
 - Encryption keys must be backed up securely; loss of keys results in permanent data loss.
 
-### 2.3 Snapshot Data Integrity
+### 2.2 Snapshot Data Integrity
 
 #### Overview
 
