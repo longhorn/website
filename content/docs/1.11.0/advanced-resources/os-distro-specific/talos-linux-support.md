@@ -122,7 +122,7 @@ machine:
 > We can use `uio_pci_generic` if `vfio_pci` is incompatible with your system or specific hardware. Future versions of Talos Linux are expected to include native support for `uio_pci_generic`. For more information, see [Issue #9236](https://github.com/siderolabs/talos/issues/9236).
 > Since 1.8.0 `uio_pci_generic` is now supported.
 
-## Talos Linux Upgrades
+## Talos Linux Upgrades (version <1.8)
 
 ### From v1.8.x Onwards
 
