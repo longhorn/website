@@ -23,9 +23,10 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Disk Health Monitoring](#disk-health-monitoring)
 - [Rebuilding](#rebuilding)
   - [Scale Replica Rebuilding](#scale-replica-rebuilding)
+  - [Offline Replica Rebuilding](#offline-replica-rebuilding)
 - [Access Mode Supportability](#access-mode-supportability)
   - [ReadWriteOncePod Access Mode](#readwriteoncepod-access-mode)
-- [Command Line Tool](#command-line-tool)
+- [Command-Line Tool](#command-line-tool)
   - [Package Manager Detection for Unsupported Distributions](#package-manager-detection-for-unsupported-distributions)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
@@ -130,6 +131,12 @@ Starting with Longhorn v1.11.0, a new **scale replica rebuilding** feature allow
 
 For more information, see [Scale Replica Rebuilding](../advanced-resources/rebuilding/scale-replica-rebuilding).
 
+### Offline Replica Rebuilding
+
+Starting with Longhorn v1.11.0, the **Offline Replica Rebuilding** setting is updated from a data engine-specific setting to a global setting. Previously, users could configure offline replica rebuilding separately for v1 and v2 data engines. During the upgrade to v1.11.0, Longhorn automatically checks the existing configuration. If offline replica rebuilding was enabled for either the v1 or v2 data engine, the new global setting will be enabled (`true`). Otherwise, it will be disabled (`false`).
+
+For more information, see [Offline Replica Rebuilding Setting](../references/settings#offline-replica-rebuilding).
+
 ## Access Mode Supportability
 
 ### ReadWriteOncePod Access Mode
@@ -138,7 +145,7 @@ Longhorn v{{< current-version >}} introduces support for the **ReadWriteOncePod 
 
 For more information, see [Access Modes](../nodes-and-volumes/volumes/create-volumes#access-modes) and [Longhorn #9727](https://github.com/longhorn/longhorn/issues/9727).
 
-## Command Line Tool
+## Command-Line Tool
 
 ### Package Manager Detection for Unsupported Distributions
 
