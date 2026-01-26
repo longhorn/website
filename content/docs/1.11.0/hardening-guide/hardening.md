@@ -83,6 +83,10 @@ Longhorn requires specific kernel modules and host utilities to attach, encrypt,
 
 Failure to load these modules results in Longhorn volume attachment failures and node-level errors.
 
+**References**:
+
+- [Longhorn Installation Requirements](https://longhorn.io/docs/1.11.0/deploy/install/#installation-requirements)
+
 #### Security Recommendation
 
 Ensure that required kernel modules (`iscsi_tcp`, `dm_crypt`) and supporting packages are installed, loaded, and restricted to privileged execution on the host.
@@ -130,6 +134,10 @@ This section secures data at rest and ensures Longhorn components operate correc
 #### Overview
 
 Volume encryption protects data at rest if physical disks or nodes are compromised. Longhorn implements encryption using `dm_crypt` (LUKS) on the host and manages keys through Kubernetes Secrets.
+
+**References**:
+
+- [Longhorn Volume Encryption Documentation](https://longhorn.io/docs/1.11.0/advanced-resources/security/volume-encryption/)
 
 #### Security Recommendation
 
@@ -181,6 +189,10 @@ kubectl get storageclass longhorn-crypto -o yaml
 
 Snapshot data integrity checks detect silent data corruption (bit rot) that may not be visible to the filesystem. Longhorn can hash snapshot files to detect unexpected changes.
 
+**References**:
+
+- [Longhorn Snapshots and Backups Documentation](https://longhorn.io/docs/1.11.0/snapshots-and-backups/setup-a-snapshot/)
+
 #### Security Recommendation
 
 Enable snapshot data integrity checks using `fast-check` mode to balance performance and protection.
@@ -214,6 +226,11 @@ This section restricts network communication to reduce lateral movement and isol
 #### Overview
 
 In default-deny network environments, Longhorn components require explicit NetworkPolicies to communicate with each other and with backup targets.
+
+**References**:
+
+- [Longhorn Networking Documentation](https://longhorn.io/docs/1.11.0/references/networking/)
+- [Kubernetes Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
 
 #### Security Recommendation
 
@@ -268,6 +285,10 @@ kubectl -n longhorn-system get networkpolicies
 
 Storage replication traffic can be isolated to a dedicated network interface to reduce attack surface and prevent interference with control plane traffic.
 
+**References**:
+
+- [Longhorn Storage Network Documentation](https://longhorn.io/docs/1.11.0/advanced-resources/deploy/storage-network/)
+
 #### Security Recommendation
 
 Configure Longhorn to use a dedicated storage network via Multus.
@@ -294,3 +315,67 @@ kubectl -n longhorn-system get setting storage-network
 
 - Instance Manager pods will restart when this setting changes.
 - Network misconfiguration may prevent replica synchronization.
+
+### 3.3 Control Plane and Data Plane mTLS
+
+#### Overview
+
+By default, communication between the Longhorn control plane (`longhorn-manager`) and the data plane (`instance-manager`) is unencrypted. Implementing Mutual TLS (mTLS) ensures that all gRPC traffic is encrypted and that both parties authenticate each other using a trusted Certificate Authority (CA).
+
+This prevents "man-in-the-middle" attacks and unauthorized command injection within the storage network. Longhorn uses a Kubernetes Secret-based mechanism to distribute these certificates.
+
+**References**:
+
+- [Longhorn mTLS Support Documentation](https://longhorn.io/docs/1.11.0/advanced-resources/security/mtls-support/)
+- [Kubernetes TLS Secrets](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_create/kubectl_create_secret_tls/)
+
+#### Security Recommendation
+
+Enable mTLS for all gRPC communication. Generate a dedicated CA to sign certificates for the `longhorn-backend` and deploy them as a Kubernetes Secret named `longhorn-grpc-tls` before deploying or restarting Longhorn components.
+
+#### Configuration
+
+**1. Generate Certificates**: You must generate a CA certificate and a server/client certificate. The `tls.crt` **must** include specific Subject Alternative Names (SANs) to be valid for Longhorn's internal service discovery.
+
+- **Common Name**: `longhorn-backend`
+- **Required SANs**: `longhorn-backend`, `longhorn-backend.longhorn-system`, `longhorn-backend.longhorn-system.svc`, `longhorn-frontend`, `longhorn-frontend.longhorn-system`, `longhorn-frontend.longhorn-system.svc`, `longhorn-engine-manager`, `longhorn-engine-manager.longhorn-system`, `longhorn-engine-manager.longhorn-system.svc`, `longhorn-replica-manager`, `longhorn-replica-manager.longhorn-system`, `longhorn-replica-manager.longhorn-system.svc`, `longhorn-csi`, `longhorn-csi.longhorn-system`, `longhorn-csi.longhorn-system.svc`, `IP Address:127.0.0.1`
+
+**2. Create the Kubernetes Secret**: Deploy the certificates into the `longhorn-system` namespace.
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: longhorn-grpc-tls
+  namespace: longhorn-system
+type: kubernetes.io/tls
+data:
+  ca.crt: <BASE64_ENCODED_CA_CERT>
+  tls.crt: <BASE64_ENCODED_CHILD_CERT>
+  tls.key: <BASE64_ENCODED_PRIVATE_KEY>
+```
+
+- **Why this is necessary**: Longhorn components are hardcoded to look for an optional secret mount named `longhorn-grpc-tls`. If this secret exists at startup, Longhorn automatically switches the gRPC server and clients from plaintext to TLS mode. Using a private CA ensures that only components issued certificates by you can join the storage cluster.
+
+**3. Restart Longhorn Components**: If Longhorn is already running, you must restart the manager and instance managers to pick up the certificates.
+
+```bash
+kubectl rollout restart deployment longhorn-manager -n longhorn-system
+kubectl rollout restart daemonset longhorn-manager -n longhorn-system
+```
+
+#### Verification
+
+Check the logs of a `longhorn-manager` pod to confirm TLS is active:
+
+```bash
+kubectl logs -n longhorn-system -l app=longhorn-manager | grep -i "TLS"
+```
+
+**Pass**: Logs indicate that gRPC services are starting with TLS enabled and the secret is successfully mounted.
+
+#### Impact / Notes
+
+- **Mixed Mode**: The `longhorn-manager` has a non-TLS fallback to allow communication with older `instance-managers` during a rolling upgrade, but for full hardening, all components must be restarted.
+- **Certificate Expiry**: You must monitor the expiration of these certificates. If the CA or TLS certificates expire, the control plane will lose the ability to manage volumes.
+- **Pre-deployment**: It is highly recommended to create the secret **before** installing Longhorn to ensure a secure-from-start deployment.
