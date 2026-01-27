@@ -1,3 +1,14 @@
+---
+title: Strengthen Longhorn with Automated End-to-End Tests
+author: Chris Chien
+draft: false
+date: 2026-01-19
+categories:
+- "testing"
+tags:
+- "e2e"
+- "automation"
+---
 
 # Strengthen Longhorn with Automated End-to-End Tests
 
