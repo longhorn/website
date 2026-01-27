@@ -40,17 +40,34 @@ Run RKE2/K3s with a CIS profile enabled and enforce kernel defaults using `prote
 
 #### Configuration
 
-1. Create or update `/etc/rancher/rke2/config.yaml` on **all nodes**:
+1. Enable CIS enforcement in the distribution config.
+
+    Create or update `/etc/rancher/rke2/config.yaml` on all nodes. For users running Kubernetes v1.29 and later, the `cis-1.11` profile is recommended:
 
     ```yaml
     profile: "cis"
-    # For specific CIS versions 1.24 and older, use profile: "cis-1.23"
     protect-kernel-defaults: true
+
+    # Required for cis-1.11 only; not required for cis-1.9/cis-1.10
+    kube-apiserver-arg:
+      - 'service-account-extend-token-expiration=false'
     ```
 
-    - **Why this is necessary**: The `profile` flag automates the application of CIS-compliant configurations to the kubelet and API server. The `protect-kernel-defaults: true` setting is a security safeguard that prevents the Kubernetes service from starting if the host's kernel parameters differ from the hardened requirements, ensuring a "secure-by-default" boot sequence.
+    - **Why this is necessary**: 
+      - The `profile: "cis" flag` automates the application of CIS-compliant configurations.
+      - The `service-account-extend-token-expiration=false` argument is a mandatory requirement for the **CIS-1.11** profile to ensure service account tokens adhere to strict security lifecycles.
+      - The `protect-kernel-defaults: true` setting prevents the Kubernetes service from starting if the host's kernel parameters differ from the hardened requirements, ensuring a "secure-by-default" boot sequence.
 
-2. Apply the required kernel parameters as defined in the RKE2 hardening guidance:
+2. Apply the required kernel parameters.
+
+    Apply the hardening parameters to the host system.
+
+    > **Note on RKE2 Installation Paths**: If you installed RKE2 using the official script (`curl -sfL https://get.rke2.io | sh`), a pre-configured CIS sysctl file is available at `/opt/rke2/share/rke2/rke2-cis-sysctl.conf`. You can copy it directly:
+    > ```bash
+    > cp /opt/rke2/share/rke2/rke2-cis-sysctl.conf /etc/sysctl.d/60-rke2-cis.conf
+    > ```
+
+    Alternatively, you can create the file manually:
 
     ```bash
     cat << EOF > /etc/sysctl.d/60-rke2-cis.conf
@@ -71,15 +88,15 @@ Run RKE2/K3s with a CIS profile enabled and enforce kernel defaults using `prote
     
     - **Why this is necessary**: Kubernetes components only read their configuration files during the initialization phase. A restart is required to transition the cluster from a "standard" state to a "hardened" state.
 
-#### Verification
+#### Validation
 
-Verify that the RKE2 configuration uses the CIS profile and checks kernel parameters:
+Validate that the RKE2 configuration uses the CIS profile and checks kernel parameters:
 
 ```bash
 grep "profile: cis" /etc/rancher/rke2/config.yaml
 ```
 
-**Pass**: Output includes `profile: "cis-1.23"` (or another compliant CIS version) and `protect-kernel-defaults: true`.
+**Expected Result**: Output includes `profile: "cis-1.23"` (or another compliant CIS version) and `protect-kernel-defaults: true`.
 
 #### Impact / Notes
 
@@ -120,7 +137,7 @@ Ensure that required kernel modules for both V1 and V2 engines are installed ins
       modprobe iscsi_tcp dm_crypt
       ```
 
-#### Verification
+#### Validation
 
 Run the Longhorn preflight check:
 
@@ -128,7 +145,7 @@ Run the Longhorn preflight check:
 longhornctl check preflight
 ```
 
-**Pass**: Output includes:
+**Expected Result**: Output includes:
 
 - `Successfully probed module iscsi_tcp`
 - `Successfully probed module dm_crypt`
@@ -189,13 +206,13 @@ Enable Longhorn volume encryption using LUKS and store encryption keys in Kubern
 
     - **Why this is necessary**: The StorageClass parameters instruct the Longhorn CSI driver to initialize a LUKS header on the block device before the first use, ensuring that every byte written to the disk is encrypted.
 
-#### Verification
+#### Validation
 
 ```bash
 kubectl get storageclass longhorn-crypto -o yaml
 ```
 
-**Pass**: Output includes `encrypted: "true"`.
+**Expected Result**: Output includes `encrypted: "true"`.
 
 #### Impact / Notes
 
@@ -223,13 +240,13 @@ kubectl -n longhorn-system patch setting snapshot-data-integrity \
   --type=merge -p '{"value": "fast-check"}'
 ```
 
-#### Verification
+#### Validation
 
 ```bash
 kubectl -n longhorn-system get setting snapshot-data-integrity
 ```
 
-**Pass**: Value is `fast-check` or `enabled`.
+**Expected Result**: Value is `fast-check` or `enabled`.
 
 #### Impact / Notes
 
@@ -285,13 +302,13 @@ spec:
       protocol: TCP
 ```
 
-#### Verification
+#### Validation
 
 ```bash
 kubectl -n longhorn-system get networkpolicies
 ```
 
-**Pass**: Policies exist and allow Longhorn internal and backup traffic.
+**Expected Result**: Policies exist and allow Longhorn internal and backup traffic.
 
 #### Impact / Notes
 
@@ -322,13 +339,13 @@ Configure Longhorn to use a dedicated storage network via Multus.
         --type=merge -p '{"value": "kube-system/storage-net"}'
       ```
 
-#### Verification
+#### Validation
 
 ```bash
 kubectl -n longhorn-system get setting storage-network
 ```
 
-**Pass**: Value references a valid Multus network.
+**Expected Result**: Value references a valid Multus network.
 
 #### Impact / Notes
 
@@ -362,7 +379,7 @@ Enable mTLS for all gRPC communication. Generate a dedicated CA to sign certific
 
 For detailed steps on generating the certificates and creating the secret, refer to the [Longhorn mTLS Support Documentation](https://longhorn.io/docs/1.11.0/advanced-resources/security/mtls-support/).
 
-#### Verification
+#### Validation
 
 Check the logs of a `longhorn-manager` pod to confirm TLS is active:
 
@@ -370,7 +387,7 @@ Check the logs of a `longhorn-manager` pod to confirm TLS is active:
 kubectl logs -n longhorn-system -l app=longhorn-manager | grep -i "TLS"
 ```
 
-**Pass**: Logs indicate that gRPC services are starting with TLS enabled and the secret is successfully mounted.
+**Expected Result**: Logs indicate that gRPC services are starting with TLS enabled and the secret is successfully mounted.
 
 #### Impact / Notes
 
