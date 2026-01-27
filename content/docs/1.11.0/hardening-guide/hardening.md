@@ -1,5 +1,16 @@
 # Longhorn Hardening Guide
 
+- [1. Infrastructure & Node Security](#1-infrastructure--node-security)
+  - [1.1 RKE2/K3s CIS Profile Enforcement](#11-rke2k3s-cis-profile-enforcement)
+  - [1.2 Host-Level Kernel Dependencies](#12-host-level-kernel-dependencies)
+- [2. Storage & Data Integrity](#2-storage--data-integrity)
+  - [2.1 Volume Encryption (LUKS)](#21-volume-encryption-luks)
+  - [2.2 Snapshot Data Integrity](#22-snapshot-data-integrity)
+- [3. Network & Access Control](#3-network--access-control)
+  - [3.1 Network Policy Enforcement](#31-network-policy-enforcement)
+  - [3.2 Storage Network Isolation](#32-storage-network-isolation)
+  - [3.3 Control Plane and Data Plane mTLS](#33-control-plane-and-data-plane-mtls)
+
 This guide provides security controls and remediation steps for hardening a standalone Longhorn storage system on RKE2/K3s. It prioritizes findings from Longhorn hardened cluster logs to address compliance failures in restricted environments.
 
 ## 1. Infrastructure & Node Security
@@ -57,6 +68,7 @@ Run RKE2/K3s with a CIS profile enabled and enforce kernel defaults using `prote
       - **Panic Behavior (`kernel.panic*`)**: Forcing a reboot on "oops" or panics ensures that a compromised or unstable node does not continue to send faulty storage heartbeats or corrupted data blocks to the rest of the Longhorn cluster.
 
 3. Restart the RKE2 service on each node.
+    
     - **Why this is necessary**: Kubernetes components only read their configuration files during the initialization phase. A restart is required to transition the cluster from a "standard" state to a "hardened" state.
 
 #### Verification
@@ -86,10 +98,11 @@ Failure to load these modules results in Longhorn volume attachment failures and
 **References**:
 
 - [Longhorn Installation Requirements](https://longhorn.io/docs/1.11.0/deploy/install/#installation-requirements)
+- [Longhorn V2 Data Engine Prerequisites](https://longhorn.io/docs/1.11.0/v2-data-engine/prerequisites/)
 
 #### Security Recommendation
 
-Ensure that required kernel modules (`iscsi_tcp`, `dm_crypt`) and supporting packages are installed, loaded, and restricted to privileged execution on the host.
+Ensure that required kernel modules for both V1 and V2 engines are installed installed, loaded, and restricted to privileged execution on the host. For V2 stability, ensure nodes run Linux Kernel 5.19 or later (6.7+ recommended) to prevent unexpected reboots and memory corruption associated with NVMe-TCP. You can check the references mentioned above for the latest Longhorn requirements.
 
 #### Configuration
 
@@ -127,13 +140,15 @@ longhornctl check preflight
 
 ## 2. Storage & Data Integrity
 
-This section secures data at rest and ensures Longhorn components operate correctly under filesystem and permission constraints imposed by CIS benchmarks.
+This section ensures the **confidentiality** of data at rest through encryption and maintains **integrity** by detecting silent data corruption.
 
 ### 2.1 Volume Encryption (LUKS)
 
 #### Overview
 
-Volume encryption protects data at rest if physical disks or nodes are compromised. Longhorn implements encryption using `dm_crypt` (LUKS) on the host and manages keys through Kubernetes Secrets.
+Volume encryption ensures **data confidentiality** at rest. By using `dm_crypt` (LUKS), Longhorn protects sensitive information from being accessed if physical disks are stolen or if the underlying host nodes are compromised.
+
+While encryption does not prevent data from being deleted or corrupted (integrity), it ensures that the data remains unreadable to unauthorized parties who do not possess the required Kubernetes Secret.
 
 **References**:
 
@@ -141,7 +156,7 @@ Volume encryption protects data at rest if physical disks or nodes are compromis
 
 #### Security Recommendation
 
-Enable Longhorn volume encryption using LUKS and store encryption keys in Kubernetes Secrets scoped to the `longhorn-system` namespace.
+Enable Longhorn volume encryption using LUKS and store encryption keys in Kubernetes Secrets scoped to the `longhorn-system` namespace to maintain data confidentiality.
 
 #### Configuration
 
@@ -153,6 +168,8 @@ Enable Longhorn volume encryption using LUKS and store encryption keys in Kubern
         --from-literal=CRYPTO_KEY_PROVIDER="secret" \
         --namespace longhorn-system
       ```
+
+    - **Why this is necessary**: Storing the key in a Kubernetes Secret allows Longhorn to programmatically provide the decryption key to `dm_crypt` during volume attachment without requiring manual operator intervention.
 
 2. Define the encrypted StorageClass:
 
@@ -169,6 +186,8 @@ Enable Longhorn volume encryption using LUKS and store encryption keys in Kubern
         csi.storage.k8s.io/node-publish-secret-name: "longhorn-crypto"
         csi.storage.k8s.io/node-publish-secret-namespace: "longhorn-system"
       ```
+
+    - **Why this is necessary**: The StorageClass parameters instruct the Longhorn CSI driver to initialize a LUKS header on the block device before the first use, ensuring that every byte written to the disk is encrypted.
 
 #### Verification
 
@@ -337,32 +356,11 @@ Enable mTLS for all gRPC communication. Generate a dedicated CA to sign certific
 
 **1. Generate Certificates**: You must generate a CA certificate and a server/client certificate. The `tls.crt` **must** include specific Subject Alternative Names (SANs) to be valid for Longhorn's internal service discovery.
 
-- **Common Name**: `longhorn-backend`
-- **Required SANs**: `longhorn-backend`, `longhorn-backend.longhorn-system`, `longhorn-backend.longhorn-system.svc`, `longhorn-frontend`, `longhorn-frontend.longhorn-system`, `longhorn-frontend.longhorn-system.svc`, `longhorn-engine-manager`, `longhorn-engine-manager.longhorn-system`, `longhorn-engine-manager.longhorn-system.svc`, `longhorn-replica-manager`, `longhorn-replica-manager.longhorn-system`, `longhorn-replica-manager.longhorn-system.svc`, `longhorn-csi`, `longhorn-csi.longhorn-system`, `longhorn-csi.longhorn-system.svc`, `IP Address:127.0.0.1`
-
 **2. Create the Kubernetes Secret**: Deploy the certificates into the `longhorn-system` namespace.
-
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: longhorn-grpc-tls
-  namespace: longhorn-system
-type: kubernetes.io/tls
-data:
-  ca.crt: <BASE64_ENCODED_CA_CERT>
-  tls.crt: <BASE64_ENCODED_CHILD_CERT>
-  tls.key: <BASE64_ENCODED_PRIVATE_KEY>
-```
-
-- **Why this is necessary**: Longhorn components are hardcoded to look for an optional secret mount named `longhorn-grpc-tls`. If this secret exists at startup, Longhorn automatically switches the gRPC server and clients from plaintext to TLS mode. Using a private CA ensures that only components issued certificates by you can join the storage cluster.
 
 **3. Restart Longhorn Components**: If Longhorn is already running, you must restart the manager and instance managers to pick up the certificates.
 
-```bash
-kubectl rollout restart deployment longhorn-manager -n longhorn-system
-kubectl rollout restart daemonset longhorn-manager -n longhorn-system
-```
+For detailed steps on generating the certificates and creating the secret, refer to the [Longhorn mTLS Support Documentation](https://longhorn.io/docs/1.11.0/advanced-resources/security/mtls-support/).
 
 #### Verification
 
