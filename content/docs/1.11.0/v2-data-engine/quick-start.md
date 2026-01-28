@@ -9,6 +9,9 @@ aliases:
 - [Prerequisites](#prerequisites)
   - [Load Kernel Modules](#load-kernel-modules)
   - [Enable HugePages](#enable-hugepages)
+    - [Configure huge pages](#configure-huge-pages)
+      - [Permanently (Recommended)](#permanently-recommended)
+      - [Alternative: Using sysctl (not recommended for persistent allocation)](#alternative-using-sysctl-not-recommended-for-persistent-allocation)
   - [Restart `kubelet`](#restart-kubelet)
   - [Check Environment](#check-environment)
     - [Using the Longhorn Command Line Tool](#using-the-longhorn-command-line-tool)
@@ -26,16 +29,9 @@ aliases:
 
 ---
 
-Longhorn's V2 Data Engine harnesses the power of the Storage Performance Development Kit (SPDK) to elevate its overall performance. The integration significantly reduces I/O latency while simultaneously boosting IOPS and throughput. The enhancement provides a high-performance storage solution capable of meeting diverse workload demands.
+Longhorn’s V2 Data Engine leverages the Storage Performance Development Kit (SPDK) to deliver enhanced performance. This integration lowers I/O latency while increasing both IOPS and throughput, providing a high-performance storage solution that can handle a wide range of workloads.
 
-**V2 Data Engine is currently an experimental feature and should NOT be utilized in a production environment.** At present, a volume with V2 Data Engine only supports
-
-- Volume lifecycle (creation, attachment, detachment and deletion)
-- Degraded volume
-- Block disk management
-- Orphaned replica management
-
-In addition to the features mentioned above, additional functionalities such as replica number adjustment, online replica rebuilding, snapshot, backup, restore and so on will be introduced in future versions.
+The V2 Data Engine is currently a Technical Preview feature. Its supported functionalities are documented in https://github.com/longhorn/longhorn/wiki/V1-and-V2-Feature-Parities.
 
 This tutorial will guide you through the process of configuring the environment and create Kubernetes persistent storage resources of persistent volumes (PVs) and persistent volume claims (PVCs) that correspond to Longhorn volumes using V2 Data Engine.
 
