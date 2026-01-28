@@ -14,6 +14,15 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
       - [Downgrade Procedure (kubectl Installation)](#downgrade-procedure-kubectl-installation)
       - [Downgrade Procedure (Helm Installation)](#downgrade-procedure-helm-installation)
       - [Post-Downgrade](#post-downgrade)
+- [Important Fixes](#important-fixes)
+  - [RWX Volume Unavailable After Node Drain](#rwx-volume-unavailable-after-node-drain)
+  - [Encrypted Volume Cannot Be Expanded Online](#encrypted-volume-cannot-be-expanded-online)
+  - [Cloned Volume Cannot Be Attached to Workload](#cloned-volume-cannot-be-attached-to-workload)
+  - [Block Mode Volume Migration Stuck](#block-mode-volume-migration-stuck)
+  - [Replica Auto Balance Disk Pressure Threshold Stalled](#replica-auto-balance-disk-pressure-threshold-stalled)
+  - [Replicas Accumulate During Engine Upgrade](#replicas-accumulate-during-engine-upgrade)
+  - [Potential Client Connection and Context Leak](#potential-client-connection-and-context-leak)
+  - [Replica Node Level Soft Anti-Affinity Ignored](#potential-client-connection-and-context-leak)
 - [Removal](#removal)
   - [`longhorn.io/v1beta1` API](#longhorniov1beta1-api)
   - [`replica.status.evictionRequested` Field](#replicastatusevictionrequested-field)
@@ -163,6 +172,58 @@ If Longhorn was installed using Helm, the downgrade is allowed by disabling the 
 ##### Post-Downgrade
 
 Once the downgrade is complete and the Longhorn system is stable on the v1.9.x version, you must immediately follow the steps outlined in the [Manual CRD Migration Guide](#migration-requirement-before-longhorn-v110-upgrade). This step is crucial to migrate all remaining `v1beta1` CRs to `v1beta2` before attempting the Longhorn v1.10 upgrade again.
+
+## Important Fixes
+
+This release includes several critical stability fixes.
+
+### RWX Volume Unavailable After Node Drain
+
+Fixed a race condition where **ReadWriteMany (RWX) volumes** could remain in the *attaching* state after node drains, causing workloads to become unavailable.
+
+For more details, see [Issue #12231](https://github.com/longhorn/longhorn/issues/12231).
+
+### Encrypted Volume Cannot Be Expanded Online
+
+Fixed an issue where online expansion of encrypted volumes did not propagate the new size to the dm-crypt device.
+
+For more details, see [Issue #12368](https://github.com/longhorn/longhorn/issues/12368).
+
+### Cloned Volume Cannot Be Attached to Workload
+
+Fixed a bug where cloned volumes could fail to reach a healthy state, preventing attachment to workloads.
+
+For more details, see [Issue #12208](https://github.com/longhorn/longhorn/issues/12208).
+
+### Block Mode Volume Migration Stuck
+
+Fixed a regression in block-mode volume migrations where newly created replicas could incorrectly inherit the `lastFailedAt` timestamp from source replicas, causing repeated deletion and blocking migration completion.
+
+For more details, see [Issue #12312](https://github.com/longhorn/longhorn/issues/12312).
+
+### Replica Auto Balance Disk Pressure Threshold Stalled
+
+Fixed an issue where replica auto-balance under disk pressure could be blocked if stopped volumes were present on the disk.
+
+For more details, see [Issue #12334](https://github.com/longhorn/longhorn/issues/12334).
+
+### Replicas Accumulate During Engine Upgrade
+
+Fixed a bug where temporary replicas could accumulate during engine upgrade. High etcd latency could cause new replicas to fail verification, leading to accumulation over multiple reconciliation cycles.
+
+For more details, see [Issue #12115](https://github.com/longhorn/longhorn/issues/12115).
+
+### Potential Client Connection and Context Leak
+
+Fixed potential context leaks in the instance manager client and backing image manager client, improving stability and preventing resource exhaustion.
+
+For more details, see [Issue #12200](https://github.com/longhorn/longhorn/issues/12200) and [Issue #12195](https://github.com/longhorn/longhorn/issues/12195).
+
+### Replica Node Level Soft Anti-Affinity Ignored
+
+Fixed a bug of replica scheduling loop where replicas could be scheduled onto nodes that already host a replica, even when *Replica Node-Level Soft Anti-Affinity* was disabled.
+
+For more details, see [Issue #12251](https://github.com/longhorn/longhorn/issues/12251).
 
 ## Removal
 
