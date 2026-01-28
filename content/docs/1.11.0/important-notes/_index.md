@@ -30,6 +30,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Package Manager Detection for Unsupported Distributions](#package-manager-detection-for-unsupported-distributions)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
+  - [Technical Preview](#technical-preview)
   - [SPDK UBLK Performance Parameters](#spdk-ublk-performance-parameters)
 
 ## Deprecation
@@ -158,6 +159,13 @@ For more information, see [Longhorn #12153](https://github.com/longhorn/longhorn
 ### Longhorn System Upgrade
 
 Live upgrades of V2 volumes are **not supported**. Ensure all V2 volumes are detached before upgrading.
+
+### Technical Preview
+
+The V2 Data Engine is a **Technical Preview** feature in Longhorn v1.11.0.  
+
+It is nearly complete, with no significant functional changes expected, and has been validated in controlled environments.  
+Users should evaluate the feature thoroughly before enabling it in production.
 
 ### SPDK UBLK Performance Parameters
 
