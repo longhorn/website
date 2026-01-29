@@ -26,8 +26,8 @@ You may manually install these components by executing the following steps.
 Install the Snapshot CRDs:
 1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/v8.4.0/client/config/crd
 because Longhorn v{{< current-version >}} uses [CSI external-snapshotter](https://kubernetes-csi.github.io/docs/external-snapshotter.html) v8.4.0
-1. Run `kubectl create -k client/config/crd`.
-2. Do this once per cluster.
+2. Run `kubectl create -k client/config/crd`.
+3. Do this once per cluster.
 
 Install the Common Snapshot Controller:
 1. Download the files from https://github.com/kubernetes-csi/external-snapshotter/tree/v8.4.0/deploy/kubernetes/snapshot-controller
