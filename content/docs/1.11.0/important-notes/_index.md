@@ -6,6 +6,8 @@ weight: 1
 This page summarizes the key notes for Longhorn v{{< current-version >}}.
 For the full release note, see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}).
 
+- [Warning](#warning)
+  - [Hotfix](#hotfix)
 - [Deprecation](#deprecation)
 - [Behavior Change](#behavior-change)
   - [Cloned Volume Health After Efficient Cloning](#cloned-volume-health-after-efficient-cloning)
@@ -32,6 +34,22 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Technical Preview](#technical-preview)
   - [SPDK UBLK Performance Parameters](#spdk-ublk-performance-parameters)
+
+## Warning
+
+### Hotfix
+
+The `longhorn-instance-manager:v1.11.0` image is affected by a [regression issue](https://github.com/longhorn/longhorn/issues/12573) introduced by the new longhorn-instance-manager Proxy service APIs. The bug causes Proxy connection leaks in the longhorn-instance-manager pods, resulting in increased memory usage. To mitigate this issue, replace `longhornio/longhorn-instance-manager:v1.11.0` with the hotfixed image `longhornio/longhorn-instance-manager:v1.11.0-hotfix-1`.
+
+You can apply the update by following these steps:
+
+1. **Update the `longhorn-instance-manager` image**
+   - Change the longhorn-instance-manager image tag from `v1.11.0` to `v1.11.0-hotfix-1` in the appropriate file:
+     - For Helm: Update `values.yaml`
+     - For manifests: Update the deployment manifest directly.
+
+2. **Proceed with the installation or upgrade**
+   - Apply the changes using your standard Helm install/upgrade command or reapply the updated manifest.
 
 ## Deprecation
 
