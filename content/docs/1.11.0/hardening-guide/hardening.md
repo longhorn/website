@@ -56,7 +56,6 @@ Run RKE2/K3s with a CIS profile enabled and enforce kernel defaults using `prote
     - **Why this is necessary**: 
       - The `profile: "cis" flag` automates the application of CIS-compliant configurations.
       - The `service-account-extend-token-expiration=false` argument is a mandatory requirement for the **CIS-1.11** profile to ensure service account tokens adhere to strict security lifecycles.
-      - The `protect-kernel-defaults: true` setting prevents the Kubernetes service from starting if the host's kernel parameters differ from the hardened requirements, ensuring a "secure-by-default" boot sequence.
 
 2. Apply the required kernel parameters.
 
@@ -94,7 +93,7 @@ Run RKE2/K3s with a CIS profile enabled and enforce kernel defaults using `prote
     grep "profile: cis" /etc/rancher/rke2/config.yaml
     ```
 
-**Expected Result**: Output includes `profile: "cis-1.23"` (or another compliant CIS version) and `protect-kernel-defaults: true`.
+**Expected Result**: Output includes `profile: "cis"` (or another compliant CIS version) and `protect-kernel-defaults: true`.
 
 #### Impact / Notes
 
