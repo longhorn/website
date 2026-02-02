@@ -3,13 +3,14 @@
 - [1. Infrastructure & Node Security](#1-infrastructure--node-security)
   - [1.1 RKE2/K3s CIS Profile Enforcement](#11-rke2k3s-cis-profile-enforcement)
   - [1.2 Host-Level Kernel Dependencies](#12-host-level-kernel-dependencies)
-- [2. Storage & Data Integrity](#2-storage--data-integrity)
+- [2. Data Security (Confidentiality)](#2-data-security-confidentiality)
   - [2.1 Volume Encryption (LUKS)](#21-volume-encryption-luks)
-  - [2.2 Snapshot Data Integrity](#22-snapshot-data-integrity)
-- [3. Network & Access Control](#3-network--access-control)
-  - [3.1 Network Policy Enforcement](#31-network-policy-enforcement)
-  - [3.2 Storage Network Isolation](#32-storage-network-isolation)
-  - [3.3 Control Plane and Data Plane mTLS](#33-control-plane-and-data-plane-mtls)
+- [3. Data Integrity](#3-data-integrity)
+  - [3.1 Snapshot Data Integrity](#31-snapshot-data-integrity)
+- [4. Network & Access Control](#4-network--access-control)
+  - [4.1 Namespace Traffic Isolation (Network Policies)](#41-namespace-traffic-isolation-network-policies)
+  - [4.2 Storage Network Isolation](#42-storage-network-isolation)
+  - [4.3 Control Plane and Data Plane mTLS](#43-control-plane-and-data-plane-mtls)
 
 This guide provides security controls and remediation steps for hardening a stand-alone Longhorn storage system on RKE2/K3s. It prioritizes findings from Longhorn hardened cluster logs to address compliance failures in restricted environments.
 
@@ -117,7 +118,7 @@ Failure to load these modules results in Longhorn volume attachment failures and
 
 #### Security Recommendation
 
-Ensure that required kernel modules for both V1 and V2 engines are installed installed, loaded and restricted to privileged execution on the host. For V2 stability, ensure nodes run Linux Kernel 5.19 or later (6.7+ recommended) to prevent unexpected reboots and memory corruption associated with NVMe-TCP. You can check the references mentioned above for the latest Longhorn requirements.
+Ensure that required kernel modules for both V1 and V2 engines are installed installed, loaded and restricted to privileged execution on the host. For V2 Data Engine (Technical Preview) stability, ensure nodes run Linux Kernel 5.19 or later (6.7+ recommended) to prevent unexpected reboots and memory corruption associated with NVMe-TCP. You can check the references mentioned above for the latest Longhorn requirements.
 
 #### Configuration
 
@@ -132,11 +133,11 @@ The Longhorn CLI automates the environment setup, including the installation of 
     longhornctl check preflight
     ```
 
-2. **V2 Memory Requirements**: If using the V2 Data Engine, 2 MiB-sized Huge Pages must be manually allocated (for example, `echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages`) to allow SPDK to perform high-speed polling.
+2. **V2 Memory Requirements**: If using the V2 Data Engine, 2 MiB-sized Huge Pages must be manually allocated (for example, `echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages`) to allow SPDK to perform high-speed polling. Refer to the [V2 Quick Start Guide](https://longhorn.io/docs/1.11.0/v2-data-engine/quick-start/) for permanent configuration steps.
 
-**Expected Result**: A successful `longhornctl check` returns an `info` status for all required services and modules, signaling that the node is ready to host Longhorn replicas. On immutable systems like **SLE Micro**, a reboot may be necessary to finalize the installation.
+**Expected Result**: A successful `longhornctl check` returns an `info` status for all required services and modules. On immutable systems like **SLE Micro**, a reboot may be necessary to finalize the installation.
 
-## 2. Storage & Data Integrity
+## 2. Data Security (Confidentiality)
 
 This section ensures the **confidentiality** of data at rest through encryption and maintains **security** by detecting silent data corruption.
 
@@ -155,27 +156,32 @@ Longhorn supports encryption for both `Filesystem` and `Block` modes. Critically
 
 #### Security Recommendation
 
-Enforce encryption for all sensitive workloads by defining a `StorageClass` that references a Kubernetes Secret. This secret should ideally be restricted to the `longhorn-system` namespace. For multi-tenant environments, consider using per-volume secrets to isolate encryption keys between different namespaces.
+Enforce encryption for all sensitive workloads by defining a `StorageClass` that references a Kubernetes Secret. This secret should ideally be restricted to the `longhorn-system` namespace. To minimize the "blast radius" in multi-tenant environments, utilize per-volume secrets to ensure each volume has a unique encryption key.
 
 #### Configuration
 
-The Longhorn CSI driver handles the heavy lifting of volume encryption by resolving secret templates during volume provisioning.
+The Longhorn CSI driver handles volume encryption by resolving secret templates during volume provisioning. Configuration focuses on two main components:
 
-- **Secret Configuration**: Encryption keys are stored in a Kubernetes Secret. While the mandatory parameter is `CRYPTO_KEY_VALUE`, you can further harden the security posture by specifying high-entropy algorithms via `CRYPTO_KEY_CIPHER` (default: `aes-xts-plain64`) and `CRYPTO_PBKDF` (default: `argon2i`).
-- **StorageClass Integration**: To enable encryption, the `StorageClass` must include the `encrypted: "true"` parameter. You must also map the Secret to the CSI sidecars (provisioner, node-publish, node-stage, and node-expand) to ensure the volume can be created, mounted, and resized securely.
-- **Key Isolation Options**:
-- **Global Secret**: Best for single-tenant clusters where one master key manages all volumes.
-- **Per-Volume Secret**: Recommended for hardened environments; it uses template parameters like `${pvc.name}` and `${pvc.namespace}` to ensure each volume has a unique key, preventing a single compromised key from exposing the entire storage pool.
+1. **Secret Management**: Longhorn utilizes Kubernetes Secrets to store encryption passphrases. While `CRYPTO_KEY_VALUE` is mandatory, advanced security postures can be achieved by defining custom algorithms like `argon2i` for PBKDF or `aes-xts-plain64` for ciphers.
+    - *Implementation detail*: Refer to the [Secret Configuration Example](https://longhorn.io/docs/1.11.0/advanced-resources/security/volume-encryption/#setting-up-kubernetes-secrets-and-storageclasses) for formatting.
 
-**Expected Result**: A successfully configured environment results in a `StorageClass` that automatically provisions LUKS-encrypted block devices. You can verify this by checking the `StorageClass` metadata for the `encrypted: "true"` flag. 
 
-> **Note**: PVCs remain in a `Pending` state until their associated encryption secrets are available.
+2. **StorageClass Orchestration**: To enable encryption, the `StorageClass` must include the `encrypted: "true"` parameter.
+    - **Global Secret**: Simplifies management by using one master key for all volumes.
+    - **Per-Volume Secret**: Enhances hardening by using template parameters (for example, `${pvc.name}`) to isolate keys between workloads.
+    - *Implementation detail*: Detailed parameters for both modes are available in the [StorageClass Examples](https://longhorn.io/docs/1.11.0/advanced-resources/security/volume-encryption/#setting-up-kubernetes-secrets-and-storageclasses).
 
-### 2.2 Snapshot Data Integrity
+**Expected State**: Once configured, a `StorageClass` with the `encrypted: "true"` flag automatically provision LUKS-encrypted block devices. PVCs remain in a `Pending` state until their associated encryption secrets are created and accessible to the CSI sidecars.
+
+## 3. Data Integrity
+
+This section focuses on maintaining the correctness of data by detecting and repairing silent data corruption.
+
+### 3.1 Snapshot Data Integrity
 
 #### Overview
 
-Snapshot data integrity checks are designed to detect "bit rot" or silent data corruption that occurs at the physical storage level and remains invisible to the file system. Longhorn maintains the integrity of your data by generating and verifying hashes for snapshot disk files, ensuring that the data recovered from a snapshot is identical to the data originally written.
+Snapshot data integrity checks are designed to detect "bit rot" or silent data corruption that occurs at the physical storage level and remains invisible to the file system. Longhorn maintains the integrity of your data by generating and verifying hashes for snapshot disk files, ensuring that the data recovered from a snapshot is identical to the state originally captured.
 
 **References**:
 
@@ -184,29 +190,27 @@ Snapshot data integrity checks are designed to detect "bit rot" or silent data c
 
 #### Security Recommendation
 
-Enable the `snapshot-data-integrity` global setting to enforce automated verification of snapshot files. For a balance of performance and security, the `fast-check` mode is recommended, as it validates integrity only when metadata changes are detected.
+Enable the `snapshot-data-integrity` global setting to enforce automated verification. In hardened environments, ensuring data has not been tampered with or corrupted is as critical as preventing unauthorized access. For a balance of performance and protection, use `fast-check` mode to minimize I/O overhead while ensuring metadata-consistent integrity.
 
 #### Configuration
 
-The hashing mechanism can be enabled globally using a `kubectl patch` command. This ensures that every volume in the cluster—whether managed via the UI or Custom Resources (CRs)—adheres to the same integrity standards.
+The integrity engine can be configured globally or on a per-volume basis. Enabling this feature allows Longhorn to automatically detect corrupted replicas and initiate the rebuilding process to restore data consistency.
 
-1. **Apply the Setting**:
-    ```bash
-    kubectl -n longhorn-system patch setting snapshot-data-integrity \
-      --type=merge -p '{"value": "fast-check"}'
-    ```
+1. **Global Enforcement**: Use the Longhorn settings to enable hashing across the cluster.
+    - *Implementation detail*: Refer to the [Snapshot Data Integrity Settings](https://longhorn.io/docs/1.11.0/advanced-resources/data-integrity/snapshot-data-integrity-check/#settings) for available modes (for example, `fast-check`, `enabled`).
 
-    - **Why this is necessary**: In hardened environments, ensuring data has not been tampered with or corrupted is as critical as preventing unauthorized access. This setting provides an automated "Proof of Integrity" for your historical data states.
+2. **Scheduling and Performance**: Hashing disk files consumes storage and computation resources. It is recommended to:
+    -  Use `snapshot-data-integrity-cronjob` to schedule checks during off-peak hours.
+    - Disable `snapshot-data-integrity-immediate-check-after-snapshot-creation` to minimize immediate I/O impact.
+    - *Technical context*: Detailed [Performance Benchmarks](https://longhorn.io/docs/1.11.0/advanced-resources/data-integrity/snapshot-data-integrity-check/#performance-impact) are available in the official documentation.
 
-2. **Performance Considerations**: While `enabled` mode performs a full hash of every snapshot (increasing I/O overhead), `fast-check` optimizes the process by checking the file's modification time and size before re-hashing, making it suitable for high-performance production environments.
+**Expected State**: When enabled, the global `snapshot-data-integrity` setting is reflected in the cluster configuration. A successful implementation ensures that any snapshot disk file corruption is identified through periodic hash validation, signaling the system to repair affected replicas.
 
-**Expected Result**: The setting validation can be confirmed by running `kubectl -n longhorn-system get setting snapshot-data-integrity`. A value of `fast-check` indicates that the integrity engine is active and alert administrators if a snapshot fails its periodic hash validation.
-
-## 3. Network & Access Control
+## 4. Network & Access Control
 
 This section restricts network communication to reduce lateral movement and isolate storage traffic.
 
-### 3.1 Network Policy Enforcement
+### 4.1 Namespace Traffic Isolation (Network Policies)
 
 #### Overview
 
@@ -222,33 +226,30 @@ Restricting traffic to only known Longhorn components minimizes the "blast radiu
 
 #### Security Recommendation
 
-Enable the built-in NetworkPolicies provided by the Longhorn Helm chart rather than maintaining manual manifests. This ensures that all required ports including gRPC, UI, CSI and Webhook traffic—are automatically whitelisted according to the current Longhorn version's specifications.
+Enable the built-in NetworkPolicies provided by the Longhorn Helm chart rather than maintaining manual manifests. This approach is more maintainable than manual manifests, as it ensures that the complete communication matrix including gRPC, UI, CSI and Webhook traffic is automatically whitelisted according to the specific requirements of the Longhorn version in use.
 
 #### Configuration
 
-The most secure and maintainable way to enforce network isolation is to toggle the built-in policy engine during installation or via Helm upgrade. This creates a set of policies that cover the entire Longhorn communication matrix (Manager, Instance Manager, Backing Image Manager, etc.).
+The Longhorn Helm chart includes a built-in policy engine that generates required `NetworkPolicy` objects for all core components (Manager, Instance Manager, etc.).
 
-1. **Enable Native Policies**: Set the `networkPolicies.enabled` value to `true` in your Helm `values.yaml` or via the command line:
-    ```bash
-    helm upgrade longhorn longhorn/longhorn \
-      --namespace longhorn-system \
-      --set networkPolicies.enabled=true \
-      --set networkPolicies.type=k3s  # Set type based on your CNI (for example, k3s, rke2, cilium)
-    ```
+1. **Policy Enforcement**: Toggle the internal policy engine during installation or upgrade. This automates the configuration of complex port ranges (for example, `8500–8504` for Instance Managers and `10000–30000` for replica traffic).
+    - *Implementation detail*: Set `networkPolicies.enabled` to `true` in your Helm configuration. Refer to the [Helm Chart Values](https://github.com/longhorn/longhorn/blob/master/chart/values.yaml) for provider-specific settings (for example, RKE2, K3s, or Cilium).
 
-2. **Custom Backup Targets**: If using an external backupstore (NFS, S3, or MinIO), you must ensure your CNI allows egress traffic to those specific endpoints. Longhorn's built-in policies primarily focus on intra-cluster traffic; therefore, if your cluster has a global default-deny egress policy, you must manually add an egress rule for the `longhorn-manager` and `instance-manager` pods to reach your backup target IP and port (for example, `2049` for NFS or `443` for S3).
+2. **Egress for Backup Targets**: Built-in policies primarily secure intra-cluster communication. If your environment enforces a global default-deny egress policy, you must manually define egress rules to allow `longhorn-manager` and `instance-manager` pods to reach external backupstore endpoints (for example, NFS on port `2049` or S3/MinIO on port `443`).
+    - *Technical context*: Review the [Longhorn Manager Egress Requirements](https://longhorn.io/docs/1.11.0/references/networking/#longhorn-manager) for specific destination details.
 
-**Expected Result**: Running `kubectl get netpol -n longhorn-system` should show a suite of policies (for example, `longhorn-manager`, `longhorn-instance-manager`) that match the labels and ports defined in the official networking documentation.
+**Expected State**: Upon application, the `longhorn-system` namespace contains a suite of `NetworkPolicy` objects. This hardened state ensures that only authorized Longhorn components can communicate over the required TCP ports, effectively isolating the storage control and data planes from unauthorized cluster traffic.
 
-### 3.2 Storage Network Isolation
+### 4.2 Storage Network Isolation
 
 #### Overview
 
-By default, Longhorn uses the primary Kubernetes CNI network for all traffic. To enhance security and performance, Longhorn supports the isolation of in-cluster data traffic (replication and management) to a dedicated network interface. This segmentation prevents data-heavy replication traffic from interfering with the Kubernetes control plane and reduces the attack surface of the storage layer.
+By default, Longhorn uses the primary Kubernetes CNI network for all traffic. To enhance security and performance, Longhorn supports the isolation of in-cluster data traffic (replication and management) to a dedicated network interface. This segmentation prevents high-bandwidth storage traffic from interfering with the Kubernetes control plane and significantly reduces the attack surface of the storage layer by physically or logically isolating data replication.
 
 **References**:
 
 - [Longhorn Storage Network Documentation](https://longhorn.io/docs/1.11.0/advanced-resources/deploy/storage-network/)
+- [Longhorn Storage Network Setting](https://longhorn.io/docs/1.11.0/references/settings/#storage-network)
 - [Multus CNI Documentation](https://github.com/k8snetworkplumbingwg/multus-cni)
 
 #### Security Recommendation
@@ -257,15 +258,19 @@ Implement network segregation by configuring a dedicated storage network using a
 
 #### Configuration
 
-The storage network is configured by providing a Multus `NetworkAttachmentDefinition` in the `<NAMESPACE>/<NAME>` format to the Longhorn **Storage Network** setting.
+Longhorn uses the Multus CNI to attach secondary network interfaces to storage-related components.
 
-- **Behavioral Change**: Applying this setting adds the `k8s.v1.cni.cncf.io/networks` annotation to Longhorn pods. This triggers an immediate recreation of all `instance-manager`, `backing-image-manager`, and `backing-image-data-source` pods.
-- **Best Practice**: To ensure immediate and stable application of the setting, it is critical to stop all workloads and detach all volumes before configuration. If volumes remain attached, Longhorn delays the restart of the affected pods until the volumes are detached or the next synchronization cycle occurs (typically one hour).
-- **V2 Engine & RWX Support**: This isolation also extends to the V2 Data Engine and Read-Write-Many (RWX) volumes via the **Endpoint Network For RWX Volume** setting, ensuring end-to-end network hardening for all volume types.
+- **Multus Integration**: The **Storage Network** setting accepts a `NetworkAttachmentDefinition` in `<NAMESPACE>/<NAME>` format. Applying this setting adds the required CNI annotations to Longhorn pods, routing replication traffic through the secondary interface.
 
-**Expected Result**: Once configured, data traffic is routed through the specified secondary interface. This can be verified by describing the `instance-manager` pods and confirming the presence of the Multus network annotation and the assigned secondary IP address.
+- **Operational Requirements**:
+    - **Volume Detachment**: For immediate application of the setting, it is critical to stop all workloads and [detach all volumes](https://longhorn.io/docs/1.11.0/advanced-resources/deploy/storage-network/#setting-storage-network-after-longhorn-installation) before configuration. Longhorn automatically recreates the `instance-manager` and `backing-image-manager` pods once volumes are offline.
+    - **V2 & RWX Hardening**: This isolation also extends to the V2 Data Engine (Technical Preview) and Read-Write-Many (RWX) volumes via the **Endpoint Network For RWX Volume** setting. Review the [RWX specific limitations](https://longhorn.io/docs/1.11.0/advanced-resources/deploy/storage-network/#limitation) regarding NFS mount points when enabling this feature.
 
-### 3.3 Control Plane and Data Plane mTLS
+- **Prerequisites**: Ensure the specified Multus network is reachable across all cluster nodes. Refer to the [Prerequisite Verification](https://longhorn.io/docs/1.11.0/advanced-resources/deploy/storage-network/#prerequisite) for testing connectivity between nodes using a simple DaemonSet.
+
+**Expected State**: Once the setting is active, all storage-related pods (for example, `instance-manager`) feature the `k8s.v1.cni.cncf.io/networks` annotation. The hardened state is confirmed when storage replication traffic is successfully verified on the isolated secondary interface, leaving the primary cluster network for control plane operations.
+
+### 4.3 Control Plane and Data Plane mTLS
 
 #### Overview
 
@@ -280,17 +285,20 @@ This prevents "man-in-the-middle" attacks and unauthorized command injection wit
 
 #### Security Recommendation
 
-Enable mTLS for all gRPC communication by deploying a Kubernetes Secret named `longhorn-grpc-tls` in the `longhorn-system` namespace. This should be performed before Longhorn installation to ensure a secure-from-start posture.
+Enable mTLS for all gRPC communication by deploying a Kubernetes Secret named `longhorn-grpc-tls` in the `longhorn-system` namespace. For the highest security **posture**, this secret should be created before Longhorn installation to ensure all components are initialized with encryption active.
 
 #### Configuration
 
-Longhorn uses an optional secret mount mechanism. If the `longhorn-grpc-tls` secret is detected during component startup, the system automatically transitions from plaintext to encrypted gRPC.
+Longhorn utilizes an optional secret mount. If the `longhorn-grpc-tls` secret is present, components automatically enable TLS. Otherwise, they fall back to plaintext.
 
-- **Certificate Requirements**: You must generate a `ca.crt` (CA) to sign a `tls.crt` (certificate) and `tls.key` (private key). To pass Longhorn's internal service discovery validation, the certificate **must** include specific Subject Alternative Names (SANs) for all managers, including `longhorn-backend`, `longhorn-engine-manager`, `longhorn-replica-manager`, and `longhorn-csi`.
-- **Deployment**: The certificates are stored as a `kubernetes.io/tls` type secret. When generating the base64 encoding for these secrets manually, ensure no trailing newlines are added, as this causes certificate loading failures.
-- **Lifecycle Management**:
-- **Mixed Mode**: The `longhorn-manager` includes a fallback mechanism to communicate with older, non-TLS instance managers during rolling upgrades.
-- **Rotations**: Using a self-signed CA allows for the rotation of the `tls.crt` without service interruption, provided the CA remains valid.
-- **Restarts**: If mTLS is enabled after installation, a full restart of all manager and instance-manager pods is required to mount the secret and activate encryption.
+- **Certificate Requirements**: The `tls.crt` must be signed by your CA and **must** contain a specific list of Subject Alternative Names (SANs) to support Longhorn's internal service discovery (for example, `longhorn-backend`, `longhorn-engine-manager`, and `longhorn-csi`).
+    - *Mandatory details*: Refer to the [Required SANs List](https://longhorn.io/docs/1.11.0/advanced-resources/security/mtls-support/#self-signed-certificate-setup) for the complete list of entries.
 
-**Expected Result**: Successful activation can be confirmed by inspecting the `longhorn-manager` logs. The output indicates that gRPC services are initializing with TLS enabled and that the secret has been successfully mounted from the `longhorn-system` namespace.
+- **Secret Formatting**: Deploy the CA, certificate, and private key as a `kubernetes.io/tls` secret.
+    - *Implementation detail*: See the [mTLS Secret YAML Example](https://longhorn.io/docs/1.11.0/advanced-resources/security/mtls-support/#setting-up-kubernetes-secrets) for the required structure.
+
+- **Lifecycle and Upgrades**:
+    - **Mixed Mode**: The control plane supports a non-TLS fallback to maintain communication with older instance managers during rolling upgrades.
+    - **Component Restarts**: If mTLS is enabled on an existing cluster, all `longhorn-manager` and `instance-manager` pods must be restarted to mount the secret and initiate encrypted communication.
+
+**Expected State**: Successful activation is validated through the `longhorn-manager` logs, which indicate that gRPC services are initializing with TLS enabled. Once verified, the storage network is effectively hardened against unauthenticated gRPC traffic.
