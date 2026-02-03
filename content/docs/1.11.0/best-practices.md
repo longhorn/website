@@ -21,6 +21,7 @@ We recommend the following setup for deploying Longhorn in production.
   - [IO Performance](#io-performance)
   - [Space Efficiency](#space-efficiency)
   - [Disaster Recovery](#disaster-recovery)
+  - [Volume Sizing Guidance](#volume-sizing-guidance)
 - [Deploying Workloads](#deploying-workloads)
 - [Volumes Maintenance](#volumes-maintenance)
 - [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu)
@@ -191,6 +192,14 @@ The following sections outline other recommendations for production environments
 - **Recurring backups**: Create [recurring backup jobs](../snapshots-and-backups/scheduling-backups-and-snapshots/) for mission-critical application volumes.
 
 - **System backup**: Create periodic [system backups](../advanced-resources/system-backup-restore/backup-longhorn-system/#create-longhorn-system-backup).
+
+### Volume Sizing Guidance
+
+To ensure system stability and successful recovery during failures, avoid creating volumes that are too large for your hardware to rebuild within the default 24-hour timeout window. 
+
+When choosing a volume size, consider your network bandwidth and disk throughput. If a volume (including its snapshots) is too large to be synchronized over your network/disk within 24 hours, the volume may remain in a degraded state after a node failure.
+
+For detailed formulas, calculation examples, and case studies, see the [Recommended Maximum Volume Size](../nodes-and-volumes/volumes/volume-size/#recommended-maximum-volume-size) section in the Volume Size documentation.
 
 ## Deploying Workloads
 
