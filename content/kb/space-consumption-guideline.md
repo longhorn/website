@@ -33,7 +33,7 @@ If you make the trim operation automatic, you can apply `filesystem-trim` recurr
 
 ## Disk exhaustion
 
-> **Warning**: Overprovisioning Risks High storage overprovisioning ratios can lead to unexpected disk exhaustion. Ensure your `Storage Overprovisioning Percentage` setting aligns with your actual physical capacity and workload growth patterns.
+> **Warning**: Overprovisioning Risks High storage overprovisioning ratios are a leading cause of unexpected disk exhaustion. Longhorn defaults to 200%. If you are using the root disk, ensure your `Storage Overprovisioning Percentage` is set to a sustainable level (for example, 100% to 200%) and that the `Minimal Available Storage Percentage` is at least 25% to prevent `DiskPressure` from the kubelet.
 
 In this case, the node is probably marked as NotReady due to the disk pressure. Therefore, the most critical measure is to recover the node while avoiding losing volume data.
 
