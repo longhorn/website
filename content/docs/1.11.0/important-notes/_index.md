@@ -43,7 +43,14 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
 
 #### `longhorn-instance-manager` Image
 
-The `longhorn-instance-manager:v1.11.0` image is affected by a [regression issue](https://github.com/longhorn/longhorn/issues/12573) introduced by the new longhorn-instance-manager Proxy service APIs. The bug causes Proxy connection leaks in the longhorn-instance-manager pods, resulting in increased memory usage. To mitigate this issue, replace `longhornio/longhorn-instance-manager:v1.11.0` with the hotfixed image `longhornio/longhorn-instance-manager:v1.11.0-hotfix-1`.
+The `longhornio/longhorn-instance-manager:v1.11.0` image is affected by regression issues introduced by recent changes in the instance-manager:
+
+- Proxy service API regression causing connection leaks and increased memory usage ([Longhorn #12573](https://github.com/longhorn/longhorn/issues/12573))
+- V2 data engine block-type disk check regression ([Longhorn #12599](https://github.com/longhorn/longhorn/issues/12599))
+
+These issues are fixed in the hotfix images. Users running v1.11.0 can update the image to `longhornio/longhorn-instance-manager:v1.11.0-hotfix-2`. This image contains fixes for both regressions.
+
+The earlier hotfix image `longhornio/longhorn-instance-manager:v1.11.0-hotfix-1` only includes the fix for the Proxy connection leak issue. Users can choose to apply either hotfix image based on their needs.
 
 You can apply the update by following these steps:
 
