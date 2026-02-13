@@ -42,9 +42,9 @@ This is where the actual data resides. Longhorn uses **Content-Addressable Stora
 This directory contains "Manifest" files for every backup taken.
 
 - **`backup_[name].cfg`**: A JSON file that acts as a blueprint for a specific backup. It contains:
-- The snapshot name and creation time.
-- A mapping of the volume's address space to the specific hashes in the `blocks/` directory.
-- Metadata like the original volume size and labels.
+    - The snapshot name and creation time.
+    - A mapping of the volume's address space to the specific hashes in the `blocks/` directory.
+    - Metadata like the original volume size and labels.
 
 ### 3. `backup.cfg`
 
