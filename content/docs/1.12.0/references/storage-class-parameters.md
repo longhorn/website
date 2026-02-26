@@ -42,6 +42,7 @@ parameters:
 #  nfsOptions: "soft,timeo=150,retrans=3"
 #  dataEngine: "v1"
 #  freezeFSForSnapshot: "ignored"
+#  strictTopology: "false"
 # allowedTopologies:
 #   - matchLabelExpressions:
 #       - key: topology.kubernetes.io/zone
@@ -86,8 +87,12 @@ Specifies the plugin that will be used for dynamic creation of persistent volume
 Specifies the set of nodes where volumes may be provisioned by matching node labels.
 Longhorn uses this field to populate the PV’s `nodeAffinity` via the CSI `accessibleTopology` field.
 
+For `allowedTopologies` to take effect, the Longhorn setting [`csi-allowed-topology-keys`](../settings#csi-allowed-topology-keys) must be configured with the corresponding topology keys (for example, `topology.kubernetes.io/zone`). Without this setting, no topology information is passed through and the PV will have no `nodeAffinity`.
+
 Do **not** use `allowedTopologies` together with `parameters.dataLocality: strict-local`.
 The resulting PV `nodeAffinity` becomes immutable and will conflict with Longhorn’s strict-local volume pinning.
+
+> For a complete walkthrough with examples, see [Topology-Aware Provisioning](../../nodes-and-volumes/nodes/topology-aware-provisioning).
 
 ## Longhorn-specific Parameters
 
@@ -292,6 +297,18 @@ A list of recurring jobs that are to be run on a volume.
 
 > Default: `default`
 > More details in [default backup target](../../snapshots-and-backups/backup-and-restore/set-backup-target#default-backup-target) and [Create Volumes](../../nodes-and-volumes/volumes/create-volumes).
+
+#### Strict Topology *(field: `parameters.strictTopology`)*
+
+> Default: `"false"`
+
+When set to `"true"`, the PV is pinned to the topology of the exact node selected by the Kubernetes scheduler. This is only effective when `volumeBindingMode` is set to `WaitForFirstConsumer`.
+
+- `"false"` (default): The PV `nodeAffinity` includes all topology segments matching the `allowedTopologies` (or all segments if `allowedTopologies` is not set).
+- `"true"`: The PV `nodeAffinity` is restricted to only the topology segment of the node where the pod was scheduled.
+
+> Requires `csi-allowed-topology-keys` to be configured. See [CSI Allowed Topology Keys](../settings#csi-allowed-topology-keys).
+> More details in [Topology-Aware Provisioning](../../nodes-and-volumes/nodes/topology-aware-provisioning).
 
 #### Backup Block Size *(field: `parameters.backupBlockSize`)*
 
