@@ -43,7 +43,7 @@ This is effective if you have sufficient healthy replicas and available space on
 Longhorn volumes can consume more space than their actual data size due to historical snapshots.
 
 - **Delete Manual Snapshots**: Identify volumes with large or numerous snapshots and delete them via the Volume Detail page to merge data into the base image.
-- **Setup Recurring Jobs**: To prevent future buildup, implement a `snapshot-delete` recurring job. This job periodically removes and purges snapshots that exceed a specified retention count. See [Recurring Snapshots and Backups](../../docs/archives/1.11.0/snapshots-and-backups/scheduling-backups-and-snapshots) for configuration details.
+- **Setup Recurring Jobs**: To prevent future buildup, implement a `snapshot-delete` recurring job. This job periodically removes and purges snapshots that exceed a specified retention count. See [Recurring Snapshots and Backups](../../docs/1.12.0/snapshots-and-backups/scheduling-backups-and-snapshots) for configuration details.
 
 ### Method 3 - Filesystem Trim (Unmap)
 
@@ -51,7 +51,7 @@ Deleting files within the workload's filesystem does not automatically free up b
 
 - **Prerequisites**: Ensure you are on Longhorn v1.4.0+ and using a trimmable filesystem like EXT4 or XFS.
 - **Manual Trim**: You can trigger this via the Longhorn UI using the `Trim Filesystem` operation for attached volumes, or manually via the `fstrim` command.
-- **Recurring Trim**: Apply a `filesystem-trim` recurring job to automate reclamation. For more information, see [Trim Filesystem](../../docs/1.12.0/nodes-and-volumes/volumes/trim-filesystem.md).
+- **Recurring Trim**: Apply a `filesystem-trim` recurring job to automate reclamation. For more information, see [Trim Filesystem](../../docs/1.12.0/nodes-and-volumes/volumes/trim-filesystem).
 
 ### Method 4 - Replica Auto-Balance
 
@@ -60,7 +60,7 @@ If space issues are caused by uneven replica distribution, you can trigger a reb
 - **Global/Volume Settings**: Longhorn supports `least-effort` and `best-effort` balancing modes. You can also set a `Replica Auto Balance Disk Pressure Threshold (%)` to trigger migrations once a disk reaches a specific capacity.
 - **Limitations**: Auto-balancing only activates for volumes with a `Healthy` status. Unhealthy or detached volumes require manual intervention.
 
-See [Replica Auto Balance](../../docs/1.12.0/high-availability/auto-balance-replicas.md) for detailed setup and behavior.
+See [Replica Auto Balance](../../docs/1.12.0/high-availability/auto-balance-replicas) for detailed setup and behavior.
 
 ## Recommended Long-term Solutions
 
