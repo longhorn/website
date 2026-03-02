@@ -63,3 +63,13 @@ If space issues are caused by uneven replica distribution, you can trigger a reb
 - **Limitations**: Auto-balancing only activates for volumes with a `Healthy` status. Unhealthy or detached volumes require manual intervention.
 
 See [Replica Auto Balance](../../docs/1.12.0/high-availability/auto-balance-replicas) for detailed setup and behavior.
+
+### Method 5 - Orphaned Replica Cleanup
+
+Orphaned replica directories are untracked data folders on your disks that are no longer associated with any active Longhorn volume. This can happen if a node or disk goes down and is later reintroduced after its replicas have been removed from the system.
+
+- **Identify Orphaned Data**: In the Longhorn UI, navigate to **Setting > Orphan Resources > Replica Data** to see a list of untracked directories grouped by node and disk.
+- **Manual Deletion**: You can manually delete these directories by clicking **Operation > Delete** in the UI, or via `kubectl` by deleting the corresponding `orphan` resource.
+- **Automatic Deletion**: To automate this, enable the `orphan-resource-auto-deletion` setting in Longhorn. This will automatically clean up orphaned resources after a defined grace period.
+
+For detailed steps and `kubectl` examples, see [Orphaned Data Cleanup](../../docs/1.12.0/advanced-resources/data-cleanup/orphaned-data-cleanup).
