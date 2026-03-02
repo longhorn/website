@@ -34,7 +34,7 @@ This is effective if you have sufficient healthy replicas and available space on
 1. **Disable scheduling for the stressed node**: In the Longhorn UI, go to the **Nodes** tab, select the stressed node, and set **Scheduling** to `Disable`. This prevents Longhorn from rebuilding the replacement replica on the same full node.
 2. **Identify a volume with a replica on the stressed node**:
     > **CRITICAL**: Only proceed if the volume status is **Healthy** and you have at least 2 other healthy replicas on different nodes.
-3. **Delete the replica**: Navigate to the **Volume Detail** page for the identified volume. In the **Replicas** section, find the replica located on the stressed node and select **Delete**.
+3. **Delete the replica**: Navigate to the **Volumes Detail** page for the identified volume. In the **Replicas** section, find the replica located on the stressed node and select **Delete**.
 4. **Verification**: Longhorn will automatically detect the missing replica and rebuild it on a different node with available space.
 5. **Re-enable scheduling**: Once the node has sufficient space or you have added more capacity, remember to set **Scheduling** back to `Enable`.
 
@@ -42,8 +42,10 @@ This is effective if you have sufficient healthy replicas and available space on
 
 Longhorn volumes can consume more space than their actual data size due to historical snapshots.
 
-- **Delete Manual Snapshots**: Identify volumes with large or numerous snapshots and delete them via the Volume Detail page to merge data into the base image.
+- **Delete Manual Snapshots**: Identify volumes with large or numerous snapshots and delete them via the **Volumes Detail** page to merge data into the parent snapshot.
 - **Setup Recurring Jobs**: To prevent future buildup, implement a `snapshot-delete` recurring job. This job periodically removes and purges snapshots that exceed a specified retention count. See [Recurring Snapshots and Backups](../../docs/1.12.0/snapshots-and-backups/scheduling-backups-and-snapshots) for configuration details.
+
+> **Note**: Users must not manually touch or delete the files inside the replica directories on the node's filesystem, as this will lead to data corruption.
 
 ### Method 3 - Filesystem Trim (Unmap)
 
@@ -61,9 +63,3 @@ If space issues are caused by uneven replica distribution, you can trigger a reb
 - **Limitations**: Auto-balancing only activates for volumes with a `Healthy` status. Unhealthy or detached volumes require manual intervention.
 
 See [Replica Auto Balance](../../docs/1.12.0/high-availability/auto-balance-replicas) for detailed setup and behavior.
-
-## Recommended Long-term Solutions
-
-- **Enable Replica Auto-Balance**: Use `best-effort` or `least-used-node-filling` settings.
-- **Adjust Overprovisioning**: Lower the `Storage Overprovisioning Percentage` to a safer margin (for example, 150-200%).
-- **Automate Cleanup**: Use **Recurring Jobs** for `snapshot-delete` and `filesystem-trim`.
