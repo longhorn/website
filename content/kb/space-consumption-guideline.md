@@ -35,9 +35,9 @@ If you make the trim operation automatic, you can apply `filesystem-trim` recurr
 
 > **Warning**: Overprovisioning Risks High storage overprovisioning ratios are a leading cause of unexpected disk exhaustion. Longhorn defaults to 200%. If you are using the root disk, ensure your `Storage Overprovisioning Percentage` is set to a sustainable level (for example, 100% to 200%) and that the `Minimal Available Storage Percentage` is at least 25% to prevent `DiskPressure` from the kubelet.
 
-In this case, the node is probably marked as NotReady due to the disk pressure. Therefore, the most critical measure is to recover the node while avoiding losing volume data.
+In this case, the node is probably marked as NotReady because of disk pressure. Therefore, the most critical measure is to recover the node while avoiding losing volume data.
 
-To do recover nodes and disk, we would recommend directly removing some redundant replica directories for the full disk. Here redundant replicas means that the corresponding volumes have healthy replicas in other disks. Later on Longhorn will automatically rebuild new replicas in other disks if possible.
-Besides, users may need to expand the existing disks or add more disks to avoid future disk exhaustion issues.
+To recover nodes and disk space, we recommend directly removing some redundant replica directories for the full disk. Here, redundant replicas means that the corresponding volumes have healthy replicas in other disks. Later on, Longhorn will automatically rebuild new replicas in other disks if possible.
+Besides, users may need to expand existing disks or add more disks to avoid future disk exhaustion issues.
 
-Notice that the disk exhaustion may be caused by replicas being unevenly scheduled. Users can check [setting Replica Auto Balance](../../docs/archives/1.5.1/high-availability/auto-balance-replicas) for this scenario.
+Notice that disk exhaustion may be caused by replicas being unevenly scheduled. Users can check [setting Replica Auto Balance](../../docs/archives/1.5.1/high-availability/auto-balance-replicas) for this scenario.
