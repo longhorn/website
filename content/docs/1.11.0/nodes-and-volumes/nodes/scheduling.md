@@ -135,7 +135,7 @@ After identifying the candidate disks that meet all scheduling requirements, the
 
 - **Formula**:
 
-    $$\text{BalanceScore}(X) = \frac{\max(X) - \min(X)}{\text{mean}(X)}$$
+    `BalanceScore(X) = (max(X) - min(X)) / mean(X)`
 
     Where:
     - X = set of usable storage values (per node or per disk).
@@ -167,22 +167,24 @@ Replica size = 100 GiB.
         - Node A = (900 + 100) − 100 = 900
         - Node B = (600 + 700) = 1300
     - Node balance score:
-$$
-BalanceScore_{NodeA} = \frac{1300 - 900}{\tfrac{1300 + 900}{2}} 
-            = \frac{400}{1100} 
-            \approx 0.364
-$$
+
+```
+        BalanceScore_NodeA  = (1300 - 900) / ((1300 + 900) / 2)
+                            = 400 / 1100
+                            ≈ 0.364
+```
 
 - Simulate placing on Node B
     - New totals:
         - Node A = (900 + 100) = 1000
         - Node B = (600 + 700) - 1000 = 1200
     - Node balance score:
-$$
-BalanceScore_{NodeB} = \frac{1200 - 1000}{\tfrac{1200 + 1000}{2}} 
-            = \frac{200}{1100} 
-            \approx 0.182
-$$
+
+```
+        BalanceScore_NodeB  = (1200 - 1000) / ((1200 + 1000) / 2)
+                            = 200 / 1100
+                            ≈ 0.182
+```
 
 Choose Node B (lower score, more balanced).
 
@@ -190,20 +192,22 @@ Choose Node B (lower score, more balanced).
 - Simulate placing on B1 (600 → 500)
     - New disk usable: B1 = 500, B2 = 700
     - Disk balance score:
-$$
-BalanceScore_{NodeA} = \frac{700 - 500}{\tfrac{700 + 500}{2}} 
-            = \frac{200}{600} 
-            \approx 0.333
-$$
+
+```
+        BalanceScore_DiskB1 = (700 - 500) / ((700 + 500) / 2)
+                            = 200 / 600
+                            ≈ 0.333
+```
 
 - Simulate placing on B2 (700 → 600)
     - New disk usable: B1 = 600, B2 = 600
     - Disk balance score:
-$$
-BalanceScore_{NodeA} = \frac{600 - 600}{\tfrac{600 + 600}{2}} 
-            = \frac{0}{600} 
-            \approx 0
-$$
+
+```
+        BalanceScore_DiskB2 = (600 - 600) / ((600 + 600) / 2)
+                            = 0 / 600
+                            = 0
+```
 
 Choose Disk B2 (perfect balance between B1 and B2).
 
