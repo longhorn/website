@@ -116,6 +116,9 @@ machine:
 #     - name: uio_pci_generic
 ```
 
+> **Note:** 
+> If SPDK initialization fails on Talos with `nsenter: operation not permitted`, it may be due to hardware IOMMU group sharing. Refer to the [V2 Data Engine Prerequisites](../../../v2-data-engine/prerequisites#prerequisites) to verify your hardware topology.
+
 > **Note:**
 > Talos Linux v1.7.x and earlier versions do not include the `uio_pci_generic` kernel module. If the system device supports `vfio_pci`, which is the preferred kernel module for SPDK application deployment, we are not required to install and enable the `uio_pci_generic` kernel driver. For more information, see [System Configuration User Guide](https://spdk.io/doc/system_configuration.html) in the SPDK documentation.
 >
