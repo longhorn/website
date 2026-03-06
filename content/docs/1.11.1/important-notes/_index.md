@@ -150,7 +150,7 @@ For more information, see [Scheduling](../nodes-and-volumes/nodes/scheduling).
 
 Longhorn CSI now supports StorageClass `allowedTopologies`, enabling Kubernetes to automatically restrict pod and volume scheduling to nodes where Longhorn is available.
 
-For more information, see [Longhorn #12261](https://github.com/longhorn/longhorn/issues/12261) and [Storage Class Parameters](../references/storage-class-parameters).
+For more information, see [Longhorn #12261](https://github.com/longhorn/longhorn/issues/12261), [Topology-Aware Provisioning](../nodes-and-volumes/nodes/topology-aware-provisioning), and [Storage Class Parameters](../references/storage-class-parameters).
 
 ## Monitoring
 
