@@ -1,4 +1,15 @@
 DirectoryPath: public
-IgnoreDirectoryMissingTrailingSlash: true
+MaxConcurrent: 2
+LogLevel: 3
 CheckExternal: false
+IgnoreInternalEmptyHash: true
+IgnoreMissingTrailingSlash: true
+IgnoreDirectoryMissingTrailingSlash: true
 IgnoreAltMissing: true
+IgnorePatterns:
+  - ".*latest.*"
+  - ".*deploy-preview.*"
+ChecksToSkip:
+  - MissingAltTag
+  - DirectoryIndex
+  - AltMissing
