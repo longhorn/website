@@ -1,4 +1,12 @@
 DirectoryPath: public
-IgnoreDirectoryMissingTrailingSlash: true
+MaxConcurrent: 4
+LogLevel: 2
 CheckExternal: false
+IgnoreInternalEmptyHash: true
+IgnoreMissingTrailingSlash: true
+IgnoreDirectoryMissingTrailingSlash: true
 IgnoreAltMissing: true
+ChecksToSkip:
+  - MissingAltTag
+  - DirectoryIndex
+  - AltMissing

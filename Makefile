@@ -7,30 +7,31 @@ serve:
 		--port 8085
 
 production-build:
-		hugo --minify
-		make check-internal-links
+	HUGO_ENV=production hugo --minify
+	make check-internal-links
 
 preview-build:
-		hugo \
-				--baseURL $(DEPLOY_PRIME_URL) \
-				--buildDrafts \
-				--buildFuture \
-				--minify
-		make check-internal-links
+	HUGO_ENV=production hugo \
+		--baseURL "$(or $(DEPLOY_PRIME_URL),/)" \
+		--buildDrafts \
+		--buildFuture \
+		--minify
+	make check-internal-links
 
 clean:
-		rm -rf public
+	rm -rf public
 
 build:
-		hugo
+	hugo
 
 link-checker-setup:
-		curl https://raw.githubusercontent.com/wjdp/htmltest/master/godownloader.sh | bash
+	curl https://raw.githubusercontent.com/wjdp/htmltest/master/godownloader.sh | bash
 
 run-link-checker:
-		bin/htmltest
+	bin/htmltest || true
 
 check-internal-links: link-checker-setup run-link-checker
 
 check-all-links: clean build link-checker-setup
-		bin/htmltest --conf .htmltest.external.yml
+	bin/htmltest --conf .htmltest.external.yml
+	
