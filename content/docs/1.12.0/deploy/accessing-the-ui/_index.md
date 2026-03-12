@@ -3,7 +3,7 @@ title: Accessing the UI
 weight: 2
 ---
 
-Exposing the Longhorn UI allows external access to the management console. The choice of Ingress controller (for example, **ingress-nginx**, **Traefik**, or **HAProxy**) affects only how the UI is accessed. It has **no impact on the Longhorn backend, storage operations, or data integrity**.
+Exposing the Longhorn UI allows external access to the management console. The choice of Ingress controller (for example, **Traefik**, **HAProxy**, etc.) affects only how the UI is accessed. It has **no impact on the Longhorn backend, storage operations, or data integrity**.
 
 > **Note**: As of November 2025, the Kubernetes project has announced the retirement of the ingress-nginx controller. For details, [see the official announcement](https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/).
 
@@ -13,7 +13,7 @@ These instructions assume that Longhorn is already installed in the cluster.
 
 If you installed Longhorn using the YAML manifest, you must set up an Ingress controller to allow external traffic into the cluster. Authentication is **not enabled by default**. This applies to both Helm and `kubectl` installations.
 
-For information on creating an NGINX Ingress controller with basic authentication, see [this section](./longhorn-ingress). Alternatively, you can use the [Gateway API HTTPRoute](./longhorn-httproute) as a modern approach to exposing the Longhorn UI.
+For information on creating a Traefik Ingress controller with basic authentication, see [this section](./longhorn-ingress-traefik). Alternatively, you can also use the [Gateway API HTTPRoute](./longhorn-httproute) as a modern approach to exposing the Longhorn UI.
 
 If Longhorn was installed as a Rancher catalog app, Rancher automatically creates an Ingress controller with access control (the `rancher-proxy`).
 
