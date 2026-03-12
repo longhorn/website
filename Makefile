@@ -16,7 +16,7 @@ preview-build:
 		--buildDrafts \
 		--buildFuture \
 		--minify
-# 	make check-internal-links
+	make check-internal-links
 
 clean:
 	rm -rf public

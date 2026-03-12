@@ -1,14 +1,14 @@
 DirectoryPath: public
-MaxConcurrent: 2
-LogLevel: 3
+MaxConcurrent: 4
+LogLevel: 2
 CheckExternal: false
 IgnoreInternalEmptyHash: true
 IgnoreMissingTrailingSlash: true
 IgnoreDirectoryMissingTrailingSlash: true
 IgnoreAltMissing: true
-IgnorePatterns:
-  - ".*latest.*"
-  - ".*deploy-preview.*"
+# Added to address site scale and memory growth
+IgnoreDirs:
+  - docs/archives
 ChecksToSkip:
   - MissingAltTag
   - DirectoryIndex
