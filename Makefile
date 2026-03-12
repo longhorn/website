@@ -28,7 +28,7 @@ link-checker-setup:
 	curl https://raw.githubusercontent.com/wjdp/htmltest/master/godownloader.sh | bash
 
 run-link-checker:
-	bin/htmltest --conf .htmltest.yml || true
+	bin/htmltest || true
 
 check-internal-links: link-checker-setup run-link-checker
 
