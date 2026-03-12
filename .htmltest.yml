@@ -6,6 +6,9 @@ IgnoreInternalEmptyHash: true
 IgnoreMissingTrailingSlash: true
 IgnoreDirectoryMissingTrailingSlash: true
 IgnoreAltMissing: true
+# Added to address site scale and memory growth
+IgnoreDirs:
+  - docs/archives
 ChecksToSkip:
   - MissingAltTag
   - DirectoryIndex
