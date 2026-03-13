@@ -6,13 +6,12 @@ weight: 1
 This page summarizes the key notes for Longhorn v{{< current-version >}}.
 For the full release note, see [here](https://github.com/longhorn/longhorn/releases/tag/v{{< current-version >}}).
 
-- [Warning](#warning)
-  - [Hotfix](#hotfix)
-    - [`longhorn-instance-manager` Image](#longhorn-instance-manager-image)
-    - [`longhorn-manager` Image](#longhorn-manager-image)
 - [Deprecation](#deprecation)
 - [Behavior Change](#behavior-change)
   - [Cloned Volume Health After Efficient Cloning](#cloned-volume-health-after-efficient-cloning)
+- [Important Fixes](#important-fixes)
+  - [Longhorn Workload Pods Memory Leak](#longhorn-workload-pods-memory-leak)
+  - [PV nodeaffinity Regression](#pv-nodeaffinity-regression)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Upgrade Check Events](#upgrade-check-events)
@@ -22,7 +21,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Concurrent Job Limit for Snapshot Operations](#concurrent-job-limit-for-snapshot-operations)
 - [Scheduling](#scheduling)
   - [Replica Scheduling with Balance Algorithm](#replica-scheduling-with-balance-algorithm)
-  - [Supports StorageClass `allowedTopologies`](#supports-storageclass-allowedtopologies)
+  - [Supports Topology-aware PV Node Affinity control](#supports-topology-aware-pv-node-affinity-control)
 - [Monitoring](#monitoring)
   - [Disk Health Monitoring](#disk-health-monitoring)
 - [Rebuilding](#rebuilding)
@@ -37,49 +36,6 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Technical Preview](#technical-preview)
   - [SPDK UBLK Performance Parameters](#spdk-ublk-performance-parameters)
 
-## Warning
-
-### Hotfix
-
-#### `longhorn-instance-manager` Image
-
-The `longhornio/longhorn-instance-manager:v1.11.0` image is affected by regression issues introduced by recent changes in the instance-manager:
-
-- Proxy service API regression causing connection leaks and increased memory usage ([Longhorn #12573](https://github.com/longhorn/longhorn/issues/12573))
-- V2 data engine block-type disk check regression ([Longhorn #12599](https://github.com/longhorn/longhorn/issues/12599))
-
-These issues are fixed in the hotfix images. Users running v1.11.0 can update the image to `longhornio/longhorn-instance-manager:v1.11.0-hotfix-2`. This image contains fixes for both regressions.
-
-The earlier hotfix image `longhornio/longhorn-instance-manager:v1.11.0-hotfix-1` only includes the fix for the Proxy connection leak issue. Users can choose to apply either hotfix image based on their needs.
-
-You can apply the update by following these steps:
-
-1. **Update the `longhorn-instance-manager` image**
-   - Change the longhorn-instance-manager image tag from `v1.11.0` to `v1.11.0-hotfix-1` in the appropriate file:
-     - For Helm: Update `values.yaml`.
-     - For manifests: Update the deployment manifest directly.
-
-2. **Proceed with the installation or upgrade**
-   - Apply the changes using your standard Helm install/upgrade command or reapply the updated manifest.
-
-#### `longhorn-manager` Image
-
-The `longhorn-manager:v1.11.0` image is affected by a [regression issue](https://github.com/longhorn/longhorn/issues/12578) introduced by the new `Kubernetes Node` validator. The bug blocks setting Kubernetes node CNI labels because it waits for the Longhorn webhook server to be running, while the Longhorn webhook server waits for CNI network to be ready. To mitigate this issue, replace `longhornio/longhorn-manager:v1.11.0` with the hotfixed image `longhornio/longhorn-manager:v1.11.0-hotfix-1`.
-
-You can apply the update by following these steps:
-
-1. **Disable the upgrade version check**
-   - Helm users: Set `upgradeVersionCheck` to `false` in the `values.yaml` file.
-   - Manifest users: Remove the `--upgrade-version-check` flag from the deployment manifest.
-
-2. **Update the `longhorn-manager` image**
-   - Change the `longhorn-manager` image tag from `v1.11.0` to `v1.11.0-hotfix-1` in the appropriate file:
-     - For Helm: Update `values.yaml`.
-     - For manifests: Update the deployment manifest directly.
-
-3. **Proceed with the installation or upgrade**
-   - Apply the changes using your standard Helm install/upgrade command or reapply the updated manifest.
-
 ## Deprecation
 
 V2 Backing Image is deprecated and will be removed in a future release. Users can use containerized data importer (CDI) to import images into Longhorn as an alternative. For more information, see [Longhorn with CDI Imports](../advanced-resources/containerized-data-importer/containerized-data-importer).
@@ -89,6 +45,22 @@ V2 Backing Image is deprecated and will be removed in a future release. Users ca
 ### Cloned Volume Health After Efficient Cloning
 
 With efficient cloning enabled, a newly cloned and detached volume is degraded and has only one replica, with its clone status set to `copy-completed-awaiting-healthy`. To bring the volume to a healthy state, transition the clone status to `completed` and rebuild the remaining replica by either enabling offline replica rebuilding or attaching the volume to trigger replica rebuilding. See [Issue #12341](https://github.com/longhorn/longhorn/issues/12341) and [Issue #12328](https://github.com/longhorn/longhorn/issues/12328).
+
+## Important Fixes
+
+This release includes critical stability fixes.
+
+### Longhorn Workload Pods Memory Leak
+
+Fixed a critical regression where proxy connection leaks in the longhorn-instance-manager pods caused high memory consumption.
+
+For more details, see [#12575](https://github.com/longhorn/longhorn/issues/12575)
+
+### PV nodeAffinity Regression
+
+Fixed a regression where PV nodeAffinity was overly configured after introducing `AccessibleTopology` in the CSI server and `allowedTopologies` in Longhorn StorageClasses since v1.11.0.
+
+For more details, see [#12689](https://github.com/longhorn/longhorn/issues/12689) and [12656](https://github.com/longhorn/longhorn/issues/12656)
 
 ## General
 
@@ -146,11 +118,11 @@ To improve data distribution and resource utilization, Longhorn introduces a **b
 
 For more information, see [Scheduling](../nodes-and-volumes/nodes/scheduling).
 
-### Supports StorageClass `allowedTopologies`
+### Supports Topology-aware PV Node Affinity control
 
-Longhorn CSI now supports StorageClass `allowedTopologies`, enabling Kubernetes to automatically restrict pod and volume scheduling to nodes where Longhorn is available.
+Longhorn CSI now applies StorageClass parameter `allowedTopologies` and Setting `csi-allowed-topology-keys`, which awares topologies correctly with configurable keys then set up PV `nodeAffinity` precisely.
 
-For more information, see [Longhorn #12261](https://github.com/longhorn/longhorn/issues/12261), [Topology-Aware Provisioning](../nodes-and-volumes/nodes/topology-aware-provisioning), and [Storage Class Parameters](../references/storage-class-parameters).
+For more information, see [Longhorn #12261](https://github.com/longhorn/longhorn/issues/12261), [Longhorn #12689](https://github.com/longhorn/longhorn/issues/12689), [Topology-Aware Provisioning](../nodes-and-volumes/nodes/topology-aware-provisioning), and [Storage Class Parameters](../references/storage-class-parameters).
 
 ## Monitoring
 
@@ -165,7 +137,7 @@ Starting with Longhorn v1.11.0, disk health monitoring is available for both V1 
 - Health data available in `nodes.longhorn.io` Custom Resources
 
 > **Note:**
-> 
+>
 > - SMART data may not be fully available in virtualized or cloud environments (e.g., AWS EBS), which may result in zero values for certain attributes.
 > - Available health attributes vary depending on disk type and hardware.
 
@@ -209,9 +181,9 @@ Live upgrades of V2 volumes are **not supported**. Ensure all V2 volumes are det
 
 ### Technical Preview
 
-The V2 Data Engine is a **Technical Preview** feature in Longhorn v1.11.0.  
+The V2 Data Engine is a **Technical Preview** feature in Longhorn v1.11.0.
 
-It is nearly complete, with no significant functional changes expected, and has been validated in controlled environments.  
+It is nearly complete, with no significant functional changes expected, and has been validated in controlled environments.
 Users should evaluate the feature thoroughly before enabling it in production.
 
 ### SPDK UBLK Performance Parameters
