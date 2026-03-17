@@ -1,13 +1,13 @@
 ---
-  title:  Create an Ingress with Basic Authentication (Traefik)
-  weight: 1
+title:  Create an Ingress with Basic Authentication (Traefik)
+weight: 1
 ---
 
 If you install Longhorn on a Kubernetes cluster with `kubectl` or Helm, you will need to create an Ingress to allow external traffic to reach the Longhorn UI.
 
 Authentication is not enabled by default for `kubectl` and Helm installations. In these steps, you’ll learn how to create an Ingress with basic authentication and configure support for large file uploads (for backing images) using Traefik.
 
-> **Note**: These instructions assume that the Traefik Ingress Controller is installed and running in your cluster. Traefik is the default ingress controller for RKE2 and K3s. If you are using a different environment, ensure Traefik is deployed before proceeding. You can verify its presence by running `kubectl get pods -A | grep traefik`.
+> **Note**: These instructions assume that the [Traefik Ingress Controller](https://doc.traefik.io/traefik/) is installed and running in your cluster. Traefik is the default ingress controller for RKE2 and K3s. If you are using a different environment, ensure Traefik is deployed before proceeding. You can verify its presence by running `kubectl get pods -A | grep traefik`.
 
 ### 1. Create a Basic Auth Secret
 
