@@ -3,7 +3,10 @@
   weight: 1
 ---
 
-If you install Longhorn on a Kubernetes cluster with kubectl or Helm, you will need to create an Ingress to allow external traffic to reach the Longhorn UI.
+> **Note**: As of November 2025, the Kubernetes project has announced the retirement of the ingress-nginx controller. For details, [see the official announcement](https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/).
+>
+> **Recommended Alternative**:
+> To ensure continued support and security, we recommend using **Traefik Ingress** method to expose the Longhorn UI. See [Create an Ingress with Traefik](./longhorn-ingress-traefik) for more details.
 
 Authentication is not enabled by default for kubectl and Helm installations. In these steps, you'll learn how to create an Ingress with basic authentication using annotations for the nginx ingress controller.
 
