@@ -19,11 +19,13 @@ Template parameters allow you to use Secrets with individual volumes or with a c
 
 In the following example, the encryption key is specified as string data in the `CRYPTO_KEY_VALUE` parameter of the Secret. Using string data eliminates the need for Base64 encoding before the Secret is submitted via kubectl create.
 
-Besides `CRYPTO_KEY_VALUE`, parameters `CRYPTO_KEY_CIPHER`, `CRYPTO_KEY_HASH`, `CRYPTO_KEY_SIZE`, and `CRYPTO_PBKDF` provide the customization for volume encryption.
+Besides `CRYPTO_KEY_VALUE`, parameters `CRYPTO_KEY_CIPHER`, `CRYPTO_KEY_HASH`, `CRYPTO_KEY_SIZE`, `CRYPTO_PBKDF`, `CRYPTO_PBKDF_FORCE_ITERATIONS`, and `CRYPTO_PBKDF_MEMORY` provide the customization for volume encryption.
 - `CRYPTO_KEY_CIPHER`: Sets the cipher specification algorithm string. The default value is `aes-xts-plain64` for LUKS.
 - `CRYPTO_KEY_HASH`: Specifies the passphrase hash for `open`. The default value is `sha256`.
 - `CRYPTO_KEY_SIZE`: Sets the key size in bits and it must be a multiple of 8. The default value is `256`.
 - `CRYPTO_PBKDF`: Sets Password-Based Key Derivation Function (PBKDF) algorithm for LUKS keyslot. The default value is `argon2i`.
+- `CRYPTO_PBKDF_FORCE_ITERATIONS`: Sets a fixed iteration count for the PBKDF algorithm. When specified, this overrides cryptsetup’s default auto-tuning behavior. In FIPS mode, where PBKDF2 is required, specifying an explicit iteration count (such as `200000`) helps meet security policy requirements and avoids errors like "Not compatible PBKDF2 options". The default value is `200000` (Longhorn default).
+- `CRYPTO_PBKDF_MEMORY`: Sets the memory cost (in KB) for the PBKDF algorithm. This parameter is only applicable to memory-hard algorithms such as Argon2 (`argon2i` or `argon2id`) and has no effect when PBKDF2 is used. In FIPS mode, Argon2 is not allowed and PBKDF2 is used instead, so this parameter is ignored. The default value is `0`.
 
 For more information, see [cryptsetup(8)](https://man7.org/linux/man-pages/man8/cryptsetup.8.html) in the Linux man pages.
 
@@ -41,6 +43,8 @@ For more information, see [cryptsetup(8)](https://man7.org/linux/man-pages/man8/
     CRYPTO_KEY_HASH: "sha256"
     CRYPTO_KEY_SIZE: "256"
     CRYPTO_PBKDF: "argon2i"
+    CRYPTO_PBKDF_FORCE_ITERATIONS: "200000" 
+    CRYPTO_PBKDF_MEMORY: "0" 
   ```
 
 - Example of a StorageClass with a global Secret:
