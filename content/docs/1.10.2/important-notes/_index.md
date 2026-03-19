@@ -14,6 +14,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
       - [Downgrade Procedure (kubectl Installation)](#downgrade-procedure-kubectl-installation)
       - [Downgrade Procedure (Helm Installation)](#downgrade-procedure-helm-installation)
       - [Post-Downgrade](#post-downgrade)
+  - [HotFix](#hotfix)
 - [Important Fixes](#important-fixes)
   - [RWX Volume Unavailable After Node Drain](#rwx-volume-unavailable-after-node-drain)
   - [Encrypted Volume Cannot Be Expanded Online](#encrypted-volume-cannot-be-expanded-online)
@@ -22,7 +23,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Replica Auto Balance Disk Pressure Threshold Stalled](#replica-auto-balance-disk-pressure-threshold-stalled)
   - [Replicas Accumulate During Engine Upgrade](#replicas-accumulate-during-engine-upgrade)
   - [Potential Client Connection and Context Leak](#potential-client-connection-and-context-leak)
-  - [Replica Node Level Soft Anti-Affinity Ignored](#potential-client-connection-and-context-leak)
+  - [Replica Node Level Soft Anti-Affinity Ignored](#replica-node-level-soft-anti-affinity-ignored)
 - [Removal](#removal)
   - [`longhorn.io/v1beta1` API](#longhorniov1beta1-api)
   - [`replica.status.evictionRequested` Field](#replicastatusevictionrequested-field)
@@ -172,6 +173,25 @@ If Longhorn was installed using Helm, the downgrade is allowed by disabling the 
 ##### Post-Downgrade
 
 Once the downgrade is complete and the Longhorn system is stable on the v1.9.x version, you must immediately follow the steps outlined in the [Manual CRD Migration Guide](#migration-requirement-before-longhorn-v110-upgrade). This step is crucial to migrate all remaining `v1beta1` CRs to `v1beta2` before attempting the Longhorn v1.10 upgrade again.
+
+### HotFix
+
+The `backing-image-manager:v1.10.2` image is affected by
+
+- Regression:
+  - [\[BUG\] Backing image data source pod fails when HTTP proxy is enabled](https://github.com/longhorn/longhorn/issues/12779) that can cause failure of backing image upload when HTTP proxy is enabled.
+
+To mitigate the issues, replace `backing-image-manager:v1.10.2` with the hotfixed image `backing-image-manager:v1.10.2-hotfix-1`.
+
+Follow these steps to apply the update:
+
+1. **Update the `backing-image-manager` image**
+   - Change the image tag from `v1.10.2` to `v1.10.2-hotfix-1` in the appropriate file:
+     - For Helm: Update `values.yaml`
+     - For manifests: Update the deployment manifest directly.
+
+2. **Proceed with the upgrade**
+   - Apply the changes using your standard Helm upgrade command or reapply the updated manifest.
 
 ## Important Fixes
 
