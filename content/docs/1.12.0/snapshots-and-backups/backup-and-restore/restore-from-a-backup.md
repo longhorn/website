@@ -16,7 +16,7 @@ When you restore a backup, it creates a volume of the same name by default. If a
 3.  In the **Name** field, select the volume name you wish to create.
 4.  Click **OK**.
 
-You can then create the PV/PVC from the volume after restoring a volume from a backup. Here you can specify the `storageClassName` or leave it empty to use the `storageClassName` inherited from the PVC of the backup volume. The `StorageClass` should be already in the cluster to prevent any further issue.
+You can then create the PV/PVC from the volume after restoring a volume from a backup. Here you can specify the `storageClassName` or leave it empty to use the `storageClassName` inherited from the PVC of the backup volume. The `StorageClass` should already be in the cluster to prevent any further issues.
 
 ### Restore via Custom Resource (CLI)
 
