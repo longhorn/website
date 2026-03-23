@@ -6,10 +6,10 @@ weight: 1
   - [UI](#ui)
   - [Manager and Engines](#manager-and-engines)
   - [CSI driver](#csi-driver)
-  - [Flexvolume Driver](#flexvolume-driver)
+  - [FlexVolume Driver](#flexvolume-driver)
 - [Common Issues](#common-issues)
-  - [Volume can be attached/detached from UI, but Kubernetes Pod/StatefulSet etc cannot use it](#volume-can-be-attacheddetached-from-ui-but-kubernetes-podstatefulset-etc-cannot-use-it)
-    - [Using with Flexvolume Plugin](#using-with-flexvolume-plugin)
+  - [A volume can be attached/detached from the UI, but Kubernetes Pods/StatefulSets cannot use it](#a-volume-can-be-attacheddetached-from-the-ui-but-kubernetes-podsstatefulsets-cannot-use-it)
+    - [Using with FlexVolume Plugin](#using-with-flexvolume-plugin)
 
 ## Troubleshooting Guide
 
@@ -42,7 +42,7 @@ kubetail longhorn-manager -n longhorn-system
 
 For the CSI driver, check the logs for `csi-attacher-0` and `csi-provisioner-0`, as well as containers in `longhorn-csi-plugin-xxx`.
 
-### Flexvolume Driver
+### FlexVolume Driver
 
 The FlexVolume driver is deprecated as of Longhorn v0.8.0 and should no longer be used.
 
@@ -67,9 +67,9 @@ touch /var/log/longhorn_driver.log
 
 ## Common Issues
 
-### Volume can be attached/detached from UI, but Kubernetes Pod/StatefulSet etc cannot use it
+### A volume can be attached/detached from the UI, but Kubernetes Pods/StatefulSets cannot use it
 
-#### Using with Flexvolume Plugin
+#### Using with FlexVolume Plugin
 
 Check if the volume plugin directory has been set correctly. This is automatically detected unless the user explicitly sets it.
 
