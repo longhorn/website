@@ -8,6 +8,7 @@ weight: 3
 |---|---|---|
 | longhorn_volume_actual_size_bytes | Actual space used by each replica of the volume on the corresponding node | longhorn_volume_actual_size_bytes{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 1.1917312e+08 |
 | longhorn_volume_capacity_bytes | Configured size in bytes for this volume | longhorn_volume_capacity_bytes{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 6.442450944e+09 |
+| longhorn_volume_encrypted | Encrypted volume | longhorn_volume_encrypted{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 1 |
 | longhorn_volume_state | Volume state. This metric uses the `state` label to indicate the current volume state. The value is 1 for the current state and 0 for others. States: creating, attached, detached, attaching, detaching, deleting | longhorn_volume_state{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol",state="attached"} 1 |
 | longhorn_volume_robustness | Volume robustness. This metric uses the `state` label to indicate the current robustness. The value is 1 for the current state and 0 for others. States: unknown, healthy, degraded, faulted | longhorn_volume_robustness{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol",state="healthy"} 1 |
 | longhorn_volume_read_throughput | Read throughput of this volume (Bytes/s) | longhorn_volume_read_throughput{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 5120000 |
@@ -17,7 +18,6 @@ weight: 3
 | longhorn_volume_read_latency | Read latency of this volume (ns) | longhorn_volume_read_latency{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 100000 |
 | longhorn_volume_write_latency | Write latency of this volume (ns) | longhorn_volume_write_latency{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 100000 |
 | longhorn_volume_file_system_read_only | This metric indicates that the volume is now in read-only mode. The metric is either 1 or no record for each volume | longhorn_volume_file_system_read_only{node="worker-2",pvc="testvol",pvc_namespace="default",volume="testvol"} 1
-
 | longhorn_volume_last_backup_at | Unix timestamp of the last successful backup of this volume, or 0 if no such backup exists | longhorn_volume_last_backup_at{pvc_namespace="default",node="worker-2",pvc="testvol",volume="testvol"} 1.766365578e+09 |
 
 ## Node
