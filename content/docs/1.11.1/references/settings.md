@@ -618,6 +618,8 @@ The external URL to access the Longhorn Manager API. When configured, this URL i
 
 This setting is useful when accessing the Longhorn API through Ingress or Gateway API HTTPRoute, where the API may return internal cluster IPs if the ingress controller doesn't properly set `X-Forwarded-*` headers.
 
+> **Warning**: Internal Longhorn components (including `longhorn-driver-deployer` and `longhorn-csi-plugin`) follow the links returned in API responses. If this URL passes through proxy middleware (such as an OAuth2 proxy, ingress auth, or any other HTTP-intercepting layer), those components may receive an unexpected response (such as an HTML redirect) instead of JSON, causing errors such as `invalid character '<' looking for beginning of value` and CSI driver deployment failure.
+
 **Format**: `scheme://host[:port]` where:
 
 - `scheme`: Must be `http` or `https`
