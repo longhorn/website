@@ -25,7 +25,8 @@ build:
 	hugo
 
 link-checker-setup:
-	curl https://raw.githubusercontent.com/wjdp/htmltest/master/godownloader.sh | bash
+	curl -fsSL -o godownloader.sh https://raw.githubusercontent.com/wjdp/htmltest/568fd1c91202eeeb6f9c89b06fa9a09226cbf129/godownloader.sh
+	bash godownloader.sh
 
 run-link-checker:
 	bin/htmltest || true
