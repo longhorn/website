@@ -33,6 +33,10 @@ Longhorn can be installed on a Kubernetes cluster in several ways:
 
 To install Longhorn in an air gapped environment, refer to [Air Gap Installation](../install/airgap).
 
+### Community Tools
+
+- [KubeStellar Console Guided Install](./install-with-kubestellar-console) — A step-by-step guided installation experience with pre-flight checks, progress tracking, and validation.
+
 For information on customizing Longhorn's default settings, refer to [Customizing Default Settings](../../advanced-resources/deploy/customizing-default-settings).
 
 For information on deploying Longhorn on specific nodes and rejecting general workloads for those nodes, refer to the section on [Taints and Tolerations](../../advanced-resources/deploy/taint-toleration).
