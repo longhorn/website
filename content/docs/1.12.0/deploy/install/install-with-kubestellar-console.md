@@ -25,4 +25,4 @@ The mission installs Longhorn using Helm, similar to the [Install with Helm](./i
 ## More Information
 
 - [KubeStellar Console](https://console.kubestellar.io) — Open-source Kubernetes dashboard
-- [Mission source](https://github.com/kubestellar/console-kb/blob/master/solutions/cncf-install/install-longhorn.json) — The mission definition is open source and maintained by the KubeStellar community
+- [Mission source](https://github.com/kubestellar/console-kb/blob/master/fixes/cncf-install/install-longhorn.json) — The mission definition is open source and maintained by the KubeStellar community
