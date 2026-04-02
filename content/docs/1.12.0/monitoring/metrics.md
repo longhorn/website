@@ -90,13 +90,25 @@ weight: 3
 |---|---|---|
 | longhorn_backup_actual_size_bytes | Actual size of this backup | longhorn_backup_actual_size_bytes{backup="backup-4ab66eca0d60473e",volume="testvol", recurring_job="backup"} 6.291456e+07 |
 | longhorn_backup_state | State of this backup: 0=New, 1=Pending, 2=InProgress, 3=Completed, 4=Error, 5=Unknown | longhorn_backup_state{backup="backup-4ab66eca0d60473e",volume="testvol", recurring_job=""} 3 |
+| longhorn_backup_uploaded_data_size_bytes | Uploaded data size of this backup | longhorn_backup_uploaded_data_size_bytes{backup="backup-4ab66eca0d60473e",volume="testvol",recurring_job=""} 2.012112434e+09 |
+
+## Backup Target
+
+| Name | Description  | Example |
+|---|---|---|
+| longhorn_backup_target_backup_volume_count | Number of backup volumes on this backup target | longhorn_backup_target_backup_volume_count{backup_target="default"} 1 |
+
+## Backup Volume
+
+| Name | Description  | Example |
+|---|---|---|
+| longhorn_backup_volume_backups_count | Number of backups belonging to this backup volume | longhorn_backup_volume_backups_count{backup_volume="testvol"} 1 |
 
 ## Snapshot
 
 | Name | Description  | Example |
 |---|---|---|
 | longhorn_snapshot_actual_size_bytes | Actual size of this snapshot | longhorn_snapshot_actual_size_bytes{snapshot="f4468111-2efa-45f5-aef6-63109e30d92c",user_created="false",volume="testvol"} 1.048576e+07 |
-
 
 ## BackingImage
 
