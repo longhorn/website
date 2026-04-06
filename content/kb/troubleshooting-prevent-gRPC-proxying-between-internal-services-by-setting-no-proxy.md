@@ -16,7 +16,7 @@ categories:
 
 **Confirmed working with**:
 
-- Longhorn `v1.10.1` and later (contains gRPC code-level fixes)
+- Longhorn versions `v1.10.1` and prior running in clusters with global `HTTP_PROXY`/`HTTPS_PROXY` settings.
 
 **Potentially applicable to**:
 
@@ -35,54 +35,34 @@ Example error log:
 replica pvc-xxxx-r-xxxx failed to get replica: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: failed to do connect handshake, response: \"HTTP/1.1 400 Invalid header received from client\""
 ```
 
-## Reason
+## Root Cause Analysis
 
-Longhorn services communicate via gRPC. In environments with a global proxy, this internal traffic may be incorrectly routed through the proxy server.
+Longhorn services utilize gRPC for inter-component communication (Manager to Instance Manager). By default, gRPC clients honor environment-level proxy variables (`HTTPS_PROXY`). 
 
-While recent Longhorn versions include `grpc.WithNoProxy()` in the backend code, some traffic paths (such as inter-pod HTTP calls for backing image managers or health checks) and older versions of Longhorn still rely on environment variables. If the `NO_PROXY` variable is missing or incomplete, internal gRPC/HTTP traffic "escapes" the cluster, leading to connection resets by the proxy.
+In a proxied cluster, if `NO_PROXY` does not explicitly exclude the Pod and Service CIDRs, gRPC traffic is sent to the external proxy. Because most standard HTTP proxies cannot handle raw gRPC handshakes, the connection is rejected, leading to volume "Faulted" states.
 
-## Implementation
+## Resolution and Requirements
 
-To ensure stable internal communication, you must explicitly exclude Kubernetes internal traffic from the proxy by configuring the `NO_PROXY` environment variable.
+### 1. Upgrade to v1.10.2+ (Recommended)
 
-### 1. Identify your Cluster CIDRs
+Starting from version `v1.10.2`, Longhorn has introduced `grpc.WithNoProxy()` across all internal gRPC clients. This forces internal traffic to bypass environment proxy settings automatically, removing the need for manual `NO_PROXY` overrides for gRPC-based operations.
 
-There is no "one-size-fits-all" string. You must include your specific cluster ranges.
+### 2. Manual Configuration for v1.10.1 and Prior
 
-  - **Service CIDR**: (for example, `10.96.0.0/12`)
-  - **Pod CIDR**: (for example, `10.244.0.0/16`)
+For users on older versions, or for traffic paths not covered by gRPC (such as certain BackupStore HTTP calls), the `NO_PROXY` variable must be correctly configured to include the internal cluster infrastructure:
 
-### 2. Configure via Helm (Recommended)
+- **Required Suffixes**: `localhost,127.0.0.1,.svc,.cluster.local`
+- **Required Network Ranges**: Both the **Pod CIDR** and **Service CIDR** must be included. Suffixes alone are often insufficient for Pod-to-Pod IP communication.
 
-If you use Helm, update your `values.yaml` to inject the environment variables into the Longhorn Manager and related components.
+Example Template:
 
-```yaml
-manager:
-  env:
-    - name: NO_PROXY
-      value: "localhost,127.0.0.1,<SERVICE_CIDR>,<POD_CIDR>,.svc,.cluster.local"
+```bash
+NO_PROXY="localhost,127.0.0.1,<SERVICE_CIDR>,<POD_CIDR>,.svc,.cluster.local"
 ```
 
-### 3. Configure via Longhorn Settings
+### 3. Backup Target Proxy Settings
 
-For components managed dynamically by Longhorn (like `instance-manager` pods), ensure that the proxy settings are consistent:
-
-1. Navigate to Longhorn UI > Settings > General.
-2. If using a proxy for backups, ensure the Proxy Secret is configured.
-3. For manual overrides, ensure the `longhorn-manager` DaemonSet environment variables are set; newly created pods (including `instance-manager` pods) will inherit these settings.
-
-### 4. Golden String Template
-
-The `NO_PROXY` value should ideally look like this: `localhost,127.0.0.1,<K8S_SERVICE_CIDR>,<K8S_POD_CIDR>,.svc,.cluster.local`
-
-## Verification
-
-1.  Exec into a `longhorn-manager` pod:
-    ```bash
-    kubectl exec -n longhorn-system -it <longhorn-manager-pod-name> -- env | grep -i PROXY
-    ```
-2.  Verify that the `NO_PROXY` value contains your Pod and Service CIDRs.
-3.  Test replica rebuilding or cloning to ensure the `Unavailable` gRPC errors no longer occur.
+Regardless of version, ensure that the **Proxy Secret** under **Settings > General** is correctly configured if your backup target requires an external proxy but your cluster communication must remain internal.
 
 ## Related Information
 
