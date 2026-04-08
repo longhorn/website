@@ -7,8 +7,8 @@ weight: 1
 >
 > **Recommended Alternatives**:
 > To ensure continued support and security, we recommend using one of the following methods to expose the Longhorn UI:
->   * **Traefik Ingress**: The current default for RKE2/K3s environments. See [Create an Ingress with Traefik](./longhorn-ingress-traefik).
->   * **Gateway API**: The modern, successor to Ingress for advanced routing. See [Create an HTTPRoute with Gateway API](./longhorn-httproute).
+>   * **Traefik Ingress**: The current default for RKE2/K3s environments. See [Create an Ingress with Traefik](../longhorn-ingress-traefik).
+>   * **Gateway API**: The modern, successor to Ingress for advanced routing. See [Create an HTTPRoute with Gateway API](../longhorn-httproute).
 
 If you install Longhorn on a Kubernetes cluster with kubectl or Helm, you will need to create an Ingress to allow external traffic to reach the Longhorn UI.
 
