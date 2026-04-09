@@ -63,6 +63,7 @@ weight: 1
   - [Immediate Snapshot Data Integrity Check After Creating a Snapshot](#immediate-snapshot-data-integrity-check-after-creating-a-snapshot)
   - [Snapshot Data Integrity Check CronJob](#snapshot-data-integrity-check-cronjob)
   - [Snapshot Maximum Count](#snapshot-maximum-count)
+  - [Snapshot Count Warning Threshold](#snapshot-count-warning-threshold)
   - [Freeze Filesystem For Snapshot](#freeze-filesystem-for-snapshot)
 - [Orphan](#orphan)
   - [Orphaned Resource Automatic Deletion](#orphaned-resource-automatic-deletion)
@@ -700,6 +701,14 @@ Unix-cron string format. The setting specifies when Longhorn checks the data int
 > Default: `250`
 
 Maximum snapshot count for a volume. The value should be between 2 to 250.
+
+#### Snapshot Count Warning Threshold
+
+> Default: `100`
+
+Warning threshold for the count-based `TooManySnapshots` volume condition. The value should be between 2 to 250.
+
+When the number of snapshots on a volume reaches `min(snapshot-count-warning-threshold, SnapshotMaxCount)`, Longhorn sets the `TooManySnapshots` condition. For more information, see [Snapshot Space Management](../snapshots-and-backups/snapshot-space-management#toomanysnapshots-condition).
 
 #### Freeze Filesystem For Snapshot
 
