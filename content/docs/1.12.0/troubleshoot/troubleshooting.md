@@ -6,10 +6,10 @@ weight: 1
   - [UI](#ui)
   - [Manager and Engines](#manager-and-engines)
   - [CSI driver](#csi-driver)
-  - [Flexvolume Driver](#flexvolume-driver)
-- [Common issues](#common-issues)
-  - [Volume can be attached/detached from UI, but Kubernetes Pod/StatefulSet etc cannot use it](#volume-can-be-attacheddetached-from-ui-but-kubernetes-podstatefulset-etc-cannot-use-it)
-    - [Using with Flexvolume Plugin](#using-with-flexvolume-plugin)
+  - [FlexVolume Driver](#flexvolume-driver)
+- [Common Issues](#common-issues)
+  - [A volume can be attached/detached from the UI, but Kubernetes Pods/StatefulSets cannot use it](#a-volume-can-be-attacheddetached-from-the-ui-but-kubernetes-podsstatefulsets-cannot-use-it)
+    - [Using with FlexVolume Plugin](#using-with-flexvolume-plugin)
 
 ## Troubleshooting Guide
 
@@ -23,52 +23,54 @@ See [Support Bundle](../support-bundle) for detail.
 One exception is the `dmesg`, which needs to be retrieved from each node by the user.
 
 ### UI
+
 Make use of the Longhorn UI is a good start for the troubleshooting. For example, if Kubernetes cannot mount one volume correctly, after stop the workload, try to attach and mount that volume manually on one node and access the content to check if volume is intact.
 
 Also, the event logs in the UI dashboard provides some information of probably issues. Check for the event logs in `Warning` level.
 
 ### Manager and Engines
-You can get the logs from the Longhorn Manager and Engines to help with troubleshooting. The most useful logs are the ones from `longhorn-manager-xxx`, and the logs inside Longhorn instance managers, e.g. `instance-manager-xxxx`, `instance-manager-e-xxxx` and `instance-manager-r-xxxx`.
 
-Since normally there are multiple Longhorn Managers running at the same time, we recommend using [kubetail,](https://github.com/johanhaleby/kubetail) which is a great tool to keep track of the logs of multiple pods. To track the manager logs in real time, you can use:
+You can get the logs from the Longhorn Manager and Engines to help with troubleshooting. The most useful logs are the ones from `longhorn-manager-xxx`, and the logs inside Longhorn instance managers, for example, `instance-manager-xxxx`, `instance-manager-e-xxxx` and `instance-manager-r-xxxx`.
+
+Since normally there are multiple Longhorn Managers running at the same time, we recommend using [kubetail](https://github.com/johanhaleby/kubetail), which is a great tool to keep track of the logs of multiple pods. To track the manager logs in real time, you can use:
 
 ```
 kubetail longhorn-manager -n longhorn-system
 ```
 
-
 ### CSI driver
 
 For the CSI driver, check the logs for `csi-attacher-0` and `csi-provisioner-0`, as well as containers in `longhorn-csi-plugin-xxx`.
 
-### Flexvolume Driver
+### FlexVolume Driver
 
 The FlexVolume driver is deprecated as of Longhorn v0.8.0 and should no longer be used.
 
 First check where the driver has been installed on the node. Check the log of `longhorn-driver-deployer-xxxx` for that information.
 
-Then check the kubelet logs. The FlexVolume driver itself doesn't run inside the container. It would run along with the kubelet process.
+Then check the kubelet logs. The FlexVolume driver itself does not run inside the container. It would run along with the kubelet process.
 
 If kubelet is running natively on the node, you can use the following command to get the logs:
 ```
 journalctl -u kubelet
 ```
 
-Or if kubelet is running as a container (e.g. in RKE), use the following command instead:
+Or if kubelet is running as a container (for example, in RKE), use the following command instead:
 ```
 docker logs kubelet
 ```
 
-For even more detailed logs of Longhorn FlexVolume, run the following command on the node or inside the container (if kubelet is running as a container, e.g. in RKE):
+For even more detailed logs of Longhorn FlexVolume, run the following command on the node or inside the container (if kubelet is running as a container, for example, in RKE):
 ```
 touch /var/log/longhorn_driver.log
 ```
 
+## Common Issues
 
-## Common issues
-### Volume can be attached/detached from UI, but Kubernetes Pod/StatefulSet etc cannot use it
+### A volume can be attached/detached from the UI, but Kubernetes Pods/StatefulSets cannot use it
 
-#### Using with Flexvolume Plugin
+#### Using with FlexVolume Plugin
+
 Check if the volume plugin directory has been set correctly. This is automatically detected unless the user explicitly sets it.
 
 By default, Kubernetes uses `/usr/libexec/kubernetes/kubelet-plugins/volume/exec/`, as stated in the [official document](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-storage/flexvolume.md/#prerequisites).
@@ -111,3 +113,9 @@ To enable profiling, you can:
 
     Profiler is disabled!
     ```
+
+### SPDK - Failed to bind NVMe disk (Error -22)
+
+If `instance-manager` logs show `failed to bind NVMe disk` or `vfio-pci: probe ... failed with error -22`, your NVMe likely shares an IOMMU group with a PCIe bridge.
+
+**Validation**: Run `lspci -t` or check `/sys/kernel/iommu_groups/`. If the NVMe and Bridge are in the same group, you must switch the disk to **AIO mode** in the Longhorn UI.
