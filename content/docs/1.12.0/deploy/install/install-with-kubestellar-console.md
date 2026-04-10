@@ -3,7 +3,7 @@ title: Install with KubeStellar Console
 weight: 14
 ---
 
-[KubeStellar Console](https://console.kubestellar.io) is an open-source Kubernetes dashboard that provides guided installation missions for CNCF projects, including Longhorn.
+[KubeStellar Console](https://console.kubestellar.io) is an open source Kubernetes dashboard that provides guided installation missions for CNCF projects, including Longhorn.
 
 The guided install mission walks you through the entire Longhorn installation process with:
 
@@ -24,5 +24,5 @@ The mission installs Longhorn using Helm, similar to the [Install with Helm](./i
 
 ## More Information
 
-- [KubeStellar Console](https://console.kubestellar.io) — Open-source Kubernetes dashboard
+- [KubeStellar Console](https://console.kubestellar.io) — Open source Kubernetes dashboard
 - [Mission source](https://github.com/kubestellar/console-kb/blob/master/fixes/cncf-install/install-longhorn.json) — The mission definition is open source and maintained by the KubeStellar community
