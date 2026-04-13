@@ -37,7 +37,7 @@ kubectl get nodes.longhorn.io ubuntu-lh-2 -n longhorn-system -o yaml
 
 `Used` column: The left part indicates the currently used space of this node. The whole bar indicates the total space of the node. In the CR, the available space is `storageAvailable`.
 
-Notice that the allocable space may be greater than the actual available space of the node when setting `Storage Over Provisioning Percentage` to a value greater than 100. If the volumes are heavily used and lots of historical data will be stored in the volume snapshots, please be careful about using a large value for this setting. For more info about the setting, see [here](../../../references/settings/%23storage-over-provisioning-percentage) for details.
+Notice that the allocable space may be greater than the actual available space of the node when setting `Storage Over Provisioning Percentage` to a value greater than 100. If the volumes are heavily used and lots of historical data will be stored in the volume snapshots, please be careful about using a large value for this setting. For more info about the setting, see [here](../../../references/settings/#storage-over-provisioning-percentage) for details.
 
 > **Note**: The reserved space value configured for the disk is stored under `spec.disks.<disk-name>.storageReserved`. These values map directly to those shown in the Longhorn UI.
 
