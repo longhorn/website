@@ -107,6 +107,9 @@ weight: 1
   - [Disable Snapshot Purge](#disable-snapshot-purge)
   - [Auto Cleanup Snapshot When Delete Backup](#auto-cleanup-snapshot-when-delete-backup)
   - [Auto Cleanup Snapshot After On-Demand Backup Completed](#auto-cleanup-snapshot-after-on-demand-backup-completed)
+  - [Engine Image Pod Liveness Probe Period](#engine-image-pod-liveness-probe-period)
+  - [Engine Image Pod Liveness Probe Timeout](#engine-image-pod-liveness-probe-timeout)
+  - [Engine Image Pod Liveness Probe Failure Threshold](#engine-image-pod-liveness-probe-failure-threshold)
   - [Instance Manager Pod Liveness Probe Timeout](#instance-manager-pod-liveness-probe-timeout)
   - [Data Engine CPU Mask](#data-engine-cpu-mask)
   - [Data Engine Hugepage Enabled](#data-engine-hugepage-enabled)
@@ -1201,6 +1204,36 @@ When set to true, the snapshot used by the backup will be automatically cleaned 
 > Default: `false`
 
 When set to true, the snapshot used by the backup will be automatically cleaned up after the on-demand backup is completed.
+
+#### Engine Image Pod Liveness Probe Period
+
+> Default: `5`
+
+Interval (in seconds) between liveness probes for engine image pods.
+
+> **Warning**
+>
+> Applying this setting causes Longhorn to update existing engine image DaemonSets immediately.
+
+#### Engine Image Pod Liveness Probe Timeout
+
+> Default: `4`
+
+Timeout (in seconds) for each liveness probe.
+
+> **Warning**
+>
+> Applying this setting causes Longhorn to update existing engine image DaemonSets immediately.
+
+#### Engine Image Pod Liveness Probe Failure Threshold
+
+> Default: `3`
+
+Number of consecutive failed probes required to trigger a pod restart.
+
+> **Warning**
+>
+> Applying this setting causes Longhorn to update existing engine image DaemonSets immediately.
 
 #### Instance Manager Pod Liveness Probe Timeout
 
