@@ -44,7 +44,6 @@ When the V2 Data Engine is enabled, each instance-manager pod utilizes **1 CPU c
 
 SPDK leverages huge pages for enhancing performance and minimizing memory overhead. You must configure 2 MiB-sized huge pages on each Longhorn node to enable usage of huge pages. Specifically, 1024 pages (equivalent to a total of 2 GiB) must be available on each Longhorn node.
 
-
 ### Disk
 
 SPDK leverages kernel drivers to support every kind of disk that Linux supports. However, SPDK is equipped with a user space NVMe driver that provides zero-copy, highly parallel, direct access to an SSD from a user space application. Because of this, using **local NVMe disks** is highly recommended for enabling V2 volumes to achieve optimal storage performance.

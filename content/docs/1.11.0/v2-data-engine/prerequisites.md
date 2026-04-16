@@ -44,7 +44,14 @@ When the V2 Data Engine is enabled, each instance-manager pod utilizes **1 CPU c
 
 SPDK leverages huge pages for enhancing performance and minimizing memory overhead. You must configure 2 MiB-sized huge pages on each Longhorn node to enable usage of huge pages. Specifically, 1024 pages (equivalent to a total of 2 GiB) must be available on each Longhorn node.
 
-
 ### Disk
 
 SPDK leverages kernel drivers to support every kind of disk that Linux supports. However, SPDK is equipped with a user space NVMe driver that provides zero-copy, highly parallel, direct access to an SSD from a user space application. Because of this, using **local NVMe disks** is highly recommended for enabling V2 volumes to achieve optimal storage performance.
+
+### IOMMU Group Isolation Requirement
+
+For the V2 Data Engine (SPDK) to claim a disk, the NVMe device must be isolatable. Because SPDK uses `vfio-pci`, the following hardware constraints apply:
+
+- **Group Ownership**: VFIO must claim the *entire* IOMMU group. If a group contains multiple devices (for example, an NVMe drive and a PCIe Bridge), all devices in that group must be bound to VFIO.
+- **Bridge Limitation**: The Linux kernel does not allow binding a PCIe Bridge or Switch Port to the `vfio-pci` driver.
+- **The Conflict**: If your hardware topology places an NVMe device in the same IOMMU group as its parent PCIe Bridge, SPDK cannot initialize the device. In these cases, the disk must be used in **AIO mode**.
