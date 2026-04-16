@@ -7,7 +7,7 @@ A backup target is an endpoint used to access a backupstore. Backup targets can 
 
 {{< figure alt="the backup target UI page" src="/img/screenshots/backup-target/v1.10.0/page.png" >}}
 
-> **Note:**  
+> **Note:**
 > Starting with v1.8.0, Longhorn supports usage of multiple backupstores. Setting the default backup target before creating a new one is recommended.
 
 Saving to an object store such as S3 is preferable because it generally offers better reliability.  Another advantage is that you do not need to mount and unmount the target, which can complicate failover and upgrades.
@@ -420,19 +420,35 @@ Example:
 nfs://longhorn-test-nfs-svc.default:/opt/backupstore
 ```
 
-The default mount options are `actimeo=1,soft,timeo=300,retry=2`.  To use other options, append the keyword "nfsOptions" and the options string to the target URL.  
+**Result:** Longhorn can store backups in NFS. To create a backup, see [this section.](../create-a-backup)
+
+If `nfsOptions` is not set, Longhorn uses the default mount options `actimeo=1,soft,timeo=300,retry=2`.
+
+To use custom mount options, append the `nfsOptions` query parameter to the target URL.
 
 Example:
 
 ```text
-nfs://longhorn-test-nfs-svc.default:/opt/backupstore?nfsOptions=soft,timeo=330,retrans=3  
+nfs://longhorn-test-nfs-svc.default:/opt/backupstore?nfsOptions=rw,nolock
 ```
 
-Any mount options that you specify will replace, not add to, the default options.
+When `nfsOptions` is specified, Longhorn adjusts the options to ensure NFS operations fail instead of hanging indefinitely when the NFS service is unstable:
 
-You can find an example NFS backupstore for testing purpose [here](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/deploy/backupstores/nfs-backupstore.yaml).
+- `hard` is removed if present.
+- `soft` is added if absent.
+- `timeo` and `retry` are added with their default values (`timeo=300`, `retry=2`) only if you have not specified them. Custom values are preserved.
 
-**Result:** Longhorn can store backups in NFS. To create a backup, see [this section.](../create-a-backup)
+- `hard` is removed if present.
+- `soft` is added if absent.
+- `timeo` and `retry` are added with their default values (`timeo=300`, `retry=2`) only if you have not specified them. Custom values are preserved.
+
+For example, `nfsOptions=rw,nolock` becomes `rw,nolock,soft,timeo=300,retry=2` after Longhorn applies its defaults. To extend the timeout, you can override `timeo` explicitly:
+
+```text
+nfs://longhorn-test-nfs-svc.default:/opt/backupstore?nfsOptions=timeo=600
+```
+
+This results in `timeo=600,soft,retry=2`. The customized timeout is kept and the other defaults are filled in.
 
 ### Set up SMB/CIFS Backupstore
 
@@ -564,7 +580,7 @@ You can find an example CIFS backupstore for testing purpose [here](https://gith
      AZBLOB_ACCOUNT_NAME: "<Storage account name>"
      AZBLOB_ACCOUNT_KEY:  "<Key>"
      ...
-     # Parameters below are used for the compatible azure server for instance `Azurite` or 
+     # Parameters below are used for the compatible azure server for instance `Azurite` or
      # you have a proxy to redirect the requests.
      #AZBLOB_ENDPOINT: ""
      #AZBLOB_CERT: ""
