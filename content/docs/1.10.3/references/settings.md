@@ -53,6 +53,7 @@ weight: 1
   - [Data Engine Log Level](#data-engine-log-level)
   - [Data Engine Log Flags](#data-engine-log-flags)
   - [Replica Rebuilding Bandwidth Limit](#replica-rebuilding-bandwidth-limit)
+  - [CSI Storage Capacity Tracking](#csi-storage-capacity-tracking)
 - [Snapshot](#snapshot)
   - [Snapshot Data Integrity](#snapshot-data-integrity)
   - [Immediate Snapshot Data Integrity Check After Creating a Snapshot](#immediate-snapshot-data-integrity-check-after-creating-a-snapshot)
@@ -599,6 +600,12 @@ Applies only to the V2 Data Engine. Specifies the log flags for the Storage Perf
 > Default: `{"v2":"0"}`
 
 Applies only to the V2 Data Engine. Specifies the default write bandwidth limit, in megabytes per second (MB/s), for volume replica rebuilding.
+
+#### CSI Storage Capacity Tracking
+
+> Default: `false`
+
+Controls CSI storage capacity tracking, which allows the kube-scheduler to filter nodes that cannot fit the requested volume.
 
 ### Snapshot
 
