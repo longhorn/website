@@ -57,6 +57,7 @@ weight: 1
   - [Default Ublk Queue Depth](#default-ublk-queue-depth)
   - [Default Ublk Number Of Queue](#default-ublk-number-of-queue)
   - [Node Disk Health Monitoring](#node-disk-health-monitoring)
+  - [CSI Storage Capacity Tracking](#csi-storage-capacity-tracking)
 - [Snapshot](#snapshot)
   - [Snapshot Data Integrity](#snapshot-data-integrity)
   - [Immediate Snapshot Data Integrity Check After Creating a Snapshot](#immediate-snapshot-data-integrity-check-after-creating-a-snapshot)
@@ -658,6 +659,12 @@ The default the number of queues for ublk frontend. This setting applies to volu
 > Default: `true`
 
 Controls whether Longhorn monitors and records health information for node disks. When disabled, disk health checks and status updates are skipped.
+
+#### CSI Storage Capacity Tracking
+
+> Default: `false`
+
+Controls CSI storage capacity tracking, which allows the kube-scheduler to filter nodes that cannot fit the requested volume.
 
 ### Snapshot
 
