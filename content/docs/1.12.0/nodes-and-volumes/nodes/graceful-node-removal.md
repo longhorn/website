@@ -27,9 +27,9 @@ kubectl drain <NODE_NAME> --ignore-daemonsets --delete-emptydir-data
 
 Prevent Longhorn from attempting to schedule new replicas onto this node.
 
-1. Open the Longhorn UI and navigate to the **Node** tab.
-2. Select the node and click **Edit Node and Disks**.
-3. Set **Scheduling** to **Disable**.
+1. Open the Longhorn UI and navigate to the **Nodes** tab.
+2. Select the node and click **Edit Node** button.
+3. Set **Node Scheduling** to **Disable**.
 4. Click **Save**.
 
 ### 3. Trigger Node Eviction
@@ -38,7 +38,7 @@ Evict existing replicas to other healthy nodes.
 
 1. In the **Edit Node** dialog, set **Eviction Requested** to **true**.
 2. Click **Save**.
-3. **Monitor Progress**: In the **Node** list, watch the **Replicas** column. Wait until the count reaches **0**.
+3. **Monitor Progress**: In the nodes list, watch the **Replicas** column. Wait until the count reaches **0**.
 
 > **Note**: This process works for both `Attached` and `Detached` volumes. Longhorn will automatically attach detached volumes to migrate data and detach them when finished. To maintain high availability, Longhorn only deletes the old replica after the new replica has successfully finished rebuilding.
 
@@ -54,7 +54,7 @@ kubectl delete node <NODE_NAME>
 
 Once the Kubernetes node is deleted, the Longhorn UI will show the node in a **Down** state. You can now safely remove the metadata.
 
-- **Via UI**: In the **Node** tab, the **Remove** button for the node will now be enabled. Click **Remove**.
+- **Via UI**: In the **Nodes** tab, the **Delete** button for the node will now be enabled. Click **Delete**.
 - **Via CLI**: If you prefer using `kubectl`, you can delete the Longhorn Node resource directly using the following command:    
     ```bash
     kubectl -n longhorn-system delete nodes.longhorn.io <NODE_NAME>
@@ -62,9 +62,9 @@ Once the Kubernetes node is deleted, the Longhorn UI will show the node in a **D
 
 ## Troubleshooting
 
-### Node "Remove" button is greyed out
+### Node "Delete" button is greyed out
 
-The UI disables the **Remove** button if the corresponding Kubernetes node still exists. Ensure you have successfully executed `kubectl delete node <NODE_NAME>` first.
+The UI disables the **Delete** button if the corresponding Kubernetes node still exists. Ensure you have successfully executed `kubectl delete node <NODE_NAME>` first.
 
 ### Eviction is stuck
 
