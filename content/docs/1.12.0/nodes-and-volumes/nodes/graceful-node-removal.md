@@ -23,24 +23,44 @@ kubectl cordon <NODE_NAME>
 kubectl drain <NODE_NAME> --ignore-daemonsets --delete-emptydir-data
 ```
 
-### 2. Disable Scheduling in Longhorn
+### 2. Disable Scheduling and Trigger Eviction
 
-Prevent Longhorn from attempting to schedule new replicas onto this node.
+You must prevent new data from being scheduled on the node and move existing data to other healthy nodes. This can be done via the Longhorn UI or the command line.
+
+#### Via Longhorn UI
 
 1. Open the Longhorn UI and navigate to the **Nodes** tab.
-2. Select the node and click **Edit Node** button.
+2. Select the node and click the **Edit Node** button.
 3. Set **Node Scheduling** to **Disable**.
-4. Click **Save**.
+4. Set **Eviction Requested** to **true**.
+5. Click **Save**.
 
-### 3. Trigger Node Eviction
+#### Via kubectl
 
-Evict existing replicas to other healthy nodes.
+Patch the Longhorn Node CR to disable scheduling and request eviction in a single command:
 
-1. In the **Edit Node** dialog, set **Eviction Requested** to **true**.
-2. Click **Save**.
-3. **Monitor Progress**: In the nodes list, watch the **Replicas** column. Wait until the count reaches **0**.
+```bash
+kubectl patch node.longhorn.io <NODE_NAME> \
+  -n longhorn-system --type=merge \
+  -p '{"spec":{"allowScheduling":false,"evictionRequested":true}}'
+```
 
-> **Note**: This process works for both `Attached` and `Detached` volumes. Longhorn will automatically attach detached volumes to migrate data and detach them when finished. To maintain high availability, Longhorn only deletes the old replica after the new replica has successfully finished rebuilding.
+### 3. Monitor Eviction Progress
+
+Before proceeding to delete the node, you must ensure all data has successfully migrated.
+
+* **Via UI**: In the **Nodes** list, watch the **Replicas** column for the node. Wait until the count reaches **0**.
+* **Via CLI**: Poll the node status to confirm all resources (Replicas and Backing Images) have migrated:
+
+    ```bash
+    kubectl get node.longhorn.io <NODE_NAME> -n longhorn-system -o json \
+    | jq '.status.diskStatus | to_entries[]
+            | {disk: .key,
+            scheduledReplicas: (.value.scheduledReplica | length),
+            scheduledBackingImages: (.value.scheduledBackingImage | length)}'
+    ```
+
+> **Note**: Eviction is complete only when every disk reports `scheduledReplicas: 0` and `scheduledBackingImages: 0`. This process works for both `Attached` and `Detached` volumes. Longhorn will automatically attach detached volumes to migrate data and detach them when finished.
 
 ### 4. Delete the Kubernetes Node
 
