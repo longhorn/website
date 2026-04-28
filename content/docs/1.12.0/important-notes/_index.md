@@ -118,7 +118,7 @@ Starting with Longhorn v1.11.0, disk health monitoring is available for both V1 
 - Health data available in `nodes.longhorn.io` Custom Resources
 
 > **Note:**
-> 
+>
 > - SMART data may not be fully available in virtualized or cloud environments (e.g., AWS EBS), which may result in zero values for certain attributes.
 > - Available health attributes vary depending on disk type and hardware.
 
@@ -156,15 +156,23 @@ For more information, see [Longhorn #12153](https://github.com/longhorn/longhorn
 
 ## V2 Data Engine
 
+### IPv6 Support
+
+V2 volumes now support single-stack IPv6 Kubernetes clusters.
+
+> **Warning:** Dual-stack Kubernetes clusters is not supported in this release.
+
+For details, see [Issue #10928](https://github.com/longhorn/longhorn/issues/10928).
+
 ### Longhorn System Upgrade
 
 Live upgrades of V2 volumes are **not supported**. Ensure all V2 volumes are detached before upgrading.
 
 ### Technical Preview
 
-The V2 Data Engine is a **Technical Preview** feature in Longhorn v1.11.0.  
+The V2 Data Engine is a **Technical Preview** feature in Longhorn v1.11.0.
 
-It is nearly complete, with no significant functional changes expected, and has been validated in controlled environments.  
+It is nearly complete, with no significant functional changes expected, and has been validated in controlled environments.
 Users should evaluate the feature thoroughly before enabling it in production.
 
 ### SPDK UBLK Performance Parameters
