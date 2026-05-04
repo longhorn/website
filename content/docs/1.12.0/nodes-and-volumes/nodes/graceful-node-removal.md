@@ -16,12 +16,19 @@ If a node is removed without following this procedure, the replicas stored on th
 
 ### 1. Cordon and Drain the Kubernetes Node
 
-Prepare the node for removal by moving all running workloads (Pods) to other nodes.
+Prepare the node for removal by moving all running workloads (Pods) to other nodes. Using a timeout and force flag ensures that the drain completes even if some pods are slow to terminate or protected by Pod Disruption Budgets.
 
 ```bash
 kubectl cordon <NODE_NAME>
-kubectl drain <NODE_NAME> --ignore-daemonsets --delete-emptydir-data
+kubectl drain <NODE_NAME> \
+  --ignore-daemonsets \
+  --delete-emptydir-data \
+  --force \
+  --grace-period=-1 \
+  --timeout=300s
 ```
+
+> **Note**: The `--grace-period=-1` flag allows pods to honor their own `terminationGracePeriodSeconds`. The `--force` flag is necessary to remove pods that are not managed by a ReplicationController, ReplicaSet, Job, DaemonSet, or StatefulSet.
 
 ### 2. Disable Scheduling and Trigger Eviction
 
@@ -47,7 +54,7 @@ kubectl patch node.longhorn.io <NODE_NAME> \
 
 ### 3. Monitor Eviction Progress
 
-Before proceeding to delete the node, you must ensure all data has successfully migrated.
+Before proceeding to delete the node, you must ensure all replicas has successfully migrated.
 
 * **Via UI**: In the **Nodes** list, watch the **Replicas** column for the node. Wait until the count reaches **0**.
 * **Via CLI**: Poll the node status to confirm all resources (Replicas and Backing Images) have migrated:
@@ -90,6 +97,6 @@ The UI disables the **Delete** button if the corresponding Kubernetes node still
 
 If the replica count does not reach 0, check the **Events** log. Common causes include:
 
-- **Insufficient Space**: No other nodes have enough disk space to house the replicas.
-- **Anti-Affinity Constraints**: If `Replica Node Level Soft Anti-Affinity` is disabled, and all other nodes already host a replica of the same volume, the eviction will have no valid destination.
-- **Volume Health**: Rebuilding cannot start if the volume is already in a `Faulted` state.
+- **Insufficient Space**: No other nodes have enough disk space to house the replicas. To recover from this, you can refer to [Manual Recovery of Nodes with Insufficient Space](../../../../kb/manual-recovery-of-nodes-with-insufficient-space).
+- **Anti-Affinity Constraints**: If `Replica Node Level Soft Anti-Affinity` is disabled, and all other nodes already host a replica of the same volume, the eviction will have no valid destination. To learn more about anti-affinity and how to resolve this, see [Replica Scheduling and Anti-Affinity](../../best-practices.md#replica-node-level-soft-anti-affinity).
+- **Volume Health**: Rebuilding cannot start if the volume is already in a `Faulted` state. To learn more volume and volume health, refer to [Volume documentation](../volumes/create-volumes).
