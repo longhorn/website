@@ -11,7 +11,9 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [Cloned Volume Health After Efficient Cloning](#cloned-volume-health-after-efficient-cloning)
 - [Important Fixes](#important-fixes)
   - [Longhorn Workload Pods Memory Leak](#longhorn-workload-pods-memory-leak)
-  - [PV nodeaffinity Regression](#pv-nodeaffinity-regression)
+  - [PV nodeAffinity Regression](#pv-nodeaffinity-regression)
+  - [Replica Rebuild Progress Fix](#replica-rebuild-progress-fix)
+  - [CSIStorageCapacity Scheduling Enhancement](#csistoragecapacity-scheduling-enhancement)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Upgrade Check Events](#upgrade-check-events)
@@ -61,6 +63,18 @@ For more details, see [#12575](https://github.com/longhorn/longhorn/issues/12575
 Fixed a regression where PV nodeAffinity was overly configured after introducing `AccessibleTopology` in the CSI server and `allowedTopologies` in Longhorn StorageClasses since v1.11.0.
 
 For more details, see [#12689](https://github.com/longhorn/longhorn/issues/12689) and [12656](https://github.com/longhorn/longhorn/issues/12656)
+
+### Replica Rebuild Progress Fix
+
+Resolved an issue where replica rebuild progress could exceed 100% under unstable network conditions. Progress reporting is now capped at 100%.
+
+For more details, see [#12949](https://github.com/longhorn/longhorn/issues/12949).
+
+### CSIStorageCapacity Scheduling Enhancement
+
+Introduced a new setting to control CSIStorageCapacity reporting. Previously, compute nodes without Longhorn disks incorrectly reported 0 capacity, breaking WaitForFirstConsumer scheduling. With this enhancement, capacity tracking can be configured to avoid rejecting compute nodes in separated compute/storage architectures.
+
+For more details, see [#12807](https://github.com/longhorn/longhorn/issues/12807).
 
 ## General
 
