@@ -58,6 +58,7 @@ weight: 1
   - [Default Ublk Number Of Queue](#default-ublk-number-of-queue)
   - [Node Disk Health Monitoring](#node-disk-health-monitoring)
   - [CSI Storage Capacity Tracking](#csi-storage-capacity-tracking)
+  - [Kubernetes Metrics Server Metrics Enabled](#kubernetes-metrics-server-metrics-enabled)
 - [Snapshot](#snapshot)
   - [Snapshot Data Integrity](#snapshot-data-integrity)
   - [Immediate Snapshot Data Integrity Check After Creating a Snapshot](#immediate-snapshot-data-integrity-check-after-creating-a-snapshot)
@@ -669,6 +670,12 @@ Controls whether Longhorn monitors and records health information for node disks
 > Default: `false`
 
 Controls CSI storage capacity tracking, which allows the kube-scheduler to filter nodes that cannot fit the requested volume.
+
+#### Kubernetes Metrics Server Metrics Enabled
+
+> Default: `true`
+
+Allows Longhorn to query the Kubernetes Metrics Server (`'metrics.k8s.io'`) for pod and node resource usage.
 
 ### Snapshot
 
