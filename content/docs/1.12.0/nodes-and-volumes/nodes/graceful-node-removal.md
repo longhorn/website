@@ -10,7 +10,6 @@ If a node is removed without following this procedure, the replicas stored on th
 ## Prerequisites
 
 - The cluster must have enough available space and schedulable nodes to receive the replicas being moved.
-- Verify volume health: Ensure no volumes are currently `Degraded` before starting.
 
 ## Step-by-Step Procedure
 
