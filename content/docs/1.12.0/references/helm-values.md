@@ -242,6 +242,7 @@ During installation, you can either allow Longhorn to use the default system set
 | defaultSettings.freezeFilesystemForSnapshot | Setting that freezes the filesystem on the root partition before a snapshot is created. |
 | defaultSettings.guaranteedInstanceManagerCPU | Percentage of the total allocatable CPU resources on each node to be reserved for each instance manager pod when the V1 Data Engine is enabled. The default value is "12". |
 | defaultSettings.kubernetesClusterAutoscalerEnabled | Setting that notifies Longhorn that the cluster is using the Kubernetes Cluster Autoscaler. |
+| defaultSettings.kubernetesMetricsServerMetricsEnabled | Setting that allows Longhorn to query the Kubernetes Metrics Server (`'metrics.k8s.io'`) for pod and node resource usage. |
 | defaultSettings.logLevel | Log levels that indicate the type and severity of logs in Longhorn Manager. The default value is "Info". (Options: "Panic", "Fatal", "Error", "Warn", "Info", "Debug", "Trace") |
 | defaultSettings.longGRPCTimeOut | Number of seconds that Longhorn allows for the completion of replica rebuilding and snapshot cloning operations. |
 | defaultSettings.nodeDownPodDeletionPolicy | Policy that defines the action Longhorn takes when a volume is stuck with a StatefulSet or Deployment pod on a node that failed. |
