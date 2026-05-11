@@ -25,6 +25,8 @@ Requesting node eviction before the Machine is deleted allows Longhorn to migrat
 
 - At least one other schedulable node with sufficient disk space must be available to receive the migrated replicas and backing images (otherwise eviction will stall and not complete).
 
+> **Note**: The number of eligible target nodes depends on your replica anti-affinity settings. Hard anti-affinity (node, zone, or disk level) prevents replicas of the same volume from colocating, which means eviction requires at least as many suitable nodes as the volume's replica count. If anti-affinity constraints cannot be satisfied on the remaining nodes, eviction will stall. For details on how scheduling constraints work, see [Scheduling](../../docs/1.12.0/nodes-and-volumes/nodes/scheduling).
+
 ## Method 1: Manual eviction via kubectl
 
 Use this approach for one-off replacements or when automation is not yet in place.
