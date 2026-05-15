@@ -98,3 +98,5 @@ When deleting a snapshot that is the direct parent of the **Volume Head** (the c
 | **Explanation** | v1 volumes cannot physically merge the parent of a live volume head immediately. The CR remains to track the snapshot data until a later merge or cleanup operation. | v2 volumes support live merging of the parent snapshot into the volume head, allowing for immediate cleanup of both data and metadata. |
 
 This behavioral difference is expected. In **v2 volumes**, the immediate disappearance of the Snapshot CR indicates that the engine has successfully finalized the deletion and merged the data.
+
+For a broader comparison, see [V1 and V2 Volume Feature Support](../../v1-v2-volume-behavior-and-feature-parity/).
