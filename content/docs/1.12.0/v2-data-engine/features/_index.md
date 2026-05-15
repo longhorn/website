@@ -8,7 +8,7 @@ aliases:
 - Support for AMD64 and ARM64 platforms
 - Volume lifecycle (creation, attachment, detachment and deletion)
 - Degraded volume
-- [Block disk management](./node-disk-support)
+- [Block disk management](../../nodes-and-volumes/nodes/multidisk#add-a-block-type-disk)
 - Orphaned replica management
 - Snapshot creation, deletion and reversion
 - Volume backup and restoration
@@ -17,6 +17,4 @@ aliases:
 - [Backing Image](../../advanced-resources/backing-image/backing-image)
 - [Volume Encryption](../../advanced-resources/security/volume-encryption)
 
-
 In addition to the features mentioned above, additional functionalities such as replica number adjustment, online replica rebuilding and so on will be introduced in future versions.
-
