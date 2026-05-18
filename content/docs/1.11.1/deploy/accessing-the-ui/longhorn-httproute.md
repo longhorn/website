@@ -104,4 +104,4 @@ helm install longhorn longhorn/longhorn \
 ## References
 
 - [Gateway API Documentation](https://gateway-api.sigs.k8s.io/)
-- [HTTPRoute Specification](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.HTTPRoute)
+- [HTTPRoute Specification](https://gateway-api.sigs.k8s.io/reference/api-spec/main/spec/#gateway.networking.k8s.io/v1.HTTPRoute)
