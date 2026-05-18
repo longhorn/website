@@ -114,7 +114,7 @@ For more details, see [Manager URL](../references/settings#manager-url).
 
 ### Gateway API HTTPRoute Support
 
-Longhorn v{{< current-version >}} introduces native support for [Gateway API HTTPRoute](https://gateway-api.sigs.k8s.io/api-types/httproute/) as a modern alternative to Ingress for exposing the Longhorn UI.
+Longhorn v{{< current-version >}} introduces native support for [Gateway API HTTPRoute](https://gateway-api.sigs.k8s.io/reference/api-types/httproute/) as a modern alternative to Ingress for exposing the Longhorn UI.
 
 For detailed setup instructions, prerequisites, and advanced configuration, see [Create an HTTPRoute with Gateway API](../deploy/accessing-the-ui/longhorn-httproute).
 

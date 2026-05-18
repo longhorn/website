@@ -10,9 +10,9 @@ A backup target is an endpoint used to access a backupstore. Backup targets can 
 > **Note:**
 > Starting with v1.8.0, Longhorn supports usage of multiple backupstores. Setting the default backup target before creating a new one is recommended.
 
-Saving to an object store such as S3 is preferable because it generally offers better reliability.  Another advantage is that you do not need to mount and unmount the target, which can complicate failover and upgrades.
+Saving to an object store such as S3 is preferable because it generally offers better reliability. Another advantage is that you do not need to mount and unmount the target, which can complicate failover and upgrades.
 
-For more information about how the backupstore works in Longhorn, see the [concepts section.](../../../concepts/#3-backups-and-secondary-storage)
+For more information about how the backupstore works in Longhorn, see the [concepts section](../../../concepts/#3-backups-and-secondary-storage).
 
 If you don't have access to AWS S3 or want to give the backupstore a try first, we've also provided a way to [setup a local S3 testing backupstore](#set-up-a-local-testing-backupstore) using [MinIO](https://minio.io/).
 
@@ -89,7 +89,7 @@ data:
 
 ### Set up AWS S3 Backupstore
 
-1. Create a new bucket in [AWS S3.](https://aws.amazon.com/s3/)
+1. Create a new bucket in [AWS S3](https://aws.amazon.com/s3/).
 
 2. Set permissions for Longhorn. There are two options for setting up the credentials. The first is that you can set up a Kubernetes secret with the credentials of an AWS IAM user. The second is that you can use a third-party application to manage temporary AWS IAM permissions for a Pod via annotations rather than operating with AWS credentials.
 
@@ -206,8 +206,8 @@ data:
 
      Also make sure you've set **`<your-aws-region>` in the URL**.
 
-     For example, For AWS, you can find the region codes [here.](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html)
-     For Google Cloud Storage, you can find the region codes [here.](https://cloud.google.com/storage/docs/locations)
+     For example, For AWS, you can find the region codes [here](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html).
+     For Google Cloud Storage, you can find the region codes [here](https://cloud.google.com/storage/docs/locations).
 
    - Set **Credential Secret** to:
 
@@ -217,7 +217,7 @@ data:
 
      This is the secret name with AWS credentials or AWS IAM role.
 
-**Result:** Longhorn can store backups in S3. To create a backup, see [this section.](../create-a-backup)
+**Result:** Longhorn can store backups in S3. To create a backup, see [this section](../create-a-backup).
 
 **Note:** If you operate Longhorn behind a proxy and you want to use AWS S3 as the backupstore, you must provide Longhorn information about your proxy in the `aws-secret` as below:
 
@@ -340,13 +340,13 @@ Longhorn provides sample backupstore server setups for testing purposes.  You ca
        AWS_CERT: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURMRENDQWhTZ0F3SUJBZ0lSQU1kbzQycGhUZXlrMTcvYkxyWjVZRHN3RFFZSktvWklodmNOQVFFTEJRQXcKR2pFWU1CWUdBMVVFQ2hNUFRHOXVaMmh2Y200Z0xTQlVaWE4wTUNBWERUSXdNRFF5TnpJek1EQXhNVm9ZRHpJeApNakF3TkRBek1qTXdNREV4V2pBYU1SZ3dGZ1lEVlFRS0V3OU1iMjVuYUc5eWJpQXRJRlJsYzNRd2dnRWlNQTBHCkNTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFEWHpVdXJnUFpEZ3pUM0RZdWFlYmdld3Fvd2RlQUQKODRWWWF6ZlN1USs3K21Oa2lpUVBvelVVMmZvUWFGL1BxekJiUW1lZ29hT3l5NVhqM1VFeG1GcmV0eDBaRjVOVgpKTi85ZWFJNWRXRk9teHhpMElPUGI2T0RpbE1qcXVEbUVPSXljdjRTaCsvSWo5Zk1nS0tXUDdJZGxDNUJPeThkCncwOVdkckxxaE9WY3BKamNxYjN6K3hISHd5Q05YeGhoRm9tb2xQVnpJbnlUUEJTZkRuSDBuS0lHUXl2bGhCMGsKVHBHSzYxc2prZnFTK3hpNTlJeHVrbHZIRXNQcjFXblRzYU9oaVh6N3lQSlorcTNBMWZoVzBVa1JaRFlnWnNFbQovZ05KM3JwOFhZdURna2kzZ0UrOElXQWRBWHExeWhqRDdSSkI4VFNJYTV0SGpKUUtqZ0NlSG5HekFnTUJBQUdqCmF6QnBNQTRHQTFVZER3RUIvd1FFQXdJQ3BEQVRCZ05WSFNVRUREQUtCZ2dyQmdFRkJRY0RBVEFQQmdOVkhSTUIKQWY4RUJUQURBUUgvTURFR0ExVWRFUVFxTUNpQ0NXeHZZMkZzYUc5emRJSVZiV2x1YVc4dGMyVnlkbWxqWlM1awpaV1poZFd4MGh3Ui9BQUFCTUEwR0NTcUdTSWIzRFFFQkN3VUFBNElCQVFDbUZMMzlNSHVZMzFhMTFEajRwMjVjCnFQRUM0RHZJUWozTk9kU0dWMmQrZjZzZ3pGejFXTDhWcnF2QjFCMVM2cjRKYjJQRXVJQkQ4NFlwVXJIT1JNU2MKd3ViTEppSEtEa0Jmb2U5QWI1cC9VakpyS0tuajM0RGx2c1cvR3AwWTZYc1BWaVdpVWorb1JLbUdWSTI0Q0JIdgpnK0JtVzNDeU5RR1RLajk0eE02czNBV2xHRW95YXFXUGU1eHllVWUzZjFBWkY5N3RDaklKUmVWbENtaENGK0JtCmFUY1RSUWN3cVdvQ3AwYmJZcHlERFlwUmxxOEdQbElFOW8yWjZBc05mTHJVcGFtZ3FYMmtYa2gxa3lzSlEralAKelFadHJSMG1tdHVyM0RuRW0yYmk0TktIQVFIcFc5TXUxNkdRakUxTmJYcVF0VEI4OGpLNzZjdEg5MzRDYWw2VgotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0t
      ```
 
-     For more information on creating a secret, see [the Kubernetes documentation.](https://kubernetes.io/docs/concepts/configuration/secret/#creating-a-secret-manually) The secret must be created in the `longhorn-system` namespace for Longhorn to access it.
+     For more information on creating a secret, see [the Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/secret/#creating-a-secret-manually). The secret must be created in the `longhorn-system` namespace for Longhorn to access it.
 
      > **Note:** Make sure to use `echo -n` when generating the base64 encoding, otherwise a new line will be added at the end of the string and it will cause error when accessing the S3.
 
 3. Click the **Backup** tab in the UI. It should report an empty list without any errors.
 
-**Result:** Longhorn can store backups in S3. To create a backup, see [this section.](../create-a-backup)
+**Result:** Longhorn can store backups in S3. To create a backup, see [this section](../create-a-backup).
 
 ### Using a self-signed SSL certificate for S3 communication
 
@@ -397,7 +397,7 @@ Example:
 nfs://longhorn-test-nfs-svc.default:/opt/backupstore
 ```
 
-**Result:** Longhorn can store backups in NFS. To create a backup, see [this section.](../create-a-backup)
+**Result:** Longhorn can store backups in NFS. To create a backup, see [this section](../create-a-backup).
 
 If `nfsOptions` is not set, Longhorn uses the default mount options `actimeo=1,soft,timeo=300,retry=2`.
 
@@ -410,10 +410,6 @@ nfs://longhorn-test-nfs-svc.default:/opt/backupstore?nfsOptions=rw,nolock
 ```
 
 When `nfsOptions` is specified, Longhorn adjusts the options to ensure NFS operations fail instead of hanging indefinitely when the NFS service is unstable:
-
-- `hard` is removed if present.
-- `soft` is added if absent.
-- `timeo` and `retry` are added with their default values (`timeo=300`, `retry=2`) only if you have not specified them. Custom values are preserved.
 
 - `hard` is removed if present.
 - `soft` is added if absent.
@@ -484,7 +480,7 @@ On the Longhorn UI, go to **Backup and Restore > Backup Targets**.
 
 You can find an example CIFS backupstore for testing purpose [here](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/deploy/backupstores/cifs-backupstore.yaml).
 
-**Result:** Longhorn can store backups in CIFS. To create a backup, see [this section.](../create-a-backup)
+**Result:** Longhorn can store backups in CIFS. To create a backup, see [this section](../create-a-backup).
 
 ### Set up Azure Blob Storage Backupstore
 
