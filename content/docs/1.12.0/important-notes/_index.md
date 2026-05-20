@@ -9,9 +9,11 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
 - [Deprecation](#deprecation)
 - [Behavior Change](#behavior-change)
   - [Cloned Volume Health After Efficient Cloning](#cloned-volume-health-after-efficient-cloning)
+  - [Encrypted Volume Size After Engine Upgrade](#encrypted-volume-size-after-engine-upgrade)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Upgrade Check Events](#upgrade-check-events)
+  - [Dual-Stack Cluster Support](#dual-stack-cluster-support)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
   - [Manager URL for External API Access](#manager-url-for-external-api-access)
   - [Gateway API HTTPRoute Support](#gateway-api-httproute-support)
@@ -29,6 +31,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
 - [Command-Line Tool](#command-line-tool)
   - [Package Manager Detection for Unsupported Distributions](#package-manager-detection-for-unsupported-distributions)
 - [V2 Data Engine](#v2-data-engine)
+  - [IPv6 Support](#ipv6-support)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Technical Preview](#technical-preview)
   - [SPDK UBLK Performance Parameters](#spdk-ublk-performance-parameters)
@@ -42,6 +45,18 @@ V2 Backing Image is deprecated and will be removed in a future release. Users ca
 ### Cloned Volume Health After Efficient Cloning
 
 With efficient cloning enabled, a newly cloned and detached volume is degraded and has only one replica, with its clone status set to `copy-completed-awaiting-healthy`. To bring the volume to a healthy state, transition the clone status to `completed` and rebuild the remaining replica by either enabling offline replica rebuilding or attaching the volume to trigger replica rebuilding. See [Issue #12341](https://github.com/longhorn/longhorn/issues/12341) and [Issue #12328](https://github.com/longhorn/longhorn/issues/12328).
+
+### Encrypted Volume Size After Engine Upgrade
+
+Starting with Longhorn v1.12.0, the 16 MiB LUKS2 header is pre-allocated in the replica backend file for encrypted volumes (replica size = requested size + 16 MiB). As a result, the dm-crypt device now exposes the full requested size to workloads.
+
+**Before v1.12**: The 16 MiB LUKS2 header was consumed from the usable volume space. For example, a 1 GiB encrypted volume yielded approximately 1008 MiB to the workload.
+
+**After upgrading to v1.12**: Once the engine image is upgraded for an encrypted volume, Longhorn automatically expands the backend size by 16 MiB. The dm-crypt device then exposes the full requested size (e.g., exactly 1 GiB for a 1 GiB volume). Existing data is not affected.
+
+**Live migration restriction**: Encrypted migratable volumes cannot be live-migrated when using an engine image with a CLI API version older than 12 (pre-v1.12 engine images). Upgrade the engine image to v1.12 or later before attempting live migration of encrypted volumes.
+
+For more information, see [Issue #9205](https://github.com/longhorn/longhorn/issues/9205).
 
 ## General
 
