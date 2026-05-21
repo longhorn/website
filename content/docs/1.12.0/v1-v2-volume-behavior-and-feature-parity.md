@@ -26,6 +26,13 @@ In V1, purge is the operation that coalesces snapshots previously marked as remo
 
 In V2, purge runs immediately and removes eligible system-created snapshots (those not created by the user) from the replica chain in one operation. The underlying storage layer performs the merge during the purge.
 
+### Revision Counter Behavior
+
+Revision counter behavior differs between V1 and V2 volumes.
+
+In V1, Longhorn supports revision counters for tracking replica updates. This mechanism can be used during startup and auto-salvage to help identify the replica with the latest update. For more information, see [Revision Counter](../advanced-resources/deploy/revision_counter).
+
+In V2, revision counters are not supported. V2 volumes do not maintain revision-counter-based replica tracking, and V1-specific revision counter settings do not apply.
 
 ## Feature Support Matrix
 
@@ -78,5 +85,3 @@ In V2, purge runs immediately and removes eligible system-created snapshots (tho
 | Volume Live Migration | ✔️ | ✔️ | - |
 | **Engine Live Upgrade** |  |  |  |
 | Engine Live Upgrade | ✔️ | Not supported | Supported when upgrading from v1.12.x to v1.13.x |
-| **Storage Sharding** |  |  |  |
-| Storage Sharding | Not planned | ✔️ | Experimental Feature for V2 |
