@@ -10,7 +10,7 @@ Longhorn supports [CSI volume cloning](https://kubernetes.io/docs/concepts/stora
 
 ### Clone a Volume Using YAML
 
-#### Standard / V1 Data Engine
+#### V1 Data Engine
 
 Suppose that you have the following `source-pvc`:
 ```yaml

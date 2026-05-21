@@ -28,7 +28,7 @@ This method is applied only if:
 
 This method is recommended if it is applicable, because the PVC and PV will be updated automatically and everything is kept consistent after expansion.
 
-#### Standard or V1 Data Engine
+#### V1 Data Engine
 
 Find the corresponding PVC for the Longhorn volume, then modify the requested `spec.resources.requests.storage` of the PVC:
 
