@@ -1272,7 +1272,7 @@ In seconds. The setting specifies the timeout for the instance manager pod liven
 
 > Default: `{"v2":"0x1"}`
 
-Applies only to the V2 Data Engine. Specifies the CPU cores on which the Storage Performance Development Kit (SPDK) target daemon runs. The daemon is deployed in each Instance Manager pod. Ensure that the number of assigned cores does not exceed the guaranteed Instance Manager CPUs for the V2 Data Engine.
+Applies only to the V2 Data Engine. Specifies the CPU cores on which the Storage Performance Development Kit (SPDK) target daemon runs. The daemon is deployed in each Instance Manager pod. Ensure that the number of assigned cores does not exceed the guaranteed Instance Manager CPUs for the V2 Data Engine. Accepts hex mask format (e.g., 0x1, 0xff) or CPU list format (e.g., 1-3,5,7). CPU list format is automatically converted to hex mask. The default value is 0x1.
 
 #### Data Engine Hugepage Enabled
 
