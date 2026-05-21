@@ -5,7 +5,11 @@ weight: 4
 
 We recommend the following setup for deploying Longhorn in production.
 
+> **Important:** We recommend enabling only one data engine (V1 or V2) per cluster. When both data engines are enabled simultaneously, each node runs separate instance-manager pods for V1 and V2, each with its own guaranteed CPU reservation. This significantly increases CPU overhead per node (the V2 instance-manager pod alone consumes at least 1 dedicated CPU core, which is configurable, for the `spdk_tgt` process). If your workloads do not require both engines, disable the unused one to conserve resources. For more information about guaranteed CPU reservations and how CPU consumption differs between V1 and V2 upgrade flows, see [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu).
+
 - [Minimum Recommended Hardware](#minimum-recommended-hardware)
+  - [V1 Data Engine](#v1-data-engine)
+  - [V2 Data Engine](#v2-data-engine)
 - [Architecture](#architecture)
 - [Operating System](#operating-system)
 - [Kubernetes](#kubernetes)
@@ -16,6 +20,7 @@ We recommend the following setup for deploying Longhorn in production.
   - [Minimal Available Storage and Over-provisioning](#minimal-available-storage-and-over-provisioning)
   - [Disk Space Management](#disk-space-management)
   - [Setting up Extra Disks](#setting-up-extra-disks)
+  - [V2 Data Engine: Block-Type Disks](#v2-data-engine-block-type-disks)
 - [Configuring Default Disks Before and After Installation](#configuring-default-disks-before-and-after-installation)
 - [Volumes Performance Optimization](#volumes-performance-optimization)
   - [IO Performance](#io-performance)
@@ -24,8 +29,8 @@ We recommend the following setup for deploying Longhorn in production.
 - [Deploying Workloads](#deploying-workloads)
 - [Volumes Maintenance](#volumes-maintenance)
 - [Guaranteed Instance Manager CPU](#guaranteed-instance-manager-cpu)
-  - [V1 Data Engine](#v1-data-engine)
-  - [V2 Data Engine](#v2-data-engine)
+  - [V1 Data Engine](#v1-data-engine-1)
+  - [V2 Data Engine](#v2-data-engine-1)
 - [StorageClass](#storageclass)
 - [Scheduling Settings](#scheduling-settings)
   - [Replica Node Level Soft Anti-Affinity](#replica-node-level-soft-anti-affinity)
@@ -33,6 +38,8 @@ We recommend the following setup for deploying Longhorn in production.
   - [Replica Auto-Balance](#replica-auto-balance)
 
 ## Minimum Recommended Hardware
+
+### V1 Data Engine
 
 - 3 nodes
 - 4 vCPUs per node
@@ -52,6 +59,20 @@ We recommend the following setup for deploying Longhorn in production.
 > The increased latency due to the use of HDDs, combined with other input-output workloads, can lead to **volume instability**. Therefore, we recommend **SSD or NVMe** drives for better performance and stability, especially for production workloads.
 >
 > The mentioned IOPS and throughput (500/250 max IOPS per volume and 500/250 max throughput per volume) are intended as general references based on the test setup but **should not be treated as hard requirements**. Latency, not just throughput, is the most important factor in ensuring system stability.
+
+### V2 Data Engine
+
+In addition to the V1 requirements above, nodes hosting V2 volumes have these additional requirements:
+
+- 3 nodes
+- **Additional 1 CPU core per node** dedicated to each V2 instance-manager pod (the `spdk_tgt` process uses intensive polling and consumes 100% of a dedicated CPU core)
+- **Additional 2 GiB memory per node** reserved for huge pages (1024 × 2 MiB-sized pages)
+- **Local NVMe SSDs** are strongly recommended for V2 volumes to achieve optimal storage performance
+- Linux kernel 5.19 or later (6.7 or later recommended for stability)
+- Required kernel modules: `vfio_pci`, `uio_pci_generic`, `nvme-tcp`
+- AMD64 CPUs require SSE4.2 instruction support
+
+> **Note**: The V2 Data Engine leverages the Storage Performance Development Kit (SPDK) with user space NVMe drivers that provide zero-copy, highly parallel, direct access to SSDs. Using local NVMe disks is strongly recommended for enabling V2 volumes to achieve optimal storage performance. For the full setup guide, see [V2 Data Engine Requirements](../deploy/install/#v2-data-engine-requirements).
 
 ## Architecture
 
@@ -84,7 +105,7 @@ in particular, benefit from usage of specific kernel versions.
   #2507](https://github.com/longhorn/longhorn/issues/2507#issuecomment-857195496) for details.
 - Enabling the [Freeze Filesystem for Snapshot](../references/settings#freeze-filesystem-for-snapshot) setting: Use a
   kernel with version `5.17` or later to ensure that a volume crash during a filesystem freeze cannot lock up a node.
-- Enabling the [V2 Data Engine](../v2-data-engine/prerequisites): Use a kernel with version `5.19` or later to ensure
+- Enabling the [V2 Data Engine](../deploy/install/#v2-data-engine-requirements): Use a kernel with version `5.19` or later to ensure NVMe/TCP support. Use a kernel with version `6.7` or later for improved stability (avoids potential memory corruption from SPDK upstream issue [#3116](https://github.com/spdk/spdk/issues/3116#issuecomment-1890984674)).
 
 
 The list below contains known broken kernel versions that users should avoid using:
@@ -143,6 +164,22 @@ Since Longhorn doesn't currently support sharding between the different disks, w
 Any extra disks must be written in the `/etc/fstab` file to allow automatic mounting after the machine reboots.
 
 Don't use a symbolic link for the extra disks. Use `mount --bind` instead of `ln -s` and make sure it's in the `fstab` file. For details, see [the section about multiple disk support.](../nodes-and-volumes/nodes/multidisk/#use-an-alternative-path-for-a-disk-on-the-node)
+
+### V2 Data Engine: Block-Type Disks
+
+Unlike the V1 Data Engine which uses `filesystem-type` disks, the V2 Data Engine stores volume data on `block-type` disks. The following best practices apply to V2 block-type disk setup:
+
+- **Use local NVMe disks**: SPDK is equipped with a user space NVMe driver that provides zero-copy, highly parallel, direct access to SSDs. Using local NVMe disks is strongly recommended for V2 volumes.
+
+- **Ensure disk is clean before adding**: Starting with v1.11.0, Longhorn prevents adding block disks that contain an existing file system or partition table. Run `wipefs -a /path/to/block/device` before adding a disk.
+
+- **IOMMU group isolation**: For SPDK to claim a disk via `vfio-pci`, the NVMe device must be in an isolatable IOMMU group. If the device shares an IOMMU group with a PCIe bridge, it cannot be used with the SPDK NVMe driver and must be used in **AIO mode** instead.
+
+- **Huge pages configuration**: Ensure 2 GiB of 2 MiB-sized huge pages (1024 pages) are configured persistently on each V2 node via kernel boot parameters. See [Enable HugePages](../deploy/install/#enable-hugepages) for detailed instructions.
+
+- **Kernel modules**: Ensure `vfio_pci`, `uio_pci_generic`, and `nvme-tcp` modules are loaded and configured to load automatically at boot. See [Load Kernel Modules](../deploy/install/#load-kernel-modules) for detailed instructions.
+
+For the complete V2 Data Engine setup guide, see [V2 Data Engine Requirements](../deploy/install/#v2-data-engine-requirements).
 
 ## Configuring Default Disks Before and After Installation
 
@@ -220,7 +257,13 @@ Refer to [Guaranteed Instance Manager CPU](../references/settings/#guaranteed-in
 
 ### V2 Data Engine
 
-The `Guaranteed Instance Manager CPU for V2 Data Engine` setting allows you to reserve a specific number of millicpus on each node for each instance manager pod when the V2 Data Engine is enabled. By default, the Storage Performance Development Kit (SPDK) target daemon within each instance manager pod uses 1 CPU core. Configuring a minimum CPU usage value is essential for maintaining engine and replica stability, especially during periods of high node workload. The default value is 1250.
+The `Guaranteed Instance Manager CPU` setting allows you to reserve a percentage of the total allocatable CPU resources on each node for each instance manager pod when the V2 Data Engine is enabled. This reservation applies to the entire V2 instance manager pod.
+
+The primary CPU consumer in the pod is the Storage Performance Development Kit (SPDK) target daemon (`spdk_tgt`). By default, `spdk_tgt` typically uses 1 dedicated CPU core in polling mode. The [Data Engine CPU Mask](../references/settings#data-engine-cpu-mask) setting controls which CPU cores `spdk_tgt` runs on.
+
+Reserving sufficient CPU is essential for maintaining engine and replica stability, especially during periods of high node workload. The default value of the `Guaranteed Instance Manager CPU` setting is 12%.
+
+> **Note:** When both V1 and V2 Data Engines are enabled on the same node, separate instance-manager pods are created for each engine. Plan CPU resources accordingly to ensure each instance-manager pod has sufficient CPU allocation.
 
 ## StorageClass
 
