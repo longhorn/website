@@ -5,6 +5,7 @@ weight: 3
 ---
 
 ## History
+
 - [GitHub Issue](https://github.com/longhorn/longhorn/issues/304)
 - [Longhorn Enhancement Proposal](https://github.com/longhorn/longhorn/blob/master/enhancements/20200904-csi-snapshot-support.md)
 
