@@ -84,6 +84,6 @@ In V2, revision counters are not supported. V2 volumes do not maintain revision-
 | **Volume Live Migration** |  |  |  |
 | Volume Live Migration | ✔️ | ✔️ | - |
 | **Engine Live Upgrade** |  |  |  |
-| Engine Live Upgrade | ✔️ | Not supported | Supported when upgrading from v1.12.x to v1.13.x |
+| Engine Live Upgrade | ✔️ | Not supported | V2 volumes do not support live upgrades between Longhorn v1.12 patch releases and must be detached before upgrading. Support is planned when upgrading from a Longhorn v1.12 release to a Longhorn v1.13 release. |
 | **Storage Sharding** |  |  |  |
 | Storage Sharding | Not planned | Planned | Planned as an experimental feature for Longhorn v1.12.1. |
