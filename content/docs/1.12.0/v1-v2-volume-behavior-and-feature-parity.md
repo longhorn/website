@@ -51,7 +51,7 @@ In V2, revision counters are not supported. V2 volumes do not maintain revision-
 | **Volume Operations** |  |  |  |
 | Volume Expansion | ✔️ | ✔️ | - |
 | Volume Cloning | ✔️ | ✔️ | - |
-| Fast Volume Cloning | Not planned | ✔️ | - |
+| Fast Volume Cloning | Not planned | Planned | Planned for Longhorn v1.12.1. |
 | Volume Encryption | ✔️ | ✔️ | - |
 | Filesystem Trim | ✔️ | ✔️ | - |
 | **Replica Scheduling** |  |  |  |
@@ -85,3 +85,5 @@ In V2, revision counters are not supported. V2 volumes do not maintain revision-
 | Volume Live Migration | ✔️ | ✔️ | - |
 | **Engine Live Upgrade** |  |  |  |
 | Engine Live Upgrade | ✔️ | Not supported | Supported when upgrading from v1.12.x to v1.13.x |
+| **Storage Sharding** |  |  |  |
+| Storage Sharding | Not planned | Planned | Planned as an experimental feature for Longhorn v1.12.1. |
