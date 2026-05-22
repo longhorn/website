@@ -108,7 +108,11 @@ Longhorn supports several ways to manage block-type disks on a node:
 #### Prerequisites
 
 - The V2 Data Engine must be enabled. See [V2 Data Engine Quick Start](../../v2-data-engine/quick-start) for details.
-- The disk must not contain any existing filesystem. Use `wipefs -a /path/to/block/device` to clean the disk before adding it.
+- Longhorn prevents adding block disks that contain an existing file system or partition table. Clean the disk first:
+
+    ```shell
+    wipefs -a /path/to/block/device
+    ```
 
 #### Steps
 
@@ -175,7 +179,7 @@ aio-disk:
 > **Notice**:
 >
 > 1. Block-type disks are exclusively used by the V2 Data Engine and cannot be used for V1 volumes.
-> 2. The disk must be clean (no existing filesystem) before adding it. Use `wipefs -a /path/to/block/device` to wipe it.
+> 2. The disk must be clean and must not contain an existing file system or partition table before it is added. Use `wipefs -a /path/to/block/device` to clean it.
 > 3. For disk-specific configuration examples, see [Using NVMe Disks](#using-nvme-disks), [Using VirtIO Disks](#using-virtio-disks), and [Using AIO Disks](#using-aio-disks).
 
 ##### Using NVMe Disks

@@ -24,8 +24,6 @@ weight: 1
     - [Restart kubelet](#restart-kubelet)
     - [Enable V2 Data Engine](#enable-v2-data-engine)
     - [Add `block-type` Disks in Longhorn Nodes](#add-block-type-disks-in-longhorn-nodes)
-      - [Prepare Disks](#prepare-disks)
-      - [Add Disks to `node.longhorn.io`](#add-disks-to-nodelonghornio)
 - [Longhorn Command Line Tool](#longhorn-command-line-tool)
   - [Download longhornctl](#download-longhornctl)
   - [Check Prerequisites](#check-prerequisites)
@@ -266,7 +264,7 @@ No additional data-engine-specific steps are required after installing Longhorn.
 
 Each Longhorn node that will host V1 volumes must also meet the following requirements:
 
-- `open-iscsi` is installed, and the `iscsid` daemon is running on all the nodes. Longhorn relies on `iscsiadm` on the host to provide persistent volumes to Kubernetes. For help installing `open-iscsi`, refer to [Install open-iscsi](#install-open-iscsi).
+- `open-iscsi` is installed, and the `iscsid` daemon is running on all the nodes. Longhorn relies on `iscsiadm` on the host to provide persistent volumes to Kubernetes.
 - The host filesystem supports the `file extents` feature to store the data. Currently we support:
   - ext4
   - XFS
@@ -277,19 +275,19 @@ For GKE, we recommend using Ubuntu as the guest OS image since it contains`open-
 
 You may need to edit the cluster security group to allow SSH access.
 
-- SUSE and openSUSE: Run the following command:
+- SUSE and openSUSE:
   ```
   zypper install open-iscsi
   systemctl enable iscsid
   systemctl start iscsid
   ```
 
-- Debian and Ubuntu: Run the following command:
+- Debian and Ubuntu:
   ```
   apt-get install open-iscsi
   ```
 
-- RHEL, CentOS, and EKS *(EKS Kubernetes Worker AMI with AmazonLinux2 image)*: Run the following commands:
+- RHEL, CentOS, and EKS *(EKS Kubernetes Worker AMI with AmazonLinux2 image)*:
   ```
   yum --setopt=tsflags=noscripts install iscsi-initiator-utils
   echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi
@@ -301,7 +299,7 @@ You may need to edit the cluster security group to allow SSH access.
 
 - Container-Optimized OS: See [Container-Optimized OS Support](../../advanced-resources/os-distro-specific/container-optimized-os-support)
 
-Please ensure iscsi_tcp module has been loaded before iscsid service starts. Generally, it should be automatically loaded along with the package installation.
+Please ensure the `iscsi_tcp` module has been loaded before the `iscsid` service starts. Generally, it should be automatically loaded along with the package installation.
 
 ```
 modprobe iscsi_tcp
@@ -317,14 +315,11 @@ This section is for clusters that will use the **V2 Data Engine**. Complete the 
 
 Longhorn's V2 Data Engine leverages the Storage Performance Development Kit (SPDK) to deliver enhanced performance with lower I/O latency and higher IOPS and throughput.
 
-The V2 Data Engine is currently a **Technical Preview** feature. For feature coverage, see [V1 and V2 Volume Differences and Feature Support](../../v1-v2-volume-behavior-and-feature-parity/).
-
 Before you enable the V2 Data Engine, ensure that each Longhorn node that will host V2 volumes meets the following requirements:
 
 - AMD64 or ARM64 CPU
   - AMD64 CPUs require SSE4.2 instruction support.
-- Linux kernel 5.19 or later for NVMe/TCP support
-  - Linux kernel 6.7 or later is recommended for better stability.
+- Linux kernel 6.7 or later for NVMe/TCP support and better stability.
 - Required kernel modules:
   - `vfio_pci`
   - `uio_pci_generic`
@@ -441,7 +436,7 @@ Huge page allocations made through `/sys/kernel/mm/hugepages/...` are not persis
 
 #### Restart kubelet
 
-After configuring kernel modules and huge pages, restart `kubelet` on each node.
+Restart `kubelet` on each node so Kubernetes can detect and use the configured huge pages.
 
 #### Enable V2 Data Engine
 
@@ -457,48 +452,7 @@ After the setting is enabled, the instance-manager pods are automatically restar
 
 #### Add `block-type` Disks in Longhorn Nodes
 
-Unlike `filesystem-type` disks that are designed for legacy volumes, volumes using the V2 Data Engine are persistent on `block-type` disks. Therefore, nodes that host V2 volumes must provide `block-type` disks.
-
-##### Prepare Disks
-
-If no extra disks are available on the Longhorn nodes, you can create loop block devices for testing:
-
-```shell
-dd if=/dev/zero of=blockfile bs=1M count=10240
-losetup -f blockfile
-```
-
-To display the assigned block device path:
-
-```shell
-losetup -j blockfile
-```
-
-##### Add Disks to `node.longhorn.io`
-
-Starting with v1.11.0, Longhorn prevents adding block disks that contain an existing file system or partition table. Clean the disk first:
-
-```shell
-wipefs -a /path/to/block/device
-```
-
-You can add the disk through the Longhorn UI by setting **Disk Type** to **Block**, or by editing the `node.longhorn.io` resource:
-
-```shell
-kubectl -n longhorn-system edit node.longhorn.io <NODE NAME>
-```
-
-Add the disk under `spec.disks`:
-
-```yaml
-<DISK NAME>:
-  allowScheduling: true
-  evictionRequested: false
-  path: /PATH/TO/BLOCK/DEVICE
-  storageReserved: 0
-  tags: []
-  diskType: block
-```
+Unlike `filesystem-type` disks that are designed for legacy volumes, volumes using the V2 Data Engine are persistent on `block-type` disks. Therefore, nodes that host V2 volumes must provide `block-type` disks. For more information about block-type disks, see [Block-Type Disks](../../nodes-and-volumes/nodes/multidisk/).
 
 ## Longhorn Command Line Tool
 
