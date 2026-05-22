@@ -31,8 +31,10 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [On-Demand Snapshot Checksum Calculation](#on-demand-snapshot-checksum-calculation)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
-  - [Fast Cloning](#fast-cloning)
   - [IPv6 Support](#ipv6-support)
+  - [V2 Features Planned for Longhorn v1.12.1](#v2-features-planned-for-longhorn-v1121)
+    - [Fast Volume Cloning](#fast-volume-cloning)
+    - [Storage Sharding](#storage-sharding)
 
 ## Removal
 
@@ -168,16 +170,22 @@ For more information, see [Issue #11442](https://github.com/longhorn/longhorn/is
 
 Live upgrades of V2 volumes are **not supported**. Ensure all V2 volumes are detached before upgrading.
 
-### Fast Cloning
-
-Longhorn v{{< current-version >}} enhances V2 fast cloning (`linked-clone`) so the initial clone can be created with multiple replicas in parallel instead of being limited to a single replica. This keeps clone creation fast while allowing the cloned volume to become highly available after the initial clone operation completes.
-
-Fast cloning remains best suited for temporary or workflow-driven use cases such as backup pipelines. A `linked-clone` volume still depends on its source volume and source snapshot, so delete the clone before deleting the source volume or source snapshot. Replacement replicas created after the initial clone are rebuilt as full copies rather than preserved as thin clones.
-
-For more information, see [Issue #12552](https://github.com/longhorn/longhorn/issues/12552) and [V2 Volume Clone Support](../v2-data-engine/features/volume-clone).
-
 ### IPv6 Support
 
 V2 volumes now support single-stack IPv6 Kubernetes clusters. For dual-stack cluster support and its limitations, see [Dual-Stack Cluster Support](#dual-stack-cluster-support).
 
 For more information, see [Issue #10928](https://github.com/longhorn/longhorn/issues/10928).
+
+### V2 Features Planned for Longhorn v1.12.1
+
+#### Fast Volume Cloning
+
+Fast volume cloning for the V2 data engine is planned for Longhorn v1.12.1. This enhancement is intended to allow the initial `linked-clone` to be created with multiple replicas in parallel instead of being limited to a single replica.
+
+For more information, see [Issue #12552](https://github.com/longhorn/longhorn/issues/12552).
+
+#### Storage Sharding
+
+Storage sharding for the V2 data engine is planned as an experimental feature for Longhorn v1.12.1. This capability is intended to address the existing space efficiency limitations caused by replica-based storage overhead.
+
+For more information, see [Issue #1061](https://github.com/longhorn/longhorn/issues/1061).
