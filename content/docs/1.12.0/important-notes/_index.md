@@ -36,9 +36,18 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
 
 ## Removal
 
-V2 Backing Images are removed in Longhorn v{{< current-version >}}. Use the Containerized Data Importer (CDI) to import images into Longhorn for compatibility with the current engine
+V2 Backing Images are removed in Longhorn v{{< current-version >}}. Use the Containerized Data Importer (CDI) to import images into Longhorn for compatibility with the current engine.
 
-For more information, see [Longhorn with CDI Imports](../advanced-resources/containerized-data-importer/containerized-data-importer).
+**Migration required for existing V2 volumes with backing images:**
+
+If you have V2 volumes that were created from backing images, you must migrate them before upgrading to v{{< current-version >}}:
+
+1. **Backup and recreate** (recommended): Create a backup of the V2 volume, delete the original volume, then restore from backup. The restored volume will not have a backing image dependency.
+2. **Delete the volume**: If the data is not needed, delete the V2 volume directly.
+
+V2 volumes with backing image dependencies cannot be upgraded in-place. Attempting to upgrade without migration may result in volume attachment failures.
+
+For more information, see [Issue #13181](https://github.com/longhorn/longhorn/issues/13181) and [Longhorn with CDI Imports](../advanced-resources/containerized-data-importer/containerized-data-importer).
 
 ## Important Fixes
 
