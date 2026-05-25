@@ -3,7 +3,16 @@ title: Create Longhorn Volumes
 weight: 1
 ---
 
-In this tutorial, you'll learn how to create Kubernetes persistent storage resources of persistent volumes (PVs) and persistent volume claims (PVCs) that correspond to Longhorn volumes. You will use kubectl to dynamically provision storage for workloads using a Longhorn storage class. For help creating volumes from the Longhorn UI, refer to [this section.](#creating-longhorn-volumes-with-the-longhorn-ui)
+- [Access Modes](#access-modes)
+- [Create Longhorn Volumes](#create-longhorn-volumes)
+  - [Creating V1 Longhorn Volumes with kubectl](#creating-v1-longhorn-volumes-with-kubectl)
+  - [Creating V2 Longhorn Volumes with kubectl](#creating-v2-longhorn-volumes-with-kubectl)
+  - [Binding Workloads to PVs without a Kubernetes StorageClass](#binding-workloads-to-pvs-without-a-kubernetes-storageclass)
+  - [Creating Longhorn Volumes with the Longhorn UI](#creating-longhorn-volumes-with-the-longhorn-ui)
+  - [PV/PVC Creation for Existing Longhorn Volume](#pvpvc-creation-for-existing-longhorn-volume)
+  - [The Failure of the Longhorn Volume Creation](#the-failure-of-the-longhorn-volume-creation)
+
+In this tutorial, you'll learn how to create Kubernetes persistent storage resources of PersistentVolumes (PVs) and PersistentVolumeClaims (PVCs) that correspond to Longhorn volumes. You will use kubectl to dynamically provision V1 and V2 volumes for workloads using Longhorn storage classes. For help creating volumes from the Longhorn UI, see the Creating Longhorn Volumes with the [Longhorn UI section](#creating-longhorn-volumes-with-the-longhorn-ui).
 
 > This section assumes that you understand how Kubernetes persistent storage works. For more information, see the [Kubernetes documentation.](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 
@@ -17,7 +26,11 @@ Longhorn supports the following Kubernetes PersistentVolume access modes:
 
 > **Note**: ReadOnlyMany (ROX) is not supported by Longhorn. For read-only access from multiple pods, consider using ReadWriteMany with read-only mount options in your pod specification.
 
-### Creating Longhorn Volumes with kubectl
+## Create Longhorn Volumes
+
+### Creating V1 Longhorn Volumes with kubectl
+
+Before creating a V1 volume, ensure that Longhorn has at least one available filesystem-type disk. V1 volumes are scheduled only to filesystem-type disks. For more information, see [Add a Filesystem-Type Disk](../nodes/multidisk/#add-a-filesystem-type-disk).
 
 First, you will create a Longhorn StorageClass. The Longhorn StorageClass contains the parameters to provision PVs.
 
@@ -27,13 +40,13 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
 
 1. Use following command to create a StorageClass called `longhorn`:
 
-    ```
+    ```shell
     kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/storageclass.yaml
     ```
 
     The following example StorageClass is created:
 
-    ```
+    ```yaml
     kind: StorageClass
     apiVersion: storage.k8s.io/v1
     metadata:
@@ -63,17 +76,17 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
 
     In particular, starting with v1.4.0, the parameter `mkfsParams` can be used to specify filesystem format options for each StorageClass.
     Starting with v1.8.0, the parameter `backupTargetName` can be used to specify the backup target. The name of the default backup target (`default`) is used if `backupTargetName` is not specified.
-    Parameters may be omitted from the StorageClass specification.  When the storage class is used to create a PV and a volume, parameters that are not specified will generally be set using a default value taken from the global settings.  See [here](../../../references/storage-class-parameters) for the list of storage class parameters, and [here](../../../references/settings) for the full list of global settings.
+    Parameters may be omitted from the StorageClass specification. When the storage class is used to create a PV and a volume, parameters that are not specified will generally be set using a default value taken from the global settings. See [Storage Class Parameters](../../../references/storage-class-parameters) for the list of storage class parameters, and [Settings](../../../references/settings) for the full list of global settings.
 
 2. Create a Pod that uses Longhorn volumes by running this command:
 
-    ```
+    ```shell
     kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/pod_with_pvc.yaml
     ```
 
     A Pod named `volume-test` is launched, along with a PersistentVolumeClaim named `longhorn-volv-pvc`. The PersistentVolumeClaim references the Longhorn StorageClass:
 
-    ```
+    ```yaml
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -89,7 +102,7 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
 
     The persistentVolumeClaim is mounted in the Pod as a volume:
 
-    ```
+    ```yaml
     apiVersion: v1
     kind: Pod
     metadata:
@@ -110,7 +123,93 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
         persistentVolumeClaim:
           claimName: longhorn-volv-pvc
     ```
-More examples are available [here.](../../../references/examples)
+
+### Creating V2 Longhorn Volumes with kubectl
+
+Before creating a V2 volume, ensure that the V2 Data Engine is enabled and Longhorn has available block-type disks. V2 volumes are scheduled only to block-type disks. For more information, see [V2 Data Engine Quick Start](../../v2-data-engine/quick-start) and [Add a Block-Type Disk](../nodes/multidisk/#add-a-block-type-disk).
+
+1. Use the following command to create a StorageClass called `longhorn-v2-data-engine`:
+
+    ```shell
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/v2/storageclass.yaml
+    ```
+
+    The following example StorageClass is created:
+
+    ```yaml
+    kind: StorageClass
+    apiVersion: storage.k8s.io/v1
+    metadata:
+      name: longhorn-v2-data-engine
+    provisioner: driver.longhorn.io
+    allowVolumeExpansion: true
+    reclaimPolicy: Delete
+    volumeBindingMode: Immediate
+    parameters:
+      numberOfReplicas: "3"
+      staleReplicaTimeout: "2880"
+      fsType: "ext4"
+      dataEngine: "v2"
+    ```
+
+    The `dataEngine` parameter must be set to `v2` so Longhorn provisions a V2 volume. See [Storage Class Parameters](../../../references/storage-class-parameters) for the list of supported parameters.
+
+2. Create a Pod that uses a V2 Longhorn volume by running this command:
+
+    ```shell
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/v2/pod_with_pvc.yaml
+    ```
+
+    A Pod named `volume-test` is launched, along with a PersistentVolumeClaim named `longhorn-volv-pvc`. The PersistentVolumeClaim references the V2 StorageClass:
+
+    ```yaml
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: longhorn-volv-pvc
+      namespace: default
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: longhorn-v2-data-engine
+      resources:
+        requests:
+          storage: 2Gi
+    ```
+
+    The PersistentVolumeClaim is mounted in the Pod as a volume:
+
+    ```yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: volume-test
+      namespace: default
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: volume-test
+        image: nginx:stable-alpine
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+              - ls
+              - /data/lost+found
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        volumeMounts:
+        - name: volv
+          mountPath: /data
+        ports:
+        - containerPort: 80
+      volumes:
+      - name: volv
+        persistentVolumeClaim:
+          claimName: longhorn-volv-pvc
+    ```
+
+More examples are available under the [examples section](../../../references/examples).
 
 ### Binding Workloads to PVs without a Kubernetes StorageClass
 
