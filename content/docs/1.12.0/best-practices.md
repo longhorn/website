@@ -68,7 +68,7 @@ In addition to the V1 requirements above, nodes hosting V2 volumes have these ad
 - **Additional 1 CPU core per node** dedicated to each V2 instance-manager pod (the `spdk_tgt` process uses intensive polling and consumes 100% of a dedicated CPU core)
 - **Additional 2 GiB memory per node** reserved for huge pages (1024 × 2 MiB-sized pages)
 - **Local NVMe SSDs** are strongly recommended for V2 volumes to achieve optimal storage performance
-- Linux kernel 5.19 or later (6.7 or later recommended for stability)
+- Linux kernel 6.7 or later for NVMe/TCP support and better stability.
 - Required kernel modules: `vfio_pci`, `uio_pci_generic`, `nvme-tcp`
 - AMD64 CPUs require SSE4.2 instruction support
 
