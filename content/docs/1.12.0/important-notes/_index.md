@@ -31,6 +31,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [On-Demand Snapshot Checksum Calculation](#on-demand-snapshot-checksum-calculation)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
+  - [UBLK Frontend Kernel Limitation](#ublk-frontend-kernel-limitation)
   - [IPv6 Support](#ipv6-support)
   - [V2 Features Planned for Longhorn v1.12.1](#v2-features-planned-for-longhorn-v1121)
     - [Fast Volume Cloning](#fast-volume-cloning)
@@ -169,6 +170,12 @@ For more information, see [Issue #11442](https://github.com/longhorn/longhorn/is
 ### Longhorn System Upgrade
 
 Live upgrades of V2 volumes are **not supported**. Ensure all V2 volumes are detached before upgrading.
+
+### UBLK Frontend Kernel Limitation
+
+The UBLK frontend for V2 data engine volumes is experimental and only functional on Linux kernels below v6.17. On kernel v6.17.0 and above, UBLK fails due to upstream UBLK API changes that cause `EINVAL` errors when starting UBLK devices.
+
+For more information, see [Issue #11977](https://github.com/longhorn/longhorn/issues/11977) and [UBLK Frontend Support](../advanced-resources/v2-data-engine/ublk-frontend-support).
 
 ### IPv6 Support
 
