@@ -1,6 +1,6 @@
 ---
 title: Configurable CPU Cores
-weight: 20
+weight: 10
 aliases:
 - /spdk/features/configurable-cpu-cores.md
 ---

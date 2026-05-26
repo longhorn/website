@@ -1,8 +1,6 @@
 ---
 title: UBLK Frontend Support (Experimental)
-weight: 20
-aliases:
-- /spdk/features/ublk-frontend-support.md
+weight: 50
 ---
 
 > **Note**: This feature is an Experimental feature and is only functional on Linux kernels below v6.17. On kernel v6.17.0 and above, UBLK fails due to upstream UBLK API changes that cause `EINVAL` errors when starting UBLK devices. This issue is being tracked in [GitHub Issue #11977](https://github.com/longhorn/longhorn/issues/11977).
