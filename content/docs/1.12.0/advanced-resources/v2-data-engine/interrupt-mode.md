@@ -1,8 +1,6 @@
 ---
 title: Interrupt Mode Support
-weight: 20
-aliases:
-- /spdk/features/interrupt-support.md
+weight: 40
 ---
 
 Starting with v1.10.0, Longhorn supports **SPDK interrupt mode** for V2 data engine volumes. Interrupt mode provides an alternative to the default **polling mode**, offering improved CPU efficiency in certain environment.
