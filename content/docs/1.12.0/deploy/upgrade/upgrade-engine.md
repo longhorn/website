@@ -5,6 +5,10 @@ weight: 2
 
 In this section, you'll learn how to manually upgrade the Longhorn Engine from the Longhorn UI.
 
+> **Notice**:
+>
+> This engine upgrade procedure applies only to V1 Data Engine volumes. In Longhorn v1.12, V2 Data Engine volumes do not support engine upgrades and all V2 volumes must be detached before upgrading Longhorn. Support for V2 Data Engine engine upgrades is planned for upgrades from Longhorn v1.12 to v1.13.
+
 ## Prerequisites
 
 Always make backups before upgrading the Longhorn engine images.

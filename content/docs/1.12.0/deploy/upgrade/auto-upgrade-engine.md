@@ -3,6 +3,10 @@ title: Automatically Upgrading Longhorn Engine
 weight: 3
 ---
 
+> **Notice**:
+>
+> This engine upgrade procedure applies only to V1 Data Engine volumes. In Longhorn v1.12, V2 Data Engine volumes do not support engine upgrades and all V2 volumes must be detached before upgrading Longhorn. Support for V2 Data Engine engine upgrades is planned for upgrades from Longhorn v1.12 to v1.13.
+
 Since Longhorn v1.1.1, we provide an option to help you automatically upgrade Longhorn volumes to the new default engine version after upgrading Longhorn manager.
 This feature reduces the amount of manual work you have to do when upgrading Longhorn.
 There are a few concepts related to this feature as listed below:
