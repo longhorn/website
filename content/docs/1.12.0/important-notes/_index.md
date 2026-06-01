@@ -168,6 +168,10 @@ For more information, see [Issue #11442](https://github.com/longhorn/longhorn/is
 
 ## V2 Data Engine
 
+> **Notice: Volume Attach Latency at Scale**
+>
+> In environments with a growing number of attached V2 volumes, increased attach latency has been observed for subsequent volumes. Initial analysis suggests this may be related to NVMe-TCP connection handling at scale, though the precise layer (SPDK user-space or Linux kernel) has not yet been identified. Further investigation is in progress. For follow-up status, see [Issue #13241](https://github.com/longhorn/longhorn/issues/13241).
+
 ### Longhorn System Upgrade
 
 Live upgrades of V2 volumes are **not supported**. Ensure all V2 volumes are detached before upgrading.
