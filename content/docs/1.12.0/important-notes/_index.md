@@ -31,6 +31,7 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
   - [On-Demand Snapshot Checksum Calculation](#on-demand-snapshot-checksum-calculation)
 - [V2 Data Engine](#v2-data-engine)
   - [Longhorn System Upgrade](#longhorn-system-upgrade)
+  - [Default SPDK CPU Allocation](#default-spdk-cpu-allocation)
   - [UBLK Frontend Kernel Limitation](#ublk-frontend-kernel-limitation)
   - [IPv6 Support](#ipv6-support)
   - [V2 Features Planned for Longhorn v1.12.1](#v2-features-planned-for-longhorn-v1121)
@@ -170,6 +171,14 @@ For more information, see [Issue #11442](https://github.com/longhorn/longhorn/is
 ### Longhorn System Upgrade
 
 Live upgrades of V2 volumes are **not supported**. Ensure all V2 volumes are detached before upgrading.
+
+### Default SPDK CPU Allocation
+
+Longhorn v{{< current-version >}} changes the default `data-engine-cpu-mask` from `0x1` (1 CPU core) to `0x3` (2 CPU cores). SPDK uses a busy-polling reactor model where the master reactor handles both I/O polling and management RPCs. When only a single core is assigned, heavy I/O workloads can delay or starve RPC processing, resulting in increased latency, timeout events, and operational instability.
+
+Assigning 2 or more cores allows I/O and management tasks to run on separate reactors, improving responsiveness and operational stability.
+
+For more information, see [Issue #13237](https://github.com/longhorn/longhorn/issues/13237) and [Configurable CPU Cores](../advanced-resources/v2-data-engine/configurable-cpu-cores).
 
 ### UBLK Frontend Kernel Limitation
 
