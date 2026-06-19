@@ -16,7 +16,7 @@ For the installation requirements, go to [this section.](../deploy/install/#inst
 - [1. Design](#1-design)
   - [1.1. The Longhorn Manager and the Longhorn Engine](#11-the-longhorn-manager-and-the-longhorn-engine)
   - [1.2. The Instance Manager](#12-the-instance-manager)
-  - [1.3. Advantages of a Microservices Based Design](#13-advantages-of-a-microservices-based-design)
+  - [1.3. Advantages of a Microservices-Based Design](#13-advantages-of-a-microservices-based-design)
   - [1.4. CSI Driver](#14-csi-driver)
   - [1.5. CSI Plugin](#15-csi-plugin)
   - [1.6. The Longhorn UI](#16-the-longhorn-ui)
@@ -91,7 +91,7 @@ Because the engine and replica instances live inside the Instance Manager pod, t
 
 This also means that the Instance Manager is the pod you target when debugging engine or replica behavior — there is no separate per-volume engine pod. Instance Manager pods follow the naming pattern `instance-manager-<hash>` and carry the `longhorn.io/node=<node-name>` label, which is the practical entry point for `kubectl logs` and `kubectl exec` when troubleshooting volume I/O issues on a specific node.
 
-## 1.3. Advantages of a Microservices Based Design
+## 1.3. Advantages of a Microservices-Based Design
 
 In Longhorn, each Engine only needs to serve one volume, simplifying the design of the storage controllers. Because the failure domain of the controller software is isolated to individual volumes, a controller crash will only impact one volume.
 
