@@ -15,10 +15,11 @@ For the installation requirements, go to [this section.](../deploy/install/#inst
 
 - [1. Design](#1-design)
   - [1.1. The Longhorn Manager and the Longhorn Engine](#11-the-longhorn-manager-and-the-longhorn-engine)
-  - [1.2. Advantages of a Microservices Based Design](#12-advantages-of-a-microservices-based-design)
-  - [1.3. CSI Driver](#13-csi-driver)
-  - [1.4. CSI Plugin](#14-csi-plugin)
-  - [1.5. The Longhorn UI](#15-the-longhorn-ui)
+  - [1.2. The Instance Manager](#12-the-instance-manager)
+  - [1.3. Advantages of a Microservices-Based Design](#13-advantages-of-a-microservices-based-design)
+  - [1.4. CSI Driver](#14-csi-driver)
+  - [1.5. CSI Plugin](#15-csi-plugin)
+  - [1.6. The Longhorn UI](#16-the-longhorn-ui)
 - [2. Longhorn Volumes and Primary Storage](#2-longhorn-volumes-and-primary-storage)
     - [2.1. Thin Provisioning and Volume Size](#21-thin-provisioning-and-volume-size)
     - [2.2. Reverting Volumes in Maintenance Mode](#22-reverting-volumes-in-maintenance-mode)
@@ -73,7 +74,24 @@ In the figure below,
 
 {{< figure alt="read/write data flow between the volume, controller instance, replica instances, and disks" src="/img/diagrams/architecture/how-longhorn-works-with-kubernetes.svg" >}}
 
-## 1.2. Advantages of a Microservices Based Design
+## 1.2. The Instance Manager
+
+The [Instance Manager](https://github.com/longhorn/longhorn-instance-manager) is the per-node component that hosts and manages the lifecycle of engine and replica instances. It runs as a pod in the `longhorn-system` namespace, and is created and supervised by the Longhorn Manager. Unlike the Longhorn Manager, which is a single DaemonSet across the cluster, the Instance Manager is a system-managed component whose lifecycle is owned by Longhorn itself.
+
+When the Longhorn Manager decides to create or attach a volume, it does not start the engine or replica processes directly. Instead, it instructs the Instance Manager on the relevant node to start them inside the Instance Manager pod. The same Instance Manager hosts the engine and replica instances for many volumes that happen to land on its node. For a given volume, one engine instance lives in the Instance Manager on the node where the workload Pod runs, and one replica instance lives in the Instance Manager on each node selected for that volume's replicas. The number of replicas per volume is controlled by the [Default Replica Count](../references/settings/#default-replica-count) setting and can be overridden per volume.
+
+The hosting model differs between data engines:
+
+- **V1 Data Engine.** The Instance Manager runs each engine and each replica as a Linux process inside the pod. The engine process is also what exposes the volume's block device to the host, using iSCSI as the frontend. A single V1 Instance Manager pod can host engine and replica processes for many volumes.
+- **V2 Data Engine.** The Instance Manager runs an SPDK target process (`spdk_tgt`) inside the pod. Engines are exposed as SPDK RAID block devices and replicas as SPDK logical volume bdevs within that target. The frontend presenting the block device to the host (NVMe-TCP or UBLK) is also driven from this Instance Manager. Because `spdk_tgt` uses busy-polling, the V2 Instance Manager consumes at least one dedicated CPU core per node.
+
+If both data engines are enabled on a cluster, each node runs two Instance Manager pods — one for V1 and one for V2 — each with its own CPU reservation.
+
+Because the engine and replica instances live inside the Instance Manager pod, the Instance Manager defines the failure domain for everything it hosts. If an Instance Manager pod is restarted or evicted, every engine and replica instance it was hosting goes with it, and the Longhorn Manager must reattach the affected volumes and rebuild replicas as needed. For this reason, Longhorn reserves CPU for the Instance Manager pod (see [Guaranteed Instance Manager CPU](../best-practices/#guaranteed-instance-manager-cpu)) and avoids restarting it while it is still hosting active instances.
+
+This also means that the Instance Manager is the pod you target when debugging engine or replica behavior — there is no separate per-volume engine pod. Instance Manager pods follow the naming pattern `instance-manager-<hash>` and carry the `longhorn.io/node=<node-name>` label, which is the practical entry point for `kubectl logs` and `kubectl exec` when troubleshooting volume I/O issues on a specific node.
+
+## 1.3. Advantages of a Microservices-Based Design
 
 In Longhorn, each Engine only needs to serve one volume, simplifying the design of the storage controllers. Because the failure domain of the controller software is isolated to individual volumes, a controller crash will only impact one volume.
 
@@ -83,14 +101,14 @@ Because each volume has its own controller, the controller and replica instances
 
 Longhorn can create a long-running job to orchestrate the upgrade of all live volumes without disrupting the on-going operation of the system. To ensure that an upgrade does not cause unforeseen issues, Longhorn can choose to upgrade a small subset of the volumes and roll back to the old version if something goes wrong during the upgrade.
 
-## 1.3. CSI Driver
+## 1.4. CSI Driver
 
 The Longhorn CSI driver takes the block device, formats it, and mounts it on the node. Then the [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) bind-mounts the device inside a Kubernetes Pod. This allows the Pod to access the Longhorn volume.
 
 The required Kubernetes CSI Driver images will be deployed automatically by the longhorn driver deployer.
 To install Longhorn in an air gapped environment, refer to [this section](../deploy/install/airgap).
 
-## 1.4. CSI Plugin
+## 1.5. CSI Plugin
 
 Longhorn is managed in Kubernetes via a [CSI Plugin.](https://kubernetes-csi.github.io/docs/) This allows for easy installation of the Longhorn plugin.
 
@@ -106,7 +124,7 @@ In contrast, v2 volumes come with different prerequisites, depending on the conf
 - For the NVMe-TCP frontend, the `nvme_tcp` module is necessary.
 - For the UBLK frontend, both the `ublk_drv` module and huge pages support must be enabled.
 
-## 1.5. The Longhorn UI
+## 1.6. The Longhorn UI
 
 The Longhorn UI interacts with the Longhorn Manager through the Longhorn API, and acts as a complement of Kubernetes. Through the Longhorn UI, you can manage snapshots, backups, nodes and disks.
 
