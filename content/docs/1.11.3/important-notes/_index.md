@@ -10,10 +10,10 @@ For the full release note, see [here](https://github.com/longhorn/longhorn/relea
 - [Behavior Change](#behavior-change)
   - [Cloned Volume Health After Efficient Cloning](#cloned-volume-health-after-efficient-cloning)
 - [Important Fixes](#important-fixes)
-  - [Longhorn Workload Pods Memory Leak](#longhorn-workload-pods-memory-leak)
-  - [PV nodeAffinity Regression](#pv-nodeaffinity-regression)
-  - [Replica Rebuild Progress Fix](#replica-rebuild-progress-fix)
-  - [CSIStorageCapacity Scheduling Enhancement](#csistoragecapacity-scheduling-enhancement)
+  - [V1 volumes not operable fix after iscsid restart](#v1-volumes-not-operable-fix-after-iscsid-restart)
+  - [Replica rebuild stability fix](#replica-rebuild-stability-fix)
+  - [Migration engine readiness transition fix](#migration-engine-readiness-transition-fix)
+  - [Recurring trim job deadlock fix](#recurring-trim-job-deadlock-fix)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Upgrade Check Events](#upgrade-check-events)
@@ -50,31 +50,31 @@ With efficient cloning enabled, a newly cloned and detached volume is degraded a
 
 ## Important Fixes
 
-This release includes critical stability fixes.
+This patch release includes critical stability fixes.
 
-### Longhorn Workload Pods Memory Leak
+### V1 volumes not operable fix after iscsid restart
 
-Fixed a critical regression where proxy connection leaks in the longhorn-instance-manager pods caused high memory consumption.
+Resolved the issue caused by the `iscsid` restart where volume operations could become stuck or fail, including PVC resize failures.
 
-For more details, see [#12575](https://github.com/longhorn/longhorn/issues/12575)
+For more details, see [#13411](https://github.com/longhorn/longhorn/issues/13411), [#13413](https://github.com/longhorn/longhorn/issues/13413), and [#13383](https://github.com/longhorn/longhorn/issues/13383).
 
-### PV nodeAffinity Regression
+### Replica rebuild stability fix
 
-Fixed a regression where PV nodeAffinity was overly configured after introducing `AccessibleTopology` in the CSI server and `allowedTopologies` in Longhorn StorageClasses since v1.11.0.
+Fixed a nil pointer dereference panic in `longhorn-instance-manager` during replica rebuild, improving rebuild stability under failure conditions.
 
-For more details, see [#12689](https://github.com/longhorn/longhorn/issues/12689) and [12656](https://github.com/longhorn/longhorn/issues/12656)
+For more details, see [#13129](https://github.com/longhorn/longhorn/issues/13129).
 
-### Replica Rebuild Progress Fix
+### Migration engine readiness transition fix
 
-Resolved an issue where replica rebuild progress could exceed 100% under unstable network conditions. Progress reporting is now capped at 100%.
+Resolved an issue where the migration engine could be unexpectedly deleted while the target node was still transitioning to ready, which could interrupt migration workflows.
 
-For more details, see [#12949](https://github.com/longhorn/longhorn/issues/12949).
+For more details, see [#13133](https://github.com/longhorn/longhorn/issues/13133).
 
-### CSIStorageCapacity Scheduling Enhancement
+### Recurring trim job deadlock fix
 
-Introduced a new setting to control CSIStorageCapacity reporting. Previously, compute nodes without Longhorn disks incorrectly reported 0 capacity, breaking WaitForFirstConsumer scheduling. With this enhancement, capacity tracking can be configured to avoid rejecting compute nodes in separated compute/storage architectures.
+Resolved a deadlock that could cause recurring trim jobs to fail.
 
-For more details, see [#12807](https://github.com/longhorn/longhorn/issues/12807).
+For more details, see [#13424](https://github.com/longhorn/longhorn/issues/13424).
 
 ## General
 
