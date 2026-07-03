@@ -27,6 +27,7 @@ weight: 1
   - [Custom Resource API Version](#custom-resource-api-version)
   - [Default Data Locality](#default-data-locality)
   - [Default Data Path](#default-data-path)
+  - [Default Control Path](#default-control-path)
   - [Default Longhorn Static StorageClass Name](#default-longhorn-static-storageclass-name)
   - [Default Replica Count](#default-replica-count)
   - [Deleting Confirmation Flag](#deleting-confirmation-flag)
@@ -319,7 +320,25 @@ The available modes are:
 
 Default path to use for storing data on a host.
 
-Can be used with `Create Default Disk on Labeled Nodes` option, to make Longhorn only use the nodes with specific storage mounted at, for example, `/opt/longhorn` when scaling the cluster.
+An absolute directory path indicates a filesystem-type disk used by the V1 Data Engine, while a path to a block device indicates a block-type disk used by the V2 Data Engine.
+
+Bare PCI identifiers such as `0000:00:1e.0` are not supported because this setting may be used as a host path for pod mounts.
+
+When this setting is a block device path, runtime and control-plane artifacts are configured separately by `Default Control Path`.
+
+This is an installation-time setting and cannot be changed after Longhorn is initialized.
+
+This setting can be used with `Create Default Disk on Labeled Nodes` to make Longhorn use only nodes that have specific storage mounted at, for example, `/opt/longhorn`, when scaling the cluster.
+
+#### Default Control Path
+
+> Default: `/var/lib/longhorn/`
+
+Default path used for storing runtime and control-plane artifacts on a host.
+
+This setting must be an absolute directory path. Engine binaries, metadata, sockets, and logs are stored under this path for both V1 and V2 Data Engines.
+
+This is an installation-time setting and cannot be changed after Longhorn is initialized.
 
 #### Default Longhorn Static StorageClass Name
 
