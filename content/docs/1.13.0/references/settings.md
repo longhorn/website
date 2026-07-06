@@ -27,6 +27,7 @@ weight: 1
   - [Custom Resource API Version](#custom-resource-api-version)
   - [Default Data Locality](#default-data-locality)
   - [Default Data Path](#default-data-path)
+  - [Default Control Path](#default-control-path)
   - [Default Longhorn Static StorageClass Name](#default-longhorn-static-storageclass-name)
   - [Default Replica Count](#default-replica-count)
   - [Deleting Confirmation Flag](#deleting-confirmation-flag)
@@ -116,6 +117,7 @@ weight: 1
   - [Instance Manager Pod Liveness Probe Timeout](#instance-manager-pod-liveness-probe-timeout)
   - [Data Engine CPU Mask](#data-engine-cpu-mask)
   - [Data Engine Number of CPU Cores](#data-engine-number-of-cpu-cores)
+  - [Data Engine iobuf Large Pool Size](#data-engine-iobuf-large-pool-size)
   - [Data Engine Hugepage Enabled](#data-engine-hugepage-enabled)
   - [Data Engine Memory Size](#data-engine-memory-size)
   - [Data Engine Interrupt Mode Enabled](#data-engine-interrupt-mode-enabled)
@@ -318,7 +320,25 @@ The available modes are:
 
 Default path to use for storing data on a host.
 
-Can be used with `Create Default Disk on Labeled Nodes` option, to make Longhorn only use the nodes with specific storage mounted at, for example, `/opt/longhorn` when scaling the cluster.
+An absolute directory path indicates a filesystem-type disk used by the V1 Data Engine, while a path to a block device indicates a block-type disk used by the V2 Data Engine.
+
+Bare PCI identifiers such as `0000:00:1e.0` are not supported because this setting may be used as a host path for pod mounts.
+
+When this setting is a block device path, runtime and control-plane artifacts are configured separately by `Default Control Path`.
+
+This is an installation-time setting and cannot be changed after Longhorn is initialized.
+
+This setting can be used with `Create Default Disk on Labeled Nodes` to make Longhorn use only nodes that have specific storage mounted at, for example, `/opt/longhorn`, when scaling the cluster.
+
+#### Default Control Path
+
+> Default: `/var/lib/longhorn/`
+
+Default path used for storing runtime and control-plane artifacts on a host.
+
+This setting must be an absolute directory path. Engine binaries, metadata, sockets, and logs are stored under this path for both V1 and V2 Data Engines.
+
+This is an installation-time setting and cannot be changed after Longhorn is initialized.
 
 #### Default Longhorn Static StorageClass Name
 
@@ -1280,6 +1300,12 @@ Applies only to the V2 Data Engine. If the Data Engine CPU Core Number setting i
 > Default: `{"v2":"0"}`
 
 Applies only to the V2 Data Engine. It can be applied only when the kubelet CPU policy is set to static. It has higher priority than the Data Engine CPU Mask setting. Therefore, when specified, the CPU Mask setting will be ignored. Specifies the number of CPU cores allocated to the Storage Performance Development Kit (SPDK) target daemon. The daemon is deployed in each Instance Manager pod. Ensure that the assigned CPU cores do not exceed the guaranteed CPUs allocated to the V2 Data Engine Instance Manager. A minimum of 2 CPU cores is recommended. SPDK uses a busy-polling reactor model where the master reactor handles both I/O polling and management RPCs. When only a single core is assigned, heavy I/O workloads can delay or starve RPC processing, resulting in increased latency, timeout events, and operational instability. Assigning 2 or more cores allows I/O and management tasks to run on separate reactors, improving responsiveness and operational stability.
+
+#### Data Engine iobuf Large Pool Size
+
+> Default: `{"v2":"1024"}`
+
+Applies only to the V2 Data Engine. Sets the SPDK iobuf large buffer pool size (`large_pool_count`) on the Instance Manager's SPDK target. The Instance Manager passes the value to `spdk_tgt` at startup through a generated JSON configuration file, since the iobuf pool can only be sized at startup and not changed at runtime. The default value 1024 keeps SPDK's built-in behavior; values not greater than 1024 are a no-op.
 
 #### Data Engine Hugepage Enabled
 
