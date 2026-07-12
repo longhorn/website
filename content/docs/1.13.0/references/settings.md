@@ -121,6 +121,10 @@ weight: 1
   - [Data Engine Hugepage Enabled](#data-engine-hugepage-enabled)
   - [Data Engine Memory Size](#data-engine-memory-size)
   - [Data Engine Interrupt Mode Enabled](#data-engine-interrupt-mode-enabled)
+  - [Data Engine Replica Controller Loss Timeout](#data-engine-replica-controller-loss-timeout)
+  - [Data Engine Replica Reconnect Delay](#data-engine-replica-reconnect-delay)
+  - [Data Engine Replica Fast I/O Fail Timeout](#data-engine-replica-fast-io-fail-timeout)
+  - [Data Engine Shallow Copy Pipeline Depth](#data-engine-shallow-copy-pipeline-depth)
   - [Log Path](#log-path)
   - [Snapshot Heavy Task Concurrent Limit](#snapshot-heavy-task-concurrent-limit)
   - [System Managed CSI Components Resource Limits](#system-managed-csi-components-resource-limits)
@@ -1332,6 +1336,52 @@ Controls whether the Storage Performance Development Kit (SPDK) target daemon ru
 
 > **Warning**
 > - DO NOT CHANGE THIS SETTING WITH ATTACHED VOLUMES. Longhorn will block this setting update when there are attached v2 volumes.
+
+#### Data Engine Replica Controller Loss Timeout
+
+> Default: `{"v2":"3"}`
+
+Applies only to the **V2 Data Engine**.
+
+Specifies the timeout in seconds after which a lost NVMe-oF controller is destructed and its replicas are marked as failed. When a storage node becomes unreachable, the SPDK bdev_nvme module retries reconnection for this duration before giving up.
+
+- `0`: Controller loss timeout is disabled (reconnect indefinitely).
+- `-1`: Controller loss timeout is disabled and reconnection attempts are not retried (immediate failover).
+- Positive value (e.g. `3`): After this many seconds without a successful reconnection, the controller is destructed and the volume is salvaged.
+
+#### Data Engine Replica Reconnect Delay
+
+> Default: `{"v2":"2"}`
+
+Applies only to the **V2 Data Engine**.
+
+Specifies the delay in seconds between NVMe-oF reconnection attempts when a controller connection is lost. This prevents tight retry loops that can saturate CPU during storage node restarts.
+
+Must be non-zero if `ctrlr_loss_timeout_sec` is non-zero.
+
+#### Data Engine Replica Fast I/O Fail Timeout
+
+> Default: `{"v2":"0"}`
+
+Applies only to the **V2 Data Engine**.
+
+Specifies the timeout in seconds after which I/O to a disconnected controller starts failing fast rather than blocking. When set to 0, fast I/O fail is disabled and I/O blocks until the controller reconnects or the controller loss timeout fires.
+
+Must be less than or equal to `ctrlr_loss_timeout_sec` and greater than or equal to `reconnect_delay_sec`.
+
+#### Data Engine Shallow Copy Pipeline Depth
+
+> Default: `{"v2":"1"}`
+
+Applies only to the **V2 Data Engine**.
+
+Controls the pipeline depth for shallow copy operations during replica rebuilds. Higher values allow more concurrent in-flight copy operations, potentially speeding up rebuilds on storage backends that can handle parallel I/O.
+
+- `1` (default): Sequential copy (no pipelining)
+- Higher values (e.g. `4`): Allow concurrent copy operations
+
+> **Warning**
+> - Higher pipeline depths increase memory usage proportional to the depth × cluster size. Monitor memory consumption when increasing this value.
 
 #### Log Path
 
