@@ -121,6 +121,7 @@ weight: 1
   - [Data Engine Hugepage Enabled](#data-engine-hugepage-enabled)
   - [Data Engine Memory Size](#data-engine-memory-size)
   - [Data Engine Interrupt Mode Enabled](#data-engine-interrupt-mode-enabled)
+  - [Data Engine CPU Isolation Enabled](#data-engine-cpu-isolation-enabled)
   - [Log Path](#log-path)
   - [Snapshot Heavy Task Concurrent Limit](#snapshot-heavy-task-concurrent-limit)
   - [System Managed CSI Components Resource Limits](#system-managed-csi-components-resource-limits)
@@ -1332,6 +1333,25 @@ Controls whether the Storage Performance Development Kit (SPDK) target daemon ru
 
 > **Warning**
 > - DO NOT CHANGE THIS SETTING WITH ATTACHED VOLUMES. Longhorn will block this setting update when there are attached v2 volumes.
+
+#### Data Engine CPU Isolation Enabled
+
+> Default: `{"v2":"false"}`
+
+Applies only to the **V2 Data Engine**.
+
+Steers host hardware IRQs and unbound kernel workqueue workers away from the CPUs used by the SPDK target daemon, so that interrupt handling and deferred kernel work do not preempt SPDK polling reactors.
+
+- `true`: Pin host IRQs and unbound kernel workqueues to non-SPDK CPUs.
+- `false`: Leave host IRQ / workqueue affinity untouched (default).
+
+> **Warning**
+> - **DO NOT ENABLE THIS LIGHTLY.** The setting writes to `/proc/irq/*/smp_affinity` and `/sys/devices/virtual/workqueue/cpumask` on the host, which are **node-wide** and affect every workload on the node. On small nodes, or on nodes where another component (irqbalance, tuned, the cloud provider's IRQ policy, etc.) is already managing IRQ / workqueue affinity, this setting can starve other workloads of CPU time and conflict with the other policy.
+> - The Instance Manager pod must be privileged and must mount the host root at `/host`.
+> - When enabled, the V2 Instance Manager persists the SPDK CPU mask under `/var/lib/longhorn/instance-manager/v2/spdk_cpu_mask` on the host, programs `/proc/irq/*/smp_affinity` to the inverse mask, and writes the same inverse mask to `/sys/devices/virtual/workqueue/cpumask` before launching `spdk_tgt`.
+> - When disabled, the next Instance Manager restart still reconciles any leftover state (clears stale IRQ / workqueue affinity and removes the marker file), but does not install any new affinity.
+> - **DO NOT CHANGE THIS SETTING WITH ATTACHED VOLUMES.** Longhorn will block this setting update when there are attached V2 volumes.
+> - This value can be overridden per Instance Manager via `Spec.DataEngineSpec.V2.CPUIsolationEnabled` (set to `"true"` or `"false"` on a specific instance manager to force the value on that node; leave empty to inherit this setting).
 
 #### Log Path
 
