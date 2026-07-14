@@ -85,7 +85,7 @@ To restore, follow the below instructions. The example below uses a StatefulSet 
 >       numberOfReplicas: <replicas>
 >       staleReplicaTimeout: "30"
 >     volumeHandle: statefulset-encrypted-vol-0
->   storageClassName: longhorn
+>   storageClassName: longhorn-crypto
 > ```
 
 3. In the `namespace` the `StatefulSet` will be deployed in, create PersistentVolume Claims **for each** `Persistent Volume`. The name of the `Persistent Volume Claim` must follow this naming scheme:
