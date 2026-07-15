@@ -9,7 +9,7 @@ The Longhorn V2 data engine supports per-node configuration via Kubernetes node 
 
 | Label | Values | Description |
 |-------|--------|-------------|
-| `node.longhorn.io/nvmf-transport` | `tcp`, `rdma` | NVMe-oF transport type for the instance manager. Auto-detected by the longhorn-manager based on RDMA hardware. See [RDMA Transport Support](./rdma-transport). |
+| `node.longhorn.io/nvmf-transport` | `tcp`, `rdma` | NVMe-oF transport type for the instance manager. Set explicitly by the operator. See [RDMA Transport Support](./rdma-transport). |
 | `node.longhorn.io/spdk-cpu-mask` | Hex string (e.g. `0xFF`) | CPU mask for SPDK reactor threads. Overrides the cluster-wide `data-engine-cpu-mask` setting. |
 | `node.longhorn.io/spdk-memory-size` | Decimal MiB (e.g. `16384`) | Hugepage memory size for SPDK in MiB. Overrides the cluster-wide `data-engine-memory-size` setting. |
 | `node.longhorn.io/spdk-interrupt-mode` | `true`, `false` | Enable/disable SPDK interrupt mode. Overrides the cluster-wide `data-engine-interrupt-mode-enabled` setting. Forced to `false` when `nvmf-transport=rdma` (RDMA poll groups cannot use fd-based interrupt wakeup). |
@@ -27,6 +27,12 @@ Per-node labels take precedence over cluster-wide settings. The resolution order
 The exception is `spdk-interrupt-mode`: if `nvmf-transport=rdma`, interrupt mode is forced to `false` regardless of any other override, because SPDK's RDMA poll groups cannot use fd-based interrupt wakeup.
 
 ## Usage Examples
+
+### Enable RDMA on a node
+
+```bash
+kubectl label node <node-name> node.longhorn.io/nvmf-transport=rdma
+```
 
 ### Set SPDK CPU mask on a specific node
 
@@ -64,12 +70,6 @@ Check which labels are applied to a node:
 
 ```bash
 kubectl get node <node-name> --show-labels | tr ',' '\n' | grep node.longhorn.io
-```
-
-Check the effective SPDK configuration on an instance manager:
-
-```bash
-kubectl -n longhorn-system get instancemanager <im-name> -o jsonpath='{.status.conditions}' | jq .
 ```
 
 ## When to Use Per-Node Labels

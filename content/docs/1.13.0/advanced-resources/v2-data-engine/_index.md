@@ -13,7 +13,6 @@ The Longhorn V2 Data Engine is built on the Storage Performance Development Kit 
 - [Interrupt Mode](./interrupt-mode)
 - [ublk Frontend Support](./ublk-frontend-support)
 - [RDMA Transport Support](./rdma-transport)
-- [Per-Engine QoS Limits](./engine-qos)
 - [Per-Node V2 Configuration Labels](./node-labels)
 - [Shallow Copy and Deep Copy](./shallow-deep-copy)
 
