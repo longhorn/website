@@ -3,7 +3,7 @@ title: UBLK Frontend Support (Experimental)
 weight: 50
 ---
 
-> **Note**: This feature is an Experimental. The UBLK frontend works on all supported Linux kernels except kernel v6.17. This issue is being tracked in [GitHub Issue #11977](https://github.com/longhorn/longhorn/issues/11977).
+> **Note**: This feature is an Experimental. The UBLK frontend works on all supported Linux kernels but may cause a kernel panic with kernel v6.17. For more information, see [GitHub Issue #11977](https://github.com/longhorn/longhorn/issues/11977) and [GitHub Issue #13509](https://github.com/longhorn/longhorn/issues/13509).
 
 Starting with v1.9.0, Longhorn supports the UBLK frontend for v2 data engine volumes.
 This feature exposes v2 data engine volumes as a block device by using [UBLK SPDK framework](https://spdk.io/doc/ublk.html).
