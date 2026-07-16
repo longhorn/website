@@ -36,6 +36,8 @@ In V2, revision counters are not supported. V2 volumes do not maintain revision-
 
 ## Feature Support Matrix
 
+> **Note**: The V2 column assumes the default `replicated` data layout. V2 volumes that use the `sharded` (erasure-coding) data layout do not support several of the features listed below, including backup and restore, volume cloning, backing images, DR (standby) volumes, and live migration. See [Sharding with Erasure Coding](../advanced-resources/v2-data-engine/sharding).
+
 | Feature | V1 | V2 | Support Notes |
 | --- | --- | --- | --- |
 | **Data Protection** |  |  |  |
