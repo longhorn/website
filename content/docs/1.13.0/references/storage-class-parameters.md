@@ -284,6 +284,37 @@ A list of recurring jobs that are to be run on a volume.
 > Global setting: [V2 Data Engine](../settings#v2-data-engine).
 > More details in [V2 Data Engine Quick Start](../../v2-data-engine/quick-start#create-a-storageclass).
 
+#### Data Layout Type *(field: `parameters.dataLayout.type`)*
+
+> Default: `replicated`
+
+Controls how volume data is distributed.
+
+  - `replicated` (default): Each replica holds a full copy of the volume.
+  - `sharded`: Data is split into `dataChunks` data chunks and `parityChunks` parity chunks, then distributed across different nodes using erasure coding. Requires the V2 Data Engine.
+
+The data layout is immutable after the volume is created.
+
+> More details in [Sharding with Erasure Coding](../../advanced-resources/v2-data-engine/sharding).
+
+#### Data Layout Mode *(field: `parameters.dataLayout.mode`)*
+
+> Default: `erasureCoding` when `dataLayout.type` is `sharded`
+
+The data protection mechanism: `raid1` for replicated volumes, or `erasureCoding` for sharded volumes. The parameter can usually be omitted: `erasureCoding` is set automatically when `dataLayout.type` is `sharded`, and replicated volumes always use RAID1.
+
+#### Data Layout Data Chunks *(field: `parameters.dataLayout.dataChunks`)*
+
+The number of data chunks (`k`) in the erasure-coded array. Required when `dataLayout.type` is `sharded`. Must be at least 1.
+
+#### Data Layout Parity Chunks *(field: `parameters.dataLayout.parityChunks`)*
+
+The number of parity chunks (`m`) in the erasure-coded array. Required when `dataLayout.type` is `sharded`. Must be at least 1. The volume tolerates up to `m` simultaneous chunk failures. The total number of chunks (`dataChunks + parityChunks`) must not exceed 32.
+
+#### Data Layout Strip Size KB *(field: `parameters.dataLayout.stripSizeKB`)*
+
+The strip size, in KiB, of the erasure-coded array: the amount of contiguous data placed on one chunk before striping moves to the next. Required when `dataLayout.type` is `sharded`. Must be a power of two between 4 and 1024.
+
 #### Freeze Filesystem For Snapshot *(field: `parameters.freezeFilesystemForSnapshot`)*
 
 > Default: `ignored`
