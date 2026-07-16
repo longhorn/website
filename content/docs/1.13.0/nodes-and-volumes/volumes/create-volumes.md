@@ -7,6 +7,7 @@ weight: 1
 - [Create Longhorn Volumes](#create-longhorn-volumes)
   - [Creating V1 Longhorn Volumes with kubectl](#creating-v1-longhorn-volumes-with-kubectl)
   - [Creating V2 Longhorn Volumes with kubectl (replication)](#creating-v2-longhorn-volumes-with-kubectl-replication)
+  - [Creating V2 Longhorn Volumes with kubectl (sharding)](#creating-v2-longhorn-volumes-with-kubectl-sharding)
   - [Binding Workloads to PVs without a Kubernetes StorageClass](#binding-workloads-to-pvs-without-a-kubernetes-storageclass)
   - [Creating Longhorn Volumes with the Longhorn UI](#creating-longhorn-volumes-with-the-longhorn-ui)
   - [PV/PVC Creation for Existing Longhorn Volume](#pvpvc-creation-for-existing-longhorn-volume)
@@ -213,6 +214,70 @@ Before creating a V2 volume, ensure that the V2 Data Engine is enabled and Longh
     ```
 
 More examples are available under the [examples section](../../../references/examples).
+
+### Creating V2 Longhorn Volumes with kubectl (sharding)
+
+> **Note**: Sharding is an Experimental feature. It is intended for evaluation and testing, and is not recommended for production use.
+
+Sharding distributes a volume's data across multiple nodes using erasure coding, allowing a volume to exceed the capacity of a single disk or node. It is an alternative to the default replicated layout and is only available with the V2 Data Engine. As with any V2 volume, ensure that the V2 Data Engine is enabled and Longhorn has available block-type disks. In addition, each chunk is placed on a distinct node, so the cluster must have at least `dataChunks + parityChunks` schedulable nodes. For more information, see [Add a Block-Type Disk](../nodes/multidisk/#add-a-block-type-disk).
+
+1. Use the following command to create a StorageClass called `longhorn-v2-sharded`:
+
+    ```shell
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/v2/sharding/storageclass.yaml
+    ```
+
+    The following example StorageClass is created. It defines a `4 + 2` erasure-coded array (four data chunks and two parity chunks) that tolerates two simultaneous failures and requires at least six nodes:
+
+    ```yaml
+    kind: StorageClass
+    apiVersion: storage.k8s.io/v1
+    metadata:
+      name: longhorn-v2-sharded
+    provisioner: driver.longhorn.io
+    allowVolumeExpansion: true
+    reclaimPolicy: Delete
+    volumeBindingMode: Immediate
+    parameters:
+      dataEngine: "v2"
+      dataLayout.type: "sharded"
+      dataLayout.mode: "erasureCoding"
+      dataLayout.dataChunks: "4"        # k: data chunks
+      dataLayout.parityChunks: "2"      # m: parity chunks = failures tolerated
+      dataLayout.stripSizeKB: "64"      # strip size in KiB; power of two 4-1024, fixed at creation
+      numberOfReplicas: "1"             # must be 1; parity provides fault tolerance
+      dataLocality: "disabled"          # must be disabled; chunks span k+m nodes
+      fsType: "ext4"
+    ```
+
+    The `dataLayout.*` parameters define the erasure-coded layout. See [Storage Class Parameters](../../../references/storage-class-parameters) for the full list.
+
+2. Create a Pod that uses the sharded volume by running this command:
+
+    ```shell
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/v2/sharding/pod_with_pvc.yaml
+    ```
+
+    A Pod named `longhorn-v2-sharded-test` is launched, along with a PersistentVolumeClaim named `longhorn-v2-sharded-pvc`. The PersistentVolumeClaim references the `longhorn-v2-sharded` StorageClass:
+
+    ```yaml
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: longhorn-v2-sharded-pvc
+      namespace: default
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: longhorn-v2-sharded
+      resources:
+        requests:
+          storage: 2Gi
+    ```
+
+    The Pod mounts the volume at `/data`, the same as the replicated example above.
+
+For information about data layout parameters, supported and unsupported features, and how sharding compares to replication, see [Sharding with Erasure Coding](../../../advanced-resources/v2-data-engine/sharding).
 
 ### Binding Workloads to PVs without a Kubernetes StorageClass
 
