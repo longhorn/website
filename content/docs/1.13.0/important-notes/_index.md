@@ -14,11 +14,11 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
     - [ARM64 NVMe-backed Block-Type Node Disk Limitation](#arm64-nvme-backed-block-type-node-disk-limitation)
     - [UBLK Frontend Kernel Limitation](#ublk-frontend-kernel-limitation)
     - [Longhorn System Upgrade](#longhorn-system-upgrade)
+  - [Storage Sharding (Experimental)](#storage-sharding-experimental)
   - [Default CPU Allocation](#default-cpu-allocation)
   - [IPv6 Support](#ipv6-support)
   - [Features Planned for Longhorn v1.12.1](#features-planned-for-longhorn-v1121)
     - [Fast Volume Cloning](#fast-volume-cloning)
-    - [Storage Sharding](#storage-sharding)
 - [Important Fixes](#important-fixes)
   - [Instance Manager Panic During Replica Rebuild](#instance-manager-panic-during-replica-rebuild)
   - [Replica Rebuild Progress Reporting](#replica-rebuild-progress-reporting)
@@ -87,6 +87,14 @@ For more information, see [Issue #11977](https://github.com/longhorn/longhorn/is
 
 V2 volumes do not support live upgrades between Longhorn v1.12 patch releases and must be detached before upgrading. Support is planned when upgrading from a Longhorn v1.12 release to a Longhorn v1.13 release.
 
+### Storage Sharding (Experimental)
+
+Longhorn v{{< current-version >}} introduces storage sharding for the V2 Data Engine as an experimental feature. Instead of storing a full copy of the volume on each replica, sharding splits the volume into data and parity chunks using erasure coding and distributes them across multiple nodes. This allows a volume to grow beyond the capacity of a single disk or node while using less disk space to achieve the same level of fault tolerance.
+
+Because this feature is experimental, it is intended for evaluation and testing only and is not recommended for production use.
+
+For more information, see [Issue #1061](https://github.com/longhorn/longhorn/issues/1061) and [Sharding with Erasure Coding](../advanced-resources/v2-data-engine/sharding).
+
 ### Default CPU Allocation
 
 Longhorn v{{< current-version >}} changes the default `data-engine-cpu-mask` from `0x1` (1 CPU core) to `0x3` (2 CPU cores). V2 Data Engine uses a busy-polling reactor model where the master reactor handles both I/O polling and management RPCs. When only a single core is assigned, heavy I/O workloads can delay or starve RPC processing, resulting in increased latency, timeout events, and operational instability.
@@ -108,12 +116,6 @@ For more information, see [Issue #10928](https://github.com/longhorn/longhorn/is
 Fast volume cloning for the V2 Data Engine is planned for Longhorn v1.12.1. This enhancement is intended to allow the initial `linked-clone` to be created with multiple replicas in parallel instead of being limited to a single replica.
 
 For more information, see [Issue #12552](https://github.com/longhorn/longhorn/issues/12552).
-
-#### Storage Sharding
-
-Storage sharding for the V2 Data Engine is planned as an experimental feature for Longhorn v1.12.1. This capability is intended to address the existing space efficiency limitations caused by replica-based storage overhead.
-
-For more information, see [Issue #1061](https://github.com/longhorn/longhorn/issues/1061).
 
 ## Important Fixes
 
