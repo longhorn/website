@@ -30,5 +30,7 @@ We recommend using the Longhorn UI to change Longhorn setting on the existing cl
 
 You can also use the `kubectl`, but please be aware **this will bypass Longhorn backend validation**.
 ```
-kubectl edit settings <SETTING-NAME> -n longhorn-system
+kubectl edit settings.longhorn.io <SETTING-NAME> -n longhorn-system
 ```
+
+To avoid collisions with other CRDs that also define a `settings` resource, use the fully qualified name `settings.longhorn.io` (or the short name `lhs`).
