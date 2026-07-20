@@ -26,6 +26,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
   - [Replica CR Leak During Failed Local Scheduling](#replica-cr-leak-during-failed-local-scheduling)
   - [CSI Storage Capacity Tracking](#csi-storage-capacity-tracking)
   - [Encrypted Volume Size Correction](#encrypted-volume-size-correction)
+    - [LUKS2 Header Overhead For Existing Encrypted Volumes](#luks2-header-overhead-for-existing-encrypted-volumes)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
@@ -155,11 +156,22 @@ Longhorn v{{< current-version >}} pre-allocates the 16 MiB LUKS2 header in the r
 
 **Before v1.12**: The 16 MiB LUKS2 header was consumed from the usable volume space. For example, a 1 GiB encrypted volume yielded approximately 1008 MiB to the workload.
 
-**After upgrading to v1.12**: Once the engine image is upgraded for an encrypted volume, Longhorn automatically expands the backend size by 16 MiB. The dm-crypt device then exposes the full requested size (e.g., exactly 1 GiB for a 1 GiB volume). Existing data is not affected.
+**After upgrading to v1.12**: Once the engine image is upgraded for an encrypted volume, Longhorn automatically expands the backend size by 16 MiB. The dm-crypt device then exposes the full requested size for v1 encrypted volumes (e.g., exactly 1 GiB for a 1 GiB volume). Existing data is not affected.
 
 **Live migration restriction**: Encrypted migratable volumes cannot be live-migrated when using an engine image with a CLI API version older than 12 (pre-v1.12 engine images). Upgrade the engine image to v1.12 or later before attempting live migration of encrypted volumes.
 
 For more information, see [Issue #9205](https://github.com/longhorn/longhorn/issues/9205).
+
+#### LUKS2 Header Overhead For Existing Encrypted Volumes
+
+Encrypted volumes use a LUKS2 header, a 16 MiB metadata region prepended to the replica backend file, to store the encryption configuration required by dm-crypt. This overhead is necessary because dm-crypt needs the header to unlock and present the volume, and reserving dedicated space for it prevents the header from consuming usable volume capacity.
+
+The extending overhead behavior after upgrading to Longhorn v{{< current-version >}} or later differs depending on the data engine and on when the volume was created:
+
+- **Existing encrypted V2 volumes**: V2 volumes created before Longhorn v{{< current-version >}} do not have the extra 16 MiB LUKS2 header extended, even after upgrading to Longhorn v{{< current-version >}} or later.
+- **Existing encrypted V1 volumes**: V1 volumes created in Longhorn v1.11.x or earlier can have the extra 16 MiB LUKS2 header extended by upgrading the engine image to Longhorn v1.12.x or later.
+
+For more information, see [Issue #13163](https://github.com/longhorn/longhorn/issues/13163).
 
 ## General
 
