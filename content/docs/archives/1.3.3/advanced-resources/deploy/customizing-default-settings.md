@@ -170,7 +170,7 @@ It would make the setting persistent.
 If you prefer to use the command line to update the setting, you could use kubectl.
 But please be aware **this will bypass Longhorn backend validation**.
 ```shell
-kubectl edit settings <SETTING-NAME> -n longhorn-system
+kubectl edit settings.longhorn.io <SETTING-NAME> -n longhorn-system
 ```
 
 ### Using Script

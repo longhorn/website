@@ -175,8 +175,9 @@ From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Upgra
 ### Using Kubectl
 
 If you prefer to use the command line to update the setting, you could use `kubectl`.
+To avoid collisions with other CRDs, do not use the simple `settings`. Instead, use `settings.longhorn.io` or `lhs`.
 ```shell
-kubectl edit settings <SETTING-NAME> -n longhorn-system
+kubectl edit settings.longhorn.io <SETTING-NAME> -n longhorn-system
 ```
 
 ### Using Helm
