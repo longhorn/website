@@ -56,7 +56,7 @@ Unless otherwise noted, the requirements in this section apply to both the V1 an
 Each node in the Kubernetes cluster where Longhorn is installed must fulfill the following requirements:
 
 -  A container runtime compatible with Kubernetes (Docker v1.13+, containerd v1.3.7+, etc.)
--  Kubernetes >= v1.25
+-  Kubernetes >= v1.34
 -  RWX support requires that each node has a NFSv4 client installed.
     - For installing a NFSv4 client, refer to [Install NFSv4 client](#install-nfsv4-client).
 - `bash`, `curl`, `findmnt`, `grep`, `awk`, `blkid`, `lsblk` must be installed.
@@ -81,7 +81,7 @@ You must perform additional setups before using Longhorn with certain operating 
 
 ### Kubernetes Version
 
-Longhorn requires Kubernetes >= v1.25.
+Longhorn requires Kubernetes >= v1.34.
 
 Use the following command to verify your cluster version:
 
