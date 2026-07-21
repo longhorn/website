@@ -80,7 +80,7 @@ For more details, see [#13424](https://github.com/longhorn/longhorn/issues/13424
 
 ### Kubernetes Version Requirement
 
-Due to the upgrade of the CSI external snapshotter to v8.2.0, all clusters must be running Kubernetes v1.25 or later before you can upgrade to Longhorn v1.8.0 or a newer version.
+Due to the upgrade of the CSI external snapshotter to v8.2.0, all clusters must be running Kubernetes v1.34 or later before you can upgrade to Longhorn v1.8.0 or a newer version.
 
 ### Upgrade Check Events
 
