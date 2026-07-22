@@ -40,6 +40,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
 - [Resource Efficiency](#resource-efficiency)
   - [Longhorn Manager Memory Optimization](#longhorn-manager-memory-optimization)
 - [Networking](#networking)
+  - [Internal Network Policies](#internal-network-policies)
   - [Dual-Stack Cluster Support](#dual-stack-cluster-support)
 - [Monitoring](#monitoring)
   - [Toggle Kubernetes Metrics Server Integration](#toggle-kubernetes-metrics-server-integration)
@@ -54,7 +55,7 @@ V2 linked-clone volumes created in v1.12.0 or earlier are marked as legacy and d
 
 After upgrading to v{{< current-version >}}, **legacy linked-clone volumes cannot be operated on except for detachment and deletion**.
 
-To replace, create new linked-clone volumes from the same source volumes that back the legacy ones. As long as a legacy volume exists, its source volume is guaranteed to still be present, so you can create a replacement linked clone directly — no data copy is required.
+To replace, create new linked-clone volumes from the same source volumes that back the legacy ones. As long as a legacy volume exists, its source volume is guaranteed to still be present, so you can create a replacement linked clone directly; no data copy is required.
 
 For more information, see [Ticket #12552](https://github.com/longhorn/longhorn/issues/12552).
 
@@ -236,6 +237,27 @@ Longhorn v{{< current-version >}} optimizes longhorn-manager informer caching to
 For more information, see [Issue #12771](https://github.com/longhorn/longhorn/issues/12771).
 
 ## Networking
+
+### Internal Network Policies
+
+Longhorn v{{< current-version >}} enables network policy by default. It protects inbound access to internal component endpoints and RPCs, including the instance-manager gRPC endpoint used for engine control. For more details, see [Network Policy](../advanced-resources/security/network-policy).
+
+For Helm installations, opt out by explicitly setting `networkPolicies.restrictInternalTraffic=false` in the values file or passing `--set networkPolicies.restrictInternalTraffic=false` when running or retrying `helm upgrade`. Use `--reuse-values` with `helm upgrade` when appropriate to retain previous release settings. Keep this separate from `networkPolicies.enabled`, which controls only the UI frontend policy. See the [Helm upgrade documentation](https://helm.sh/docs/helm/helm_upgrade/) for command behavior.
+
+After a successful upgrade with `networkPolicies.restrictInternalTraffic=false`, the six internal NetworkPolicy templates render nothing (they are excluded from the output), and policies owned by the Helm release are removed. Preview the rendered output with `helm upgrade --dry-run` or `helm template`; do not add `--reuse-values` to `helm template`. If installed, `helm diff` can optionally compare the changes.
+
+For manifest installations, delete only these six internal NetworkPolicy resources:
+
+- `backing-image-data-source`
+- `backing-image-manager`
+- `instance-manager`
+- `longhorn-manager`
+- `longhorn-recovery-backend`
+- `longhorn-webhook`
+
+These resources are defined in `longhorn.yaml` and `longhorn-okd.yaml`. Do not use `kubectl delete -f` on an entire Longhorn manifest or delete the Longhorn installation. Applying either unmodified manifest later recreates the policies.
+
+If an upgrade fails because these policies block required traffic, set `networkPolicies.restrictInternalTraffic=false` and retry the same upgrade.
 
 ### Dual-Stack Cluster Support
 
