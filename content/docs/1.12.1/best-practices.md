@@ -15,6 +15,7 @@ We recommend the following setup for deploying Longhorn in production.
 - [Kubernetes](#kubernetes)
   - [Kubernetes Version](#kubernetes-version)
   - [CoreDNS Setup](#coredns-setup)
+  - [CNI Plugin Compatibility](#cni-plugin-compatibility)
 - [Nodes and Disk Setup](#nodes-and-disk-setup)
   - [Use a Dedicated Disk](#use-a-dedicated-disk)
   - [Minimal Available Storage and Over-provisioning](#minimal-available-storage-and-over-provisioning)
@@ -138,6 +139,19 @@ Referenced to https://endoflife.date/kubernetes.
 ### CoreDNS Setup
 
 Ensure that CoreDNS runs with at least 2 replicas to maintain high availability. This setup minimizes interruptions in the DNS resolution if one CoreDNS pod experiences a temporary disruption.
+
+### CNI Plugin Compatibility
+
+Longhorn v{{< current-version >}} has been verified against the following Kubernetes distribution and CNI plugin combinations.
+
+| No. | Kubernetes Distribution | CNI Plugin
+|-----|-------------------------| ----------
+| 1.  | k3s                     | Flannel
+| 2.  | k3s                     | Calico
+| 3.  | k3s                     | Cilium
+| 4.  | RKE2                    | Canal
+| 5.  | RKE2                    | Calico
+| 6.  | RKE2                    | Cilium
 
 ## Nodes and Disk Setup
 
