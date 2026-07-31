@@ -6,7 +6,9 @@ weight: 1
 This page summarizes the key notes for Longhorn v{{< current-version >}}.
 For the full release note, see the Longhorn v{{< current-version >}} release notes on GitHub.
 
-- [Removal](#removal)
+- [Breaking Changes](#breaking-changes)
+  - [Deprecation of legacy v2 linked clone volumes](#deprecation-of-legacy-v2-linked-clone-volumes)
+  - [Removal of V2 Backing Images](#removal-of-v2-backing-images)
 - [V2 Data Engine](#v2-data-engine)
   - [General Availability](#general-availability)
   - [Notice](#notice)
@@ -43,7 +45,19 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
 - [Command-Line Tool](#command-line-tool)
   - [On-Demand Snapshot Checksum Calculation](#on-demand-snapshot-checksum-calculation)
 
-## Removal
+## Breaking Changes
+
+### Deprecation of legacy v2 linked clone volumes
+
+V2 linked-clone volumes created in v1.12.0 or earlier are marked as legacy and deprecated starting in v{{< current-version >}}. The new linked-clone architecture introduced in [Ticket #12552](https://github.com/longhorn/longhorn/issues/12552) is not compatible with the legacy design.
+
+After upgrading to v{{< current-version >}}, **legacy linked-clone volumes cannot be operated on except for detachment and deletion**.
+
+To replace, create new linked-clone volumes from the same source volumes that back the legacy ones. As long as a legacy volume exists, its source volume is guaranteed to still be present, so you can create a replacement linked clone directly — no data copy is required.
+
+For more information, see [Ticket #12552](https://github.com/longhorn/longhorn/issues/12552).
+
+### Removal of V2 Backing Images
 
 V2 Backing Images are removed in Longhorn v{{< current-version >}}. Use the Containerized Data Importer (CDI) to import images into Longhorn for compatibility with the current engine.
 
