@@ -6,7 +6,7 @@ weight: 1
 - [Access Modes](#access-modes)
 - [Create Longhorn Volumes](#create-longhorn-volumes)
   - [Creating V1 Longhorn Volumes with kubectl](#creating-v1-longhorn-volumes-with-kubectl)
-  - [Creating V2 Longhorn Volumes with kubectl](#creating-v2-longhorn-volumes-with-kubectl)
+  - [Creating V2 Longhorn Volumes with kubectl (replication)](#creating-v2-longhorn-volumes-with-kubectl-replication)
   - [Binding Workloads to PVs without a Kubernetes StorageClass](#binding-workloads-to-pvs-without-a-kubernetes-storageclass)
   - [Creating Longhorn Volumes with the Longhorn UI](#creating-longhorn-volumes-with-the-longhorn-ui)
   - [PV/PVC Creation for Existing Longhorn Volume](#pvpvc-creation-for-existing-longhorn-volume)
@@ -124,14 +124,14 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
           claimName: longhorn-volv-pvc
     ```
 
-### Creating V2 Longhorn Volumes with kubectl
+### Creating V2 Longhorn Volumes with kubectl (replication)
 
 Before creating a V2 volume, ensure that the V2 Data Engine is enabled and Longhorn has available block-type disks. V2 volumes are scheduled only to block-type disks. For more information, see [V2 Data Engine Quick Start](../../v2-data-engine/quick-start) and [Add a Block-Type Disk](../nodes/multidisk/#add-a-block-type-disk).
 
-1. Use the following command to create a StorageClass called `longhorn-v2-data-engine`:
+1. Use the following command to create a StorageClass called `longhorn-v2-replicated`:
 
     ```shell
-    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/v2/storageclass.yaml
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/v2/replication/storageclass.yaml
     ```
 
     The following example StorageClass is created:
@@ -140,16 +140,19 @@ Before creating a V2 volume, ensure that the V2 Data Engine is enabled and Longh
     kind: StorageClass
     apiVersion: storage.k8s.io/v1
     metadata:
-      name: longhorn-v2-data-engine
+      name: longhorn-v2-replicated
     provisioner: driver.longhorn.io
     allowVolumeExpansion: true
     reclaimPolicy: Delete
     volumeBindingMode: Immediate
     parameters:
+      dataEngine: "v2"
+      # dataLayout is optional for replicated volumes; RAID1 is the default.
+      dataLayout.type: "replicated"
+      dataLayout.mode: "raid1"
       numberOfReplicas: "3"
       staleReplicaTimeout: "2880"
       fsType: "ext4"
-      dataEngine: "v2"
     ```
 
     The `dataEngine` parameter must be set to `v2` so Longhorn provisions a V2 volume. See [Storage Class Parameters](../../../references/storage-class-parameters) for the list of supported parameters.
@@ -157,21 +160,21 @@ Before creating a V2 volume, ensure that the V2 Data Engine is enabled and Longh
 2. Create a Pod that uses a V2 Longhorn volume by running this command:
 
     ```shell
-    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/v2/pod_with_pvc.yaml
+    kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/examples/v2/replication/pod_with_pvc.yaml
     ```
 
-    A Pod named `volume-test` is launched, along with a PersistentVolumeClaim named `longhorn-volv-pvc`. The PersistentVolumeClaim references the V2 StorageClass:
+    A Pod named `longhorn-v2-replicated-test` is launched, along with a PersistentVolumeClaim named `longhorn-v2-replicated-pvc`. The PersistentVolumeClaim references the V2 StorageClass:
 
     ```yaml
     apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
-      name: longhorn-volv-pvc
+      name: longhorn-v2-replicated-pvc
       namespace: default
     spec:
       accessModes:
         - ReadWriteOnce
-      storageClassName: longhorn-v2-data-engine
+      storageClassName: longhorn-v2-replicated
       resources:
         requests:
           storage: 2Gi
@@ -183,7 +186,7 @@ Before creating a V2 volume, ensure that the V2 Data Engine is enabled and Longh
     apiVersion: v1
     kind: Pod
     metadata:
-      name: volume-test
+      name: longhorn-v2-replicated-test
       namespace: default
     spec:
       restartPolicy: Always
@@ -206,7 +209,7 @@ Before creating a V2 volume, ensure that the V2 Data Engine is enabled and Longh
       volumes:
       - name: volv
         persistentVolumeClaim:
-          claimName: longhorn-volv-pvc
+          claimName: longhorn-v2-replicated-pvc
     ```
 
 More examples are available under the [examples section](../../../references/examples).
