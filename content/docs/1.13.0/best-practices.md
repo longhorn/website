@@ -273,7 +273,9 @@ Refer to [Guaranteed Instance Manager CPU](../references/settings/#guaranteed-in
 
 The `Guaranteed Instance Manager CPU` setting allows you to reserve a percentage of the total allocatable CPU resources on each node for each instance manager pod when the V2 Data Engine is enabled. This reservation applies to the entire V2 instance manager pod.
 
-The primary CPU consumer in the pod is the Storage Performance Development Kit (SPDK) target daemon (`spdk_tgt`). By default, `spdk_tgt` typically uses 1 dedicated CPU core in polling mode. The [Data Engine CPU Mask](../references/settings#data-engine-cpu-mask) setting controls which CPU cores `spdk_tgt` runs on.
+The primary CPU consumer in the pod is the Storage Performance Development Kit (SPDK) target daemon (`spdk_tgt`). The [Data Engine CPU Mask](../references/settings#data-engine-cpu-mask) and [Data Engine Number of CPU Cores](../references/settings#data-engine-number-of-cpu-cores) settings control how many CPU cores `spdk_tgt` uses.
+
+It is necessary that the effective V2 instance manager pod CPU request reserve at least the same number of CPU cores configured for `spdk_tgt`, based on the node's allocatable CPU capacity. For example, reserving 2 CPU cores on a node with 8 allocatable CPUs requires an effective CPU request of at least 25% or 2 CPU cores.
 
 Reserving sufficient CPU is essential for maintaining engine and replica stability, especially during periods of high node workload. The default value of the `Guaranteed Instance Manager CPU` setting is 12%.
 
