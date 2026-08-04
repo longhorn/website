@@ -5,7 +5,7 @@ aliases:
 - /spdk/features/configurable-cpu-cores.md
 ---
 
-Longhorn now supports configurable CPU cores for the V2 data engine through the use of a **CPU Mask**. This mask allows you to define exactly which CPU cores are allocated to the engine, offering both global and per-node configuration options.
+Longhorn now supports configurable CPU cores for the V2 data engine through the use of a **CPU Mask**. This mask allows you to define exactly which CPU cores are allocated to the engine, offering both global and per-node configuration options. When you assign CPU cores to the V2 data engine, ensure that the V2 **Guaranteed Instance Manager CPU** setting reserves at least the same number of CPU cores based on the node's allocatable CPU capacity.
 
 ## Understanding the CPU Mask
 
