@@ -114,6 +114,12 @@ Longhorn supports several ways to manage block-type disks on a node:
     wipefs -a /path/to/block/device
     ```
 
+> **Warning**
+>
+> Do not use a V2 Longhorn volume or a block device backed by a V2 Longhorn volume as a Longhorn block-type disk. For example, do not add `/dev/longhorn/<volume-name>` or a device-mapper path created from a Longhorn volume as a disk path.
+>
+> Although such a nested volume may appear as a valid block device on the node and may be technically allowed by the system, Longhorn does not recommend or support this configuration. This is a risky operation because it creates a nested I/O dependency and may lead to cascading failures, including stalled I/O, NVMe keep-alive timeouts, replica disconnections, and disk or lvstore creation failures.
+
 #### Steps
 
 You can add a block-type disk using the Longhorn UI or `kubectl`.
