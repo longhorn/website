@@ -118,6 +118,7 @@ weight: 1
   - [Data Engine CPU Mask](#data-engine-cpu-mask)
   - [Data Engine Number of CPU Cores](#data-engine-number-of-cpu-cores)
   - [Data Engine iobuf Large Pool Size](#data-engine-iobuf-large-pool-size)
+  - [Data Engine iobuf Small Pool Size](#data-engine-iobuf-small-pool-size)
   - [Data Engine Hugepage Enabled](#data-engine-hugepage-enabled)
   - [Data Engine Memory Size](#data-engine-memory-size)
   - [Data Engine Interrupt Mode Enabled](#data-engine-interrupt-mode-enabled)
@@ -1313,6 +1314,12 @@ Applies only to the V2 Data Engine. It can be applied only when the kubelet CPU 
 > Default: `{"v2":"1024"}`
 
 Applies only to the V2 Data Engine. Sets the SPDK iobuf large buffer pool size (`large_pool_count`) on the Instance Manager's SPDK target. The Instance Manager passes the value to `spdk_tgt` at startup through a generated JSON configuration file, since the iobuf pool can only be sized at startup and not changed at runtime. The default value 1024 keeps SPDK's built-in behavior; values not greater than 1024 are a no-op.
+
+#### Data Engine iobuf Small Pool Size
+
+> Default: `{"v2":"8192"}`
+
+Applies only to the V2 Data Engine. Sets the SPDK iobuf small buffer pool size (`small_pool_count`) on the Instance Manager's SPDK target. The Instance Manager passes the value to `spdk_tgt` at startup through a generated JSON configuration file (`--json`), since the iobuf pool can only be sized at startup and not changed at runtime. The default value 8192 keeps SPDK's built-in behavior; values not greater than 8192 are a no-op. A larger value relieves NVMe-oF TCP small-buffer exhaustion (`small_pool` `retry` / `NEED_BUFFER` stalls) under workloads whose I/O size fits within the 8 KiB small buffer, such as 4 KiB random reads at high queue depth across many volumes. Each small buffer consumes 8 KiB of the SPDK target's fixed Data Engine Memory Size budget; for example, 8192 buffers use 64 MiB, 16384 use 128 MiB, and 65536 use 512 MiB. Increase the Data Engine Memory Size accordingly when increasing the pool size, or fewer volumes may fit on each node. Changing this setting recreates Instance Manager pods that have no running instances so the new pool size can take effect.
 
 #### Data Engine Hugepage Enabled
 
