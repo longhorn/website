@@ -75,7 +75,9 @@ spec:
 
 **2. Clone using `linked-clone` mode**
 
-The `full-copy` mode creates a new PVC that is fully independent of the source PVC, but it requires time and resources to copy the data. If you need to quickly create a temporary PVC with the same content as the source without copying the data (for example, for backup solutions like **Velero** or **Kasten**), you can use the `linked-clone` mode. This mode creates a new PVC that shares the same data blocks as the source PVC.
+The `full-copy` mode creates a new PVC that is fully independent of the source PVC, but it requires time and resources to copy the data. If you need to quickly create a PVC with the same content as the source without copying the data (for example, for backup solutions like **Velero** or **Kasten**), you can use the `linked-clone` mode. This mode creates a new PVC that shares the underlying data blocks with the source PVC via SPDK's copy-on-write lvol mechanism. Unlike `full-copy`, all replicas of a linked-clone volume are created simultaneously during volume creation, so no rebuild is needed.
+
+Linked-clone also serves as the V2 Data Engine replacement for [the deprecated V2 Backing Image](../important-notes/_index.md#removal-of-v2-backing-images). Instead of pre-provisioning a backing image and distributing it to each node, you can create a regular V2 volume with the desired base data and then use it as the source for linked-clone volumes. Each linked-clone volume shares the source volume's data blocks with copy-on-write semantics, functioning similarly to a backing image but with the full flexibility of a standard Longhorn volume as the source, including support for nested linked clones.
 
 First, create a StorageClass with `cloneMode` set to `linked-clone`:
 
@@ -90,7 +92,7 @@ volumeBindingMode: Immediate
 parameters:
   dataEngine: "v2"
   cloneMode: "linked-clone"
-  numberOfReplicas: "1"
+  numberOfReplicas: "3"
   staleReplicaTimeout: "2880"
 ```
 
@@ -114,13 +116,14 @@ spec:
 ```
 
 > **Note**:
-> 1. The `linked-clone` mode is only supported by the v2 data engine.
-> 2. A PVC created using `linked-clone` shares data blocks with the source and has the following limitations:
->    - It can have only one replica.
->    - It cannot be snapshotted or backed up.
->    - It cannot be used as the source for another clone operation.
->    - A source PVC can only have one `linked-clone` PVC at a time.
->    - `linked-clone` PVCs are designed to be short-lived. It is highly recommended to delete them when no longer needed. For more examples of linked-clone, see the blog - [Backup Applications with Longhorn V2 Volumes using Velero](https://longhorn.io/blog/20250902-k8s-backup-solutions-and-longhorn/).
+> 1. The `linked-clone` mode is only supported by the V2 Data Engine.
+> 2. A linked-clone volume shares data blocks with its source volume:
+>    - The replica count of a linked-clone volume cannot exceed the source volume's replica count.
+>    - Each linked-clone replica must be co-located on the same node and disk as a source replica.
+>    - The source volume's replica count cannot be decreased below the number of replicas that are backing linked-clone volumes.
+>    - Linked-clone volumes support most operations available to regular volumes, including snapshots, backups, expansion, replica rebuilding, and serving as the source for nested linked clones.
+>    - Linked-clone replica rebuilds require the corresponding source replica to be healthy before proceeding.
+>    - The source volume's entrypoint snapshot (used for linked-clone) is protected from deletion while linked-clone volumes exist.
 
 ### Clone CSI Snapshot
 
