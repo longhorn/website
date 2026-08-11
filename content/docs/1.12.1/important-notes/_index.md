@@ -16,12 +16,14 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
     - [ARM64 NVMe-backed Block-Type Node Disk Limitation](#arm64-nvme-backed-block-type-node-disk-limitation)
     - [UBLK Frontend Kernel Limitation](#ublk-frontend-kernel-limitation)
     - [Longhorn System Upgrade](#longhorn-system-upgrade)
-  - [Storage Sharding (Experimental)](#storage-sharding-experimental)
+  - [Fast Volume Cloning](#fast-volume-cloning)
   - [Default CPU Allocation](#default-cpu-allocation)
   - [V2 Dedicated CPU Requirements](#v2-dedicated-cpu-requirements)
+  - [CPU Core Allocation with the Kubernetes CPU Manager](#cpu-core-allocation-with-the-kubernetes-cpu-manager)
+  - [Host CPU Isolation](#host-cpu-isolation)
+  - [SPDK iobuf Pool Size Configuration](#spdk-iobuf-pool-size-configuration)
   - [IPv6 Support](#ipv6-support)
-  - [Features Planned for Longhorn v1.12.1](#features-planned-for-longhorn-v1121)
-    - [Fast Volume Cloning](#fast-volume-cloning)
+- [Storage Sharding (Experimental)](#storage-sharding-experimental)
 - [Important Fixes](#important-fixes)
   - [Instance Manager Panic During Replica Rebuild](#instance-manager-panic-during-replica-rebuild)
   - [Replica Rebuild Progress Reporting](#replica-rebuild-progress-reporting)
@@ -29,7 +31,6 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
   - [Replica CR Leak During Failed Local Scheduling](#replica-cr-leak-during-failed-local-scheduling)
   - [CSI Storage Capacity Tracking](#csi-storage-capacity-tracking)
   - [Encrypted Volume Size Correction](#encrypted-volume-size-correction)
-    - [LUKS2 Header Overhead For Existing Encrypted Volumes](#luks2-header-overhead-for-existing-encrypted-volumes)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
@@ -41,6 +42,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
   - [Longhorn Manager Memory Optimization](#longhorn-manager-memory-optimization)
 - [Networking](#networking)
   - [Internal Network Policies](#internal-network-policies)
+  - [Instance Manager gRPC mTLS Coverage](#instance-manager-grpc-mtls-coverage)
   - [Dual-Stack Cluster Support](#dual-stack-cluster-support)
 - [Monitoring](#monitoring)
   - [Toggle Kubernetes Metrics Server Integration](#toggle-kubernetes-metrics-server-integration)
@@ -104,13 +106,15 @@ For more information, see [Issue #11977](https://github.com/longhorn/longhorn/is
 
 V2 volumes do not support live upgrades between Longhorn v1.12 patch releases and must be detached before upgrading. Support is planned when upgrading from a Longhorn v1.12 release to a Longhorn v1.13 release.
 
-### Storage Sharding (Experimental)
+### Fast Volume Cloning
 
-Longhorn v{{< current-version >}} introduces storage sharding for the V2 Data Engine as an experimental feature. Instead of storing a full copy of the volume on each replica, sharding splits the volume into data and parity chunks using erasure coding and distributes them across multiple nodes. This allows a volume to grow beyond the capacity of a single disk or node while using less disk space to achieve the same level of fault tolerance.
+Longhorn v{{< current-version >}} enhances fast volume cloning for the V2 Data Engine. A `linked-clone` volume shares data blocks with its source instead of copying data. With the new architecture, a source replica can share its data blocks with multiple linked-clone volumes, and multiple clone replicas can be created in parallel.
 
-Because this feature is experimental, it is intended for evaluation and testing only and is not recommended for production use.
+Linked-clone volumes now support most operations available to regular volumes, including snapshots, backups, expansion, replica rebuilding, and use as the source of nested linked clones.
 
-For more information, see [Issue #1061](https://github.com/longhorn/longhorn/issues/1061) and [Sharding with Erasure Coding](../advanced-resources/v2-data-engine/sharding).
+The new architecture is not compatible with clones created in v1.12.0 or earlier. See [Deprecation of legacy v2 linked clone volumes](#deprecation-of-legacy-v2-linked-clone-volumes).
+
+For more information, see [Issue #12552](https://github.com/longhorn/longhorn/issues/12552) and [CSI Volume Clone](../snapshots-and-backups/csi-volume-clone).
 
 ### Default CPU Allocation
 
@@ -126,19 +130,41 @@ When assigning CPU cores to the V2 Data Engine, ensure that the V2 instance-mana
 
 You can verify that the guaranteed CPU resources match the CPU cores specified by `data-engine-cpu-mask` or `data-engine-number-of-cpu-cores`. For more details, see [Guaranteed Instance Manager CPU](../references/settings/#guaranteed-instance-manager-cpu), [Data Engine CPU Mask](../references/settings/#data-engine-cpu-mask), and [Data Engine Number of CPU Cores](../references/settings/#data-engine-number-of-cpu-cores).
 
+### CPU Core Allocation with the Kubernetes CPU Manager
+
+Longhorn v{{< current-version >}} can allocate exclusive CPU cores to the SPDK target daemon, which runs in each V2 Instance Manager pod, through the Kubernetes CPU Manager by using the `data-engine-number-of-cpu-cores` setting.
+
+The setting can be applied only when the kubelet CPU Manager policy is set to `static` on all worker nodes; otherwise, the update is rejected. When the value is positive, it takes precedence, and `data-engine-cpu-mask` is ignored.
+
+For more information, see [Issue #13248](https://github.com/longhorn/longhorn/issues/13248) and [Data Engine Number of CPU Cores](../references/settings/#data-engine-number-of-cpu-cores).
+
+### Host CPU Isolation
+
+The `data-engine-cpu-isolation-enabled` setting now also steers network Receive Packet Steering (RPS) away from the CPU cores used by the SPDK target daemon, in addition to hardware IRQs and unbound kernel workqueue workers. This further reduces preemption of the SPDK polling reactors on busy nodes.
+
+For more information, see [Issue #13483](https://github.com/longhorn/longhorn/issues/13483) and [Data Engine CPU Isolation Enabled](../references/settings/#data-engine-cpu-isolation-enabled).
+
+### SPDK iobuf Pool Size Configuration
+
+Longhorn v{{< current-version >}} allows tuning the SPDK iobuf buffer pools used by the V2 Data Engine. The `data-engine-iobuf-large-pool-size` setting configures the large buffer pool (`large_pool_count`), while `data-engine-iobuf-small-pool-size` configures the 8 KiB small buffer pool (`small_pool_count`). Increasing the small pool can relieve buffer exhaustion under high-queue-depth workloads with I/O sizes of 8 KiB or less, such as 4 KiB random reads across many volumes.
+
+Larger small pool values consume more of the fixed memory budget configured by `data-engine-memory-size`, so increase that setting accordingly; otherwise, fewer volumes may fit on each node. Because iobuf pools can only be sized when the SPDK target starts, changing either pool setting recreates V2 Instance Manager pods that have no running instances so the new value can take effect.
+
+For more information, see [Data Engine iobuf Large Pool Size](../references/settings/#data-engine-iobuf-large-pool-size) and [Data Engine iobuf Small Pool Size](../references/settings/#data-engine-iobuf-small-pool-size).
+
 ### IPv6 Support
 
 V2 volumes now support single-stack IPv6 Kubernetes clusters. For dual-stack cluster support and its limitations, see [Dual-Stack Cluster Support](#dual-stack-cluster-support).
 
 For more information, see [Issue #10928](https://github.com/longhorn/longhorn/issues/10928).
 
-### Features Planned for Longhorn v1.12.1
+## Storage Sharding (Experimental)
 
-#### Fast Volume Cloning
+Longhorn v{{< current-version >}} introduces storage sharding as an experimental data protection and storage layout feature built on the V2 Data Engine. Instead of storing a full copy of the volume on each replica, sharding uses erasure coding to encode written data into data and parity chunks, which are distributed across multiple nodes. This allows a volume to grow beyond the capacity of a single disk or node while using less disk space to achieve the same level of fault tolerance.
 
-Fast volume cloning for the V2 Data Engine is planned for Longhorn v1.12.1. This enhancement is intended to allow the initial `linked-clone` to be created with multiple replicas in parallel instead of being limited to a single replica.
+Because this feature is experimental, it is intended for evaluation and testing only and is not recommended for production use.
 
-For more information, see [Issue #12552](https://github.com/longhorn/longhorn/issues/12552).
+For more information, see [Issue #1061](https://github.com/longhorn/longhorn/issues/1061) and [Sharding with Erasure Coding](../advanced-resources/v2-data-engine/sharding).
 
 ## Important Fixes
 
@@ -176,26 +202,14 @@ For more information, see [Issue #12807](https://github.com/longhorn/longhorn/is
 
 ### Encrypted Volume Size Correction
 
-Longhorn v{{< current-version >}} pre-allocates the 16 MiB LUKS2 header in the replica backend file for encrypted volumes (replica size = requested size + 16 MiB). As a result, the dm-crypt device now exposes the full requested size to workloads.
+Longhorn reserves an additional 16 MiB of raw capacity for the LUKS2 metadata used by encrypted volumes, allowing the mapped device to expose the full capacity requested by the workload. Previously, the metadata was taken from usable capacity, so a requested 1 GiB encrypted volume exposed only 1008 MiB. This discrepancy could cause operations such as block-level copies between equally sized unencrypted and encrypted volumes to fail.
 
-**Before v1.12**: The 16 MiB LUKS2 header was consumed from the usable volume space. For example, a 1 GiB encrypted volume yielded approximately 1008 MiB to the workload.
+- **V1 Data Engine**: This correction was introduced in Longhorn v1.12.0. Existing encrypted V1 volumes created with v1.11.x or earlier receive the additional capacity automatically when their engine image is upgraded to v1.12 or later. Existing data is preserved. Encrypted migratable V1 volumes cannot be live-migrated while using an engine image with a CLI API version earlier than 12; upgrade the engine image first.
+- **V2 Data Engine**: Longhorn v{{< current-version >}} applies the correction to newly created encrypted V2 volumes.
 
-**After upgrading to v1.12**: Once the engine image is upgraded for an encrypted volume, Longhorn automatically expands the backend size by 16 MiB. The dm-crypt device then exposes the full requested size for v1 encrypted volumes (e.g., exactly 1 GiB for a 1 GiB volume). Existing data is not affected.
+> **Notice:** Existing encrypted V2 volumes upgraded from v1.11.3 or v1.12.0 do not receive the additional 16 MiB of raw capacity and continue to expose 16 MiB less than requested. Existing data is preserved.
 
-**Live migration restriction**: Encrypted migratable volumes cannot be live-migrated when using an engine image with a CLI API version older than 12 (pre-v1.12 engine images). Upgrade the engine image to v1.12 or later before attempting live migration of encrypted volumes.
-
-For more information, see [Issue #9205](https://github.com/longhorn/longhorn/issues/9205).
-
-#### LUKS2 Header Overhead For Existing Encrypted Volumes
-
-Encrypted volumes use a LUKS2 header, a 16 MiB metadata region prepended to the replica backend file, to store the encryption configuration required by dm-crypt. This overhead is necessary because dm-crypt needs the header to unlock and present the volume, and reserving dedicated space for it prevents the header from consuming usable volume capacity.
-
-The extending overhead behavior after upgrading to Longhorn v{{< current-version >}} or later differs depending on the data engine and on when the volume was created:
-
-- **Existing encrypted V2 volumes**: V2 volumes created before Longhorn v{{< current-version >}} do not have the extra 16 MiB LUKS2 header extended, even after upgrading to Longhorn v{{< current-version >}} or later.
-- **Existing encrypted V1 volumes**: V1 volumes created in Longhorn v1.11.x or earlier can have the extra 16 MiB LUKS2 header extended by upgrading the engine image to Longhorn v1.12.x or later.
-
-For more information, see [Issue #13163](https://github.com/longhorn/longhorn/issues/13163).
+For more information, see [Issue #9205](https://github.com/longhorn/longhorn/issues/9205) and [Issue #13163](https://github.com/longhorn/longhorn/issues/13163).
 
 ## General
 
@@ -240,11 +254,11 @@ For more information, see [Issue #12771](https://github.com/longhorn/longhorn/is
 
 ### Internal Network Policies
 
-Longhorn v{{< current-version >}} enables network policy by default. It protects inbound access to internal component endpoints and RPCs, including the instance-manager gRPC endpoint used for engine control. For more details, see [Network Policy](../advanced-resources/security/network-policy).
+Longhorn v{{< current-version >}} enables ingress policies for internal component endpoints and RPCs by default, including the instance-manager gRPC endpoint used for engine control. These policies require a CNI plugin that enforces Kubernetes `NetworkPolicy`. Before upgrading, review the [CNI Plugin Compatibility](../best-practices#cni-plugin-compatibility) table and verify that the policies allow the traffic required by your cluster topology.
 
-For Helm installations, opt out by explicitly setting `networkPolicies.restrictInternalTraffic=false` in the values file or passing `--set networkPolicies.restrictInternalTraffic=false` when running or retrying `helm upgrade`. Use `--reuse-values` with `helm upgrade` when appropriate to retain previous release settings. Keep this separate from `networkPolicies.enabled`, which controls only the UI frontend policy. See the [Helm upgrade documentation](https://helm.sh/docs/helm/helm_upgrade/) for command behavior.
+For Helm installations, `networkPolicies.restrictInternalTraffic` controls the internal policies and defaults to `true`. If your environment is incompatible or you manage these policies separately, set `networkPolicies.restrictInternalTraffic=false` in the values file or pass `--set networkPolicies.restrictInternalTraffic=false` when running or retrying `helm upgrade`. Use `--reuse-values` with `helm upgrade` when appropriate to retain previous release settings. This setting is independent of `networkPolicies.enabled`, which controls only the Longhorn UI frontend policy.
 
-After a successful upgrade with `networkPolicies.restrictInternalTraffic=false`, the six internal NetworkPolicy templates render nothing (they are excluded from the output), and policies owned by the Helm release are removed. Preview the rendered output with `helm upgrade --dry-run` or `helm template`; do not add `--reuse-values` to `helm template`. If installed, `helm diff` can optionally compare the changes.
+After a successful upgrade with `networkPolicies.restrictInternalTraffic=false`, the six internal NetworkPolicy templates are omitted from the rendered output, and policies owned by the Helm release are removed. Preview the rendered output with `helm upgrade --dry-run` or `helm template`; do not add `--reuse-values` to `helm template`. If installed, `helm diff` can optionally compare the changes.
 
 For manifest installations, delete only these six internal NetworkPolicy resources:
 
@@ -257,7 +271,13 @@ For manifest installations, delete only these six internal NetworkPolicy resourc
 
 These resources are defined in `longhorn.yaml` and `longhorn-okd.yaml`. Do not use `kubectl delete -f` on an entire Longhorn manifest or delete the Longhorn installation. Applying either unmodified manifest later recreates the policies.
 
-If an upgrade fails because these policies block required traffic, set `networkPolicies.restrictInternalTraffic=false` and retry the same upgrade.
+If an upgrade fails because these policies block required traffic, disable or remove the internal policies as appropriate and retry the same upgrade. For policy behavior, Kubernetes API server source restrictions, and Helm values, see [Network Policies](../advanced-resources/security/network-policy). For more information, see [Issue #13438](https://github.com/longhorn/longhorn/issues/13438).
+
+### Instance Manager gRPC mTLS Coverage
+
+When the `longhorn-grpc-tls` secret is configured, the remaining instance-manager gRPC services now also require mutual TLS. Plaintext clients and clients without a valid certificate are rejected.
+
+For more information, see [Issue #7787](https://github.com/longhorn/longhorn/issues/7787) and [MTLS Support](../advanced-resources/security/mtls-support).
 
 ### Dual-Stack Cluster Support
 
