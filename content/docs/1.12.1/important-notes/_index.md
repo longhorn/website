@@ -53,13 +53,13 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
 
 ### Deprecation of legacy v2 linked clone volumes
 
-V2 linked-clone volumes created in v1.12.0 or earlier are marked as legacy and deprecated starting in v{{< current-version >}}. The new linked-clone architecture introduced in [Ticket #12552](https://github.com/longhorn/longhorn/issues/12552) is not compatible with the legacy design.
+V2 linked-clone volumes created in v1.12.0 or earlier are marked as legacy and deprecated starting in v{{< current-version >}}. The new linked-clone architecture introduced in [Issue #12552](https://github.com/longhorn/longhorn/issues/12552) is not compatible with the legacy design.
 
 After upgrading to v{{< current-version >}}, **legacy linked-clone volumes cannot be operated on except for detachment and deletion**.
 
 To replace, create new linked-clone volumes from the same source volumes that back the legacy ones. As long as a legacy volume exists, its source volume is guaranteed to still be present, so you can create a replacement linked clone directly; no data copy is required.
 
-For more information, see [Ticket #12552](https://github.com/longhorn/longhorn/issues/12552).
+For more information, see [Issue #12552](https://github.com/longhorn/longhorn/issues/12552).
 
 ### Removal of V2 Backing Images
 
