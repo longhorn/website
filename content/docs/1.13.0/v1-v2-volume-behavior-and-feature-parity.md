@@ -3,7 +3,7 @@ title: V1 and V2 Volume Feature Support
 weight: 4
 ---
 
-This page summarizes the expected behavior differences between V1 and V2 volumes and provides a feature support matrix for the Longhorn v1.12.0 documentation set.
+This page summarizes the expected behavior differences between V1 and V2 volumes and provides a feature support matrix for the Longhorn v1.13.0 documentation set.
 
 ## Expected Behavioral Differences
 
