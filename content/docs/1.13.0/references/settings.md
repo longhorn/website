@@ -1349,7 +1349,7 @@ Controls whether the Storage Performance Development Kit (SPDK) target daemon ru
 
 #### Data Engine CPU Isolation Enabled
 
-> Default: `{"v2":"false"}`
+> Default: `{"v2":"true"}`
 
 Applies only to the **V2 Data Engine**.
 
