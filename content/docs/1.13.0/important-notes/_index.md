@@ -19,6 +19,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
   - [Storage Sharding (Experimental)](#storage-sharding-experimental)
   - [Default CPU Allocation](#default-cpu-allocation)
   - [V2 Dedicated CPU Requirements](#v2-dedicated-cpu-requirements)
+  - [CPU Isolation Enabled by Default](#cpu-isolation-enabled-by-default)
   - [IPv6 Support](#ipv6-support)
   - [Features Planned for Longhorn v1.12.1](#features-planned-for-longhorn-v1121)
     - [Fast Volume Cloning](#fast-volume-cloning)
@@ -124,6 +125,12 @@ For more information, see [Issue #13237](https://github.com/longhorn/longhorn/is
 When assigning CPU cores to the V2 Data Engine, ensure that the V2 instance-manager pod has enough guaranteed CPU resources to cover the assigned cores. This provides dedicated CPU availability for SPDK reactors, prevents CPU contention, and helps maintain predictable performance and V2 Data Engine stability.
 
 You can verify that the guaranteed CPU resources match the CPU cores specified by `data-engine-cpu-mask` or `data-engine-number-of-cpu-cores`. For more details, see [Guaranteed Instance Manager CPU](../references/settings/#guaranteed-instance-manager-cpu), [Data Engine CPU Mask](../references/settings/#data-engine-cpu-mask), and [Data Engine Number of CPU Cores](../references/settings/#data-engine-number-of-cpu-cores).
+
+### CPU Isolation Enabled by Default
+
+Longhorn v{{< current-version >}} enables [Data Engine CPU Isolation](../references/settings/#data-engine-cpu-isolation-enabled) by default for the V2 Data Engine (`{"v2":"true"}`). This ensures that CPU cores are dedicated to the V2 Data Engine.
+
+For more information, see [Issue #13724](https://github.com/longhorn/longhorn/issues/13724) and [Data Engine CPU Isolation Enabled](../references/settings/#data-engine-cpu-isolation-enabled).
 
 ### IPv6 Support
 
