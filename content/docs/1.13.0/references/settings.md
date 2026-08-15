@@ -55,6 +55,7 @@ weight: 1
   - [Data Engine Log Flags](#data-engine-log-flags)
   - [Replica Rebuilding Bandwidth Limit](#replica-rebuilding-bandwidth-limit)
   - [Manager URL](#manager-url)
+  - [Default NVMe-TCP Number Of IO Queues](#default-nvme-tcp-number-of-io-queues)
   - [Default Ublk Queue Depth](#default-ublk-queue-depth)
   - [Default Ublk Number Of Queue](#default-ublk-number-of-queue)
   - [Node Disk Health Monitoring](#node-disk-health-monitoring)
@@ -669,6 +670,12 @@ This setting is useful when accessing the Longhorn API through Ingress or Gatewa
 **When empty** (default): URLs are constructed from HTTP request headers (`X-Forwarded-*`) or fall back to the request host.
 
 For more details, see [Manager URL for External API Access](../../important-notes/#manager-url-for-external-api-access).
+
+#### Default NVMe-TCP Number Of IO Queues
+
+> Default: `{"v2":"0"}`
+
+This setting defines the default number of I/O queues the kernel initiator creates when connecting a volume frontend over NVMe-TCP. It caps the in-flight commands per volume to the number of I/O queues multiplied by the negotiated queue size (128). This applies to volumes using the V2 Data Engine with the block device frontend, and changes take effect upon volume attachment or reattachment. You can override this value on a per-volume basis using `volume.spec.nvmeTcpNrIoQueues`. 0 means unspecified (kernel default, one queue per online core).
 
 #### Default Ublk Queue Depth
 
