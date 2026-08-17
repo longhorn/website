@@ -82,6 +82,12 @@ Create a ServiceMonitor for Longhorn Manager.
 
 Longhorn ServiceMonitor is a [Prometheus Operator](https://prometheus-operator.dev/) custom resource. This setup allows the Prometheus server to discover all Longhorn Manager pods and their respective endpoints.
 
+> **Note:** ServiceMonitor provides endpoint discovery, but does not automatically authorize network traffic to Longhorn Manager pods.
+>
+> **Important changes in v1.12.1:**
+> - `networkPolicies.restrictInternalTraffic` operates independently and defaults to `true` (which may block monitoring traffic if not explicitly permitted).
+> - `networkPolicies.enabled` now controls *only* the UI frontend policy.
+
 You can use the label selector `app: longhorn-manager` to select the longhorn-backend service, which points to the set of Longhorn Manager pods.
 
 ### Install and configure Prometheus AlertManager
@@ -124,7 +130,7 @@ See [Prometheus - Configuration](https://prometheus.io/docs/alerting/latest/conf
             *Alert:* {{ .Annotations.summary }} - `{{ .Labels.severity }}`
             *Description:* {{ .Annotations.description }}
             *Details:*
-            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ range .Labels.SortedPairs }} - *{{ .Name }}:* `{{ .Value }}`
             {{ end }}
           {{ end }}
       slack_configs:
@@ -135,7 +141,7 @@ See [Prometheus - Configuration](https://prometheus.io/docs/alerting/latest/conf
             *Alert:* {{ .Annotations.summary }} - `{{ .Labels.severity }}`
             *Description:* {{ .Annotations.description }}
             *Details:*
-            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ range .Labels.SortedPairs }} - *{{ .Name }}:* `{{ .Value }}`
             {{ end }}
           {{ end }}
     ```
@@ -259,6 +265,9 @@ See [Prometheus - Configuration](https://prometheus.io/docs/alerting/latest/conf
       namespace: default
     spec:
       replicas: 2
+      podMetadata:
+        labels:
+          longhorn.io/metrics-scraper: "true"
       serviceAccountName: prometheus
       alerting:
         alertmanagers:
@@ -273,6 +282,12 @@ See [Prometheus - Configuration](https://prometheus.io/docs/alerting/latest/conf
           prometheus: longhorn
           role: alert-rules
     ```
+
+1. **The Issue:** When `networkPolicies.restrictInternalTraffic` is enabled, Longhorn restricts ingress traffic to `longhorn-manager` to specific Longhorn components allowed by its NetworkPolicy. Prometheus and other monitoring agents are not included in this allow-list, so scraping Longhorn Manager pods on TCP port 9500 is blocked by default. ServiceMonitor discovers endpoints but does not authorize network traffic to Longhorn Manager pods.
+
+    **The Solution:** Apply a narrowly scoped NetworkPolicy in `longhorn-system` that allows your monitoring pods to access Longhorn Manager pods on TCP port 9500. Follow the inline comments in the [scoped additive NetworkPolicy example](https://github.com/longhorn/longhorn/blob/master/examples/network-policy/allow-prometheus-to-longhorn-manager.yaml) to customize the namespace and pod selectors for your monitoring environment.
+
+    > **Warning:** The example combines `namespaceSelector` and `podSelector` in one `from` item so both selectors must match. Port 9500 also serves the Longhorn API, so do not replace the combined selectors with a namespace-only allowance unless that broader API access is intended. See the [Network Policy guide](../../advanced-resources/security/network-policy) for details.
 
 1. To be able to view the web UI of the Prometheus server, expose it through a Service. A simple way to do this is to use a Service of type NodePort.
 
