@@ -73,6 +73,7 @@ weight: 1
   - [Orphaned Resource Automatic Deletion Grace Period](#orphaned-resource-automatic-deletion-grace-period)
 - [Backups](#backups)
   - [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
+  - [Backupstore Poll Interval](#backupstore-poll-interval)
   - [Backup Execution Timeout](#backup-execution-timeout)
   - [Failed Backup Time To Live](#failed-backup-time-to-live)
   - [Cronjob Failed Jobs History Limit](#cronjob-failed-jobs-history-limit)
@@ -807,6 +808,20 @@ Specifies the wait time, in seconds, before Longhorn automatically deletes an or
 If this setting is enabled, Longhorn automatically attaches the volume and takes snapshot/backup when it is the time to do recurring snapshot/backup.
 
 > **Note:** During the time the volume was attached automatically, the volume is not ready for the workload. The workload will have to wait until the recurring job finishes.
+
+#### Backupstore Poll Interval
+
+> Default: `300`
+
+The interval in seconds that Longhorn waits between polling the backup target for changes (new/removed backup volumes, new/removed backups, DR volume `Last Backup` updates).
+
+Set to `0` to disable polling entirely.
+
+> **Warning:** On backends that bill per API request (e.g. S3-compatible object storage such as Backblaze B2), each poll issues one or more list requests per backup volume and, if a backup or garbage collection is in progress, additional requests to enumerate that volume's backup blocks. Because Longhorn shards blocks across a two-level directory structure, this cost has historically scaled with the number of stored blocks rather than a small, fixed number of requests (see [longhorn/longhorn#1547](https://github.com/longhorn/longhorn/issues/1547)). If you don't rely on [DR volumes](../../snapshots-and-backups/setup-disaster-recovery-volumes) or need near-real-time visibility into backups created from other clusters, consider setting this to a larger value (e.g. `3600`) or `0`.
+>
+> If the backup target becomes unreachable or misconfigured (invalid credentials, deleted bucket, etc.), Longhorn also retries independently of this interval via a bounded background resync; this does not further amplify the poll cost under normal conditions.
+
+For more information on how the backupstore poll interval affects the recovery time objective and recovery point objective, see the [DR volume documentation](../../snapshots-and-backups/setup-disaster-recovery-volumes).
 
 #### Backup Execution Timeout
 
