@@ -656,7 +656,7 @@ For more details, see [Manager URL for External API Access](../../important-note
 
 > Default: `{"v2":"0"}`
 
-The default number of I/O queues the kernel initiator creates when connecting a volume frontend over NVMe-TCP. This caps the per-volume in-flight commands to the number of I/O queues multiplied by the negotiated queue size (128). This setting applies to volumes using the V2 Data Engine with the block device frontend and takes effect on (re)attach. The value can be overridden per volume using volume.spec.nvmeTcpNrIoQueues. 0 means unspecified (kernel default, one queue per online core).
+The default number of I/O queues the kernel initiator creates when connecting a volume frontend over NVMe-TCP. This caps the per-volume in-flight commands to the number of I/O queues multiplied by the negotiated queue size (128). This setting applies to volumes using the V2 Data Engine with the block device frontend and takes effect on (re)attach. The value can be overridden per volume using `volume.spec.nvmeTcpNrIoQueues`. 0 means unspecified (kernel default, one queue per online core).
 
 #### Default Ublk Queue Depth
 
