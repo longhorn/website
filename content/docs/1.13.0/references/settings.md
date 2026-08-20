@@ -1415,11 +1415,11 @@ The value must be a JSON object with component names as keys and Kubernetes `Res
 #### CSI Allowed Topology Keys
 
 > Default: `""`
-> Example: `topology.kubernetes.io/zone`
+> Example: `topology.kubernetes.io/zone,topology.kubernetes.io/region`
 
-A comma-separated list of topology keys that the Longhorn CSI driver should report in `NodeGetInfo` and use when building PV `nodeAffinity`. When empty (the default), no topology information is passed through and PVs are created without `nodeAffinity`.
+A comma-separated list of topology keys that the Longhorn CSI driver should use when building PV `nodeAffinity`. When empty (the default), PVs are created without topology-based `nodeAffinity`.
 
-Set this to one or more [well-known Kubernetes topology labels](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) (for example, `topology.kubernetes.io/zone`) so that StorageClass `allowedTopologies` and the `strictTopology` parameter can take effect.
+Set this to one or more [well-known Kubernetes topology labels](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) so that StorageClass `allowedTopologies`, `strictTopology`, and `volumeTopology` can take effect. Use `topology.kubernetes.io/zone` for zonal placement and `topology.kubernetes.io/region` for regional placement.
 
 > **Note:** Changing this setting restarts the CSI components. During the restart, new volume provisioning, expansion, snapshot, or attach/detach operations may be temporarily delayed. Existing mounted volumes remain usable.
 > More details in [Topology-Aware Provisioning](../../nodes-and-volumes/nodes/topology-aware-provisioning).
