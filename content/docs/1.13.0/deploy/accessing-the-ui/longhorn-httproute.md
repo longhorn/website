@@ -23,14 +23,15 @@ Gateway API is the successor to Ingress, offering more expressive routing capabi
 
 The following Helm values control HTTPRoute generation:
 
-| Key | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `httproute.enabled` | bool | `false` | Enable HTTPRoute generation for Longhorn UI |
-| `httproute.parentRefs` | list | `[]` | Gateway references specifying which Gateway(s) should handle this route |
-| `httproute.hostnames` | list | `[]` | List of hostnames for the HTTPRoute |
-| `httproute.path` | string | `"/"` | Path for accessing Longhorn UI |
-| `httproute.pathType` | string | `"PathPrefix"` | Path match type: `Exact`, `PathPrefix`, or `RegularExpression` |
-| `httproute.annotations` | object | `{}` | Annotations for the HTTPRoute resource |
+| Key                     | Type   | Default        | Description                                                                                 |
+|-------------------------|--------|----------------|---------------------------------------------------------------------------------------------|
+| `httproute.enabled`     | bool   | `false`        | Enables HTTPRoute generation for the Longhorn UI.                                           |
+| `httproute.parentRefs`  | list   | `[]`           | List of Gateway references specifying which Gateway(s) should handle this route.            |
+| `httproute.hostnames`   | list   | `[]`           | List of hostnames bound to the HTTPRoute.                                                   |
+| `httproute.filters`     | list   | `[]`           | List of Gateway API filters to attach to the HTTPRoute rule for the Longhorn UI.            |
+| `httproute.path`        | string | `"/"`          | The routing path used to access the Longhorn UI.                                            |
+| `httproute.pathType`    | string | `"PathPrefix"` | The path match type. Valid options are `"Exact"`, `"PathPrefix"`, or `"RegularExpression"`. |
+| `httproute.annotations` | object | `{}`           | Key-value annotations to apply to the HTTPRoute resource.                                   |
 
 ## Basic Installation
 
@@ -69,6 +70,46 @@ httproute:
 ```
 
 Install with the values file:
+
+```shell
+helm install longhorn longhorn/longhorn \
+  --namespace longhorn-system \
+  --create-namespace \
+  --values values.yaml
+```
+
+#### Secure access to Longhorn UI with basic auth integration
+
+To enable authenticated access to the Longhorn UI, reference an existing authentication proxy or middleware resource through the HTTPRoute `filters` field.
+The following example assumes a Traefik Middleware resource providing basic authentication is already configured:
+
+```yaml
+httproute:
+  enabled: true
+  parentRefs:
+    - name: primary-gateway
+      namespace: gateway-system
+    - name: secondary-gateway
+      namespace: gateway-system
+      sectionName: https  # Target specific listener
+  hostnames:
+    - longhorn.example.com
+    - longhorn.example.org
+  filters:
+    - type: ExtensionRef
+      extensionRef:
+        group: traefik.io
+        kind: Middleware
+        name: oauth-forwardauth
+  path: /longhorn
+  pathType: PathPrefix
+  annotations:
+    custom-annotation: "value"
+```
+
+> **Note:** `filters` is optional for a standard HTTPRoute. Any referenced resource must be configured separately and exist before the HTTPRoute is created.
+
+Install Longhorn using the same values file:
 
 ```shell
 helm install longhorn longhorn/longhorn \
