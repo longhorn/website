@@ -254,6 +254,13 @@ For more information, see [Issue #12771](https://github.com/longhorn/longhorn/is
 
 Longhorn v1.12.1 enables ingress `NetworkPolicy` resources for internal component endpoints and RPCs by default, including the instance-manager gRPC endpoint used for engine control. These policies are enforced only when the cluster has a network plugin that supports and enforces Kubernetes `NetworkPolicy`. Without such a provider, the resources are created but do not affect traffic and do not need to be removed.
 
+Longhorn v1.12.2 includes the chart fix for these CNI compatibility issues and provides two Helm values for the affected traffic paths:
+
+- `networkPolicies.v1DataEngineInitiatorSourceCIDRs` controls source filtering for V1 iSCSI TCP port 3260. An empty list leaves TCP/3260 without source filtering. Configured CIDRs restrict connections to the effective CNI-observed sources, so the values are CNI-specific.
+- `networkPolicies.recoveryBackendAdditionalIngressPorts` adds TCP ingress ports to the recovery backend and defaults to an empty list. Add `15008` when using Istio Ambient, which uses HBONE on that port; configure this value only for an applicable mesh transport.
+
+For migration from v1.12.1 and targeted workarounds, see [Troubleshooting volume attachment stuck due to CNI NetworkPolicies](../../../kb/troubleshooting-volume-attachment-stuck-cni-networkpolicies).
+
 The [CNI Plugin Compatibility](../best-practices#cni-plugin-compatibility) table lists the Kubernetes distribution and CNI combinations that the Longhorn project has validated with `networkPolicies.restrictInternalTraffic` enabled. If your CNI enforces `NetworkPolicy` but your distribution and CNI combination is not listed, test the policies in your target environment before upgrading. For policy behavior and configuration details, see [Network Policies](../advanced-resources/security/network-policy).
 
 > **Note:**
