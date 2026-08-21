@@ -268,6 +268,13 @@ For more information, see [Issue #12771](https://github.com/longhorn/longhorn/is
 
 Longhorn v1.12.1 enables ingress `NetworkPolicy` resources for internal component endpoints and RPCs by default, including the instance-manager gRPC endpoint used for engine control. These policies are enforced only when the cluster has a network plugin that supports and enforces Kubernetes `NetworkPolicy`. Without such a provider, the resources are created but do not affect traffic and do not need to be removed.
 
+Longhorn v1.12.2 resolves these CNI compatibility issues by providing two new Helm values to manage the affected traffic paths:
+
+- **`networkPolicies.v1DataEngineInitiatorSourceCIDRs`**: Controls source filtering for V1 iSCSI on TCP port 3260. An empty list leaves this port without source filtering, allowing any source that can reach instance-manager to connect to TCP/3260. If populated, the CIDRs restrict connections to the effective sources observed by the CNI, so the required values are CNI-specific.
+- **`networkPolicies.recoveryBackendAdditionalIngressPorts`**: Adds TCP ingress ports to the recovery backend (defaults to an empty list). Add `15008` when using Istio Ambient, which uses HTTP-Based Overlay Network Environment (HBONE) on this port. This should only be configured for applicable mesh transports.
+
+For migration instructions from v1.12.1 and targeted workarounds, see [Troubleshooting volume attachment stuck due to CNI NetworkPolicies](../../../kb/troubleshooting-volume-attachment-stuck-cni-networkpolicies).
+
 The [CNI Plugin Compatibility](../best-practices#cni-plugin-compatibility) table lists the Kubernetes distribution and CNI combinations that the Longhorn project has validated with `networkPolicies.restrictInternalTraffic` enabled. If your CNI enforces `NetworkPolicy` but your distribution and CNI combination is not listed, test the policies in your target environment before upgrading. For policy behavior and configuration details, see [Network Policies](../advanced-resources/security/network-policy).
 
 > **Note:**
