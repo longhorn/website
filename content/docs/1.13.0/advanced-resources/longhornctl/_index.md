@@ -15,7 +15,7 @@ The `longhornctl` tool is a CLI interface to Longhorn operations. It interacts w
   * `longhornctl trim volume`: Reclaim unused storage space within a Longhorn volume.
 * **Troubleshooting:**
   * `longhornctl check preflight`: Identifies potential issues before usage.
-  * `longhornctl check replica`: Check the integrity of the snapshot chains in the Longhorn replica data directories (v1 data engine) and identify broken snapshot chains.
+  * `longhornctl check replica`: Check the integrity of the snapshot chains in the Longhorn replica data directories (V1 Data Engine) and identify broken snapshot chains.
   * `longhornctl get replica`: Retrieve details about Longhorn replicas on the host.
 
 ## Usage
