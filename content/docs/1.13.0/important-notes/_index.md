@@ -35,6 +35,8 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
 - [Scheduling](#scheduling)
   - [Topology-Aware PV Node Affinity Control](#topology-aware-pv-node-affinity-control)
+- [Snapshots and Backups](#snapshots-and-backups)
+  - [Volume Group Snapshot Support](#volume-group-snapshot-support)
 - [Stability](#stability)
   - [Configurable Engine Image Pod Liveness Probe](#configurable-engine-image-pod-liveness-probe)
 - [Resource Efficiency](#resource-efficiency)
@@ -228,6 +230,22 @@ Automated pre-upgrade checks do not cover all scenarios. Manual checks via kubec
 Longhorn v{{< current-version >}} adds the `csi-allowed-topology-keys` setting and `strictTopology` StorageClass parameter for more precise control of PV `nodeAffinity`. These options allow users to limit which topology keys are propagated and, with `WaitForFirstConsumer`, pin the PV to the selected node topology when needed.
 
 For more information, see [Issue #12684](https://github.com/longhorn/longhorn/issues/12684) and [Topology-Aware Provisioning](../nodes-and-volumes/nodes/topology-aware-provisioning).
+
+## Snapshots and Backups
+
+### Volume Group Snapshot Support
+
+Longhorn v{{< current-version >}} can snapshot a set of volumes as one group with a single request. You can create snapshot groups from the Longhorn UI, with kubectl, or by creating Kubernetes `VolumeGroupSnapshot` objects through CSI. The CSI path also supports group backups.
+
+The UI and kubectl paths work out of the box. The CSI path is disabled by default: it requires the VolumeGroupSnapshot CRDs, the `CSIVolumeGroupSnapshot` feature gate on the snapshot-controller, and a Longhorn toggle. For the setup steps, see [Enable CSI Volume Group Snapshot Support](../snapshots-and-backups/csi-snapshot-support/enable-csi-volume-group-snapshot-support).
+
+> **Important: Snapshot Consistency**
+> Each member volume is snapshotted independently, meaning the group is **not** captured at a single point in time. Application-level consistency across the group is future work built on top of this feature ([Issue #2128](https://github.com/longhorn/longhorn/issues/2128)).
+
+For more information, see:
+* [Issue #13349](https://github.com/longhorn/longhorn/issues/13349)
+* [Create a Snapshot Group](../snapshots-and-backups/snapshot-groups)
+* [CSI VolumeGroupSnapshot Associated with Longhorn Snapshot Group](../snapshots-and-backups/csi-snapshot-support/csi-volume-group-snapshot)
 
 ## Stability
 
