@@ -15,10 +15,13 @@ For the installation requirements, go to [this section.](../deploy/install/#inst
 
 - [1. Design](#1-design)
   - [1.1. The Longhorn Manager and the Longhorn Engine](#11-the-longhorn-manager-and-the-longhorn-engine)
-  - [1.2. Advantages of a Microservices Based Design](#12-advantages-of-a-microservices-based-design)
-  - [1.3. CSI Driver](#13-csi-driver)
-  - [1.4. CSI Plugin](#14-csi-plugin)
-  - [1.5. The Longhorn UI](#15-the-longhorn-ui)
+  - [1.2. V1 and V2 Data Engine Data Paths](#12-v1-and-v2-data-engine-data-paths)
+    - [1.2.1. V1 Data Engine](#121-v1-data-engine)
+    - [1.2.2. V2 Data Engine](#122-v2-data-engine)
+  - [1.3. Advantages of a Microservices Based Design](#13-advantages-of-a-microservices-based-design)
+  - [1.4. CSI Driver](#14-csi-driver)
+  - [1.5. CSI Plugin](#15-csi-plugin)
+  - [1.6. The Longhorn UI](#16-the-longhorn-ui)
 - [2. Longhorn Volumes and Primary Storage](#2-longhorn-volumes-and-primary-storage)
     - [2.1. Thin Provisioning and Volume Size](#21-thin-provisioning-and-volume-size)
     - [2.2. Reverting Volumes in Maintenance Mode](#22-reverting-volumes-in-maintenance-mode)
@@ -73,7 +76,32 @@ In the figure below,
 
 {{< figure alt="read/write data flow between the volume, controller instance, replica instances, and disks" src="/img/diagrams/architecture/how-longhorn-works-with-kubernetes.svg" >}}
 
-## 1.2. Advantages of a Microservices Based Design
+## 1.2. V1 and V2 Data Engine Data Paths
+
+### 1.2.1. V1 Data Engine
+
+For V1 volumes, I/O follows this path:
+1. I/O flows from the application, through the filesystem and **iSCSI block device**, to the **`longhorn tgt` service**.
+2. The service forwards the I/O to the **Longhorn Engine process** over a Unix domain socket using a customized protocol.
+3. The Engine forwards the I/O to **Longhorn replica processes** on multiple nodes over TCP.
+4. Each replica process stores the volume data in a sparse file on the filesystem.
+
+The Engine provides strong consistency for writes: it acknowledges a write to the application *only* after the write completes on all replicas, and it marks a replica as failed if its I/O times out. For reads, the Engine retrieves data from the replicas using a round-robin strategy.
+
+{{< figure alt="V1 Data Engine data path from the application to Longhorn replica processes" src="/img/diagrams/architecture/v1-data-path.png" width="750" >}}
+
+### 1.2.2. V2 Data Engine
+
+For V2 volumes, I/O follows this path:
+1. I/O flows from the application, through the filesystem and **NVMe-oF block device**, to the **SPDK target daemon** (which exposes the Longhorn Engine instance as an SPDK RAID1 block device).
+2. The Engine instance forwards the I/O to the SPDK target daemons on multiple nodes over NVMe-oF using TCP.
+3. Each replica instance acts as an SPDK logical volume that stores the volume data on a raw block device.
+
+As with the V1 Data Engine, writes are acknowledged to the application *only* after they complete on all replicas, a replica is marked as failed if its I/O times out, and reads are retrieved from the replicas using a round-robin strategy.
+
+{{< figure alt="V2 Data Engine data path from the application to Longhorn replica instances" src="/img/diagrams/architecture/v2-data-path.png" width="750" >}}
+
+## 1.3. Advantages of a Microservices Based Design
 
 In Longhorn, each Engine only needs to serve one volume, simplifying the design of the storage controllers. Because the failure domain of the controller software is isolated to individual volumes, a controller crash will only impact one volume.
 
@@ -83,14 +111,14 @@ Because each volume has its own controller, the controller and replica instances
 
 Longhorn can create a long-running job to orchestrate the upgrade of all live volumes without disrupting the on-going operation of the system. To ensure that an upgrade does not cause unforeseen issues, Longhorn can choose to upgrade a small subset of the volumes and roll back to the old version if something goes wrong during the upgrade.
 
-## 1.3. CSI Driver
+## 1.4. CSI Driver
 
 The Longhorn CSI driver takes the block device, formats it, and mounts it on the node. Then the [kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) bind-mounts the device inside a Kubernetes Pod. This allows the Pod to access the Longhorn volume.
 
 The required Kubernetes CSI Driver images will be deployed automatically by the longhorn driver deployer.
 To install Longhorn in an air gapped environment, refer to [this section](../deploy/install/airgap).
 
-## 1.4. CSI Plugin
+## 1.5. CSI Plugin
 
 Longhorn is managed in Kubernetes via a [CSI Plugin.](https://kubernetes-csi.github.io/docs/) This allows for easy installation of the Longhorn plugin.
 
@@ -106,7 +134,7 @@ In contrast, v2 volumes come with different prerequisites, depending on the conf
 - For the NVMe-TCP frontend, the `nvme_tcp` module is necessary.
 - For the UBLK frontend, both the `ublk_drv` module and huge pages support must be enabled.
 
-## 1.5. The Longhorn UI
+## 1.6. The Longhorn UI
 
 The Longhorn UI interacts with the Longhorn Manager through the Longhorn API, and acts as a complement of Kubernetes. Through the Longhorn UI, you can manage snapshots, backups, nodes and disks.
 
