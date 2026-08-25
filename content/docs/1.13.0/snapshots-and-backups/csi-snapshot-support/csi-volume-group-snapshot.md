@@ -5,8 +5,10 @@ weight: 5
 
 A `VolumeGroupSnapshot` takes snapshots of a set of Longhorn volumes as one group with a single request. Longhorn tracks each group in a `SnapshotGroup` custom resource in the `longhorn-system` namespace and creates one Longhorn snapshot per member volume. Kubernetes then returns one `VolumeSnapshot` per member PVC, all bound to the same group, so at restore time it is clear which snapshots belong together.
 
+Snapshot groups can also be created and managed without CSI, from the Longhorn UI or with kubectl. For details, see [Create a Snapshot Group](../../snapshot-groups).
+
 > **Important: Consistency boundary**
-> Longhorn snapshots each member volume independently, so a group snapshot is crash-consistent per volume and only loosely aligned in time across volumes. For application-level consistency, quiesce or pause the application while the group snapshot is taken. See [Issue #2128](https://github.com/longhorn/longhorn/issues/2128) for the planned application-consistent snapshot work that builds on this feature.
+> Longhorn snapshots each member volume independently, so member snapshots are taken at slightly different times, not at one instant. A group snapshot is crash-consistent per volume; it does not guarantee application consistency across volumes. To get a recoverable set, include every volume the application needs (for example data, log, and metadata volumes) and quiesce or pause the application while the group snapshot is taken. See [Issue #2128](https://github.com/longhorn/longhorn/issues/2128) for the planned application-consistent snapshot work that builds on this feature.
 
 ## Prerequisites
 
