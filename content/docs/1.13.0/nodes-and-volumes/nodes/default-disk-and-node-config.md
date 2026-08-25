@@ -85,6 +85,9 @@ If the label or annotation fails validation, the whole annotation is ignored.
     ```
 
     > **Note:** If the same name is specified for different disks, the configuration will be treated as invalid.
+
+    * **Filesystem-type disks:** Longhorn creates a filesystem disk when `path` is an absolute directory path. If `storageReserved` is not specified, Longhorn calculates the reserved space using the **Storage Reserved Percentage For Default Disk** setting.
+    * **Block-type disks:** Longhorn creates a block disk when `diskType` is `block`. The `path` can be a BDF (such as `0000:05:00.0`) or a stable device path under `/dev/disk/by-id/...`. Longhorn does not access the block device while creating the default disk configuration. If `storageReserved` is not specified, the initial reserved space defaults to `0` (you can update `storageReserved` after the disk is created).
     
 4. Wait for Longhorn to create the customized default disks automatically.
 
