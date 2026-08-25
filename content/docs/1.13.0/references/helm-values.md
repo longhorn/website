@@ -103,6 +103,7 @@ The `values.yaml` file contains items used to tweak a deployment of this chart.
 | csi.provisionerReplicaCount | Replica count of the CSI Provisioner. When unspecified, Longhorn uses the default value ("3"). |
 | csi.resizerReplicaCount | Replica count of the CSI Resizer. When unspecified, Longhorn uses the default value ("3"). |
 | csi.snapshotterReplicaCount | Replica count of the CSI Snapshotter. When unspecified, Longhorn uses the default value ("3"). |
+| csi.volumeGroupSnapshotEnabled | Enables CSI VolumeGroupSnapshot support by turning on the `CSIVolumeGroupSnapshot` feature gate of the CSI Snapshotter. **Prerequisite:** The VolumeGroupSnapshot CRDs (`groupsnapshot.storage.k8s.io`) must be installed first. |
 
 ### Longhorn Manager Settings
 
