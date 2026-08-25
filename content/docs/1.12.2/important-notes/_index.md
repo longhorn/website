@@ -67,12 +67,26 @@ V2 Backing Images are removed in Longhorn v1.12.0. Use the Containerized Data Im
 
 **Migration required for existing V2 volumes with backing images:**
 
-If you have V2 volumes that were created from backing images, you must migrate them before upgrading to v1.12.0:
+> **Warning: Upgrade Failure Risk**
+> V2 volumes with backing image dependencies cannot be upgraded in-place. Attempting to upgrade without migration may result in volume attachment failures.
+>
+> Furthermore, a direct backup of a V2 volume does not include its V2 backing image data, meaning a restore would still require the original backing image. If the volume data is still needed, you **must** perform the migration below before upgrading. If the data is no longer needed, simply delete the V2 volume instead.
 
-1. **Backup and recreate** (recommended): Create a backup of the V2 volume, delete the original volume, then restore from backup. The restored volume will not have a backing image dependency.
-2. **Delete the volume**: If the data is not needed, delete the V2 volume directly.
+Before upgrading to v1.12.2, flatten each required V2 volume into a temporary V1 volume and back up the V1 volume:
 
-V2 volumes with backing image dependencies cannot be upgraded in-place. Attempting to upgrade without migration may result in volume attachment failures.
+1. **Stop writes to the source volume:** Detach the workload or otherwise ensure that no process can modify the V2 volume during the copy.
+2. **Create a temporary V1 volume:** Do not configure a backing image, and make the volume exactly the same size as the source V2 volume.
+3. **Copy every block:** Use an offline migration pod or maintenance environment that exposes both volumes as raw block devices on the same node. Copy the source device to the temporary V1 device, then verify the result.
+
+   ```shell
+   dd if=/dev/source of=/dev/target bs=4M conv=fsync
+   cmp /dev/source /dev/target
+   sha256sum /dev/source /dev/target
+   ```
+
+4. **Back up the temporary V1 volume:** Detach the migration pod and create a Longhorn backup of the temporary V1 volume in the configured backup target.
+5. **Test the standalone backup:** Verify that the backup does not list a backing image, restore it to a new volume, and validate the restored data before deleting any source data.
+6. **Remove the dependency:** After the test restore succeeds, delete the original V2 volume and backing image. The temporary V1 volume can also be deleted after confirming that its backup is available.
 
 For more information, see [Issue #13181](https://github.com/longhorn/longhorn/issues/13181) and [Longhorn with CDI Imports](../advanced-resources/containerized-data-importer/containerized-data-importer).
 
