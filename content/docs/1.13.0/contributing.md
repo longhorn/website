@@ -18,7 +18,8 @@ Longhorn is 100% open source software under the auspices of the [Cloud Native Co
 | Component                      | What it does                                                           | GitHub repo                                                                                 |
 | :----------------------------- | :--------------------------------------------------------------------- | :------------------------------------------------------------------------------------------ |
 | Longhorn Backing Image Manager | Backing image download, sync, and deletion in a disk                   | [longhorn/backing-image-manager](https://github.com/longhorn/backing-image-manager)         |
-| Longhorn Engine                | Core controller/replica logic                                          | [longhorn/longhorn-engine](https://github.com/longhorn/longhorn-engine)                     |
+| Longhorn Engine                | Core V1 Data Engine controller/replica logic                           | [longhorn/longhorn-engine](https://github.com/longhorn/longhorn-engine)                     |
+| Longhorn SPDK Engine           | Core V2 Data Engine controller/replica logic                           | [longhorn/longhorn-spdk-engine](https://github.com/longhorn/longhorn-spdk-engine)           |
 | Longhorn Instance Manager      | Controller/replica instance lifecycle management                       | [longhorn/longhorn-instance-manager](https://github.com/longhorn/longhorn-instance-manager) |
 | Longhorn Manager               | Longhorn orchestration, includes CSI driver for Kubernetes             | [longhorn/longhorn-manager](https://github.com/longhorn/longhorn-manager)                   |
 | Longhorn Share Manager         | NFS provisioner that exposes Longhorn volumes as ReadWriteMany volumes | [longhorn/longhorn-share-manager](https://github.com/longhorn/longhorn-share-manager)       |
@@ -26,7 +27,7 @@ Longhorn is 100% open source software under the auspices of the [Cloud Native Co
 
 ## License
 
-Copyright (c) 2014-2021 The Longhorn Authors.
+Copyright (c) 2014-2026 The Longhorn Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 

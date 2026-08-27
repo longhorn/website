@@ -15,6 +15,7 @@ We recommend the following setup for deploying Longhorn in production.
 - [Kubernetes](#kubernetes)
   - [Kubernetes Version](#kubernetes-version)
   - [CoreDNS Setup](#coredns-setup)
+  - [CNI Plugin Compatibility](#cni-plugin-compatibility)
 - [Nodes and Disk Setup](#nodes-and-disk-setup)
   - [Use a Dedicated Disk](#use-a-dedicated-disk)
   - [Minimal Available Storage and Over-provisioning](#minimal-available-storage-and-over-provisioning)
@@ -139,6 +140,19 @@ Referenced to https://endoflife.date/kubernetes.
 
 Ensure that CoreDNS runs with at least 2 replicas to maintain high availability. This setup minimizes interruptions in the DNS resolution if one CoreDNS pod experiences a temporary disruption.
 
+### CNI Plugin Compatibility
+
+Longhorn v{{< current-version >}} has been verified with [restrictInternalTraffic](https://github.com/longhorn/longhorn/blob/0c1d5ab907b0d7fa6232e05f9cb4ef6733cf7cbe/chart/values.yaml#L39) enabled, which enforces network policies for internal Longhorn components so that only authorized components can communicate with each other, against the following Kubernetes distribution and CNI plugin combinations.
+
+| Kubernetes Distribution | CNI Plugin |
+|-------------------------| ----------|
+| K3s                     | Flannel |
+| K3s                     | Calico |
+| K3s                     | Cilium |
+| RKE2                    | Canal |
+| RKE2                    | Calico |
+| RKE2                    | Cilium |
+
 ## Nodes and Disk Setup
 
 We recommend the following setup for nodes and disks.
@@ -259,7 +273,9 @@ Refer to [Guaranteed Instance Manager CPU](../references/settings/#guaranteed-in
 
 The `Guaranteed Instance Manager CPU` setting allows you to reserve a percentage of the total allocatable CPU resources on each node for each instance manager pod when the V2 Data Engine is enabled. This reservation applies to the entire V2 instance manager pod.
 
-The primary CPU consumer in the pod is the Storage Performance Development Kit (SPDK) target daemon (`spdk_tgt`). By default, `spdk_tgt` typically uses 1 dedicated CPU core in polling mode. The [Data Engine CPU Mask](../references/settings#data-engine-cpu-mask) setting controls which CPU cores `spdk_tgt` runs on.
+The primary CPU consumer in the pod is the Storage Performance Development Kit (SPDK) target daemon (`spdk_tgt`). The [Data Engine CPU Mask](../references/settings#data-engine-cpu-mask) and [Data Engine Number of CPU Cores](../references/settings#data-engine-number-of-cpu-cores) settings control how many CPU cores `spdk_tgt` uses.
+
+It is necessary that the effective V2 instance manager pod CPU request reserve at least the same number of CPU cores configured for `spdk_tgt`, based on the node's allocatable CPU capacity. For example, reserving 2 CPU cores on a node with 8 allocatable CPUs requires an effective CPU request of at least 25% or 2 CPU cores.
 
 Reserving sufficient CPU is essential for maintaining engine and replica stability, especially during periods of high node workload. The default value of the `Guaranteed Instance Manager CPU` setting is 12%.
 

@@ -115,9 +115,13 @@ weight: 1
   - [Engine Image Pod Liveness Probe Failure Threshold](#engine-image-pod-liveness-probe-failure-threshold)
   - [Instance Manager Pod Liveness Probe Timeout](#instance-manager-pod-liveness-probe-timeout)
   - [Data Engine CPU Mask](#data-engine-cpu-mask)
+  - [Data Engine Number of CPU Cores](#data-engine-number-of-cpu-cores)
+  - [Data Engine iobuf Large Pool Size](#data-engine-iobuf-large-pool-size)
+  - [Data Engine iobuf Small Pool Size](#data-engine-iobuf-small-pool-size)
   - [Data Engine Hugepage Enabled](#data-engine-hugepage-enabled)
   - [Data Engine Memory Size](#data-engine-memory-size)
   - [Data Engine Interrupt Mode Enabled](#data-engine-interrupt-mode-enabled)
+  - [Data Engine CPU Isolation Enabled](#data-engine-cpu-isolation-enabled)
   - [Log Path](#log-path)
   - [Snapshot Heavy Task Concurrent Limit](#snapshot-heavy-task-concurrent-limit)
   - [System Managed CSI Components Resource Limits](#system-managed-csi-components-resource-limits)
@@ -1272,7 +1276,25 @@ In seconds. The setting specifies the timeout for the instance manager pod liven
 
 > Default: `{"v2":"0x3"}`
 
-Applies only to the V2 Data Engine. Specifies the CPU cores on which the Storage Performance Development Kit (SPDK) target daemon runs. The daemon is deployed in each Instance Manager pod. Ensure that the assigned CPU cores do not exceed the guaranteed CPUs allocated to the V2 Data Engine Instance Manager. A minimum of 2 CPU cores is recommended. SPDK uses a busy-polling reactor model where the master reactor handles both I/O polling and management RPCs. When only a single core is assigned, heavy I/O workloads can delay or starve RPC processing, resulting in increased latency, timeout events, and operational instability. Assigning 2 or more cores allows I/O and management tasks to run on separate reactors, improving responsiveness and operational stability. Accepts either hexadecimal CPU masks (for example, 0x3 or 0xff) or CPU list format (for example, 0-1,2,5). CPU lists are automatically converted to hexadecimal masks. The default value is 0x3.
+Applies only to the V2 Data Engine. If the Data Engine Number of CPU Cores setting is specified, this setting will be ignored. It specifies the CPU cores on which the Storage Performance Development Kit (SPDK) target daemon runs. The daemon is deployed in each Instance Manager pod. Ensure that the assigned CPU cores do not exceed the guaranteed CPUs allocated to the V2 Data Engine Instance Manager. A minimum of 2 CPU cores is recommended. SPDK uses a busy-polling reactor model where the master reactor handles both I/O polling and management RPCs. When only a single core is assigned, heavy I/O workloads can delay or starve RPC processing, resulting in increased latency, timeout events, and operational instability. Assigning 2 or more cores allows I/O and management tasks to run on separate reactors, improving responsiveness and operational stability. Accepts either hexadecimal CPU masks (for example, 0x3 or 0xff) or CPU list format (for example, 0-1,2,5). CPU lists are automatically converted to hexadecimal masks. The default value is 0x3.
+
+#### Data Engine Number of CPU Cores
+
+> Default: `{"v2":"0"}`
+
+Applies only to the V2 Data Engine. It can be applied only when the kubelet CPU policy is set to static. It has higher priority than the Data Engine CPU Mask setting. Therefore, when specified, the CPU Mask setting will be ignored. Specifies the number of CPU cores allocated to the Storage Performance Development Kit (SPDK) target daemon. The daemon is deployed in each Instance Manager pod. Ensure that the assigned CPU cores do not exceed the guaranteed CPUs allocated to the V2 Data Engine Instance Manager. A minimum of 2 CPU cores is recommended. SPDK uses a busy-polling reactor model where the master reactor handles both I/O polling and management RPCs. When only a single core is assigned, heavy I/O workloads can delay or starve RPC processing, resulting in increased latency, timeout events, and operational instability. Assigning 2 or more cores allows I/O and management tasks to run on separate reactors, improving responsiveness and operational stability.
+
+#### Data Engine iobuf Large Pool Size
+
+> Default: `{"v2":"1024"}`
+
+Applies only to the V2 Data Engine. Sets the SPDK iobuf large buffer pool size (`large_pool_count`) on the Instance Manager's SPDK target. The Instance Manager passes the value to `spdk_tgt` at startup through a generated JSON configuration file, since the iobuf pool can only be sized at startup and not changed at runtime. The default value 1024 keeps SPDK's built-in behavior; values not greater than 1024 are a no-op.
+
+#### Data Engine iobuf Small Pool Size
+
+> Default: `{"v2":"8192"}`
+
+Applies only to the V2 Data Engine. Sets the SPDK iobuf small buffer pool size (`small_pool_count`) on the Instance Manager's SPDK target. The Instance Manager passes the value to `spdk_tgt` at startup through a generated JSON configuration file (`--json`), since the iobuf pool can only be sized at startup and not changed at runtime. The default value 8192 keeps SPDK's built-in behavior; values not greater than 8192 are a no-op. A larger value relieves NVMe-oF TCP small-buffer exhaustion (`small_pool` `retry` / `NEED_BUFFER` stalls) under workloads whose I/O size fits within the 8 KiB small buffer, such as 4 KiB random reads at high queue depth across many volumes. Each small buffer consumes 8 KiB of the SPDK target's fixed Data Engine Memory Size budget; for example, 8192 buffers use 64 MiB, 16384 use 128 MiB, and 65536 use 512 MiB. Increase the Data Engine Memory Size accordingly when increasing the pool size, or fewer volumes may fit on each node. Changing this setting recreates Instance Manager pods that have no running instances so the new pool size can take effect.
 
 #### Data Engine Hugepage Enabled
 
@@ -1299,6 +1321,17 @@ Controls whether the Storage Performance Development Kit (SPDK) target daemon ru
 
 > **Warning**
 > - DO NOT CHANGE THIS SETTING WITH ATTACHED VOLUMES. Longhorn will block this setting update when there are attached v2 volumes.
+
+#### Data Engine CPU Isolation Enabled
+
+> Default: `{"v2":"false"}`
+
+Applies only to the **V2 Data Engine**.
+
+Steers host hardware IRQs, unbound kernel workqueue workers, and network Receive Packet Steering (RPS) away from the CPUs used by the Storage Performance Development Kit (SPDK) target daemon, so that interrupt handling, deferred kernel work, and network softirq processing do not preempt SPDK polling reactors.
+
+- When applying the setting, Longhorn will try to restart all V2 instance-manager pods if all volumes are detached and eventually restart the instance manager pod without instances running on the instance manager.
+- This value can be overridden per Instance Manager via `Spec.DataEngineSpec.V2.CPUIsolationEnabled` (set to `"true"` or `"false"` on a specific instance manager to force the value on that node; leave empty to inherit this setting).
 
 #### Log Path
 

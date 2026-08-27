@@ -15,6 +15,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
     - [UBLK Frontend Kernel Limitation](#ublk-frontend-kernel-limitation)
     - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Default CPU Allocation](#default-cpu-allocation)
+  - [V2 Dedicated CPU Requirements](#v2-dedicated-cpu-requirements)
   - [IPv6 Support](#ipv6-support)
   - [Features Planned for Longhorn v1.12.1](#features-planned-for-longhorn-v1121)
     - [Fast Volume Cloning](#fast-volume-cloning)
@@ -79,9 +80,10 @@ On ARM64 systems, V2 volumes may experience stuck I/O when SPDK is configured wi
 
 #### UBLK Frontend Kernel Limitation
 
-The UBLK frontend for V2 Data Engine volumes is experimental and only functional on Linux kernels below v6.17. On kernel v6.17.0 and above, UBLK fails due to upstream UBLK API changes that cause `EINVAL` errors when starting UBLK devices.
+This feature is experimental. The UBLK frontend works on all supported Linux kernels but may cause a kernel panic with kernel v6.17.
 
-For more information, see [Issue #11977](https://github.com/longhorn/longhorn/issues/11977) and [UBLK Frontend Support](../advanced-resources/v2-data-engine/ublk-frontend-support).
+For more information, see [GitHub Issue #11977](https://github.com/longhorn/longhorn/issues/11977) and [GitHub Issue #13509](https://github.com/longhorn/longhorn/issues/13509).
+
 
 #### Longhorn System Upgrade
 
@@ -94,6 +96,12 @@ Longhorn v{{< current-version >}} changes the default `data-engine-cpu-mask` fro
 Assigning 2 or more cores allows I/O and management tasks to run on separate reactors, improving responsiveness and operational stability.
 
 For more information, see [Issue #13237](https://github.com/longhorn/longhorn/issues/13237) and [Configurable CPU Cores](../advanced-resources/v2-data-engine/configurable-cpu-cores).
+
+### V2 Dedicated CPU Requirements
+
+When assigning CPU cores to the V2 Data Engine, ensure that the V2 instance-manager pod has enough guaranteed CPU resources to cover the assigned cores. This provides dedicated CPU availability for SPDK reactors, prevents CPU contention, and helps maintain predictable performance and V2 Data Engine stability.
+
+You can verify that the guaranteed CPU resources match the CPU cores specified by `data-engine-cpu-mask` or `data-engine-number-of-cpu-cores`. For more details, see [Guaranteed Instance Manager CPU](../references/settings/#guaranteed-instance-manager-cpu), [Data Engine CPU Mask](../references/settings/#data-engine-cpu-mask), and [Data Engine Number of CPU Cores](../references/settings/#data-engine-number-of-cpu-cores).
 
 ### IPv6 Support
 

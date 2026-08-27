@@ -114,6 +114,12 @@ Longhorn supports several ways to manage block-type disks on a node:
     wipefs -a /path/to/block/device
     ```
 
+> **Warning**
+>
+> Do not use a V2 Longhorn volume or a block device backed by a V2 Longhorn volume as a Longhorn block-type disk. For example, do not add `/dev/longhorn/<volume-name>` or a device-mapper path created from a Longhorn volume as a disk path.
+>
+> Although such a nested volume may appear as a valid block device on the node and may be technically allowed by the system, Longhorn does not recommend or support this configuration. This is a risky operation because it creates a nested I/O dependency and may lead to cascading failures, including stalled I/O, NVMe keep-alive timeouts, replica disconnections, and disk or lvstore creation failures.
+
 #### Steps
 
 You can add a block-type disk using the Longhorn UI or `kubectl`.
@@ -163,6 +169,10 @@ After the disk is added, check `node.status.diskStatus` to confirm that Longhorn
 
 ##### Using AIO Disks
 
+> **Tip:** Prefer a stable path under `/dev/disk/by-id/` (for example,
+> `/dev/disk/by-id/nvme-...`) rather than kernel-assigned names like `/dev/sdb`
+> or `/dev/nvmeXnY`, which can change across reboots or differ between nodes.
+
 When a block device is neither NVMe nor VirtIO, or when you want to force Linux AIO, configure it with `diskDriver: aio` and use a standard device path.
 
 ```yaml
@@ -171,7 +181,7 @@ aio-disk:
   diskDriver: aio
   diskType: block
   evictionRequested: false
-  path: /dev/sdb
+  path: /dev/disk/by-id/wwn-0x5000c500a0b1c2d3   # stable; avoid /dev/sdb
   storageReserved: 0
   tags: []
 ```
@@ -183,6 +193,18 @@ aio-disk:
 > 3. For disk-specific configuration examples, see [Using NVMe Disks](#using-nvme-disks), [Using VirtIO Disks](#using-virtio-disks), and [Using AIO Disks](#using-aio-disks).
 
 ##### Using NVMe Disks
+
+> **Warning: Do not rely on kernel NVMe device names such as `/dev/nvmeXnY`.**
+>
+> NVMe device names are assigned dynamically by the kernel and are **not
+> guaranteed to be stable** across reboots or consistent across nodes. The same
+> physical disk may appear as `nvme0n1` on one node and `nvme2n1` on another, or
+> change after a reboot.
+>
+> - For the `nvme` driver, always add the disk by its **BDF** (for example,
+>   `0000:05:00.0`), which is stable.
+> - If you must use a device-path–based driver (such as `aio`), use a persistent
+>   symlink under `/dev/disk/by-id/` instead of `/dev/nvmeXnY`.
 
 To let Longhorn use the `nvme` driver, add the disk by its BDF instead of the Linux device path.
 

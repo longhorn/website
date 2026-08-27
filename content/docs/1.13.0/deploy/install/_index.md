@@ -56,7 +56,7 @@ Unless otherwise noted, the requirements in this section apply to both the V1 an
 Each node in the Kubernetes cluster where Longhorn is installed must fulfill the following requirements:
 
 -  A container runtime compatible with Kubernetes (Docker v1.13+, containerd v1.3.7+, etc.)
--  Kubernetes >= v1.25
+-  Kubernetes >= v1.34
 -  RWX support requires that each node has a NFSv4 client installed.
     - For installing a NFSv4 client, refer to [Install NFSv4 client](#install-nfsv4-client).
 - `bash`, `curl`, `findmnt`, `grep`, `awk`, `blkid`, `lsblk` must be installed.
@@ -81,7 +81,7 @@ You must perform additional setups before using Longhorn with certain operating 
 
 ### Kubernetes Version
 
-Longhorn requires Kubernetes >= v1.25.
+Longhorn requires Kubernetes >= v1.34.
 
 Use the following command to verify your cluster version:
 
@@ -329,7 +329,7 @@ Before you enable the V2 Data Engine, ensure that each Longhorn node that will h
 - Raw block disks for V2 volumes
   - Local NVMe disks are strongly recommended for best performance.
 
-When the V2 Data Engine is enabled, each V2 instance-manager pod typically consumes one dedicated CPU core because the `spdk_tgt` process uses intensive polling.
+When the V2 Data Engine is enabled, each V2 instance-manager pod requires one or more dedicated CPU cores because the `spdk_tgt` process uses intensive polling. It is necessary that the V2 instance manager pod CPU request reserve at least the same number of CPU cores based on the node's allocatable CPU capacity.
 
 After confirming these prerequisites, configure the V2 environment on each node and then enable the V2 Data Engine in Longhorn.
 
@@ -448,7 +448,7 @@ After the setting is enabled, the instance-manager pods are automatically restar
 
 > **Note**
 >
-> When the V2 Data Engine is enabled, each instance-manager pod for the V2 Data Engine typically consumes one dedicated CPU core because the `spdk_tgt` process uses intensive polling.
+> When the V2 Data Engine is enabled, each V2 instance-manager pod requires one or more dedicated CPU cores because the `spdk_tgt` process uses intensive polling. It is necessary that the V2 instance manager pod CPU request reserve at least the same number of CPU cores based on the node's allocatable CPU capacity.
 
 #### Add `block-type` Disks in Longhorn Nodes
 

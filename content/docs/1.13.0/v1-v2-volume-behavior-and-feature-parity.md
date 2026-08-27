@@ -3,7 +3,7 @@ title: V1 and V2 Volume Feature Support
 weight: 4
 ---
 
-This page summarizes the expected behavior differences between V1 and V2 volumes and provides a feature support matrix for the Longhorn v1.12.0 documentation set.
+This page summarizes the expected behavior differences between V1 and V2 volumes and provides a feature support matrix for the Longhorn v1.13.0 documentation set.
 
 ## Expected Behavioral Differences
 
@@ -36,6 +36,8 @@ In V2, revision counters are not supported. V2 volumes do not maintain revision-
 
 ## Feature Support Matrix
 
+> **Note**: The V2 column assumes the default `replicated` data layout. V2 volumes that use the `sharded` (erasure-coding) data layout do not support several of the features listed below, including backup and restore, volume cloning, backing images, DR (standby) volumes, and live migration. See [Sharding with Erasure Coding](../advanced-resources/v2-data-engine/sharding).
+
 | Feature | V1 | V2 | Support Notes |
 | --- | --- | --- | --- |
 | **Data Protection** |  |  |  |
@@ -51,7 +53,7 @@ In V2, revision counters are not supported. V2 volumes do not maintain revision-
 | **Volume Operations** |  |  |  |
 | Volume Expansion | ✔️ | ✔️ | - |
 | Volume Cloning | ✔️ | ✔️ | - |
-| Fast Volume Cloning | Not planned | Planned | Planned for Longhorn v1.12.1. |
+| Fast Volume Cloning | Not planned | ✔️ | - |
 | Volume Encryption | ✔️ | ✔️ | - |
 | Filesystem Trim | ✔️ | ✔️ | - |
 | **Replica Scheduling** |  |  |  |
@@ -86,4 +88,4 @@ In V2, revision counters are not supported. V2 volumes do not maintain revision-
 | **Engine Live Upgrade** |  |  |  |
 | Engine Live Upgrade | ✔️ | Not supported | V2 volumes do not support live upgrades between Longhorn v1.12 patch releases and must be detached before upgrading. Support is planned when upgrading from a Longhorn v1.12 release to a Longhorn v1.13 release. |
 | **Storage Sharding** |  |  |  |
-| Storage Sharding | Not planned | Planned | Planned as an experimental feature for Longhorn v1.12.1. |
+| Storage Sharding | Not planned | ✔️ | Experimental feature |

@@ -6,7 +6,9 @@ weight: 1
 This page summarizes the key notes for Longhorn v{{< current-version >}}.
 For the full release note, see the Longhorn v{{< current-version >}} release notes on GitHub.
 
-- [Removal](#removal)
+- [Breaking Changes](#breaking-changes)
+  - [Deprecation of legacy v2 linked clone volumes](#deprecation-of-legacy-v2-linked-clone-volumes)
+  - [Removal of V2 Backing Images](#removal-of-v2-backing-images)
 - [V2 Data Engine](#v2-data-engine)
   - [General Availability](#general-availability)
   - [Notice](#notice)
@@ -14,11 +16,13 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
     - [ARM64 NVMe-backed Block-Type Node Disk Limitation](#arm64-nvme-backed-block-type-node-disk-limitation)
     - [UBLK Frontend Kernel Limitation](#ublk-frontend-kernel-limitation)
     - [Longhorn System Upgrade](#longhorn-system-upgrade)
+  - [Storage Sharding (Experimental)](#storage-sharding-experimental)
   - [Default CPU Allocation](#default-cpu-allocation)
+  - [V2 Dedicated CPU Requirements](#v2-dedicated-cpu-requirements)
+  - [CPU Isolation Enabled by Default](#cpu-isolation-enabled-by-default)
   - [IPv6 Support](#ipv6-support)
   - [Features Planned for Longhorn v1.12.1](#features-planned-for-longhorn-v1121)
     - [Fast Volume Cloning](#fast-volume-cloning)
-    - [Storage Sharding](#storage-sharding)
 - [Important Fixes](#important-fixes)
   - [Instance Manager Panic During Replica Rebuild](#instance-manager-panic-during-replica-rebuild)
   - [Replica Rebuild Progress Reporting](#replica-rebuild-progress-reporting)
@@ -36,13 +40,26 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
 - [Resource Efficiency](#resource-efficiency)
   - [Longhorn Manager Memory Optimization](#longhorn-manager-memory-optimization)
 - [Networking](#networking)
+  - [Internal Network Policies](#internal-network-policies)
   - [Dual-Stack Cluster Support](#dual-stack-cluster-support)
 - [Monitoring](#monitoring)
   - [Toggle Kubernetes Metrics Server Integration](#toggle-kubernetes-metrics-server-integration)
 - [Command-Line Tool](#command-line-tool)
   - [On-Demand Snapshot Checksum Calculation](#on-demand-snapshot-checksum-calculation)
 
-## Removal
+## Breaking Changes
+
+### Deprecation of legacy v2 linked clone volumes
+
+V2 linked-clone volumes created in v1.12.0 or earlier are marked as legacy and deprecated starting in v{{< current-version >}}. The new linked-clone architecture introduced in [Ticket #12552](https://github.com/longhorn/longhorn/issues/12552) is not compatible with the legacy design.
+
+After upgrading to v{{< current-version >}}, **legacy linked-clone volumes cannot be operated on except for detachment and deletion**.
+
+To replace, create new linked-clone volumes from the same source volumes that back the legacy ones. As long as a legacy volume exists, its source volume is guaranteed to still be present, so you can create a replacement linked clone directly; no data copy is required.
+
+For more information, see [Ticket #12552](https://github.com/longhorn/longhorn/issues/12552).
+
+### Removal of V2 Backing Images
 
 V2 Backing Images are removed in Longhorn v{{< current-version >}}. Use the Containerized Data Importer (CDI) to import images into Longhorn for compatibility with the current engine.
 
@@ -79,13 +96,21 @@ On ARM64 systems, V2 volumes may experience stuck I/O when SPDK is configured wi
 
 #### UBLK Frontend Kernel Limitation
 
-The UBLK frontend for V2 Data Engine volumes is experimental and only functional on Linux kernels below v6.17. On kernel v6.17.0 and above, UBLK fails due to upstream UBLK API changes that cause `EINVAL` errors when starting UBLK devices.
+This feature is experimental. The UBLK frontend works on all supported Linux kernels but may cause a kernel panic with kernel v6.17. 
 
-For more information, see [Issue #11977](https://github.com/longhorn/longhorn/issues/11977) and [UBLK Frontend Support](../advanced-resources/v2-data-engine/ublk-frontend-support).
+For more information, see [GitHub Issue #11977](https://github.com/longhorn/longhorn/issues/11977) and [GitHub Issue #13509](https://github.com/longhorn/longhorn/issues/13509).
 
 #### Longhorn System Upgrade
 
 V2 volumes do not support live upgrades between Longhorn v1.12 patch releases and must be detached before upgrading. Support is planned when upgrading from a Longhorn v1.12 release to a Longhorn v1.13 release.
+
+### Storage Sharding (Experimental)
+
+Longhorn v{{< current-version >}} introduces storage sharding for the V2 Data Engine as an experimental feature. Instead of storing a full copy of the volume on each replica, sharding splits the volume into data and parity chunks using erasure coding and distributes them across multiple nodes. This allows a volume to grow beyond the capacity of a single disk or node while using less disk space to achieve the same level of fault tolerance.
+
+Because this feature is experimental, it is intended for evaluation and testing only and is not recommended for production use.
+
+For more information, see [Issue #1061](https://github.com/longhorn/longhorn/issues/1061) and [Sharding with Erasure Coding](../advanced-resources/v2-data-engine/sharding).
 
 ### Default CPU Allocation
 
@@ -94,6 +119,18 @@ Longhorn v{{< current-version >}} changes the default `data-engine-cpu-mask` fro
 Assigning 2 or more cores allows I/O and management tasks to run on separate reactors, improving responsiveness and operational stability.
 
 For more information, see [Issue #13237](https://github.com/longhorn/longhorn/issues/13237) and [Configurable CPU Cores](../advanced-resources/v2-data-engine/configurable-cpu-cores).
+
+### V2 Dedicated CPU Requirements
+
+When assigning CPU cores to the V2 Data Engine, ensure that the V2 instance-manager pod has enough guaranteed CPU resources to cover the assigned cores. This provides dedicated CPU availability for SPDK reactors, prevents CPU contention, and helps maintain predictable performance and V2 Data Engine stability.
+
+You can verify that the guaranteed CPU resources match the CPU cores specified by `data-engine-cpu-mask` or `data-engine-number-of-cpu-cores`. For more details, see [Guaranteed Instance Manager CPU](../references/settings/#guaranteed-instance-manager-cpu), [Data Engine CPU Mask](../references/settings/#data-engine-cpu-mask), and [Data Engine Number of CPU Cores](../references/settings/#data-engine-number-of-cpu-cores).
+
+### CPU Isolation Enabled by Default
+
+Longhorn v{{< current-version >}} enables [Data Engine CPU Isolation](../references/settings/#data-engine-cpu-isolation-enabled) by default for the V2 Data Engine (`{"v2":"true"}`). This ensures that CPU cores are dedicated to the V2 Data Engine.
+
+For more information, see [Issue #13724](https://github.com/longhorn/longhorn/issues/13724) and [Data Engine CPU Isolation Enabled](../references/settings/#data-engine-cpu-isolation-enabled).
 
 ### IPv6 Support
 
@@ -108,12 +145,6 @@ For more information, see [Issue #10928](https://github.com/longhorn/longhorn/is
 Fast volume cloning for the V2 Data Engine is planned for Longhorn v1.12.1. This enhancement is intended to allow the initial `linked-clone` to be created with multiple replicas in parallel instead of being limited to a single replica.
 
 For more information, see [Issue #12552](https://github.com/longhorn/longhorn/issues/12552).
-
-#### Storage Sharding
-
-Storage sharding for the V2 Data Engine is planned as an experimental feature for Longhorn v1.12.1. This capability is intended to address the existing space efficiency limitations caused by replica-based storage overhead.
-
-For more information, see [Issue #1061](https://github.com/longhorn/longhorn/issues/1061).
 
 ## Important Fixes
 
@@ -165,7 +196,7 @@ For more information, see [Issue #9205](https://github.com/longhorn/longhorn/iss
 
 ### Kubernetes Version Requirement
 
-Because the CSI external snapshotter is upgraded to v8.2.0, all clusters must be running Kubernetes v1.25 or later before upgrading to Longhorn v{{< current-version >}}.
+Because the CSI external snapshotter is upgraded to v8.2.0, all clusters must be running Kubernetes v1.34 or later before upgrading to Longhorn v{{< current-version >}}.
 
 ### Manual Checks Before Upgrade
 
@@ -201,6 +232,30 @@ Longhorn v{{< current-version >}} optimizes longhorn-manager informer caching to
 For more information, see [Issue #12771](https://github.com/longhorn/longhorn/issues/12771).
 
 ## Networking
+
+### Internal Network Policies
+
+Longhorn v{{< current-version >}} enables network policy by default. It protects inbound access to internal component endpoints and RPCs, including the instance-manager gRPC endpoint used for engine control. For more details, see [Network Policy](../advanced-resources/security/network-policy).
+
+> **Note:**
+> ServiceMonitor discovery does not automatically authorize network traffic. Cross-namespace Prometheus scrapers might be blocked by the Longhorn Manager's network policy. To allow this traffic, apply a scoped additive policy as detailed in the [Prometheus and Grafana setup](../monitoring/prometheus-and-grafana-setup) guide.
+
+For Helm installations, opt out by explicitly setting `networkPolicies.restrictInternalTraffic=false` in the values file or passing `--set networkPolicies.restrictInternalTraffic=false` when running or retrying `helm upgrade`. Use `--reuse-values` with `helm upgrade` when appropriate to retain previous release settings. Keep this separate from `networkPolicies.enabled`, which controls only the UI frontend policy. See the [Helm upgrade documentation](https://helm.sh/docs/helm/helm_upgrade/) for command behavior.
+
+After a successful upgrade with `networkPolicies.restrictInternalTraffic=false`, the six internal NetworkPolicy templates render nothing (they are excluded from the output), and policies owned by the Helm release are removed. Preview the rendered output with `helm upgrade --dry-run` or `helm template`; do not add `--reuse-values` to `helm template`. If installed, `helm diff` can optionally compare the changes.
+
+For manifest installations, delete only these six internal NetworkPolicy resources:
+
+- `backing-image-data-source`
+- `backing-image-manager`
+- `instance-manager`
+- `longhorn-manager`
+- `longhorn-recovery-backend`
+- `longhorn-webhook`
+
+These resources are defined in `longhorn.yaml` and `longhorn-okd.yaml`. Do not use `kubectl delete -f` on an entire Longhorn manifest or delete the Longhorn installation. Applying either unmodified manifest later recreates the policies.
+
+If an upgrade fails because these policies block required traffic, set `networkPolicies.restrictInternalTraffic=false` and retry the same upgrade.
 
 ### Dual-Stack Cluster Support
 
