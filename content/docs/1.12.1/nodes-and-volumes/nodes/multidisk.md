@@ -107,7 +107,7 @@ Longhorn supports several ways to manage block-type disks on a node:
 
 #### Prerequisites
 
-- The V2 Data Engine must be enabled. See [V2 Data Engine Quick Start](../../v2-data-engine/quick-start) for details.
+- The V2 Data Engine must be enabled. See [V2 Data Engine Prerequisites](../../deploy/install/_index#v2-data-engine-requirements) for details.
 - Longhorn prevents adding block disks that contain an existing file system or partition table. Clean the disk first:
 
     ```shell
