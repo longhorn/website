@@ -127,7 +127,7 @@ When the Pod is deployed, the Kubernetes master will check the PersistentVolumeC
 
 ### Creating V2 Longhorn Volumes with kubectl (replication)
 
-Before creating a V2 volume, ensure that the V2 Data Engine is enabled and Longhorn has available block-type disks. V2 volumes are scheduled only to block-type disks. For more information, see [V2 Data Engine Quick Start](../../v2-data-engine/quick-start) and [Add a Block-Type Disk](../nodes/multidisk/#add-a-block-type-disk).
+Before creating a V2 volume, ensure that the V2 Data Engine is enabled and Longhorn has available block-type disks. V2 volumes are scheduled only to block-type disks. For more information, see [V2 Data Engine](../../deploy/install/_index#v2-data-engine-requirements) and [Add a Block-Type Disk](../nodes/multidisk/#add-a-block-type-disk).
 
 1. Use the following command to create a StorageClass called `longhorn-v2-replicated`:
 
