@@ -103,7 +103,7 @@ For detailed instructions, see the Talos documentation on [Editing Machine Confi
 
 ## V2 Data Engine
 
-To use V2 volumes, all nodes must meet the V2 Data Engine [prerequisites](../../deploy/install/_index#v2-data-engine-requirements).
+To use V2 volumes, all nodes must meet the V2 Data Engine [prerequisites](../../../deploy/install/#v2-data-engine-requirements).
 
 ```yaml
 machine:
