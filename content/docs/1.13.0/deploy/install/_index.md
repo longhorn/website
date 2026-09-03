@@ -196,8 +196,8 @@ The command used to install a NFSv4 client differs depending on the Linux distri
 
 You can also use the [Longhorn Command Line Tool](#longhorn-command-line-tool) to install `nfs-client` automatically.
 
-> **Notice:**  
-> These steps only verify that the kernel supports NFSv4, v4.1, or v4.2.  
+> **Notice:**
+> These steps only verify that the kernel supports NFSv4, v4.1, or v4.2.
 > To verify the NFS version in use, run `mount | grep nfs` or `nfsstat -m` to confirm the mounted version. Using the correct NFS version is required for backup and RWX volume features in Longhorn.
 
 ### Install Cryptsetup and LUKS
@@ -520,6 +520,7 @@ This command validates, among other things:
 
 - CPU instruction requirements
 - HugePages availability
+- IOMMU support
 - SPDK-related kernel modules
 - Base Longhorn dependencies such as `open-iscsi` and NFS support
 
