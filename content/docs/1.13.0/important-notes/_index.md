@@ -35,6 +35,8 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
 - [Scheduling](#scheduling)
   - [Topology-Aware PV Node Affinity Control](#topology-aware-pv-node-affinity-control)
+- [Snapshots and Backups](#snapshots-and-backups)
+  - [Volume Group Snapshot Support](#volume-group-snapshot-support)
 - [Stability](#stability)
   - [Configurable Engine Image Pod Liveness Probe](#configurable-engine-image-pod-liveness-probe)
 - [Resource Efficiency](#resource-efficiency)
@@ -65,12 +67,26 @@ V2 Backing Images are removed in Longhorn v{{< current-version >}}. Use the Cont
 
 **Migration required for existing V2 volumes with backing images:**
 
-If you have V2 volumes that were created from backing images, you must migrate them before upgrading to v{{< current-version >}}:
+> **Warning: Upgrade Failure Risk**
+> V2 volumes with backing image dependencies cannot be upgraded in-place. Attempting to upgrade without migration may result in volume attachment failures.
+>
+> Furthermore, a direct backup of a V2 volume does not include its V2 backing image data, meaning a restore would still require the original backing image. If the volume data is still needed, you **must** perform the migration below before upgrading. If the data is no longer needed, simply delete the V2 volume instead.
 
-1. **Backup and recreate** (recommended): Create a backup of the V2 volume, delete the original volume, then restore from backup. The restored volume will not have a backing image dependency.
-2. **Delete the volume**: If the data is not needed, delete the V2 volume directly.
+Before upgrading to v1.13.0, flatten each required V2 volume into a temporary V1 volume and back up the V1 volume:
 
-V2 volumes with backing image dependencies cannot be upgraded in-place. Attempting to upgrade without migration may result in volume attachment failures.
+1. **Stop writes to the source volume:** Detach the workload or otherwise ensure that no process can modify the V2 volume during the copy.
+2. **Create a temporary V1 volume:** Do not configure a backing image, and make the volume exactly the same size as the source V2 volume.
+3. **Copy every block:** Use an offline migration pod or maintenance environment that exposes both volumes as raw block devices on the same node. Copy the source device to the temporary V1 device, then verify the result.
+
+   ```shell
+   dd if=/dev/source of=/dev/target bs=4M conv=fsync
+   cmp /dev/source /dev/target
+   sha256sum /dev/source /dev/target
+   ```
+
+4. **Back up the temporary V1 volume:** Detach the migration pod and create a Longhorn backup of the temporary V1 volume in the configured backup target.
+5. **Test the standalone backup:** Verify that the backup does not list a backing image, restore it to a new volume, and validate the restored data before deleting any source data.
+6. **Remove the dependency:** After the test restore succeeds, delete the original V2 volume and backing image. The temporary V1 volume can also be deleted after confirming that its backup is available.
 
 For more information, see [Issue #13181](https://github.com/longhorn/longhorn/issues/13181) and [Longhorn with CDI Imports](../advanced-resources/containerized-data-importer/containerized-data-importer).
 
@@ -215,6 +231,22 @@ Longhorn v{{< current-version >}} adds the `csi-allowed-topology-keys` setting a
 
 For more information, see [Issue #12684](https://github.com/longhorn/longhorn/issues/12684) and [Topology-Aware Provisioning](../nodes-and-volumes/nodes/topology-aware-provisioning).
 
+## Snapshots and Backups
+
+### Volume Group Snapshot Support
+
+Longhorn v{{< current-version >}} can snapshot a set of volumes as one group with a single request. You can create snapshot groups from the Longhorn UI, with kubectl, or by creating Kubernetes `VolumeGroupSnapshot` objects through CSI. The CSI path also supports group backups.
+
+The UI and kubectl paths work out of the box. The CSI path is disabled by default: it requires the VolumeGroupSnapshot CRDs, the `CSIVolumeGroupSnapshot` feature gate on the snapshot-controller, and a Longhorn toggle. For the setup steps, see [Enable CSI Volume Group Snapshot Support](../snapshots-and-backups/csi-snapshot-support/enable-csi-volume-group-snapshot-support).
+
+> **Important: Snapshot Consistency**
+> Each member volume is snapshotted independently, meaning the group is **not** captured at a single point in time. Application-level consistency across the group is future work built on top of this feature ([Issue #2128](https://github.com/longhorn/longhorn/issues/2128)).
+
+For more information, see:
+* [Issue #13349](https://github.com/longhorn/longhorn/issues/13349)
+* [Create a Snapshot Group](../snapshots-and-backups/snapshot-groups)
+* [CSI VolumeGroupSnapshot Associated with Longhorn Snapshot Group](../snapshots-and-backups/csi-snapshot-support/csi-volume-group-snapshot)
+
 ## Stability
 
 ### Configurable Engine Image Pod Liveness Probe
@@ -236,6 +268,13 @@ For more information, see [Issue #12771](https://github.com/longhorn/longhorn/is
 ### Internal Network Policies
 
 Longhorn v{{< current-version >}} enables network policy by default. It protects inbound access to internal component endpoints and RPCs, including the instance-manager gRPC endpoint used for engine control. For more details, see [Network Policy](../advanced-resources/security/network-policy).
+
+Longhorn v1.13.0 resolves the CNI compatibility issues described for v1.12.1 by providing two Helm values to manage the affected traffic paths:
+
+- **`networkPolicies.v1DataEngineInitiatorSourceCIDRs`**: Controls source filtering for V1 iSCSI on TCP port 3260. An empty list leaves this port without source filtering, allowing any source that can reach instance-manager to connect to TCP/3260. If populated, the CIDRs restrict connections to the effective sources observed by the CNI, so the required values are CNI-specific.
+- **`networkPolicies.recoveryBackendAdditionalIngressPorts`**: Adds TCP ingress ports to the recovery backend (defaults to an empty list). Add `15008` when using Istio Ambient, which uses HTTP-Based Overlay Network Environment (HBONE) on this port. This should only be configured for applicable mesh transports.
+
+For migration instructions from v1.12.1 and targeted workarounds, see [Troubleshooting volume attachment stuck due to CNI NetworkPolicies](../../../kb/troubleshooting-volume-attachment-stuck-cni-networkpolicies).
 
 > **Note:**
 > ServiceMonitor discovery does not automatically authorize network traffic. Cross-namespace Prometheus scrapers might be blocked by the Longhorn Manager's network policy. To allow this traffic, apply a scoped additive policy as detailed in the [Prometheus and Grafana setup](../monitoring/prometheus-and-grafana-setup) guide.

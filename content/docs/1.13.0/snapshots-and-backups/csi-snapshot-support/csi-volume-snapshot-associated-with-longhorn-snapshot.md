@@ -90,4 +90,4 @@ spec:
 >    - Set the `cloneMode` parameter to either `full-copy` or `linked-clone`.
 >    - If `cloneMode` is not specified, the default is `full-copy`.
 >
->    For more information, see [the V2 Volume Clone Support documentation](../../../v2-data-engine/features/volume-clone).
+>    For more information, see [the V2 Volume Clone Support documentation](../../../snapshots-and-backups/csi-volume-clone#v2-data-engine).

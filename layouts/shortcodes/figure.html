@@ -1,8 +1,9 @@
 {{ $src     := .Get "src" | relURL }}
 {{ $caption := .Get "caption" }}
+{{ $width   := .Get "width" }}
 <figure class="figure">
   <a href="{{ $src }}" target="_blank">
-    <img src="{{ $src }}">
+    <img src="{{ $src }}" {{ with $width }}width="{{ . }}" style="max-width: 100%; height: auto;"{{ end }}>
   </a> 
 
   {{ with $caption }}
