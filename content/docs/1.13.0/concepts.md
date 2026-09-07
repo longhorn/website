@@ -15,10 +15,8 @@ For the installation requirements, go to [this section.](../deploy/install/#inst
 
 - [1. Design](#1-design)
   - [1.1. The Longhorn Manager and the Longhorn Engine](#11-the-longhorn-manager-and-the-longhorn-engine)
-  - [1.2. V1 and V2 Data Engine Data Paths](#12-v1-and-v2-data-engine-data-paths)
-    - [1.2.1. V1 Data Engine](#121-v1-data-engine)
-    - [1.2.2. V2 Data Engine](#122-v2-data-engine)
-  - [1.3. Advantages of a Microservices Based Design](#13-advantages-of-a-microservices-based-design)
+  - [1.2. The Instance Manager](#12-the-instance-manager)
+  - [1.3. Advantages of a Microservices-Based Design](#13-advantages-of-a-microservices-based-design)
   - [1.4. CSI Driver](#14-csi-driver)
   - [1.5. CSI Plugin](#15-csi-plugin)
   - [1.6. The Longhorn UI](#16-the-longhorn-ui)
@@ -76,32 +74,39 @@ In the figure below,
 
 {{< figure alt="read/write data flow between the volume, controller instance, replica instances, and disks" src="/img/diagrams/architecture/how-longhorn-works-with-kubernetes.svg" >}}
 
-## 1.2. V1 and V2 Data Engine Data Paths
+## 1.2. The Instance Manager
 
-### 1.2.1. V1 Data Engine
+The [Instance Manager](https://github.com/longhorn/longhorn-instance-manager) is the per-node component that hosts and manages the lifecycle of engine and replica instances. It runs as a pod in the `longhorn-system` namespace, and is created and supervised by the Longhorn Manager. Unlike the Longhorn Manager, which is a single DaemonSet across the cluster, the Instance Manager is a system-managed component whose lifecycle is owned by Longhorn itself.
 
-For V1 volumes, I/O follows this path:
-1. I/O flows from the application, through the filesystem and **iSCSI block device**, to the **`longhorn tgt` service**.
-2. The service forwards the I/O to the **Longhorn Engine process** over a Unix domain socket using a customized protocol.
-3. The Engine forwards the I/O to **Longhorn replica processes** on multiple nodes over TCP.
-4. Each replica process stores the volume data in a sparse file on the filesystem.
+When the Longhorn Manager decides to attach a volume, it does not start the engine or replica processes directly. Instead, it instructs the Instance Manager on the relevant node to start them inside the Instance Manager pod. Each worker node runs a single Instance Manager pod per data engine version, and that pod hosts the engine and replica instances for many volumes that land on the node. For a given volume, one engine instance lives in the Instance Manager on the node where the workload Pod runs, and one replica instance lives in the Instance Manager on each node selected for that volume's replicas. The number of replicas per volume is controlled by the [Default Replica Count](../references/settings/#default-replica-count) setting and can be overridden per volume.
 
-The Engine provides strong consistency for writes: it acknowledges a write to the application *only* after the write completes on all replicas, and it marks a replica as failed if its I/O times out. For reads, the Engine retrieves data from the replicas using a round-robin strategy.
+> **Note:** For RWX volumes without the `migratable` flag, the engine runs on the node hosting the share-manager pod rather than on the workload node.
 
-{{< figure alt="V1 Data Engine data path from the application to Longhorn replica processes" src="/img/diagrams/architecture/v1-data-path.png" width="750" >}}
+Instance Managers also act as the gate between Longhorn's control plane and data plane. Each Instance Manager pod runs a proxy service that the Longhorn Manager uses to reach the hosted engine and replica instances, so control-plane operations (attach/detach, snapshot, backup, replica rebuild) flow through this proxy. When a [Storage Network](../advanced-resources/deploy/storage-network/#setting-storage-network-during-longhorn-installation) is configured, Instance Manager pods also route their traffic through it.
 
-### 1.2.2. V2 Data Engine
+The hosting model differs between data engines:
 
-For V2 volumes, I/O follows this path:
-1. I/O flows from the application, through the filesystem and **NVMe-oF block device**, to the **SPDK target daemon** (which exposes the Longhorn Engine instance as an SPDK RAID1 block device).
-2. The Engine instance forwards the I/O to the SPDK target daemons on multiple nodes over NVMe-oF using TCP.
-3. Each replica instance acts as an SPDK logical volume that stores the volume data on a raw block device.
+- **V1 Data Engine:** The Instance Manager runs each engine and each replica as a Linux process inside the pod. The engine process is also what exposes the volume's block device to the host, using iSCSI as the frontend. A single V1 Instance Manager pod can host engine and replica processes for many volumes. Because engine and replica processes share the pod, the Instance Manager's resource consumption scales with the aggregate I/O load of the volumes hosted on the node. Review the [Guaranteed Instance Manager CPU](../references/settings/#guaranteed-instance-manager-cpu) setting before scaling replicas or attaching high-throughput volumes on a node.
+- **V2 Data Engine:** The Instance Manager runs an SPDK target process (`spdk_tgt`) inside the pod, and SPDK takes over the full storage path, including the disks themselves. Each V2 block-type disk is imported into the target as a Logical Volume Store (LVS), and replicas live on top as SPDK logical volume bdevs. Engines are exposed as SPDK RAID block devices built from those replicas. The frontend presenting the block device to the host (NVMe-TCP or UBLK) is also driven from this Instance Manager. Because `spdk_tgt` runs in polling mode by default, the V2 Instance Manager reserves dedicated CPU cores and memory (hugepages when enabled) on each node. Use the [Data Engine CPU Mask](../references/settings/#data-engine-cpu-mask) and [Data Engine Memory Size](../references/settings/#data-engine-memory-size) settings to tune these reservations. Longhorn also supports [Interrupt Mode](../advanced-resources/v2-data-engine/interrupt-mode/) as an alternative when reducing CPU consumption is more important than raw I/O performance.
 
-As with the V1 Data Engine, writes are acknowledged to the application *only* after they complete on all replicas, a replica is marked as failed if its I/O times out, and reads are retrieved from the replicas using a round-robin strategy.
+### Upgrade Behavior
 
-{{< figure alt="V2 Data Engine data path from the application to Longhorn replica instances" src="/img/diagrams/architecture/v2-data-path.png" width="750" >}}
+If both data engines are enabled on a cluster, each node runs two Instance Manager pods (one per data engine version), each with its own CPU reservation. During a Longhorn upgrade, a new Instance Manager pod is created alongside the existing one on each affected node. The old pod keeps hosting the engine and replica instances that are already running so that live volumes stay online, while newly created and newly attached volumes land on the upgraded pod. Existing volumes only move to the new Instance Manager when they are detached and reattached (typically as part of the engine upgrade workflow), and the old pod is only removed once no instances remain inside it. 
 
-## 1.3. Advantages of a Microservices Based Design
+> **Warning: Resource constraints during upgrades**
+> Because both the old and new pods keep their CPU and memory reservations during this window, each node needs enough spare capacity to run the extra pods until the upgrade completes. If a node does not have enough reservable resources, Longhorn cannot start the new Instance Manager pod and the upgrade stalls on that node. This is especially likely for the V2 Data Engine, whose Instance Manager requires hugepages and dedicated CPU cores.
+
+### Failure Domain and Protection
+
+Because the engine and replica instances live inside the Instance Manager pod, the Instance Manager defines the failure domain for everything it hosts. If an Instance Manager pod is restarted or evicted, every engine and replica instance it was hosting goes with it, and the Longhorn Manager must reattach the affected volumes and rebuild replicas as needed. 
+
+For this reason, Longhorn reserves CPU for the Instance Manager pod (see [Guaranteed Instance Manager CPU](../best-practices/#guaranteed-instance-manager-cpu)) and avoids restarting it while it is still hosting active instances. For the same reason, Longhorn protects the Instance Manager pod from accidental eviction or drain with a PodDisruptionBudget, whose behavior is controlled by the [Node Drain Policy](../references/settings/#node-drain-policy) setting. Longhorn also assigns its system-managed components a dedicated [Priority Class](../references/settings/#priority-class) by default, making them less likely to be evicted when a node is under resource pressure.
+
+### Debugging
+
+This also means that the Instance Manager is the pod you target when debugging engine or replica behavior — there is no separate per-volume engine pod. Instance Manager pods follow the naming pattern `instance-manager-<hash>` and carry the `longhorn.io/node=<node-name>` label, which is the practical entry point for `kubectl logs` and `kubectl exec` when troubleshooting volume I/O issues on a specific node.
+
+## 1.3. Advantages of a Microservices-Based Design
 
 In Longhorn, each Engine only needs to serve one volume, simplifying the design of the storage controllers. Because the failure domain of the controller software is isolated to individual volumes, a controller crash will only impact one volume.
 
