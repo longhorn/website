@@ -186,7 +186,7 @@ A volume is full when the filesystem mounted on it has reached its capacity limi
 - Data writes fail with "no space left on device" errors.
 - The host disk for the replica of the volume may still have available space for other volumes.
 
-- **Characteristics:**
+- **Characteristics**:
   - The `df` command shows 100% usage for the mounted filesystem.
   - Applications cannot write new data to the volume mount point.
 
@@ -206,7 +206,7 @@ Node disks do not have enough space to accommodate volume operations because vol
 - Volume operations, such as volume creation/expansion, snapshot creation/deletion, and replica rebuilding, may be limited.
 - Replicas of newly created volumes are prevented from being scheduled to the full disks.
 
-- **Characteristics:**
+- **Characteristics**:
   - Applications cannot write new data to the volume mount point even though the volume is not full.
   - Longhorn operations for volumes on these node disks, such as replica creation, rebuilding, or snapshot operations, may fail.
   - Volumes with replicas sharing the same node disks are affected.
@@ -253,65 +253,99 @@ When encountering the `no space left on device` error, first check whether the v
     2. Expand the disk size, or remove unnecessary files, for example, [orphaned replica directories](../../../advanced-resources/data-cleanup/orphaned-data-cleanup#orphaned-replica-directories) and [used backing images](../../../advanced-resources/backing-image/backing-image#clean-up-backing-images), on the disk.
     3. Then scale up the workload.
 
-## Recommended Maximum Volume Size
+## Recommended Maximum Volume Size Guidelines
 
-Determining the appropriate size for a volume is not just about disk capacity, it is about **recovery time**. Longhorn has a default rebuilding timeout of 24 hours. If a volume (including its snapshots) is too large to be synchronized over your network/disk within that window, the volume may remain in a degraded state.
+Determining the maximum recommended volume size depends on **recovery time**; specifically ensuring a degraded volume and all of its retained data (volume head plus snapshots) can be synchronized over your network and disk within Longhorn's default 24-hour rebuilding timeout.
 
-### Sizing Calculation
+When planning volume capacity, you must evaluate both **rebuild performance bottlenecks** (network throughput vs. disk write speed) and **physical disk space limits** (node disk capacity and Longhorn storage settings).
 
-To calculate the maximum recommended volume size, you must identify the hardware bottleneck in your environment—either the network or the disk.
+### Sizing Calculation & Performance Bottlenecks
 
-### Step 1: Calculate Available Rebuild Bandwidth
+Replica rebuilding involves copying data blocks across the cluster network and writing them to the destination disk. The maximum data volume ($D_{max}$) Longhorn can successfully rebuild within the 24-hour timeout window (86,400 seconds) is governed by whichever component acts as the slower bottleneck.
 
-The network bandwidth available for a single replica rebuild is limited by the **Concurrent Replica Rebuild Per Node Limit** (default is **5**).
+#### Step 1: Calculate Available Rebuild Bandwidth
 
-> **Formula**: Network per Rebuild = Total Network Bandwidth / 5
+1. **Network Throughput Per Rebuild**: Network bandwidth for a single replica rebuild is constrained by the total available network bandwidth divided by the **Concurrent Replica Rebuild Per Node Limit** (default is **5**).
 
-### Step 2: Identify the Bottleneck
+   > **Formula**: Network Per Rebuild = Total Network Bandwidth / Concurrent Replica Rebuild Limit
 
-The effective rebuilding speed is the **minimum** of your disk write throughput and the available network bandwidth calculated in Step 1.
+2. **Effective Rebuild Bandwidth**: The actual rebuild speed is limited by the minimum between your disk write throughput and the network bandwidth per rebuild calculated above.
 
-> **Formula**: Rebuild Bandwidth = Minimum(Disk Throughput, Network per Rebuild)
+   > **Formula**: Rebuild Bandwidth = Minimum(Disk Write Throughput, Network Per Rebuild)
 
-### Step 3: Calculate Max Volume Size for Full Data
+#### Step 2: Calculate Maximum Rebuild Capacity ($D_{max}$)
 
-Longhorn limits rebuilding to a 24-hour (86,400 seconds) window.
+Using the 24-hour (86,400 seconds) rebuild timeout window:
 
-> **Formula**: Max Data (D-max) = Rebuild Bandwidth x 86,400
+> **Formula**: Max Data (D-max) = Rebuild Bandwidth x 86,400 seconds
 
-*Example: 250 MiB/s over 24 hours equals approximately **21 TiB**.*
+- **Example 1 (Network Bottleneck)**: With a 10Gbps network (~1,250 MiB/s total, yielding 250 MiB/s per rebuild slot across 5 concurrent rebuilds) and disk write throughput of 360 MiB/s:
+  - Rebuild Bandwidth = Minimum(360 MiB/s, 250 MiB/s) = 250 MiB/s
+  - D-max = 250 MiB/s x 86,400 s = ~21 TiB
 
-### Step 4: Adjust for Snapshots
+- **Example 2 (Disk Write Bottleneck)**: With a 10Gbps network (250 MiB/s per rebuild slot) but slower disk write performance of 100 MiB/s:
+  - Rebuild Bandwidth = Minimum(100 MiB/s, 250 MiB/s) = 100 MiB/s
+  - D-max = 100 MiB/s x 86,400 s = ~8.24 TiB
 
-Each snapshot (and the volume-head) adds to the total data that must be synchronized. To find the final recommended volume size, divide the Max Data (D-max) by the total number of data objects (Snapshots + 1 for Volume Head).
+#### Step 3: Adjust for Snapshots & Volume Head
+
+During a rebuild, Longhorn synchronizes the volume head as well as all existing snapshot files in the chain. To prevent total volume rebuild time from exceeding 24 hours, the recommended maximum nominal volume size ($V_{final}$) decreases as snapshot retention increases:
 
 > **Formula**: Final Max Volume Size = D-max / (Number of Snapshots + 1)
 
-*Example: With 2 snapshots and a D-max of 21 TiB, the recommended volume size is 21 / 3 = **7 TiB**.*
+*(Where "+1" accounts for the Volume Head)*.
+
+### Physical Disk Space & Longhorn Allocation Constraints
+
+Rebuild bandwidth determines the maximum data size achievable within 24 hours, but **physical disk capacity** on your worker nodes dictates whether those volume replicas can actually be scheduled and stored.
+
+1. **Allocatable Node Disk Space**:
+   Longhorn calculates schedulable space on a disk using global settings:
+
+   > **Formula**: Allocatable Space = (Total Disk Size - Reserved Space) x (Storage Over-Provisioning Percentage / 100)
+
+   - `storage-reserved-percentage-for-default-disk` / `storage-minimal-available-percentage`: Reserves emergency buffer space to prevent node disk exhaustion.
+   - `storage-over-provisioning-percentage`: Controls how much nominal volume capacity can be scheduled relative to physical disk size.
+
+2. **Actual Space Consumption on Disk**:
+   A volume replica's actual space usage on a node includes active data in the volume head, historical data across snapshots, and temporary buffer space used during snapshot deletion/purge operations.
+   - When using `Snapshot Max Count` ($N$), the peak theoretical disk footprint per replica is:
+
+     > **Formula**: Max Replica Disk Usage = (N + 1) x Volume Spec Size
+
+   - Individual worker node disks must physically fit this total replica usage, or new replica allocation will fail with `no space left on device`.
 
 ### Case Studies
 
-#### Scenario A: 1Gbps Network Environment (High Density)
+#### Scenario A: 1Gbps Network Environment (Standard Disks)
 
-* **Cluster Spec**: 1Gbps Network, 500GB Disk usage per worker node.
-* **Network Bandwidth**: ~125 MiB/s
-* **Concurrent Limit**: 5
-* **Rebuild Bandwidth**: 125 / 5 = **25 MiB/s**
-* **Max Data (D-max)**: 25 MiB/s x 86,400 = **~2.1 TiB**
-* **Constraint**: If a user wants to run **100 volumes** in this cluster with 2 snapshots each, the max size per volume should be roughly **700 GiB** to ensure a successful recovery within the timeout window.
+- **Cluster Hardware**: 1Gbps Storage Network, Worker nodes with 2 TiB dedicated SSD storage per node (Disk Write Speed: 100 MiB/s).
+- **Longhorn Settings**: Default concurrent rebuild limit = 5; `storage-over-provisioning-percentage` = 100%.
+- **Rebuild Bandwidth Calculation**:
+  - Network limit per rebuild: 125 MiB/s / 5 = 25 MiB/s
+  - Bottleneck: Minimum(100 MiB/s, 25 MiB/s) = 25 MiB/s
+- **Max 24h Rebuild Data ($D_{max}$)**: 25 MiB/s x 86,400 s = ~2.1 TiB.
+- **Sizing Recommendation**:
+  - For volumes without snapshots (1 volume head): Final Max Volume Size = ~2.1 TiB.
+  - For volumes retaining 2 snapshots ($N = 2$): Final Max Volume Size = 2.1 TiB / 3 = ~700 GiB.
+  - **Physical Disk Check**: Each node's 2 TiB dedicated disk can safely host a 700 GiB replica with 2 snapshots ($3 \times 700\text{ GiB} = 2.1\text{ TiB}$ actual peak footprint).
 
-#### Scenario B: High Performance (10Gbps) Environment
+#### Scenario B: 10Gbps High-Performance Environment (NVMe Drives)
 
-* **Cluster Spec**: 10Gbps Network, 360 MiB/s Disk throughput.
-* **Rebuild Bandwidth**: 250 MiB/s (Network is the bottleneck: 1250 MiB / 5).
-* **Max Data (D-max)**: **~21 TiB**
-* **Recommendation**: If the user requires **20 snapshots** for a volume, the recommended volume size drops to **~1 TiB** (21 TiB / 21) to ensure the entire chain can rebuild within 24 hours.
+- **Cluster Hardware**: 10Gbps Storage Network (~1,250 MiB/s), NVMe disks (Disk Write Speed: 360 MiB/s).
+- **Rebuild Bandwidth Calculation**:
+  - Network limit per rebuild: 1,250 MiB/s / 5 = 250 MiB/s
+  - Bottleneck: Minimum(360 MiB/s, 250 MiB/s) = 250 MiB/s
+- **Max 24h Rebuild Data ($D_{max}$)**: 250 MiB/s x 86,400 s = ~21 TiB.
+- **Sizing Recommendation**:
+  - For volumes with low snapshot retention (e.g., 2 snapshots): Final Max Volume Size = 21 TiB / 3 = ~7 TiB.
+  - For workloads requiring high snapshot retention (e.g., 20 snapshots): Final Max Volume Size = 21 TiB / 21 = ~1 TiB.
 
 ### Testing Methodology
 
-To determine these limits, Longhorn conducts scalability tests across Public Cloud and On-Prem environments using the following methodology:
+Longhorn derives these guidelines from empirical scalability testing across Public Cloud and On-Prem benchmark setups:
 
-1. **Baseline Setup**: Deploy a volume with a single replica and write data to fill the spec size (for example, using `dd` for sequential data or `fio` for sparse/random patterns).
-2. **Trigger Rebuild**: Scale the replica count (for example, from 1 to 2) to trigger an immediate rebuild.
-3. **Monitor Throughput**: Measure the time required for the rebuild to reach 100% progress.
-4. **Extrapolation**: The results are extrapolated to a 24-hour window to define the maximum safe volume size for that specific hardware profile.
+1. **Baseline Setup**: Deploy a volume with a single replica and write data to fill the nominal spec size (using `dd` for full sequential data or `fio` for sparse/random IO patterns).
+2. **Trigger Rebuild**: Scale replica count from 1 to 2 to trigger immediate replica rebuilding over the network.
+3. **Monitor Progress**: Track rebuild duration and transfer throughput until completion.
+4. **Extrapolation**: Rebuild speeds across different data patterns (full vs. 4k-hole sparse data) are extrapolated to the 24-hour timeout window to establish safe maximum volume thresholds.
