@@ -14,6 +14,14 @@ The CPU mask is a **hexadecimal (hex) representation of a binary bitmask**, wher
 - A bit set to **1** means the core is enabled for the data engine.
 - A bit set to **0** means the core is skipped.
 
+> **Important: NVMe BDF Block Devices and I/O Queues**
+> 
+> When using `nvme` disk driver for a block-type disk, SPDK unbinds the kernel NVMe driver and takes over the physical controller directly. SPDK allocates one I/O queue pair per allocated CPU core. 
+> 
+> Because of this, **the physical NVMe device's I/O queue count must be strictly greater than the number of SPDK CPU cores configured via the CPU mask**. 
+> 
+> If the CPU mask allocates as many or more cores than the available I/O queues on the physical device (for example, allocating 2 cores to an EBS NVMe volume that only provides 2 I/O queues), SPDK will exhaust the queues. This leads to incomplete I/O processing and causes volume I/O to hang indefinitely.
+
 ### How to Calculate the Mask
 
 To determine the correct hex string, visualize your CPU cores as a sequence of bits from right to left:
