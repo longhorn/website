@@ -3,31 +3,38 @@ title: Interrupt Mode Support
 weight: 40
 ---
 
-Starting with v1.10.0, Longhorn supports **SPDK interrupt mode** for V2 data engine volumes. Interrupt mode provides an alternative to the default **polling mode**, offering improved CPU efficiency in certain environment.
+Longhorn supports **SPDK interrupt mode** for V2 data engine volumes as an alternative to the default **polling mode**.
 
-Interrupt mode is particularly suitable for clusters with limited CPU resources and a relatively small number of volumes. While polling mode maximizes performance by keeping CPU utilization close to 100% on allocated cores, interrupt mode reduces CPU usage by allowing the SPDK reactor to adjust its usage dynamically instead of continuously polling.
+In polling mode, SPDK reactors busy-poll for work. This keeps the allocated CPU cores close to 100% utilization and delivers the lowest latency. In interrupt mode, I/O completions wake the reactors through events, while SPDK keeps low-frequency background checks for NVMe/TCP control work and safety. This reduces idle CPU usage without changing the V2 data engine CPU allocation model.
 
-## Overview
+Interrupt mode is a good fit for clusters with limited CPU resources, a relatively small number of volumes, or sporadic I/O. V2 still runs SPDK reactors on CPUs selected by the CPU mask, even when interrupt mode is enabled.
 
-### Polling Mode vs Interrupt Mode
+## How Interrupt Mode Works
 
-**Polling Mode (Default)**:
-- Continuously polls for I/O operations
-- Provides the lowest latency
-- Consumes ~100% of the allocated CPU core at all times
-- Best suited for high-performance workloads with frequent I/O
+### Polling Mode and Interrupt Mode
 
-**Interrupt Mode**:
-- Uses interrupt-driven I/O handling
-- CPU consumption scales with the number of attached volumes
-- Better suited for resource-constrained environments
+| | Polling Mode (Default) | Interrupt Mode |
+| --- | --- | --- |
+| I/O handling | Reactors continuously poll for work | I/O completions wake reactors through events |
+| Idle CPU usage | Close to 100% on each allocated CPU core | Very low, with low-frequency background checks |
+| Latency | Lowest and most predictable latency | Slightly higher under sustained high-throughput workloads |
+| Best fit | High-performance workloads with frequent I/O | Resource-constrained clusters, fewer volumes, or sporadic I/O |
+| CPU allocation | Uses CPUs selected by the V2 data engine CPU mask | Uses CPUs selected by the V2 data engine CPU mask |
+
+### NVMe/TCP I/O Path
+
+In interrupt mode, I/O completions wake the SPDK reactors through events instead of being discovered by constant polling. The system behavior shifts to the following:
+
+- **I/O completions**: Delivered to the reactors as events. No high-frequency polling is needed to pick up finished I/O.
+- **Background NVMe/TCP checks**: SPDK still performs low-frequency control checks for operations such as keepalive and controller recovery. These checks run more often while a connection is being re-established, so recovery is not delayed.
+- **Safety check**: Every 10 ms, SPDK checks for internal queued work that may not have its own event notification. If an event is missed, this turns it into a brief latency hiccup instead of a stalled volume.
+
+Because the remaining checks run at low frequency rather than thousands of times per second, the reactors stay idle most of the time when there is no I/O. An idle Instance Manager therefore uses very little CPU, while still retaining safeguards for connection recovery and missed events.
 
 ## Prerequisites
 
-- Longhorn v1.10.0 or later
 - V2 data engine enabled
-- No attached v2 volumes when changing the setting
-- For NVMe disks, IOMMU must be enabled. To verify:
+- If you add an NVMe disk as a node disk using the `nvme` disk driver, IOMMU must be enabled. To verify:
     ```bash
     find /sys/kernel/iommu_groups/ -type l
     ```
@@ -54,32 +61,31 @@ To enable interrupt mode globally, update the [data-engine-interrupt-mode-enable
 - **Volume State Requirement**: The setting can only be changed when no V2 volumes are attached. Longhorn blocks updates if any V2 volume is active.
 - **Global Effect**: The setting applies to all V2 volumes.
 
-## Performance Characteristics
+## CPU Core Allocation in Interrupt Mode
 
-### Recommended Use Cases
+Interrupt mode uses the same V2 data engine CPU allocation settings as polling mode. Longhorn still starts the SPDK target daemon (`spdk_tgt`) with an effective CPU mask, which determines the CPUs that SPDK reactors can use. For CPU mask syntax, calculation examples, global settings, and per-node overrides, see [Configurable CPU Cores](../configurable-cpu-cores).
 
-Enable interrupt mode when:
-- Running in resource-constrained clusters
-- Managing only a small number of volumes
-- CPU resources are limited or shared with other workloads
-- I/O patterns are sporadic rather than continuous
-- Energy efficiency is a priority
+The important difference is CPU consumption, not CPU placement:
+
+| | Polling Mode | Interrupt Mode |
+| --- | --- | --- |
+| CPUs available to `spdk_tgt` | CPUs selected by the effective CPU mask | CPUs selected by the effective CPU mask |
+| Idle behavior | Reactors continuously busy-poll | Reactors can block while waiting for I/O events or low-frequency checks |
+| Idle CPU usage | Close to 100% on each masked CPU | Very low, but not zero |
+| Peak CPU usage | Bounded by the masked CPUs | Bounded by the masked CPUs |
+
+For example, if the effective CPU mask is `0x3`, SPDK uses two reactors pinned to CPU 0 and CPU 1 in both modes. In interrupt mode, those reactors use very little CPU while idle, but the V2 data engine still cannot use CPUs outside CPU 0 and CPU 1. Under load, it can still saturate both CPUs.
+
+Keep these points in mind when enabling interrupt mode:
+
+- **Keep at least 2 cores available** to the V2 data engine. The first reactor also handles management requests, so a single-core allocation can allow heavy I/O to delay management processing.
+- **Keep the effective Instance Manager CPU request aligned** with the CPU mask. Even though idle usage is low in interrupt mode, the reactors still need those CPUs during I/O bursts. See [Guaranteed Instance Manager CPU](../../../references/settings#guaranteed-instance-manager-cpu).
+- **Do not shrink the CPU mask** as a substitute for enabling interrupt mode. A smaller mask reduces the number of reactors available for I/O; interrupt mode reduces idle CPU consumption without removing reactors.
 
 ## Limitations
 
-### Hybrid Implementation
-
-The current V2 volume interrupt mode uses a hybrid approach for NVMe/TCP transport:
-
-- **Admin Queue Operations**: Still relies on periodic polling for keepalive and controller recovery
-- **I/O Queue Completion**: Uses polling for command completion
-- **Residual CPU Usage**: Results in a small but constant CPU load, even when attach volumes are idle
-
-### Performance Trade-offs
-
-- **Latency**: Slightly higher than polling mode
-
-### Operational Restrictions
-
-- **Setting Changes**: Cannot be modified while V2 volumes are attached
-- **Global Scope**: Applies globally; no per-volume override is available
+- **Residual polling**: Interrupt mode is not a complete removal of polling. Low-frequency background checks remain, so idle CPU usage is very low but not zero.
+- **Latency trade-off**: Under sustained high-throughput workloads, polling mode still delivers the lowest and most predictable latency.
+- **Setting changes**: Cannot be modified while V2 volumes are attached.
+- **Global scope**: Applies globally; no per-volume override is available.
+- **CPU mask still applies**: Interrupt mode does not remove the V2 data engine CPU mask.
