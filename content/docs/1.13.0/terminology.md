@@ -135,7 +135,11 @@ A Longhorn Engine is a data plane component of Longhorn. It is a per-volume stor
 
 ### Longhorn Manager
 
-The Longhorn Manager is the control plane component of Longhorn. It runs as a Kubernetes DaemonSet. It is responsible for managing volumes, handling API requests, and orchestrating Longhorn Engines, Replicas, and other custom resources (CRs).
+The Longhorn Manager is a control plane component of Longhorn. It runs as a Kubernetes DaemonSet. It is responsible for managing volumes, handling API requests, and orchestrating Longhorn Engines, Replicas, and other custom resources (CRs).
+
+### Longhorn Global Manager
+
+The Longhorn Global Manager runs the Longhorn Manager's cluster-wide controllers as a Kubernetes Deployment. One elected leader runs these controllers.
 
 ### Longhorn Volume
 
