@@ -26,6 +26,9 @@ You need to set node selector for both types of components. See more details bel
         longhornManager:
           nodeSelector:
             label-key1: "label-value1"
+        longhornGlobalManager:
+          nodeSelector:
+            label-key1: "label-value1"
         longhornDriver:
           nodeSelector:
             label-key1: "label-value1"
@@ -33,9 +36,9 @@ You need to set node selector for both types of components. See more details bel
           nodeSelector:
             label-key1: "label-value1"
       ```
-   * If you install Longhorn by using `kubectl` to apply [the deployment YAML](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml), you need to modify the node selector section for Longhorn Manager, Longhorn UI, and Longhorn Driver Deployer.
+   * If you install Longhorn by using `kubectl` to apply [the deployment YAML](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml), you need to modify the node selector section for Longhorn Manager, Longhorn Global Manager, Longhorn UI, and Longhorn Driver Deployer.
     Then apply the YAMl files.
-   * If you install Longhorn using Helm, you can change the Helm values for `global.nodeSelector`, `longhornManager.nodeSelector`, `longhornUI.nodeSelector`, `longhornDriver.nodeSelector` in the `values.yaml` file before installing the chart.
+   * If you install Longhorn using Helm, you can change the Helm values for `global.nodeSelector`, `longhornManager.nodeSelector`, `longhornGlobalManager.nodeSelector`, `longhornUI.nodeSelector`, `longhornDriver.nodeSelector` in the `values.yaml` file before installing the chart.
 
 2. Set the node selector for system-managed components (for example, Instance Manager, Backing Image Manager, Share Manager, CSI Driver, and Engine Image).
 
@@ -71,6 +74,9 @@ You need to set node selector for both types of components. See more details bel
         longhornManager:
           nodeSelector:
             label-key1: "label-value1"
+        longhornGlobalManager:
+          nodeSelector:
+            label-key1: "label-value1"
         longhornDriver:
           nodeSelector:
             label-key1: "label-value1"
@@ -78,9 +84,9 @@ You need to set node selector for both types of components. See more details bel
           nodeSelector:
             label-key1: "label-value1"
         ```
-    * If you install Longhorn by using `kubectl` to apply [the deployment YAML](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml), you need to modify the node selector section for Longhorn Manager, Longhorn UI, and Longhorn Driver Deployer.
+    * If you install Longhorn by using `kubectl` to apply [the deployment YAML](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml), you need to modify the node selector section for Longhorn Manager, Longhorn Global Manager, Longhorn UI, and Longhorn Driver Deployer.
       Then reapply the YAMl files.
-    * If you install Longhorn using Helm, you can change the Helm values for `global.nodeSelector`, `longhornManager.nodeSelector`, `longhornUI.nodeSelector`, `longhornDriverDeployer.nodeSelector` in the `values.yaml` file, and then run `helm upgrade` to upgrade to the new version of the chart.
+    * If you install Longhorn using Helm, you can change the Helm values for `global.nodeSelector`, `longhornManager.nodeSelector`, `longhornGlobalManager.nodeSelector`, `longhornUI.nodeSelector`, `longhornDriverDeployer.nodeSelector` in the `values.yaml` file, and then run `helm upgrade` to upgrade to the new version of the chart.
 
 3. Set the node selector for system-managed components (for example, Instance Manager, Backing Image Manager, Share Manager, CSI Driver, and Engine Image).
 

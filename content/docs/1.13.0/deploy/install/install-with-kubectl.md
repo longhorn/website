@@ -35,6 +35,9 @@ The initial settings for Longhorn can be customized by [editing the deployment c
     NAME                                                READY   STATUS    RESTARTS   AGE
     longhorn-ui-b7c844b49-w25g5                         1/1     Running   0          2m41s
     longhorn-manager-pzgsp                              1/1     Running   0          2m41s
+    longhorn-global-manager-5b7c9d8f4-2xk9p             1/1     Running   0          2m41s
+    longhorn-global-manager-5b7c9d8f4-8mq4z             1/1     Running   0          2m41s
+    longhorn-global-manager-5b7c9d8f4-t7wvn             1/1     Running   0          2m41s
     longhorn-driver-deployer-6bd59c9f76-lqczw           1/1     Running   0          2m41s
     longhorn-csi-plugin-mbwqz                           2/2     Running   0          100s
     csi-snapshotter-588457fcdf-22bqp                    1/1     Running   0          100s

@@ -8,6 +8,9 @@ weight: 1
 We only support upgrading to v{{< current-version >}} from v1.11.x. For other versions, please upgrade to v1.11.x first.
 
 Engine live upgrade is supported from v1.11.x to v{{< current-version >}}.
+
+Starting with v1.13.0, upgrading Longhorn also creates the [Longhorn Global Manager](../../../terminology/#longhorn-global-manager) Deployment. Make sure that at least one of its Pods can be scheduled. For Helm installations, review the [Longhorn Global Manager settings](../../../references/helm-values/#longhorn-global-manager-settings); for manifest installations, review the Deployment's scheduling configuration in the deployment YAML.
+
 For airgap upgrades when Longhorn is installed as a Rancher app, you will need to modify the image names and remove the registry URL part.
 
 For example, the image `registry.example.com/longhorn/longhorn-manager:v{{< current-version >}}` is changed to `longhorn/longhorn-manager:v{{< current-version >}}` in Longhorn images section. For more information, see the air gap installation steps [here.](../../install/airgap/#using-a-rancher-app)

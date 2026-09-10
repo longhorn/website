@@ -56,6 +56,7 @@ Longhorn can be installed in an air gapped environment by using a manifest file,
     * Add your secret name  `SECRET_NAME` to `imagePullSecrets.name` in the following resources
       * `longhorn-driver-deployer` Deployment
       * `longhorn-manager` DaemonSet
+      * `longhorn-global-manager` Deployment
       * `longhorn-ui` Deployment
 
       Example:

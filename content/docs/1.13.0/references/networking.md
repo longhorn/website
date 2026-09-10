@@ -43,6 +43,17 @@ To | Port | Protocol
 `External Backupstore` | User defined | TCP
 `Kubernetes API server` | `Kubernetes API server port` | TCP
 
+### Longhorn Global Manager
+#### Ingress:
+From | Port | Protocol
+--- | --- | ---
+`Kubelet (health probes)` | 9505 | TCP
+
+#### Egress:
+To | Port | Protocol
+--- | --- | ---
+`Kubernetes API server` | `Kubernetes API server port` | TCP
+
 ### UI
 #### ingress:
 Users defined
