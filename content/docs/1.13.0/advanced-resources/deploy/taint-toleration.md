@@ -32,6 +32,12 @@ You need to set tolerations for both types of components. See more details below
            operator: "Equal"
            value: "value"
            effect: "NoSchedule"
+       longhornGlobalManager:
+         tolerations:
+         - key: "key"
+           operator: "Equal"
+           value: "value"
+           effect: "NoSchedule"
        longhornDriver:
          tolerations:
          - key: "key"
@@ -45,9 +51,9 @@ You need to set tolerations for both types of components. See more details below
            value: "value"
            effect: "NoSchedule"
      ```
-   * If you install Longhorn by using `kubectl` to apply [the deployment YAML](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml), you need to modify the taint tolerations section for Longhorn Manager, Longhorn UI, and Longhorn Driver Deployer.
+   * If you install Longhorn by using `kubectl` to apply [the deployment YAML](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml), you need to modify the taint tolerations section for Longhorn Manager, Longhorn Global Manager, Longhorn UI, and Longhorn Driver Deployer.
     Then apply the YAMl files.
-   * If you install Longhorn using Helm, you can change the Helm values for `global.tolerations`, `longhornManager.tolerations`, `longhornUI.tolerations`, `longhornDriver.tolerations` in the `values.yaml` file before installing the chart.
+   * If you install Longhorn using Helm, you can change the Helm values for `global.tolerations`, `longhornManager.tolerations`, `longhornGlobalManager.tolerations`, `longhornUI.tolerations`, `longhornDriver.tolerations` in the `values.yaml` file before installing the chart.
 
 2. Set taint tolerations for system-managed components (for example, Instance Manager, CSI Driver, and Engine images)
 
@@ -95,6 +101,12 @@ You need to set tolerations for both types of components. See more details below
            operator: "Equal"
            value: "value"
            effect: "NoSchedule"
+       longhornGlobalManager:
+         tolerations:
+         - key: "key"
+           operator: "Equal"
+           value: "value"
+           effect: "NoSchedule"
        longhornDriver:
          tolerations:
          - key: "key"
@@ -108,9 +120,9 @@ You need to set tolerations for both types of components. See more details below
            value: "value"
            effect: "NoSchedule"
      ```
-   * If you install Longhorn by using `kubectl` to apply [the deployment YAML](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml), you need to modify the taint tolerations section for Longhorn Manager, Longhorn UI, and Longhorn Driver Deployer.
+   * If you install Longhorn by using `kubectl` to apply [the deployment YAML](https://raw.githubusercontent.com/longhorn/longhorn/v{{< current-version >}}/deploy/longhorn.yaml), you need to modify the taint tolerations section for Longhorn Manager, Longhorn Global Manager, Longhorn UI, and Longhorn Driver Deployer.
   Then reapply the YAMl files.
-   * If you install Longhorn using Helm, you can change the Helm values for `global.tolerations`, `longhornManager.tolerations`, `longhornUI.tolerations`, `longhornDriver.tolerations` in the `values.yaml` file, and then run `helm upgrade` to upgrade to the new version of the chart.
+   * If you install Longhorn using Helm, you can change the Helm values for `global.tolerations`, `longhornManager.tolerations`, `longhornGlobalManager.tolerations`, `longhornUI.tolerations`, `longhornDriver.tolerations` in the `values.yaml` file, and then run `helm upgrade` to upgrade to the new version of the chart.
 
 3. Set taint tolerations for system-managed components (for example, Instance Manager, Backing Image Manager, Share Manager, CSI Driver, and Engine Image).
 
