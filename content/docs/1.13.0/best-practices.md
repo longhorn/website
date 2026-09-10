@@ -93,10 +93,10 @@ The following Linux OS distributions and versions have been verified during the 
 | 1.  | Ubuntu                       | 26.04
 | 2.  | SUSE Linux Enterprise Server | 16.0
 | 3.  | SUSE Linux Enterprise Micro  | 6.1
-| 4.  | Red Hat Enterprise Linux     | 10.1
-| 5.  | Oracle Linux                 | 10.0
-| 6.  | Rocky Linux                  | 10.1
-| 7.  | Talos Linux                  | 1.11.5
+| 4.  | Red Hat Enterprise Linux     | 10.2
+| 5.  | Oracle Linux                 | 10.2
+| 6.  | Rocky Linux                  | 10.2
+| 7.  | Talos Linux                  | 1.13.4
 | 8.  | Container-Optimized OS (GKE) | 125
 
 Longhorn relies heavily on kernel functionality and performs better on some kernel versions. The following activities,
