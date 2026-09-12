@@ -135,6 +135,18 @@ To resolve this issue, you can follow the steps:
 2. Partition the block-type disk using the `fdisk` utility and ensure that the partition size is a multiple of the block size 4096.
 3. Add the partitioned disk to the Longhorn node.
 
+### V2 Volumes Stuck in Deleting State on Burstable VMs
+
+When using the V2 Data Engine on burstable virtual machines (such as AWS EC2 T-series, GCP shared-core machine types, or Azure B-series), volumes may get stuck in a `deleting` state, especially during heavy workloads like concurrent volume backups or restores.
+
+This issue is typically caused by the node exhausting its allocated CPU credits. The V2 Data Engine relies on the SPDK target daemon (`spdk_tgt`), which requires a dedicated CPU core and uses intensive polling. When a burstable VM runs out of CPU credits, the cloud provider's hypervisor severely throttles the CPU. This causes the V2 data plane to become unresponsive, preventing volumes from being cleaned up and deleted successfully.
+
+**Resolution**:
+- **AWS EC2**: Change the instance credit specification to `CpuCredits=unlimited` to prevent CPU throttling.
+- **Other Cloud Providers (GCP, Azure, etc.)**: Review your burstable VM configuration. Consider upgrading to instance types with dedicated/guaranteed vCPUs, or adjust the bursting configuration to ensure the SPDK process is not throttled.
+
+For more details, refer to [Issue #13585](https://github.com/longhorn/longhorn/issues/13585).
+
 ## Profiling
 
 ### Engine, replica, and sync agent runtime
