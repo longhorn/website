@@ -214,7 +214,7 @@ The figure above is color-coded to show which blocks contain the most recent dat
 | 6                       | Live data                                   |
 | 7                       | Live data                                   |
 
-Note that as the green arrow shows in the figure above, Index 5 of the read index previously pointed to the second-oldest snapshot as the source of the most recent data, then it changed to point to the the live data when the 4K block of storage at Index 5 was overwritten by the live data.
+Note that as the green arrow shows in the figure above, Index 5 of the read index previously pointed to the second-oldest snapshot as the source of the most recent data, then it changed to point to the live data when the 4K block of storage at Index 5 was overwritten by the live data.
 
 The read index is kept in memory and consumes one byte for each 4K block. The byte-sized read index means you can take as many as 254 snapshots for each volume.
 
