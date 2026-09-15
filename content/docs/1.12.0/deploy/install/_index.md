@@ -307,6 +307,11 @@ modprobe iscsi_tcp
 
 > **Important**: On SUSE and openSUSE, the `iscsi_tcp` module is included only in the `kernel-default` package. If the `kernel-default-base` package is installed on your system, you must replace it with `kernel-default`.
 
+> **Warning:**
+> **Critical Incompatibility with `open-iscsi` 2.1.12**
+>
+> Do not install or upgrade host nodes to `open-iscsi 2.1.12`. A breaking configuration change in the upstream `open-iscsi 2.1.12` causes volume attachment failures. Use `open-iscsi <= 2.1.11` or `>= 2.1.13` instead. For more information, see upstream issue [open-iscsi/open-iscsi#540](https://github.com/open-iscsi/open-iscsi/issues/540) and Longhorn [Issue #13733](https://github.com/longhorn/longhorn/issues/13733).
+
 You can also use the [Longhorn Command Line Tool](#longhorn-command-line-tool) to install `open-iscsi` automatically.
 
 ### V2 Data Engine Requirements
