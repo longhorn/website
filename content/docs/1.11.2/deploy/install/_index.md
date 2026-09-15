@@ -179,6 +179,11 @@ modprobe iscsi_tcp
 
 > **Important**: On SUSE and openSUSE, the `iscsi_tcp` module is included only in the `kernel-default` package. If the `kernel-default-base` package is installed on your system, you must replace it with `kernel-default`.
 
+> **Warning:**
+> **Critical Incompatibility with `open-iscsi` 2.1.12**
+>
+> Do not install or upgrade host nodes to `open-iscsi 2.1.12`. A breaking configuration change in the upstream `open-iscsi 2.1.12` causes volume attachment failures. Use `open-iscsi <= 2.1.11` or `>= 2.1.13` instead. For more information, see upstream issue [open-iscsi/open-iscsi#540](https://github.com/open-iscsi/open-iscsi/issues/540) and Longhorn [Issue #13733](https://github.com/longhorn/longhorn/issues/13733).
+
 We also provide an `iscsi` installer to make it easier for users to install `open-iscsi` automatically. You can use the [Longhorn CLI](../../advanced-resources/longhornctl/) to install the prerequisites.
 
 You can use the `longhornctl check preflight` command. This command verifies your Kubernetes cluster environment to ensure it meets Longhorn's requirements. It performs a series of checks that can help identify potential issues that may prevent Longhorn from functioning correctly.
