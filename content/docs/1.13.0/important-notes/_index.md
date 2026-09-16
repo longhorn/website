@@ -33,6 +33,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
   - [Longhorn Global Manager](#longhorn-global-manager)
 - [Snapshots and Backups](#snapshots-and-backups)
   - [Volume Group Snapshot Support](#volume-group-snapshot-support)
+  - [Age-Based Retention for Recurring Jobs](#age-based-retention-for-recurring-jobs)
 - [Networking](#networking)
   - [Internal Network Policies](#internal-network-policies)
 
@@ -214,6 +215,14 @@ For more information, see:
 * [Issue #13349](https://github.com/longhorn/longhorn/issues/13349)
 * [Create a Snapshot Group](../snapshots-and-backups/snapshot-groups)
 * [CSI VolumeGroupSnapshot Associated with Longhorn Snapshot Group](../snapshots-and-backups/csi-snapshot-support/csi-volume-group-snapshot)
+
+### Age-Based Retention for Recurring Jobs
+
+Longhorn v{{< current-version >}} adds an `age-based` retention policy for snapshot, backup, and system backup recurring jobs. Set `retentionPolicy` to `age-based` and `retainAge` to a duration such as `720h`. On each run, the job deletes snapshots or backups older than `retainAge`, regardless of how many exist or how often the job runs. Supported units are `s`, `m`, and `h`, so write `24h` for one day.
+
+The `count-based` policy remains the default, and existing recurring jobs keep it after the upgrade, so their behavior does not change. The two policies do not combine: `count-based` ignores `retainAge`, and `age-based` ignores `retain`.
+
+For more information, see [Issue #12060](https://github.com/longhorn/longhorn/issues/12060).
 
 ## Networking
 
