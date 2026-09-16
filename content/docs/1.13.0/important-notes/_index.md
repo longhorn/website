@@ -22,6 +22,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
 - [Important Fixes](#important-fixes)
   - [Linked-Clone Backup Restore](#linked-clone-backup-restore)
   - [CSI Volume Clone with Strict-Local Data Locality](#csi-volume-clone-with-strict-local-data-locality)
+  - [Longhorn Node Removal After Kubernetes Node Deletion](#longhorn-node-removal-after-kubernetes-node-deletion)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
@@ -130,6 +131,16 @@ When cloning a volume with `dataLocality: strict-local`, Longhorn now attaches t
 Previously, this node was chosen without checking the selectors, and `strict-local` pinned the clone's single replica to it. If the node did not match the selectors, the replica could not be scheduled. The clone then failed with `hard affinity cannot be satisfied`.
 
 For more information, see [Issue #12792](https://github.com/longhorn/longhorn/issues/12792).
+
+### Longhorn Node Removal After Kubernetes Node Deletion
+
+Longhorn now allows you to clean up a Longhorn node after the Kubernetes node was deleted without evicting it first. You can disable scheduling on the node, remove its remaining replicas and engines, and then delete it.
+
+Previously, the Longhorn admission webhook rejected the request to disable scheduling because the disk status of a deleted node can no longer be synced. Because a schedulable node cannot be deleted, the Longhorn node remained in the cluster until the webhook was disabled.
+
+Evicting a node before deleting it from the cluster is still the recommended procedure.
+
+For more information, see [Issue #13494](https://github.com/longhorn/longhorn/issues/13494) and [Graceful Node Removal](../nodes-and-volumes/nodes/graceful-node-removal).
 
 ## General
 
