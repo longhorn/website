@@ -8,7 +8,6 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
 
 - [Breaking Changes](#breaking-changes)
   - [Deprecation of legacy v2 linked clone volumes](#deprecation-of-legacy-v2-linked-clone-volumes)
-  - [Removal of V2 Backing Images](#removal-of-v2-backing-images)
 - [V2 Data Engine](#v2-data-engine)
   - [General Availability](#general-availability)
   - [Notice](#notice)
@@ -17,37 +16,15 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
     - [UBLK Frontend Kernel Limitation](#ublk-frontend-kernel-limitation)
     - [Longhorn System Upgrade](#longhorn-system-upgrade)
   - [Storage Sharding (Experimental)](#storage-sharding-experimental)
-  - [Default CPU Allocation](#default-cpu-allocation)
   - [V2 Dedicated CPU Requirements](#v2-dedicated-cpu-requirements)
   - [CPU Isolation Enabled by Default](#cpu-isolation-enabled-by-default)
-  - [IPv6 Support](#ipv6-support)
-  - [Features Planned for Longhorn v1.12.1](#features-planned-for-longhorn-v1121)
-    - [Fast Volume Cloning](#fast-volume-cloning)
-- [Important Fixes](#important-fixes)
-  - [Instance Manager Panic During Replica Rebuild](#instance-manager-panic-during-replica-rebuild)
-  - [Replica Rebuild Progress Reporting](#replica-rebuild-progress-reporting)
-  - [Replica Auto-Balance Scheduling Loop](#replica-auto-balance-scheduling-loop)
-  - [Replica CR Leak During Failed Local Scheduling](#replica-cr-leak-during-failed-local-scheduling)
-  - [CSI Storage Capacity Tracking](#csi-storage-capacity-tracking)
-  - [Encrypted Volume Size Correction](#encrypted-volume-size-correction)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
-- [Scheduling](#scheduling)
-  - [Topology-Aware PV Node Affinity Control](#topology-aware-pv-node-affinity-control)
 - [Snapshots and Backups](#snapshots-and-backups)
   - [Volume Group Snapshot Support](#volume-group-snapshot-support)
-- [Stability](#stability)
-  - [Configurable Engine Image Pod Liveness Probe](#configurable-engine-image-pod-liveness-probe)
-- [Resource Efficiency](#resource-efficiency)
-  - [Longhorn Manager Memory Optimization](#longhorn-manager-memory-optimization)
 - [Networking](#networking)
   - [Internal Network Policies](#internal-network-policies)
-  - [Dual-Stack Cluster Support](#dual-stack-cluster-support)
-- [Monitoring](#monitoring)
-  - [Toggle Kubernetes Metrics Server Integration](#toggle-kubernetes-metrics-server-integration)
-- [Command-Line Tool](#command-line-tool)
-  - [On-Demand Snapshot Checksum Calculation](#on-demand-snapshot-checksum-calculation)
 
 ## Breaking Changes
 
@@ -60,35 +37,6 @@ After upgrading to v{{< current-version >}}, **legacy linked-clone volumes canno
 To replace, create new linked-clone volumes from the same source volumes that back the legacy ones. As long as a legacy volume exists, its source volume is guaranteed to still be present, so you can create a replacement linked clone directly; no data copy is required.
 
 For more information, see [Ticket #12552](https://github.com/longhorn/longhorn/issues/12552).
-
-### Removal of V2 Backing Images
-
-V2 Backing Images are removed in Longhorn v{{< current-version >}}. Use the Containerized Data Importer (CDI) to import images into Longhorn for compatibility with the current engine.
-
-**Migration required for existing V2 volumes with backing images:**
-
-> **Warning: Upgrade Failure Risk**
-> V2 volumes with backing image dependencies cannot be upgraded in-place. Attempting to upgrade without migration may result in volume attachment failures.
->
-> Furthermore, a direct backup of a V2 volume does not include its V2 backing image data, meaning a restore would still require the original backing image. If the volume data is still needed, you **must** perform the migration below before upgrading. If the data is no longer needed, simply delete the V2 volume instead.
-
-Before upgrading to v1.13.0, flatten each required V2 volume into a temporary V1 volume and back up the V1 volume:
-
-1. **Stop writes to the source volume:** Detach the workload or otherwise ensure that no process can modify the V2 volume during the copy.
-2. **Create a temporary V1 volume:** Do not configure a backing image, and make the volume exactly the same size as the source V2 volume.
-3. **Copy every block:** Use an offline migration pod or maintenance environment that exposes both volumes as raw block devices on the same node. Copy the source device to the temporary V1 device, then verify the result.
-
-   ```shell
-   dd if=/dev/source of=/dev/target bs=4M conv=fsync
-   cmp /dev/source /dev/target
-   sha256sum /dev/source /dev/target
-   ```
-
-4. **Back up the temporary V1 volume:** Detach the migration pod and create a Longhorn backup of the temporary V1 volume in the configured backup target.
-5. **Test the standalone backup:** Verify that the backup does not list a backing image, restore it to a new volume, and validate the restored data before deleting any source data.
-6. **Remove the dependency:** After the test restore succeeds, delete the original V2 volume and backing image. The temporary V1 volume can also be deleted after confirming that its backup is available.
-
-For more information, see [Issue #13181](https://github.com/longhorn/longhorn/issues/13181) and [Longhorn with CDI Imports](../advanced-resources/containerized-data-importer/containerized-data-importer).
 
 ## V2 Data Engine
 
@@ -128,14 +76,6 @@ Because this feature is experimental, it is intended for evaluation and testing 
 
 For more information, see [Issue #1061](https://github.com/longhorn/longhorn/issues/1061) and [Sharding with Erasure Coding](../advanced-resources/v2-data-engine/sharding).
 
-### Default CPU Allocation
-
-Longhorn v{{< current-version >}} changes the default `data-engine-cpu-mask` from `0x1` (1 CPU core) to `0x3` (2 CPU cores). V2 Data Engine uses a busy-polling reactor model where the master reactor handles both I/O polling and management RPCs. When only a single core is assigned, heavy I/O workloads can delay or starve RPC processing, resulting in increased latency, timeout events, and operational instability.
-
-Assigning 2 or more cores allows I/O and management tasks to run on separate reactors, improving responsiveness and operational stability.
-
-For more information, see [Issue #13237](https://github.com/longhorn/longhorn/issues/13237) and [Configurable CPU Cores](../advanced-resources/v2-data-engine/configurable-cpu-cores).
-
 ### V2 Dedicated CPU Requirements
 
 When assigning CPU cores to the V2 Data Engine, ensure that the V2 instance-manager pod has enough guaranteed CPU resources to cover the assigned cores. This provides dedicated CPU availability for SPDK reactors, prevents CPU contention, and helps maintain predictable performance and V2 Data Engine stability.
@@ -147,66 +87,6 @@ You can verify that the guaranteed CPU resources match the CPU cores specified b
 Longhorn v{{< current-version >}} enables [Data Engine CPU Isolation](../references/settings/#data-engine-cpu-isolation-enabled) by default for the V2 Data Engine (`{"v2":"true"}`). This ensures that CPU cores are dedicated to the V2 Data Engine.
 
 For more information, see [Issue #13724](https://github.com/longhorn/longhorn/issues/13724) and [Data Engine CPU Isolation Enabled](../references/settings/#data-engine-cpu-isolation-enabled).
-
-### IPv6 Support
-
-V2 volumes now support single-stack IPv6 Kubernetes clusters. For dual-stack cluster support and its limitations, see [Dual-Stack Cluster Support](#dual-stack-cluster-support).
-
-For more information, see [Issue #10928](https://github.com/longhorn/longhorn/issues/10928).
-
-### Features Planned for Longhorn v1.12.1
-
-#### Fast Volume Cloning
-
-Fast volume cloning for the V2 Data Engine is planned for Longhorn v1.12.1. This enhancement is intended to allow the initial `linked-clone` to be created with multiple replicas in parallel instead of being limited to a single replica.
-
-For more information, see [Issue #12552](https://github.com/longhorn/longhorn/issues/12552).
-
-## Important Fixes
-
-This release includes critical stability fixes.
-
-### Instance Manager Panic During Replica Rebuild
-
-Longhorn v{{< current-version >}} fixes an instance-manager panic that could occur during replica rebuild storms. In affected environments, the panic could terminate all iSCSI targets served by the instance-manager and trigger cascading volume detachments across multiple PVCs.
-
-For more information, see [Issue #13087](https://github.com/longhorn/longhorn/issues/13087).
-
-### Replica Rebuild Progress Reporting
-
-Longhorn v{{< current-version >}} fixes a replica rebuild progress reporting bug that could display values greater than 100% after file-sync retries on unstable networks. Progress accounting is now reset correctly for retried files, so rebuild progress remains within the valid 0% to 100% range.
-
-For more information, see [Issue #12949](https://github.com/longhorn/longhorn/issues/12949).
-
-### Replica Auto-Balance Scheduling Loop
-
-Longhorn v{{< current-version >}} fixes a regression in replica auto-balance that could trigger a repeated replica create-and-delete loop when `Replica Auto Balance` was set to `best-effort`. In affected clusters, Longhorn could keep scheduling an extra replica instead of stabilizing at the configured replica count.
-
-For more information, see [Issue #12926](https://github.com/longhorn/longhorn/issues/12926).
-
-### Replica CR Leak During Failed Local Scheduling
-
-Longhorn v{{< current-version >}} fixes a replica scheduling issue where large numbers of stopped Replica CRs could accumulate when `dataLocality` was set to `best-effort` and the node did not have enough eligible local disk space for another replica. In affected clusters, recurring reconciliation could keep creating placeholder Replica CRs instead of reusing a single failed-schedule placeholder.
-
-For more information, see [Issue #13152](https://github.com/longhorn/longhorn/issues/13152).
-
-### CSI Storage Capacity Tracking
-
-Longhorn v{{< current-version >}} fixes a CSIStorageCapacity scheduling issue that could cause compute nodes without Longhorn disks to report zero capacity and be rejected by `WaitForFirstConsumer` scheduling. In affected clusters with separated compute and storage nodes, new PVCs could remain pending even though eligible storage was available on storage nodes.
-
-For more information, see [Issue #12807](https://github.com/longhorn/longhorn/issues/12807) and [Settings](../references/settings#csi-storage-capacity-tracking).
-
-### Encrypted Volume Size Correction
-
-Longhorn v{{< current-version >}} pre-allocates the 16 MiB LUKS2 header in the replica backend file for encrypted volumes (replica size = requested size + 16 MiB). As a result, the dm-crypt device now exposes the full requested size to workloads.
-
-**Before v1.12**: The 16 MiB LUKS2 header was consumed from the usable volume space. For example, a 1 GiB encrypted volume yielded approximately 1008 MiB to the workload.
-
-**After upgrading to v1.12**: Once the engine image is upgraded for an encrypted volume, Longhorn automatically expands the backend size by 16 MiB. The dm-crypt device then exposes the full requested size (e.g., exactly 1 GiB for a 1 GiB volume). Existing data is not affected.
-
-**Live migration restriction**: Encrypted migratable volumes cannot be live-migrated when using an engine image with a CLI API version older than 12 (pre-v1.12 engine images). Upgrade the engine image to v1.12 or later before attempting live migration of encrypted volumes.
-
-For more information, see [Issue #9205](https://github.com/longhorn/longhorn/issues/9205).
 
 ## General
 
@@ -223,14 +103,6 @@ Automated pre-upgrade checks do not cover all scenarios. Manual checks via kubec
 - Avoid upgrading if a failed BackingImage exists. See [Backing Image](../advanced-resources/backing-image/backing-image) for details.
 - Creating a [Longhorn system backup](../advanced-resources/system-backup-restore/backup-longhorn-system) before upgrading is recommended to ensure recoverability.
 
-## Scheduling
-
-### Topology-Aware PV Node Affinity Control
-
-Longhorn v{{< current-version >}} adds the `csi-allowed-topology-keys` setting and `strictTopology` StorageClass parameter for more precise control of PV `nodeAffinity`. These options allow users to limit which topology keys are propagated and, with `WaitForFirstConsumer`, pin the PV to the selected node topology when needed.
-
-For more information, see [Issue #12684](https://github.com/longhorn/longhorn/issues/12684) and [Topology-Aware Provisioning](../nodes-and-volumes/nodes/topology-aware-provisioning).
-
 ## Snapshots and Backups
 
 ### Volume Group Snapshot Support
@@ -246,22 +118,6 @@ For more information, see:
 * [Issue #13349](https://github.com/longhorn/longhorn/issues/13349)
 * [Create a Snapshot Group](../snapshots-and-backups/snapshot-groups)
 * [CSI VolumeGroupSnapshot Associated with Longhorn Snapshot Group](../snapshots-and-backups/csi-snapshot-support/csi-volume-group-snapshot)
-
-## Stability
-
-### Configurable Engine Image Pod Liveness Probe
-
-Longhorn v{{< current-version >}} adds settings to configure the engine-image DaemonSet liveness probe period, timeout, and failure threshold. These settings help reduce unnecessary engine-image pod restarts on resource-constrained clusters, especially during upgrades or transient CPU spikes.
-
-For more information, see [Issue #12846](https://github.com/longhorn/longhorn/issues/12846) and [Settings](../references/settings#engine-image-pod-liveness-probe-period).
-
-## Resource Efficiency
-
-### Longhorn Manager Memory Optimization
-
-Longhorn v{{< current-version >}} optimizes longhorn-manager informer caching to reduce memory usage, especially in large clusters with high pod counts. This lowers cluster-wide memory overhead caused by repeated caching of non-Longhorn pod data on every manager instance.
-
-For more information, see [Issue #12771](https://github.com/longhorn/longhorn/issues/12771).
 
 ## Networking
 
@@ -295,29 +151,3 @@ For manifest installations, delete only these six internal NetworkPolicy resourc
 These resources are defined in `longhorn.yaml` and `longhorn-okd.yaml`. Do not use `kubectl delete -f` on an entire Longhorn manifest or delete the Longhorn installation. Applying either unmodified manifest later recreates the policies.
 
 If an upgrade fails because these policies block required traffic, set `networkPolicies.restrictInternalTraffic=false` and retry the same upgrade.
-
-### Dual-Stack Cluster Support
-
-Longhorn supports dual-stack Kubernetes clusters under a specific requirement: all nodes must be configured with their IP families in the same order (either all IPv4-first, or all IPv6-first). When the order is consistent, Longhorn uses the first IP family of each node and operates correctly. This applies to both the V1 and V2 Data Engines.
-
-> **Warning:** Dual-stack clusters with mixed IP family ordering across nodes are not supported and may result in connectivity failures between replicas and the engine.
-
-For more information, see [Issue #11531](https://github.com/longhorn/longhorn/issues/11531).
-
-## Monitoring
-
-### Toggle Kubernetes Metrics Server Integration
-
-Longhorn v{{< current-version >}} adds the `Kubernetes Metrics Server Metrics Enabled` setting to disable metrics-server-dependent metrics when the Kubernetes Metrics Server API is unavailable. This reduces repeated scrape warnings and unnecessary API calls while preserving other Longhorn metrics.
-
-For more information, see [Issue #13011](https://github.com/longhorn/longhorn/issues/13011) and [Settings](../references/settings#kubernetes-metrics-server-metrics-enabled).
-
-## Command-Line Tool
-
-### On-Demand Snapshot Checksum Calculation
-
-Longhorn v{{< current-version >}} adds `longhornctl` support for triggering on-demand snapshot checksum calculation. This is useful when snapshot checksum recalculation needs to be requested without waiting for the periodic integrity-check schedule.
-
-The command can target a specific volume, all volumes on a specific node, or all volumes in the cluster. The checksum operation runs asynchronously in the background.
-
-For more information, see [Issue #11442](https://github.com/longhorn/longhorn/issues/11442) and [On-Demand Snapshot Checksum Calculation](../advanced-resources/data-integrity/on-demand-snapshot-data-integrity).
