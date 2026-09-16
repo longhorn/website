@@ -30,9 +30,9 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
 
 ### Deprecation of legacy v2 linked clone volumes
 
-V2 linked-clone volumes created in v1.12.0 or earlier are marked as legacy and deprecated starting in v{{< current-version >}}. The new linked-clone architecture introduced in [Ticket #12552](https://github.com/longhorn/longhorn/issues/12552) is not compatible with the legacy design.
+V2 linked-clone volumes created in v1.12.0 or earlier are marked as legacy and deprecated starting in v1.12.1. The new linked-clone architecture introduced in [Ticket #12552](https://github.com/longhorn/longhorn/issues/12552) is not compatible with the legacy design.
 
-After upgrading to v{{< current-version >}}, **legacy linked-clone volumes cannot be operated on except for detachment and deletion**.
+After upgrading to v1.12.1 or later, **legacy linked-clone volumes cannot be operated on except for detachment and deletion**.
 
 To replace, create new linked-clone volumes from the same source volumes that back the legacy ones. As long as a legacy volume exists, its source volume is guaranteed to still be present, so you can create a replacement linked clone directly; no data copy is required.
 
@@ -42,7 +42,7 @@ For more information, see [Ticket #12552](https://github.com/longhorn/longhorn/i
 
 ### General Availability
 
-The V2 Data Engine is generally available in Longhorn v{{< current-version >}}. This milestone reflects improvements in stability, operational safety, networking support, and feature maturity, making V2 volumes suitable for production use in supported environments.
+The V2 Data Engine is generally available in Longhorn v1.12.0. This milestone reflects improvements in stability, operational safety, networking support, and feature maturity, making V2 volumes suitable for production use in supported environments.
 
 For a summary of the current V1 and V2 behavior differences and feature parity, see [V1 and V2 Volume Behavior and Feature Parity](../v1-v2-volume-behavior-and-feature-parity).
 
@@ -82,7 +82,7 @@ For more information, see [Issue #13724](https://github.com/longhorn/longhorn/is
 
 ## Storage Sharding (Experimental)
 
-Longhorn v{{< current-version >}} introduces storage sharding for the V2 Data Engine as an experimental feature. Instead of storing a full copy of the volume on each replica, sharding splits the volume into data and parity chunks using erasure coding and distributes them across multiple nodes. This allows a volume to grow beyond the capacity of a single disk or node while using less disk space to achieve the same level of fault tolerance.
+Longhorn v1.12.1 introduces storage sharding for the V2 Data Engine as an experimental feature. Instead of storing a full copy of the volume on each replica, sharding splits the volume into data and parity chunks using erasure coding and distributes them across multiple nodes. This allows a volume to grow beyond the capacity of a single disk or node while using less disk space to achieve the same level of fault tolerance.
 
 Because this feature is experimental, it is intended for evaluation and testing only and is not recommended for production use.
 
@@ -123,9 +123,9 @@ For more information, see:
 
 ### Internal Network Policies
 
-Longhorn v{{< current-version >}} enables network policy by default. It protects inbound access to internal component endpoints and RPCs, including the instance-manager gRPC endpoint used for engine control. For more details, see [Network Policy](../advanced-resources/security/network-policy).
+Longhorn v1.12.1 enables network policy by default. It protects inbound access to internal component endpoints and RPCs, including the instance-manager gRPC endpoint used for engine control. For more details, see [Network Policy](../advanced-resources/security/network-policy).
 
-Longhorn v1.13.0 resolves the CNI compatibility issues described for v1.12.1 by providing two Helm values to manage the affected traffic paths:
+Longhorn v1.12.2 resolves the CNI compatibility issues described for v1.12.1 by providing two Helm values to manage the affected traffic paths:
 
 - **`networkPolicies.v1DataEngineInitiatorSourceCIDRs`**: Controls source filtering for V1 iSCSI on TCP port 3260. An empty list leaves this port without source filtering, allowing any source that can reach instance-manager to connect to TCP/3260. If populated, the CIDRs restrict connections to the effective sources observed by the CNI, so the required values are CNI-specific.
 - **`networkPolicies.recoveryBackendAdditionalIngressPorts`**: Adds TCP ingress ports to the recovery backend (defaults to an empty list). Add `15008` when using Istio Ambient, which uses HTTP-Based Overlay Network Environment (HBONE) on this port. This should only be configured for applicable mesh transports.
