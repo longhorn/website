@@ -25,6 +25,8 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
 - [Scheduling](#scheduling)
   - [Volume Topology Constraint](#volume-topology-constraint)
   - [Scheduler Extender](#scheduler-extender)
+- [Resource Efficiency](#resource-efficiency)
+  - [Longhorn Global Manager](#longhorn-global-manager)
 - [Snapshots and Backups](#snapshots-and-backups)
   - [Volume Group Snapshot Support](#volume-group-snapshot-support)
 - [Networking](#networking)
@@ -150,6 +152,20 @@ The extender reads Longhorn node and disk state directly. It also pins a restart
 The extender runs inside longhorn-manager under leader election, so there is no extra component to deploy. It requires a change to the kube-scheduler configuration, which is not possible on managed Kubernetes offerings such as GKE and EKS.
 
 For more information, see [Issue #12591](https://github.com/longhorn/longhorn/issues/12591).
+
+## Resource Efficiency
+
+### Longhorn Global Manager
+
+Longhorn v{{< current-version >}} moves the cluster-wide pod and PV controllers out of the longhorn-manager DaemonSet into a new `longhorn-global-manager` Deployment. Previously, every longhorn-manager pod watched every pod in the cluster, so kube-apiserver load and longhorn-manager memory grew with the number of nodes and pods. Now one elected leader runs these controllers, and longhorn-manager watches only the `longhorn-system` namespace.
+
+The Deployment is created on install and upgrade, with three replicas by default (`longhornGlobalManager.replicas`): one leader and two standby replicas ready to take over. Before upgrading, make sure at least one of its pods can be scheduled. See [Upgrading Longhorn Manager](../deploy/upgrade/longhorn-manager).
+
+For more information, see:
+* [Issue #13059](https://github.com/longhorn/longhorn/issues/13059)
+* [Longhorn Global Manager](../terminology/#longhorn-global-manager)
+* [Longhorn Global Manager Settings](../references/helm-values/#longhorn-global-manager-settings)
+* [Networking](../references/networking/#longhorn-global-manager)
 
 ## Snapshots and Backups
 
