@@ -21,6 +21,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
 - [Storage Sharding (Experimental)](#storage-sharding-experimental)
 - [Important Fixes](#important-fixes)
   - [Linked-Clone Backup Restore](#linked-clone-backup-restore)
+  - [CSI Volume Clone with Strict-Local Data Locality](#csi-volume-clone-with-strict-local-data-locality)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
@@ -121,6 +122,14 @@ Backups of V2 linked-clone volumes now record the source volume and the snapshot
 Previously, the restore succeeded and produced a corrupted volume.
 
 For more information, see [Issue #13714](https://github.com/longhorn/longhorn/issues/13714) and [CSI Volume Clone](../snapshots-and-backups/csi-volume-clone).
+
+### CSI Volume Clone with Strict-Local Data Locality
+
+When cloning a volume with `dataLocality: strict-local`, Longhorn now attaches the clone for its data copy on a node that matches the volume's `nodeSelector` and `diskSelector`.
+
+Previously, this node was chosen without checking the selectors, and `strict-local` pinned the clone's single replica to it. If the node did not match the selectors, the replica could not be scheduled. The clone then failed with `hard affinity cannot be satisfied`.
+
+For more information, see [Issue #12792](https://github.com/longhorn/longhorn/issues/12792).
 
 ## General
 
