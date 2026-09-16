@@ -22,6 +22,9 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
+- [Scheduling](#scheduling)
+  - [Volume Topology Constraint](#volume-topology-constraint)
+  - [Scheduler Extender](#scheduler-extender)
 - [Snapshots and Backups](#snapshots-and-backups)
   - [Volume Group Snapshot Support](#volume-group-snapshot-support)
 - [Networking](#networking)
@@ -119,6 +122,34 @@ Automated pre-upgrade checks do not cover all scenarios. Manual checks via kubec
 - Avoid upgrading when volumes are in the "Faulted" state, as unusable replicas may be deleted, causing permanent data loss if no backups exist.
 - Avoid upgrading if a failed BackingImage exists. See [Backing Image](../advanced-resources/backing-image/backing-image) for details.
 - Creating a [Longhorn system backup](../advanced-resources/system-backup-restore/backup-longhorn-system) before upgrading is recommended to ensure recoverability.
+
+## Scheduling
+
+### Volume Topology Constraint
+
+Longhorn v{{< current-version >}} adds the `volumeTopology` StorageClass parameter to keep a volume's replicas in the zone or region where it was provisioned. Previously, zone labels only spread replicas apart, so a rebuild could place a replica in a different zone from the workload.
+
+- `any` (default): no constraint.
+- `zonal`: replicas stay in the zone chosen at provisioning time, including during rebuilds and replica count changes. With `WaitForFirstConsumer`, this is the zone the pod is scheduled to.
+- `regional`: same as `zonal`, but for regions.
+
+If the chosen zone or region has no capacity, scheduling waits rather than falling back to another one. Clusters without topology labels are unaffected. A StorageClass with `volumeTopology: zonal` and `replicaZoneSoftAntiAffinity: disabled` is rejected at provisioning time.
+
+For more information, see [Issue #13493](https://github.com/longhorn/longhorn/issues/13493) and [Topology-Aware Provisioning](../nodes-and-volumes/nodes/topology-aware-provisioning).
+
+### Scheduler Extender
+
+Longhorn v{{< current-version >}} adds a scheduler extender that lets kube-scheduler check actual Longhorn disk capacity when placing pods. Without it, kube-scheduler relies on `CSIStorageCapacity` objects, which have three limitations:
+
+- The reported capacity lags behind when many pods are created at once.
+- A pod with several PVCs is not checked against the combined space it needs across disks.
+- A pod whose PVCs are already bound is rescheduled without any capacity check.
+
+The extender reads Longhorn node and disk state directly. It also pins a restarted pod to the node that already holds all of its replicas, which makes it most useful for volumes with `best-effort` data locality.
+
+The extender runs inside longhorn-manager under leader election, so there is no extra component to deploy. It requires a change to the kube-scheduler configuration, which is not possible on managed Kubernetes offerings such as GKE and EKS.
+
+For more information, see [Issue #12591](https://github.com/longhorn/longhorn/issues/12591).
 
 ## Snapshots and Backups
 
