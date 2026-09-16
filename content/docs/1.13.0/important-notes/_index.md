@@ -23,6 +23,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
   - [Linked-Clone Backup Restore](#linked-clone-backup-restore)
   - [CSI Volume Clone with Strict-Local Data Locality](#csi-volume-clone-with-strict-local-data-locality)
   - [Longhorn Node Removal After Kubernetes Node Deletion](#longhorn-node-removal-after-kubernetes-node-deletion)
+  - [Backing Image Copies on IPv6 Clusters](#backing-image-copies-on-ipv6-clusters)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
@@ -142,6 +143,14 @@ Previously, the Longhorn admission webhook rejected the request to disable sched
 Evicting a node before deleting it from the cluster is still the recommended procedure.
 
 For more information, see [Issue #13494](https://github.com/longhorn/longhorn/issues/13494) and [Graceful Node Removal](../nodes-and-volumes/nodes/graceful-node-removal).
+
+### Backing Image Copies on IPv6 Clusters
+
+The backing image manager now copies backing images over the cluster's IP family and the storage network, like the other Longhorn components.
+
+Previously, it always used IPv4. On IPv6 single-stack and IPv6-first dual-stack clusters, a backing image could not be copied to other nodes, so it stayed at one copy.
+
+For more information, see [Issue #13864](https://github.com/longhorn/longhorn/issues/13864) and [Backing Image](../advanced-resources/backing-image/backing-image).
 
 ## General
 
