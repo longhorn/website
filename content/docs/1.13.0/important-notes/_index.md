@@ -60,9 +60,9 @@ On ARM64 systems, V2 volumes may experience stuck I/O when SPDK is configured wi
 
 #### UBLK Frontend Kernel Limitation
 
-This feature is experimental. The UBLK frontend works on all supported Linux kernels but may cause a kernel panic with kernel v6.17. 
+This feature is experimental. On kernel v6.17, attaching a UBLK volume can cause a kernel panic. Do not use the UBLK frontend on this kernel version.
 
-For more information, see [GitHub Issue #11977](https://github.com/longhorn/longhorn/issues/11977) and [GitHub Issue #13509](https://github.com/longhorn/longhorn/issues/13509).
+For more information, see [Issue #13509](https://github.com/longhorn/longhorn/issues/13509) and [UBLK Frontend Support](../advanced-resources/v2-data-engine/ublk-frontend-support).
 
 #### Longhorn System Upgrade
 
