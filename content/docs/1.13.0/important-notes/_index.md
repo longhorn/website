@@ -123,14 +123,16 @@ For more information, see:
 
 ### Internal Network Policies
 
-Longhorn v1.12.1 enables network policy by default. It protects inbound access to internal component endpoints and RPCs, including the instance-manager gRPC endpoint used for engine control. For more details, see [Network Policy](../advanced-resources/security/network-policy).
+Longhorn v1.12.1 enables ingress `NetworkPolicy` resources for internal component endpoints and RPCs by default, including the instance-manager gRPC endpoint used for engine control. The policies take effect only when the CNI plugin enforces `NetworkPolicy`. Otherwise, the resources are created but have no effect. For details, see [Network Policy](../advanced-resources/security/network-policy).
 
-Longhorn v1.12.2 resolves the CNI compatibility issues described for v1.12.1 by providing two Helm values to manage the affected traffic paths:
+Longhorn v1.12.2 resolves the CNI compatibility issues found in v1.12.1 by providing two Helm values to manage the affected traffic paths:
 
 - **`networkPolicies.v1DataEngineInitiatorSourceCIDRs`**: Controls source filtering for V1 iSCSI on TCP port 3260. An empty list leaves this port without source filtering, allowing any source that can reach instance-manager to connect to TCP/3260. If populated, the CIDRs restrict connections to the effective sources observed by the CNI, so the required values are CNI-specific.
 - **`networkPolicies.recoveryBackendAdditionalIngressPorts`**: Adds TCP ingress ports to the recovery backend (defaults to an empty list). Add `15008` when using Istio Ambient, which uses HTTP-Based Overlay Network Environment (HBONE) on this port. This should only be configured for applicable mesh transports.
 
 For migration instructions from v1.12.1 and targeted workarounds, see [Troubleshooting volume attachment stuck due to CNI NetworkPolicies](../../../kb/troubleshooting-volume-attachment-stuck-cni-networkpolicies).
+
+For the Kubernetes distribution and CNI combinations validated with `networkPolicies.restrictInternalTraffic` enabled, see [CNI Plugin Compatibility](../best-practices#cni-plugin-compatibility). If your combination is not listed, test the policies in a non-production environment before upgrading.
 
 > **Note:**
 > ServiceMonitor discovery does not automatically authorize network traffic. Cross-namespace Prometheus scrapers might be blocked by the Longhorn Manager's network policy. To allow this traffic, apply a scoped additive policy as detailed in the [Prometheus and Grafana setup](../monitoring/prometheus-and-grafana-setup) guide.
@@ -151,3 +153,5 @@ For manifest installations, delete only these six internal NetworkPolicy resourc
 These resources are defined in `longhorn.yaml` and `longhorn-okd.yaml`. Do not use `kubectl delete -f` on an entire Longhorn manifest or delete the Longhorn installation. Applying either unmodified manifest later recreates the policies.
 
 If an upgrade fails because these policies block required traffic, set `networkPolicies.restrictInternalTraffic=false` and retry the same upgrade.
+
+For more information, see [Issue #13438](https://github.com/longhorn/longhorn/issues/13438).
