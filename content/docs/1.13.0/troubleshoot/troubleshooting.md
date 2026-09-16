@@ -143,7 +143,7 @@ This issue is typically caused by the node exhausting its allocated CPU credits.
 
 #### Resolution
 
-- **AWS EC2**: Change the instance credit specification to CpuCredits=unlimited to prevent CPU throttling.
+- **AWS EC2**: Change the instance credit specification to `CpuCredits=unlimited` to prevent CPU throttling.
 - **Other Cloud Providers (GCP, Azure, etc.)**: Review your burstable VM configuration. Consider upgrading to instance types with dedicated/guaranteed vCPUs, or adjust the bursting configuration to ensure the SPDK process is not throttled.
 
 For more details, refer to [Issue #13585](https://github.com/longhorn/longhorn/issues/13585).
