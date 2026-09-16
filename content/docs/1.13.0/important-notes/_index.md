@@ -19,6 +19,8 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
   - [V2 Dedicated CPU Requirements](#v2-dedicated-cpu-requirements)
   - [CPU Isolation Enabled by Default](#cpu-isolation-enabled-by-default)
 - [Storage Sharding (Experimental)](#storage-sharding-experimental)
+- [Important Fixes](#important-fixes)
+  - [Linked-Clone Backup Restore](#linked-clone-backup-restore)
 - [General](#general)
   - [Kubernetes Version Requirement](#kubernetes-version-requirement)
   - [Manual Checks Before Upgrade](#manual-checks-before-upgrade)
@@ -109,6 +111,16 @@ Longhorn v1.12.1 introduces storage sharding for the V2 Data Engine as an experi
 Because this feature is experimental, it is intended for evaluation and testing only and is not recommended for production use.
 
 For more information, see [Issue #1061](https://github.com/longhorn/longhorn/issues/1061) and [Sharding with Erasure Coding](../advanced-resources/v2-data-engine/sharding).
+
+## Important Fixes
+
+### Linked-Clone Backup Restore
+
+Backups of V2 linked-clone volumes now record the source volume and the snapshot the clone was created from. A restore fails if the source volume or that snapshot no longer exists.
+
+Previously, the restore succeeded and produced a corrupted volume.
+
+For more information, see [Issue #13714](https://github.com/longhorn/longhorn/issues/13714) and [CSI Volume Clone](../snapshots-and-backups/csi-volume-clone).
 
 ## General
 
