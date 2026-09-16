@@ -15,6 +15,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
     - [ARM64 NVMe-backed Block-Type Node Disk Limitation](#arm64-nvme-backed-block-type-node-disk-limitation)
     - [UBLK Frontend Kernel Limitation](#ublk-frontend-kernel-limitation)
     - [Longhorn System Upgrade](#longhorn-system-upgrade)
+  - [Full Interrupt Mode](#full-interrupt-mode)
   - [V2 Dedicated CPU Requirements](#v2-dedicated-cpu-requirements)
   - [CPU Isolation Enabled by Default](#cpu-isolation-enabled-by-default)
 - [Storage Sharding (Experimental)](#storage-sharding-experimental)
@@ -68,6 +69,17 @@ For more information, see [Issue #13509](https://github.com/longhorn/longhorn/is
 
 V2 volumes do not support live upgrades between Longhorn v1.12 patch releases and must be detached before upgrading. Support is planned when upgrading from a Longhorn v1.12 release to a Longhorn v1.13 release.
 
+### Full Interrupt Mode
+
+Interrupt mode for the V2 Data Engine, available since v1.10.0, no longer polls for I/O completions in Longhorn v{{< current-version >}}. The kernel wakes the V2 Data Engine when I/O completes, so idle instance-manager pods use very little CPU. Latency can be slightly higher than in polling mode under sustained heavy I/O.
+
+Polling mode remains the default. To enable interrupt mode, set `data-engine-interrupt-mode-enabled` to `{"v2":"true"}`. The setting applies to all V2 volumes and can be changed only when no V2 volumes are attached.
+
+For more information, see:
+* [Issue #11662](https://github.com/longhorn/longhorn/issues/11662)
+* [Interrupt Mode Support](../advanced-resources/v2-data-engine/interrupt-mode)
+* [Data Engine Interrupt Mode Enabled](../references/settings/#data-engine-interrupt-mode-enabled)
+
 ### V2 Dedicated CPU Requirements
 
 When assigning CPU cores to the V2 Data Engine, ensure that the V2 instance-manager pod has enough guaranteed CPU resources to cover the assigned cores. This provides dedicated CPU availability for SPDK reactors, prevents CPU contention, and helps maintain predictable performance and V2 Data Engine stability.
@@ -76,9 +88,14 @@ You can verify that the guaranteed CPU resources match the CPU cores specified b
 
 ### CPU Isolation Enabled by Default
 
-Longhorn v{{< current-version >}} enables [Data Engine CPU Isolation](../references/settings/#data-engine-cpu-isolation-enabled) by default for the V2 Data Engine (`{"v2":"true"}`). This ensures that CPU cores are dedicated to the V2 Data Engine.
+Longhorn v{{< current-version >}} enables [Data Engine CPU Isolation](../references/settings/#data-engine-cpu-isolation-enabled) by default for the V2 Data Engine (`{"v2":"true"}`). This keeps hardware interrupts and other kernel work off the CPU cores used by the V2 Data Engine, so it is not interrupted while it processes I/O.
 
-For more information, see [Issue #13724](https://github.com/longhorn/longhorn/issues/13724) and [Data Engine CPU Isolation Enabled](../references/settings/#data-engine-cpu-isolation-enabled).
+CPU isolation applies only in polling mode. When [interrupt mode](#full-interrupt-mode) is enabled, Longhorn skips it automatically regardless of this setting.
+
+For more information, see:
+* [Issue #13724](https://github.com/longhorn/longhorn/issues/13724)
+* [Issue #13973](https://github.com/longhorn/longhorn/issues/13973)
+* [Data Engine CPU Isolation Enabled](../references/settings/#data-engine-cpu-isolation-enabled)
 
 ## Storage Sharding (Experimental)
 
