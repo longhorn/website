@@ -3,11 +3,11 @@ title: Upgrading Longhorn Manager
 weight: 1
 ---
 
-### Upgrading from v1.11.x
+### Upgrading from v1.12.x
 
-We only support upgrading to v{{< current-version >}} from v1.11.x. For other versions, please upgrade to v1.11.x first.
+We only support upgrading to v{{< current-version >}} from v1.12.x. For other versions, please upgrade to v1.12.x first.
 
-Engine live upgrade is supported from v1.11.x to v{{< current-version >}}.
+Engine live upgrade is supported from v1.12.x to v{{< current-version >}}.
 
 Starting with v1.13.0, upgrading Longhorn also creates the [Longhorn Global Manager](../../../terminology/#longhorn-global-manager) Deployment. Make sure that at least one of its Pods can be scheduled. For Helm installations, review the [Longhorn Global Manager settings](../../../references/helm-values/#longhorn-global-manager-settings); for manifest installations, review the Deployment's scheduling configuration in the deployment YAML.
 
@@ -156,7 +156,7 @@ Next, [upgrade Longhorn engine.](../upgrade-engine)
 
 ### Upgrading from Unsupported Versions
 
-We only support upgrading to v{{< current-version >}} from v1.11.x. For other versions, please upgrade to v1.11.x first.
+We only support upgrading to v{{< current-version >}} from v1.12.x. For other versions, please upgrade to v1.12.x first.
 
 If you attempt to upgrade from an unsupported version, the upgrade will fail. When encountering an upgrade failure, please consider the following scenarios to recover the state based on different upgrade methods.
 
