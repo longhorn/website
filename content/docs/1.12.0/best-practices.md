@@ -71,6 +71,9 @@ In addition to the V1 requirements above, nodes hosting V2 volumes have these ad
 - Linux kernel 6.7 or later for NVMe/TCP support and better stability.
 - Required kernel modules: `vfio_pci`, `uio_pci_generic`, `nvme-tcp`
 - AMD64 CPUs require SSE4.2 instruction support
+> **Warning**:
+> 
+> If you are using AWS EC2 Burstable Performance Instances (such as AWS EC2 T-series), it is highly recommended to set `CpuCredits=unlimited`. The V2 Data Engine's SPDK target process is CPU-intensive. Exhausting CPU credits can lead to severe CPU throttling, which may cause I/O operations to become severely delayed or stuck, making V2 volumes unresponsive. If you are using burstable VMs on other cloud providers, ensure equivalent CPU credit or bursting settings are carefully configured to prevent CPU throttling.
 
 > **Note**: The V2 Data Engine leverages the Storage Performance Development Kit (SPDK) with user space NVMe drivers that provide zero-copy, highly parallel, direct access to SSDs. Using local NVMe disks is strongly recommended for enabling V2 volumes to achieve optimal storage performance. For the full setup guide, see [V2 Data Engine Requirements](../deploy/install/#v2-data-engine-requirements).
 
