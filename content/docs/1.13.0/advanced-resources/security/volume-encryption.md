@@ -24,7 +24,7 @@ Besides `CRYPTO_KEY_VALUE`, parameters `CRYPTO_KEY_CIPHER`, `CRYPTO_KEY_HASH`, `
 - `CRYPTO_KEY_HASH`: Specifies the passphrase hash for `open`. The default value is `sha256`.
 - `CRYPTO_KEY_SIZE`: Sets the key size in bits and it must be a multiple of 8. The default value is `256`.
 - `CRYPTO_PBKDF`: Sets Password-Based Key Derivation Function (PBKDF) algorithm for LUKS keyslot. The default value is `argon2i`.
-- `CRYPTO_PBKDF_FORCE_ITERATIONS`: Sets a fixed iteration count for the PBKDF algorithm. When specified, this overrides cryptsetup’s default auto-tuning behavior. In FIPS mode, where PBKDF2 is required, specifying an explicit iteration count (such as `200000`) helps meet security policy requirements and avoids errors like "Not compatible PBKDF2 options". The default value is `200000` (Longhorn default).
+- `CRYPTO_PBKDF_FORCE_ITERATIONS`: Sets a fixed iteration count for the PBKDF algorithm. When specified, this overrides cryptsetup's default auto-tuning behavior. In FIPS mode, where PBKDF2 is required, specifying an explicit iteration count (such as `200000`) helps meet security policy requirements and avoids errors like "Not compatible PBKDF2 options". The default value is `200000` (Longhorn default).
 - `CRYPTO_PBKDF_MEMORY`: Sets the memory cost (in KB) for the PBKDF algorithm. This parameter is only applicable to memory-hard algorithms such as Argon2 (`argon2i` or `argon2id`) and has no effect when PBKDF2 is used. In FIPS mode, Argon2 is not allowed and PBKDF2 is used instead, so this parameter is ignored. The default value is `0`.
 
 For more information, see [cryptsetup(8)](https://man7.org/linux/man-pages/man8/cryptsetup.8.html) in the Linux man pages.
@@ -61,8 +61,6 @@ For more information, see [cryptsetup(8)](https://man7.org/linux/man-pages/man8/
     fromBackup: ""
     encrypted: "true"
     # global secret that contains the encryption key that will be used for all volumes
-    csi.storage.k8s.io/provisioner-secret-name: "longhorn-crypto"
-    csi.storage.k8s.io/provisioner-secret-namespace: "longhorn-system"
     csi.storage.k8s.io/node-publish-secret-name: "longhorn-crypto"
     csi.storage.k8s.io/node-publish-secret-namespace: "longhorn-system"
     csi.storage.k8s.io/node-stage-secret-name: "longhorn-crypto"
@@ -85,8 +83,6 @@ For more information, see [cryptsetup(8)](https://man7.org/linux/man-pages/man8/
     fromBackup: ""
     encrypted: "true"
     # per volume secret which utilizes the `pvc.name` and `pvc.namespace` template parameters
-    csi.storage.k8s.io/provisioner-secret-name: ${pvc.name}
-    csi.storage.k8s.io/provisioner-secret-namespace: ${pvc.namespace}
     csi.storage.k8s.io/node-publish-secret-name: ${pvc.name}
     csi.storage.k8s.io/node-publish-secret-namespace: ${pvc.namespace}
     csi.storage.k8s.io/node-stage-secret-name: ${pvc.name}
@@ -95,12 +91,23 @@ For more information, see [cryptsetup(8)](https://man7.org/linux/man-pages/man8/
     csi.storage.k8s.io/node-expand-secret-namespace: ${pvc.namespace}
   ```
 
+# Secret access for encrypted volumes
+
+Longhorn assigns the CSI controller sidecars a dedicated service account without permission to read Kubernetes Secrets. This behavior is unconditional; there is no Helm value to enable controller-side Secret access. Any additional Secret grants created by an administrator are not removed automatically; remove them separately if they exist, but do not use controller-side Secret access for Longhorn encryption.
+
+For Longhorn StorageClasses, follow these parameter rules:
+
+- **Do configure:** Only the node-stage, node-publish, and node-expand Secret parameters shown above.
+- **Do not configure:** `csi.storage.k8s.io/provisioner-secret-*`, `csi.storage.k8s.io/controller-publish-secret-*`, or `csi.storage.k8s.io/controller-expand-secret-*` pairs.
+- **Do not set:** Generic `csi.storage.k8s.io/secret-name` or `csi.storage.k8s.io/secret-namespace` defaults for Longhorn.
+
+At staging, restaging, and expansion, the kubelet fetches the Secret referenced by the node-side parameters and supplies the encryption key to the Longhorn node service. If the key is missing or cannot be read, workload staging, restaging, or expansion fails; PVC provisioning does not require the controller to read the key.
+
 # Using an Encrypted Volume
 
 To create an encrypted volume, you must create a PVC using a StorageClass that has been configured for encryption. The above StorageClass examples can be used as a starting point.
 
-After creation of the PVC it will remain in `Pending` state till the associated secret has been created and can be retrieved
-A newly-created PVC remains in the `Pending` state until the associated Secret is created and can be retrieved by the csi `external-provisioner` sidecar. Afterwards, the regular volume creation process continues with encryption taking effect.
+The encryption Secret is not required for controller-side PVC provisioning. When a workload uses the volume, the kubelet fetches the node-side Secret references and supplies the key during staging and publishing. A missing or inaccessible key prevents the workload from staging or restaging the volume. The node-expand Secret is also required for online filesystem expansion.
 
 # Filesystem Expansion
 
@@ -113,6 +120,7 @@ StorageClass parameters are needed to enable online expansion:
 
 > **Notice**  
 > - Longhorn v1.8.0 does not support expansion of V2 volumes.
+
 
 # History
 

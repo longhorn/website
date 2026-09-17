@@ -9,6 +9,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
 - [Breaking Changes](#breaking-changes)
   - [Deprecation of legacy v2 linked clone volumes](#deprecation-of-legacy-v2-linked-clone-volumes)
   - [Removal of V2 Backing Images](#removal-of-v2-backing-images)
+  - [Removal of controller-side Secret access for encrypted volumes](#removal-of-controller-side-secret-access-for-encrypted-volumes)
 - [V2 Data Engine](#v2-data-engine)
   - [General Availability](#general-availability)
   - [Notice](#notice)
@@ -87,6 +88,27 @@ Before upgrading to v1.13.0, flatten each required V2 volume into a temporary V1
 6. **Remove the dependency:** After the test restore succeeds, delete the original V2 volume and backing image. The temporary V1 volume can also be deleted after confirming that its backup is available.
 
 For more information, see [Issue #13181](https://github.com/longhorn/longhorn/issues/13181) and [Longhorn with CDI Imports](../advanced-resources/containerized-data-importer/containerized-data-importer).
+
+### Removal of controller-side Secret access for encrypted volumes
+
+Longhorn v{{< current-version >}} separates the CSI controller sidecars from the Longhorn manager by assigning them a dedicated service account without permission to read Kubernetes Secrets. This behavior is unconditional; there is no Helm value to enable controller-side Secret access. Any extra Secret grants created by an administrator are not removed automatically; remove them separately if they exist, but do not use them as a Longhorn encryption workaround.
+
+Longhorn StorageClasses must use only node-stage, node-publish, and node-expand Secret references.
+
+- **Do remove:** `provisioner-secret-*`, `controller-publish-secret-*`, and `controller-expand-secret-*` parameters from desired StorageClass configurations.
+- **Do not configure:** Generic `csi.storage.k8s.io/secret-name` or `csi.storage.k8s.io/secret-namespace` defaults for Longhorn.
+
+Remaining controller-side references can cause `Forbidden` errors during provisioning, attach, detach, or resize. The kubelet fetches the node-side encryption key during staging, restaging, and expansion; a missing key fails workload staging or expansion rather than PVC provisioning. See [Volume Encryption](../advanced-resources/security/volume-encryption).
+
+StorageClasses and PV CSI specifications are immutable in the fields relevant to this change, and creating a new StorageClass does not rewrite existing PVs. For existing encrypted volumes, follow these steps:
+
+1. **Stop and detach:** Stop the workloads and detach their volumes. Back up the volumes before changing Kubernetes bindings.
+2. **Inventory the PVs:** Inventory each PVC and its bound PV. Record the PV's `spec.csi.volumeHandle` and node Secret references. Inspect controller Secret references, provisioner-deletion-secret annotations, and finalizers. A PV with only node-side references remains usable; do not rebind it solely because its old StorageClass contained obsolete parameters.
+3. **Create a new StorageClass:** Create a replacement StorageClass with the obsolete controller-side parameters removed. Do not patch the existing StorageClass or PV CSI specification.
+4. **Verify reclaim policies:** For a PV that stores controller-side Secret references and must be rebound, ensure its reclaim policy is `Retain` before releasing the claim. **Do not release or delete a PVC/PV while its reclaim policy is `Delete`, and do not delete the Longhorn volume or its encryption Secret.**
+5. **Rebind:** Follow Kubernetes [Persistent Volume reclaim and binding guidance](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) and use the [CSI Persistent Volume example](../references/examples#csi-persistent-volume) for the replacement manifest shape. Safely recreate only the affected PV/PVC binding for the same retained Longhorn volume using the replacement StorageClass. The replacement PV must omit `controllerPublishSecretRef`, `controllerExpandSecretRef`, and provisioner-deletion-secret annotations, while preserving the existing `volumeHandle`, node Secret references, compatible capacity, access mode, volume mode, and required volume attributes. Validate the new binding before restarting workloads; do not copy the example's `Delete` reclaim policy.
+
+For details about node Secret references and encrypted PVs, see [Volume Encryption](../advanced-resources/security/volume-encryption). Track this breaking change in [Issue #14020](https://github.com/longhorn/longhorn/issues/14020).
 
 ## V2 Data Engine
 

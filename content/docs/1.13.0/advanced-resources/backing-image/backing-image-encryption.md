@@ -197,6 +197,12 @@ You can also decrypt a backing image (through cloning) using the Longhorn UI.
 ## Use an Encrypted Backing Image with an Encrypted Volume
 The secret used to encrypt the backing image and the volume must be identical. Once the encrypted backing image is ready, you can create the StorageClass with the corresponding backing image and the secret to create the volume for the workload.
 
+> **Warning:**
+> Use only node-side CSI Secret references in the StorageClass, as shown below.
+>
+> - **Do not set `csi.storage.k8s.io/provisioner-secret-name` or `csi.storage.k8s.io/provisioner-secret-namespace`:** The CSI provisioner cannot read Secrets, and these parameters cause provisioning to fail even when the Secret exists.
+> - **Backing images exception:** The separate Secret parameters used to encrypt or decrypt a backing image during cloning are still required.
+
 Example of YAML code for the encryption secret:
 
 ```yaml
@@ -230,8 +236,6 @@ parameters:
   backingImage: "parrot-cloned-encrypted"
   backingImageDataSourceType: "clone"
   # global secret that contains the encryption key that will be used for all volumes
-  csi.storage.k8s.io/provisioner-secret-name: "longhorn-crypto"
-  csi.storage.k8s.io/provisioner-secret-namespace: "longhorn-system"
   csi.storage.k8s.io/node-publish-secret-name: "longhorn-crypto"
   csi.storage.k8s.io/node-publish-secret-namespace: "longhorn-system"
   csi.storage.k8s.io/node-stage-secret-name: "longhorn-crypto"
