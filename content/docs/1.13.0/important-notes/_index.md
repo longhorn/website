@@ -8,6 +8,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
 
 - [Breaking Changes](#breaking-changes)
   - [Deprecation of legacy v2 linked clone volumes](#deprecation-of-legacy-v2-linked-clone-volumes)
+  - [Optional restriction of CSI controller Secret access](#optional-restriction-of-csi-controller-secret-access)
 - [V2 Data Engine](#v2-data-engine)
   - [General Availability](#general-availability)
   - [Notice](#notice)
@@ -49,6 +50,22 @@ After upgrading to v1.12.1 or later, **legacy linked-clone volumes cannot be ope
 To replace, create new linked-clone volumes from the same source volumes that back the legacy ones. As long as a legacy volume exists, its source volume is guaranteed to still be present, so you can create a replacement linked clone directly; no data copy is required.
 
 For more information, see [Ticket #12552](https://github.com/longhorn/longhorn/issues/12552).
+
+### Optional restriction of CSI controller Secret access
+
+Longhorn v{{< current-version >}} runs the CSI controller sidecars with the dedicated `longhorn-csi-service-account`, separate from the Longhorn manager and node plugin. The base `longhorn-csi-role` and `longhorn-csi-bind` remain Secret-free.
+
+The released Helm chart and static installation manifests grant the CSI service account **cluster-wide `get` access to core Kubernetes Secrets by default**. The grant is implemented by `longhorn-csi-secret-role` and `longhorn-csi-secret-bind`: the ClusterRole contains only `get` on `secrets`, and the ClusterRoleBinding names exactly `longhorn-csi-service-account` in the Longhorn release namespace. This broad grant is intentional for CSI sidecar compatibility; review it against your cluster's Secret access policy.
+
+The default grant is rendered for both fresh and upgraded installations, regardless of StorageClass parameters. It is static and installation-controlled: it is not created or removed by `longhorn-driver-deployer` startup, so changing StorageClasses does not trigger reconciliation and no deployer restart is needed. Deleting it is not automatically reversed by the deployer; only a later apply with the grant enabled can recreate it. Helm users who do not want controller-side Secret access must set `csi.allowControllerSecretAccess=false`; Helm then renders neither `longhorn-csi-secret-role` nor `longhorn-csi-secret-bind`.
+
+Before disabling access, remove historical provisioner-side Secret parameters from StorageClasses using the migration guide below. Otherwise, new provisioning with those classes can fail. Review any custom controller-side Secret requirements separately.
+
+For installations managed by applying a release manifest, opt out by deleting `longhorn-csi-secret-bind` and keeping that binding out of every future apply. The now-unbound `longhorn-csi-secret-role` may also be removed. Verify the local manifest or overlay will not restore either object. If access is disabled, existing workloads continue to use their node-side Secret references; do not edit or replace their PVs, rotate their encryption keys, or delete their encryption Secrets.
+
+The optional [encrypted-volume Secret migration guide](/kb/how-to-migrate-encrypted-volumes-to-node-only-secrets) covers the historical StorageClass-only cleanup for administrators who choose to opt out. StorageClass parameters are immutable, so the procedure recreates each same-name class after removing only historical `csi.storage.k8s.io/provisioner-secret-*` parameters. Preserve all other fields, including node-side Secret parameters, labels, annotations, and default-class designation. The procedure does not touch existing PVCs, PVs, Longhorn volumes, CSI volume handles, or PV deletion annotations; no backup, detach, rebind, or PV replacement is required. A best-effort Secret read during a later deletion may be logged as denied by the external-provisioner, but deletion continues; do not restore broad controller access or remove PV deletion annotations to suppress that message.
+
+This SC-only migration is documented only for historical provisioner-only parameters. Do not assume that custom `controller-publish-secret-*`, `controller-expand-secret-*`, generic Secret parameters, deprecated parameter spellings, or other custom controller configurations become safe or preserve controller-side behavior after the cleanup.
 
 ## V2 Data Engine
 
