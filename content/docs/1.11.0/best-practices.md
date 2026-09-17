@@ -199,7 +199,7 @@ To ensure system stability and successful recovery during failures, avoid creati
 
 When choosing a volume size, consider your network bandwidth and disk throughput. If a volume (including its snapshots) is too large to be synchronized over your network/disk within 24 hours, the volume may remain in a degraded state after a node failure.
 
-For detailed formulas, calculation examples, and case studies, see the [Recommended Maximum Volume Size](../nodes-and-volumes/volumes/volume-size/#recommended-maximum-volume-size) section in the Volume Size documentation.
+For detailed formulas, calculation examples, and case studies, see the [Recommended Maximum Volume Size Guidelines](../nodes-and-volumes/volumes/volume-size/#recommended-maximum-volume-size-guidelines) section in the Volume Size documentation.
 
 ## Deploying Workloads
 
