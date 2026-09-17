@@ -43,6 +43,7 @@ parameters:
 #  dataEngine: "v1"
 #  freezeFSForSnapshot: "ignored"
 #  strictTopology: "false"
+#  volumeTopology: "any"
 # allowedTopologies:
 #   - matchLabelExpressions:
 #       - key: topology.kubernetes.io/zone
@@ -338,7 +339,26 @@ When set to `"true"`, the PV is pinned to the topology of the exact node selecte
 - `"false"` (default): The PV `nodeAffinity` includes all topology segments matching the `allowedTopologies` (or all segments if `allowedTopologies` is not set).
 - `"true"`: The PV `nodeAffinity` is restricted to only the topology segment of the node where the pod was scheduled.
 
+This parameter controls only Kubernetes PV `nodeAffinity`. It does not persist a Longhorn replica or shard placement constraint. Use [`volumeTopology`](#volume-topology-field-parametersvolumetopology) when Longhorn data placement must stay in the same zone or region as the PV.
+
 > Requires `csi-allowed-topology-keys` to be configured. See [CSI Allowed Topology Keys](../settings#csi-allowed-topology-keys).
+> More details in [Topology-Aware Provisioning](../../nodes-and-volumes/nodes/topology-aware-provisioning).
+
+#### Volume Topology *(field: `parameters.volumeTopology`)*
+
+> Default: `"any"`
+
+Controls whether Longhorn stores a topology requirement on newly provisioned volumes and enforces it during replica, rebuild, auto-balance, and erasure-coded shard placement.
+
+- `"any"` (default): Current behavior. Longhorn does not store a topology requirement. Replica and shard placement are unconstrained by CSI topology.
+- `"zonal"`: Longhorn resolves one zone at volume creation time. The PV `nodeAffinity` and all Longhorn data placement remain inside that zone.
+- `"regional"`: Longhorn resolves one region at volume creation time. The PV `nodeAffinity` and all Longhorn data placement remain inside that region; replicas may still spread across zones within the region.
+
+For `"zonal"`, set `replicaZoneSoftAntiAffinity` to `"enabled"` or leave it unset so Longhorn can default it. Longhorn rejects `volumeTopology: "zonal"` together with `replicaZoneSoftAntiAffinity: "disabled"` because all replicas of a zonal volume must stay in one zone.
+
+For `"zonal"`, include `topology.kubernetes.io/zone` in [`csi-allowed-topology-keys`](../settings#csi-allowed-topology-keys). For `"regional"`, include `topology.kubernetes.io/region`. If the nodes report the requested topology key but the setting filters it out, provisioning is rejected instead of creating an unconstrained volume.
+
+> Recommended: Use `volumeBindingMode: WaitForFirstConsumer` with `volumeTopology` so the resolved failure domain follows the first consumer pod's scheduling decision.
 > More details in [Topology-Aware Provisioning](../../nodes-and-volumes/nodes/topology-aware-provisioning).
 
 #### Backup Block Size *(field: `parameters.backupBlockSize`)*
