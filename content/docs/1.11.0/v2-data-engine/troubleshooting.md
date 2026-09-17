@@ -59,3 +59,15 @@ To resolve this issue, you can follow the steps
 2. Partition the block-type disk using the `fdisk` utility and ensure that the partition size is a multiple of the block size 4096.
 3. Add the partitioned disk to the Longhorn node.
 
+### V2 Data Engine I/O Operations May Get Stuck on Burstable VMs
+
+When using the V2 Data Engine on burstable virtual machines (such as AWS EC2 T-series), I/O operations may time out or become stuck, especially during heavy workloads such as concurrent volume backups or restores.
+
+This issue is typically caused by the node exhausting its allocated CPU credits. The V2 Data Engine relies on the SPDK target daemon (spdk_tgt), which requires a dedicated CPU core and uses intensive polling. When a burstable VM runs out of CPU credits, the cloud provider's hypervisor severely throttles the CPU. This can cause the V2 data plane to become unresponsive, resulting in I/O timeouts or stuck operations.
+
+#### Resolution
+
+- **AWS EC2**: Change the instance credit specification to `CpuCredits=unlimited` to prevent CPU throttling.
+- **Other Cloud Providers (GCP, Azure, etc.)**: Review your burstable VM configuration. Consider upgrading to instance types with dedicated/guaranteed vCPUs, or adjust the bursting configuration to ensure the SPDK process is not throttled.
+
+For more details, refer to [Issue #13585](https://github.com/longhorn/longhorn/issues/13585).

@@ -221,6 +221,10 @@ Refer to [Guaranteed Instance Manager CPU](../references/settings/#guaranteed-in
 
 The `Guaranteed Instance Manager CPU for V2 Data Engine` setting allows you to reserve a specific number of millicpus on each node for each instance manager pod when the V2 Data Engine is enabled. By default, the Storage Performance Development Kit (SPDK) target daemon within each instance manager pod uses 1 CPU core. Configuring a minimum CPU usage value is essential for maintaining engine and replica stability, especially during periods of high node workload. The default value is 1250.
 
+> **Warning**:
+> 
+> If you are using AWS EC2 Burstable Performance Instances (such as AWS EC2 T-series), it is highly recommended to set `CpuCredits=unlimited`. The V2 Data Engine's SPDK target process is CPU-intensive. Exhausting CPU credits can lead to severe CPU throttling, which may cause I/O operations to become severely delayed or stuck, making V2 volumes unresponsive. If you are using burstable VMs on other cloud providers, ensure equivalent CPU credit or bursting settings are carefully configured to prevent CPU throttling.
+
 ## StorageClass
 
 We don't recommend modifying the default StorageClass named `longhorn`, since the change of parameters might cause issues during an upgrade later. If you want to change the parameters set in the StorageClass, you can create a new StorageClass by referring to the [StorageClass examples](../references/examples/#storageclass).
