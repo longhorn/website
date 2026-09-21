@@ -11,7 +11,7 @@ You can configure,
 - Any groups that the job should belong to
 - The type of schedule, either `backup`, `backup-force-create`, `snapshot`, `snapshot-force-create`, `snapshot-cleanup`, `snapshot-delete` or `filesystem-trim`
 - The time that the backup or snapshot will be created, in the form of a [CRON expression](https://en.wikipedia.org/wiki/Cron#CRON_expression)
-- The number of backups or snapshots to retain
+- How the backups or snapshots are retained, either by number (`count-based`) or by age (`age-based`). For more information, see [Retention Policies](#retention-policies).
 - The number of jobs to run concurrently
 - Any labels that should be applied to the backup or snapshot
 - Parameters that should be applied to the backup
@@ -58,6 +58,7 @@ spec:
   groups:
   - default
   - group1
+  retentionPolicy: count-based
   retain: 1
   concurrency: 2
   labels:
@@ -67,15 +68,15 @@ spec:
 
 The following parameters should be specified for each recurring job selector:
 
-- `name`: Name of the recurring job. Do not use duplicate names. And the length of `name` should be no more than 40 characters.
+- **`name`**: Name of the recurring job. Do not use duplicate names. And the length of `name` should be no more than 40 characters.
 
-- `task`: Type of the job. Longhorn supports the following:
+- **`task`**: Type of the job. Longhorn supports the following:
   - `backup`: periodically create snapshots then do backups after cleaning up outdated snapshots
   - `backup-force-create`: periodically create snapshots then do backups
   - `snapshot`: periodically create snapshots after cleaning up outdated snapshots
   - `snapshot-force-create`: periodically create snapshots
   - `snapshot-cleanup`: periodically purge removable snapshots and system snapshots
-    > **Note:** retain value has no effect for this task, Longhorn automatically mutates the `retain` value to 0.
+    > **Note:** retain value has no effect for this task, Longhorn automatically mutates the `retain` value to 0 and the `retainAge` value to `0s`.
 
   - `snapshot-delete`: periodically remove and purge all kinds of snapshots that exceed the retention count.
     > **Note:** The `retain` value is independent of each recurring job.
@@ -88,17 +89,54 @@ The following parameters should be specified for each recurring job selector:
 
   - `filesystem-trim`: periodically trim filesystem to reclaim disk space
 
-- `cron`: Cron expression. It tells the execution time of the job.
+  > **Note:** The `snapshot-cleanup`, `snapshot-delete`, and `filesystem-trim` tasks support only the `count-based` retention policy. Longhorn rejects such a recurring job when `retentionPolicy` is set to `age-based`.
 
-- `retain`: How many snapshots/backups Longhorn will retain for each volume job. It should be no less than 1.
+- **`cron`**: Cron expression. It tells the execution time of the job.
 
-- `concurrency`: The number of jobs to run concurrently. It should be no less than 1.
+- **`retain`**: How many snapshots/backups Longhorn will retain for each volume job. It should be no less than 1. This value is used only when `retentionPolicy` is `count-based`.
+
+- **`concurrency`**: The number of jobs to run concurrently. It should be no less than 1.
 
 Optional parameters can be specified:
 
-- `groups`: Any groups that the job should belong to. Having `default` in groups will automatically schedule this recurring job to any volume with no recurring job.
+- **`groups`**: Any groups that the job should belong to. Having `default` in groups will automatically schedule this recurring job to any volume with no recurring job.
 
-- `labels`: Any labels that should be applied to the backup or snapshot.
+- **`labels`**: Any labels that should be applied to the backup or snapshot.
+
+- **`retentionPolicy`**: How Longhorn decides which snapshots/backups the job cleans up, either `count-based` or `age-based`. The default value is `count-based`. For more information, see [Retention Policies](#retention-policies).
+
+- **`retainAge`**: How long Longhorn will retain the snapshots/backups of the job, specified as a duration string such as `720h`. This value is used only when `retentionPolicy` is `age-based`.
+
+## Retention Policies
+
+The `retentionPolicy` field determines which snapshots and backups a recurring job cleans up. The two policies work independently, and Longhorn reads only the field that belongs to the policy in effect.
+
+| `retentionPolicy` | Field used | Behavior |
+| --- | --- | --- |
+| `count-based` (default) | `retain` | Keeps the newest `retain` snapshots/backups of the job and deletes the older ones, regardless of their age. `retainAge` is ignored. |
+| `age-based` | `retainAge` | Deletes the snapshots/backups of the job that are older than `retainAge` and keeps the rest, regardless of how many there are. `retain` is ignored. |
+
+`age-based` retention is a rolling window that Longhorn re-evaluates on every run, so the number of retained snapshots/backups varies with how frequently the job runs.
+
+The following example is a recurring backup job that runs daily and retains the backups of the last 30 days:
+```yaml
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: backup-last-30-days
+  namespace: longhorn-system
+spec:
+  cron: "0 2 * * *"
+  task: "backup"
+  retentionPolicy: age-based
+  retainAge: 720h
+  concurrency: 2
+```
+
+> **Note:**
+> - `retainAge` accepts the duration units `h`, `m`, and `s`. There is no unit for days or years, so specify one day as `24h` and 30 days as `720h`.
+> - A recurring job with `retentionPolicy` set to `age-based` and `retainAge` set to `0s` never runs. You must specify a positive `retainAge` before the job can take effect.
+> - Recurring jobs created before Longhorn v{{< current-version >}} use `count-based` retention with their existing `retain` value after the upgrade, so their behavior is unchanged.
 
 ## Add Recurring Jobs to the Default group
 
