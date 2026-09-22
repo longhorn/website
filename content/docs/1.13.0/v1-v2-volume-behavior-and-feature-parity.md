@@ -38,54 +38,52 @@ In V2, revision counters are not supported. V2 volumes do not maintain revision-
 
 > **Note**: The V2 column assumes the default `replicated` data layout. V2 volumes that use the `sharded` (erasure-coding) data layout do not support several of the features listed below, including backup and restore, volume cloning, backing images, DR (standby) volumes, and live migration. See [Sharding with Erasure Coding](../advanced-resources/v2-data-engine/sharding).
 
-| Feature | V1 | V2 | Support Notes |
-| --- | --- | --- | --- |
-| **Data Protection** |  |  |  |
-| Snapshot | ✔️ | ✔️ | - |
-| Backup and Restore | ✔️ | ✔️ | - |
-| DR Volume | ✔️ | ✔️ | - |
-| System Backup and Restore | ✔️ | ✔️ | - |
-| Snapshot Data Integrity Check | ✔️ | ✔️ | - |
-| **RWX Volume** |  |  |  |
-| Creation and Deletion | ✔️ | ✔️ | - |
-| Encryption | ✔️ | ✔️ | - |
-| Migratable RWX Volume | ✔️ | ✔️ | - |
-| **Volume Operations** |  |  |  |
-| Volume Expansion | ✔️ | ✔️ | - |
-| Volume Cloning | ✔️ | ✔️ | - |
-| Fast Volume Cloning | Not planned | ✔️ | - |
-| Volume Encryption | ✔️ | ✔️ | - |
-| Filesystem Trim | ✔️ | ✔️ | - |
-| **Replica Scheduling** |  |  |  |
-| Replica Scheduling | ✔️ | ✔️ | - |
-| **High Availability** |  |  |  |
-| Data Locality: disabled and best-effort | ✔️ | ✔️ | - |
-| Data Locality: strict local | ✔️ | Not supported | TBD |
-| Auto Balance Replicas | ✔️ | ✔️ | - |
-| **Recurring Jobs** |  |  |  |
-| Recurring Job | ✔️ | ✔️ | - |
-| **Replica Rebuilding** |  |  |  |
-| Online Full Rebuilding | ✔️ | ✔️ | - |
-| Online Delta Rebuilding | ✔️ | ✔️ | - |
-| Online Fast Rebuilding | ✔️ | ✔️ | - |
-| Offline Full Rebuilding | ✔️ | ✔️ | - |
-| Offline Delta Rebuilding | ✔️ | ✔️ | - |
-| Offline Fast Rebuilding | ✔️ | Not supported | TBD |
-| QoS | Not supported | ✔️ | - |
-| **Backing Image** |  |  |  |
-| Creation and Deletion | ✔️ | Not supported | Replaced by Containerized Data Importer (CDI) in V2 |
-| Encryption | ✔️ | Not supported | Replaced by Containerized Data Importer (CDI) in V2 |
-| Backup | ✔️ | Not supported | Replaced by Containerized Data Importer (CDI) in V2 |
-| **Networking** |  |  |  |
-| Storage Network | ✔️ | ✔️ | - |
-| IPv4 | ✔️ | ✔️ | - |
-| IPv6 | ✔️ | ✔️ | - |
-| **Orphan Resource** |  |  |  |
-| Orphaned Replica Data Management | ✔️ | ✔️ | - |
-| Orphaned Instance Management | ✔️ | Not supported | - |
-| **Volume Live Migration** |  |  |  |
-| Volume Live Migration | ✔️ | ✔️ | - |
-| **Engine Live Upgrade** |  |  |  |
-| Engine Live Upgrade | ✔️ | Not supported | V2 volumes do not support live upgrades between Longhorn v1.12 patch releases and must be detached before upgrading. Support is planned when upgrading from a Longhorn v1.12 release to a Longhorn v1.13 release. |
-| **Storage Sharding** |  |  |  |
-| Storage Sharding | Not planned | ✔️ | Experimental feature |
+| Feature                                 | V1            | V2            | Sharding Storage (Experimental) | Support Notes                                                            |
+| --------------------------------------- | ------------- | ------------- | ------------------------------- | ------------------------------------------------------------------------ |
+| **Data Protection**                     |               |               |                                 |                                                                          |
+| Snapshot                                | ✔️            | ✔️            | ✔️                               |                                                                          |
+| Backup and Restore                      | ✔️            | ✔️            | -                               |                                                                          |
+| DR Volume                               | ✔️            | ✔️            | -                               |                                                                          |
+| System Backup and Restore               | ✔️            | ✔️            | -                               |                                                                          |
+| Snapshot Data Integrity Check           | ✔️            | ✔️            | -                               |                                                                          |
+| **RWX Volume**                          |               |               |                                 |                                                                          |
+| Creation and Deletion                   | ✔️            | ✔️            | ✔️                              |                                                                          |
+| Encryption                              | ✔️            | ✔️            | ✔️                              |                                                                          |
+| Migratable RWX Volume                   | ✔️            | ✔️            | -                             |                                                                          |
+| **Volume Operations**                   |               |               |                                 |                                                                          |
+| Volume Expansion                        | ✔️            | ✔️            | ✔️ , up to 10x the creation size|                                                                          |
+| Volume Cloning                          | ✔️            | ✔️            | -                               |                                                                          |
+| Fast Volume Cloning                     | Not planned   | ✔️            | -                               |                                                                          |
+| Volume Encryption                       | ✔️            | ✔️            | ✔️                              |                                                                          |
+| Filesystem Trim                         | ✔️            | ✔️            | ✔️                              |                                                                          |
+| **Replica Scheduling**                  |               |               |                                 |                                                                          |
+| Replica Scheduling                      | ✔️            | ✔️            | -                               |                                                                          |
+| **High Availability**                   |               |               |                                 |                                                                          |
+| Data Locality: disabled and best-effort | ✔️            | ✔️            | Not supported, forced to `disabled`|                                                                          |
+| Data Locality: strict local             | ✔️            | Not supported | Not supported, forced to `disabled`|                                                                          |
+| Auto Balance Replicas                   | ✔️            | ✔️            | -                               |                                                                          |
+| **Recurring Jobs**                      |               |               |                                 |                                                                          |
+| Recurring Job                           | ✔️            | ✔️            | -                               |                                                                          |
+| **Replica Rebuilding**                  |               |               |                                 |                                                                          |
+| Online Full Rebuilding                  | ✔️            | ✔️            | -                               |                                                                          |
+| Online Delta Rebuilding                 | ✔️            | ✔️            | -                               |                                                                          |
+| Online Fast Rebuilding                  | ✔️            | ✔️            | -                               |                                                                          |
+| Offline Full Rebuilding                 | ✔️            | ✔️            | -                               |                                                                          |
+| Offline Delta Rebuilding                | ✔️            | ✔️            | -                               |                                                                          |
+| Offline Fast Rebuilding                 | ✔️            | Not supported | -                               |                                                                          |
+| QoS                                     | Not supported | ✔️            | ✔️                                |                                                                          |
+| **Backing Image**                       |               |               |                                 |                                                                          |
+| Creation and Deletion                   | ✔️            | Not supported | Not supported                   | Replaced by Containerized Data Importer (CDI) in V2 and Sharding Storage |
+| Encryption                              | ✔️            | Not supported | Not supported                   | Replaced by Containerized Data Importer (CDI) in V2 and Sharding Storage |
+| Backup                                  | ✔️            | Not supported | Not supported                   | Replaced by Containerized Data Importer (CDI) in V2 and Sharding Storage |
+| **Networking**                          |               |               |                                 |                                                                          |
+| Storage Network                         | ✔️            | ✔️            | ✔️                               |                                                                          |
+| IPv4                                    | ✔️            | ✔️            | ✔️                              |                                                                          |
+| IPv6                                    | ✔️            | ✔️            | ✔️                              |                                                                          |
+| **Orphan Resource**                     |               |               |                                 |                                                                          |
+| Orphaned Replica Data Management        | ✔️            | ✔️            | -                               |                                                                          |
+| Orphaned Instance Management            | ✔️            | Not supported | ✔️                               |                                                                          |
+| **Volume Live Migration**               |               |               |                                 |                                                                          |
+| Volume Live Migration                   | ✔️            | ✔️            | -                               |                                                                          |
+| **Engine Live Upgrade**                 |               |               |                                 |                                                                          |
+| Engine Live Upgrade                     | ✔️            | ✔️            | -                               |                                                                          |
