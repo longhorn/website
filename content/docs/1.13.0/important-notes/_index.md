@@ -176,7 +176,7 @@ Automated pre-upgrade checks do not cover all scenarios. Manual checks via kubec
 Longhorn v{{< current-version >}} adds the `volumeTopology` StorageClass parameter to keep a volume's replicas in the zone or region where it was provisioned. Previously, zone labels only spread replicas apart, so a rebuild could place a replica in a different zone from the workload.
 
 - `any` (default): no constraint.
-- `zonal`: replicas stay in the zone chosen at provisioning time, including during rebuilds and replica count changes. With `WaitForFirstConsumer`, this is the zone the pod is scheduled to.
+- `zonal`: replicas stay in the zone chosen at provisioning time, including during rebuilds and replica count changes. With `WaitForFirstConsumer`, this is the zone the pod is scheduled to. With `Immediate` binding, the zone is selected from the provisioner-supplied topology at creation time, and the first consumer pod is constrained to that zone through the PV `nodeAffinity`.
 - `regional`: same as `zonal`, but for regions.
 
 If the chosen zone or region has no capacity, scheduling waits rather than falling back to another one. Clusters without topology labels are unaffected. A StorageClass with `volumeTopology: zonal` and `replicaZoneSoftAntiAffinity: disabled` is rejected at provisioning time.

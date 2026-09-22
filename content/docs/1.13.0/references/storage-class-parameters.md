@@ -43,6 +43,7 @@ parameters:
 #  dataEngine: "v1"
 #  freezeFSForSnapshot: "ignored"
 #  strictTopology: "false"
+#  volumeTopology: "any"
 # allowedTopologies:
 #   - matchLabelExpressions:
 #       - key: topology.kubernetes.io/zone
@@ -338,8 +339,28 @@ When set to `"true"`, the PV is pinned to the topology of the exact node selecte
 - `"false"` (default): The PV `nodeAffinity` includes all topology segments matching the `allowedTopologies` (or all segments if `allowedTopologies` is not set).
 - `"true"`: The PV `nodeAffinity` is restricted to only the topology segment of the node where the pod was scheduled.
 
+This parameter controls only Kubernetes PV `nodeAffinity`. It does not persist a Longhorn replica or shard placement constraint. Use [`volumeTopology`](#volume-topology-field) when Longhorn data placement must stay in the same zone or region as the PV.
+
 > Requires `csi-allowed-topology-keys` to be configured. See [CSI Allowed Topology Keys](../settings#csi-allowed-topology-keys).
-> More details in [Topology-Aware Provisioning](../../nodes-and-volumes/nodes/topology-aware-provisioning).
+
+#### Volume Topology *(field: `parameters.volumeTopology`)*
+
+> Default: `"any"`
+
+Controls whether Longhorn stores a topology requirement on newly provisioned volumes and enforces it during the placement of replicas, rebuilds, auto-balancing candidates, and erasure-coded shards.
+
+**Options:**
+
+- `"any"` (default): Longhorn does not store a topology requirement. Data placement remains unconstrained by CSI topology.
+- `"zonal"`: Longhorn resolves a single zone during volume creation. Both the PV `nodeAffinity` and all Longhorn data placement are strictly confined to that zone.
+- `"regional"`: Longhorn resolves a single region during volume creation. The PV `nodeAffinity` and all Longhorn data placement are confined to that region (though replicas can still spread across multiple zones **within** that region).
+
+**Requirements and Constraints:**
+
+- **Affinity Settings:** When using `"zonal"`, `replicaZoneSoftAntiAffinity` must be `"enabled"`. If it is unset or set to `"ignored"`, Longhorn records `"enabled"` on the volume instead of following the global setting. Longhorn will reject `volumeTopology: "zonal"` if this is set to `"disabled"`, as all replicas of a zonal volume must reside in the same zone.
+- **CSI Topology Keys:** You must include the corresponding topology key in [`csi-allowed-topology-keys`](../settings#csi-allowed-topology-keys) (`topology.kubernetes.io/zone` for `"zonal"`, or `topology.kubernetes.io/region` for `"regional"`). If nodes report the requested key but your setting filters it out, provisioning will be rejected rather than falling back to an unconstrained volume.
+
+> **Recommendation:** Use `volumeBindingMode: WaitForFirstConsumer` alongside `volumeTopology`. This ensures the resolved failure domain follows the scheduling decision of the first consumer pod. For more details, see [Topology-Aware Provisioning](../../nodes-and-volumes/nodes/topology-aware-provisioning).
 
 #### Backup Block Size *(field: `parameters.backupBlockSize`)*
 
