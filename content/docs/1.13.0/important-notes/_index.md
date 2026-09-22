@@ -78,7 +78,9 @@ For more information, see [Issue #13509](https://github.com/longhorn/longhorn/is
 
 #### Longhorn System Upgrade
 
-V2 volumes do not support live upgrades between Longhorn v1.12 patch releases and must be detached before upgrading. Support is planned when upgrading from a Longhorn v1.12 release to a Longhorn v1.13 release.
+Starting with Longhorn v1.12.2, attached V2 volumes can use [live upgrade](../deploy/upgrade/v2-instance-upgrade/) without detaching when the prerequisites are met and **Allow Instance Manager Automatic Upgrade** is enabled for V2. Longhorn upgrades instance managers one node at a time by temporarily relocating engines to other nodes.
+
+During a live upgrade, do not expand or live-migrate V2 volumes. Wait until all node upgrades are completed and volumes are healthy before performing these operations.
 
 ### Full Interrupt Mode
 
@@ -162,7 +164,7 @@ Because the CSI external provisioner is upgraded to v6.3.0, all clusters must be
 
 Automated pre-upgrade checks do not cover all scenarios. Manual checks via kubectl or the UI are recommended:
 
-- Ensure all V2 Data Engine volumes are detached and replicas are stopped. The V2 engine does not support live upgrades.
+- For V2 Data Engine volumes, check the [V2 live upgrade prerequisites](../deploy/upgrade/v2-instance-upgrade/#prerequisites). If your deployment does not meet these prerequisites, detach all V2 volumes and ensure their replicas are stopped before upgrading.
 - Avoid upgrading when volumes are in the "Faulted" state, as unusable replicas may be deleted, causing permanent data loss if no backups exist.
 - Avoid upgrading if a failed BackingImage exists. See [Backing Image](../advanced-resources/backing-image/backing-image) for details.
 - Creating a [Longhorn system backup](../advanced-resources/system-backup-restore/backup-longhorn-system) before upgrading is recommended to ensure recoverability.
