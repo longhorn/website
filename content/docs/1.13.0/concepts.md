@@ -16,6 +16,11 @@ For the installation requirements, go to [this section.](../deploy/install/#inst
 - [1. Design](#1-design)
   - [1.1. The Longhorn Manager and the Longhorn Engine](#11-the-longhorn-manager-and-the-longhorn-engine)
   - [1.2. The Instance Manager](#12-the-instance-manager)
+    - [Upgrade Behavior](#upgrade-behavior)
+      - [V1 Data Engine](#v1-data-engine)
+      - [V2 Data Engine](#v2-data-engine)
+    - [Failure Domain and Protection](#failure-domain-and-protection)
+    - [Debugging](#debugging)
   - [1.3. Advantages of a Microservices-Based Design](#13-advantages-of-a-microservices-based-design)
   - [1.4. CSI Driver](#14-csi-driver)
   - [1.5. CSI Plugin](#15-csi-plugin)
@@ -78,7 +83,7 @@ In the figure below,
 
 The [Instance Manager](https://github.com/longhorn/longhorn-instance-manager) is the per-node component that hosts and manages the lifecycle of engine and replica instances. It runs as a pod in the `longhorn-system` namespace, and is created and supervised by the Longhorn Manager. Unlike the Longhorn Manager, which is a single DaemonSet across the cluster, the Instance Manager is a system-managed component whose lifecycle is owned by Longhorn itself.
 
-When the Longhorn Manager decides to attach a volume, it does not start the engine or replica processes directly. Instead, it instructs the Instance Manager on the relevant node to start them inside the Instance Manager pod. Each worker node runs a single Instance Manager pod per data engine version, and that pod hosts the engine and replica instances for many volumes that land on the node. For a given volume, one engine instance lives in the Instance Manager on the node where the workload Pod runs, and one replica instance lives in the Instance Manager on each node selected for that volume's replicas. The number of replicas per volume is controlled by the [Default Replica Count](../references/settings/#default-replica-count) setting and can be overridden per volume.
+When the Longhorn Manager decides to attach a volume, it does not start the engine or replica processes directly. Instead, it instructs the Instance Manager on the relevant node to start them inside the Instance Manager pod. Each worker node runs a singcvxdf tings/#default-replica-count) setting and can be overridden per volume.
 
 > **Note:** For RWX volumes without the `migratable` flag, the engine runs on the node hosting the share-manager pod rather than on the workload node.
 
@@ -91,14 +96,38 @@ The hosting model differs between data engines:
 
 ### Upgrade Behavior
 
-If both data engines are enabled on a cluster, each node runs two Instance Manager pods (one per data engine version), each with its own CPU reservation. During a Longhorn upgrade, a new Instance Manager pod is created alongside the existing one on each affected node. The old pod keeps hosting the engine and replica instances that are already running so that live volumes stay online, while newly created and newly attached volumes land on the upgraded pod. Existing volumes only move to the new Instance Manager when they are detached and reattached (typically as part of the engine upgrade workflow), and the old pod is only removed once no instances remain inside it. 
+If both data engines are enabled on a cluster, each node runs two Instance Manager pods (one per data engine version), each with its own CPU reservation. Longhorn does not replace an Instance Manager pod while it still hosts engine or replica instances; how instances reach the upgraded pod differs between the two data engines.
+
+#### V1 Data Engine
+
+During a Longhorn upgrade, a new Instance Manager pod is created alongside the existing one on each affected node.
+
+- **Coexistence**:  
+  The old pod keeps hosting the engine and replica instances that are already running so that live volumes stay online, while newly created and newly attached volumes land on the upgraded pod.
+- **Transition**:  
+  Existing volumes only move to the new Instance Manager when they are detached and reattached (typically as part of the [engine upgrade workflow](../deploy/upgrade/upgrade-engine/)).
+- **Cleanup**:  
+  The old pod is only removed once no instances remain inside it. Old pods that are still running after the upgrade are therefore expected; see [Instance Manager Pods During Upgrade](../deploy/upgrade/instance-manager-pods-during-upgrade/).
+
+#### V2 Data Engine
+
+Old and new pods cannot coexist on the same node, because the SPDK target process takes ownership of the node's block-type disks and uses the pod's dedicated CPU cores and, when enabled, hugepages. The V2 Instance Manager pod is therefore replaced in place with the new image instead of being started alongside the old one. During a V2 Instance Manager live upgrade, Longhorn handles the upgrade as follows:
+
+- **No active instances**:  
+  If the V2 Instance Manager on a node hosts no engine or replica instances (for example, the node has no attached V2 volumes and no V2 replicas scheduled on it), Longhorn replaces the pod as soon as a new image is available.
+- **Active instances (Live upgrade)**:  
+  If instances are still running, Longhorn supports a live upgrade when upgrading from v1.12.2 or later. This keeps volumes attached throughout the upgrade. Longhorn upgrades one node at a time: it temporarily relocates the engines hosted on that node to other nodes, detaches the replicas on the node from their engines, replaces the Instance Manager pod, restores the engines to their original node, and waits for the affected volumes to become healthy again before moving on. Workloads and the host-side NVMe-TCP initiators stay on their original nodes throughout.
+- **Offline fallback**:  
+  Live upgrade has prerequisites. In particular, live upgrade is not supported in a single-node cluster. The cluster must have more than one node, use the NVMe-TCP frontend, and have healthy replicas on at least two nodes. If these prerequisites are not met, detach the V2 volumes so that each Instance Manager can be replaced with no instances running.
 
 > **Warning: Resource constraints during upgrades**
-> Because both the old and new pods keep their CPU and memory reservations during this window, each node needs enough spare capacity to run the extra pods until the upgrade completes. If a node does not have enough reservable resources, Longhorn cannot start the new Instance Manager pod and the upgrade stalls on that node. This is especially likely for the V2 Data Engine, whose Instance Manager requires hugepages and dedicated CPU cores.
+> For the V1 Data Engine, both the old and new pods keep their CPU and memory reservations until the old pod is removed, so each node needs enough spare capacity to run the extra pod. If a node does not have enough reservable resources, Longhorn cannot start the new Instance Manager pod and the upgrade stalls on that node.
+>
+> For the V2 Data Engine, the pod is replaced in place, so no extra hugepage or CPU reservation is needed on the node being upgraded. A live upgrade instead shifts load elsewhere: the relocated engines temporarily add I/O to the nodes that host them, and the replicas that were detached during the upgrade may have to be rebuilt afterwards, which requires spare disk capacity.
 
 ### Failure Domain and Protection
 
-Because the engine and replica instances live inside the Instance Manager pod, the Instance Manager defines the failure domain for everything it hosts. If an Instance Manager pod is restarted or evicted, every engine and replica instance it was hosting goes with it, and the Longhorn Manager must reattach the affected volumes and rebuild replicas as needed. 
+Because the engine and replica instances live inside the Instance Manager pod, the Instance Manager defines the failure domain for everything it hosts. If an Instance Manager pod is restarted or evicted, every engine and replica instance it was hosting goes with it, and the Longhorn Manager must reattach the affected volumes and rebuild replicas as needed.
 
 For this reason, Longhorn reserves CPU for the Instance Manager pod (see [Guaranteed Instance Manager CPU](../best-practices/#guaranteed-instance-manager-cpu)) and avoids restarting it while it is still hosting active instances. For the same reason, Longhorn protects the Instance Manager pod from accidental eviction or drain with a PodDisruptionBudget, whose behavior is controlled by the [Node Drain Policy](../references/settings/#node-drain-policy) setting. Longhorn also assigns its system-managed components a dedicated [Priority Class](../references/settings/#priority-class) by default, making them less likely to be evicted when a node is under resource pressure.
 
