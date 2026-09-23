@@ -462,6 +462,7 @@ Defines the Longhorn action when a Volume is stuck with a StatefulSet/Deployment
 - `delete-statefulset-pod` Longhorn will force delete StatefulSet terminating pods on nodes that are down to release Longhorn volumes so that Kubernetes can spin up replacement pods.
 - `delete-deployment-pod` Longhorn will force delete Deployment terminating pods on nodes that are down to release Longhorn volumes so that Kubernetes can spin up replacement pods.
 - `delete-both-statefulset-and-deployment-pod` Longhorn will force delete StatefulSet/Deployment terminating pods on nodes that are down to release Longhorn volumes so that Kubernetes can spin up replacement pods.
+- `delete-both-statefulset-and-deployment-pod-and-annotated-pods` Same as above, but Longhorn will also explicitly delete pods annotated with `longhorn.io/allow-deletion`, this is useful when the Pod is created by an Operator or a Controller.
 
 #### Registry Secret
 
