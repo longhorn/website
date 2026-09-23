@@ -18,7 +18,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
   - [Full Interrupt Mode](#full-interrupt-mode)
   - [V2 Dedicated CPU Requirements](#v2-dedicated-cpu-requirements)
   - [CPU Isolation Enabled by Default](#cpu-isolation-enabled-by-default)
-- [Storage Sharding (Experimental)](#storage-sharding-experimental)
+- [Sharding Storage (Experimental)](#sharding-storage-experimental)
 - [Important Fixes](#important-fixes)
   - [Linked-Clone Backup Restore](#linked-clone-backup-restore)
   - [CSI Volume Clone with Strict-Local Data Locality](#csi-volume-clone-with-strict-local-data-locality)
@@ -58,7 +58,7 @@ The V2 Data Engine became generally available in Longhorn v1.12.0. This mileston
 
 Longhorn v1.13.0 builds on that GA foundation with [live upgrade](#longhorn-system-upgrade) support for V2 volumes and refined V2 linked-clone feature. It also continues to improve V2 volume stability.
 
-For a summary of the current V1 and V2 behavior differences and feature parity, see [V1 and V2 Volume Behavior and Feature Parity](../v1-v2-volume-behavior-and-feature-parity).
+For a summary of the current data engine behavior differences and feature support, see [Data Engine Comparison](../data-engine-comparison).
 
 For more information, see [Issue #6229](https://github.com/longhorn/longhorn/issues/6229).
 
@@ -112,13 +112,13 @@ For more information, see:
 * [Issue #13973](https://github.com/longhorn/longhorn/issues/13973)
 * [Data Engine CPU Isolation Enabled](../references/settings/#data-engine-cpu-isolation-enabled)
 
-## Storage Sharding (Experimental)
+## Sharding Storage (Experimental)
 
 Longhorn v1.12.1 introduces storage sharding for the V2 Data Engine as an experimental feature. Instead of storing a full copy of the volume on each replica, sharding splits the volume into data and parity chunks using erasure coding and distributes them across multiple nodes. This allows a volume to grow beyond the capacity of a single disk or node while using less disk space to achieve the same level of fault tolerance.
 
 Because this feature is experimental, it is intended for evaluation and testing only and is not recommended for production use.
 
-For more information, see [Issue #1061](https://github.com/longhorn/longhorn/issues/1061) and [Sharding with Erasure Coding](../advanced-resources/v2-data-engine/sharding).
+For more information, see [Issue #1061](https://github.com/longhorn/longhorn/issues/1061) and [Sharding Storage](../advanced-resources/sharding-storage).
 
 ## Important Fixes
 

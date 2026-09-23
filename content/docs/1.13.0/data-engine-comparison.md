@@ -1,9 +1,9 @@
 ---
-title: V1 and V2 Volume Feature Support
+title: Data Engine Comparison
 weight: 4
 ---
 
-This page summarizes the expected behavior differences between V1 and V2 volumes and provides a feature support matrix for the Longhorn v1.13.0 documentation set.
+This page summarizes the expected behavior differences between the Longhorn data engines and data layouts, and provides a feature support matrix for the Longhorn v1.13.0 documentation set.
 
 ## Expected Behavioral Differences
 
@@ -36,7 +36,7 @@ In V2, revision counters are not supported. V2 volumes do not maintain revision-
 
 ## Feature Support Matrix
 
-> **Note**: The V2 column assumes the default `replicated` data layout. V2 volumes that use the `sharded` (erasure-coding) data layout do not support several of the features listed below, including backup and restore, volume cloning, backing images, DR (standby) volumes, and live migration. See [Sharding with Erasure Coding](../advanced-resources/v2-data-engine/sharding).
+> **Note**: The V2 column assumes the default `replicated` data layout. V2 volumes that use the `sharded` (erasure-coding) data layout do not support several of the features listed below, including backup and restore, volume cloning, backing images, DR (standby) volumes, and live migration. See [Sharding Storage](../advanced-resources/sharding-storage).
 
 | Feature                                 | V1            | V2            | Sharding Storage (Experimental) | Support Notes                                                            |
 | --------------------------------------- | ------------- | ------------- | ------------------------------- | ------------------------------------------------------------------------ |

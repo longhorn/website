@@ -78,7 +78,7 @@ For more information, see [Issue #13181](https://github.com/longhorn/longhorn/is
 
 The V2 Data Engine is generally available in Longhorn v{{< current-version >}}. This milestone reflects improvements in stability, operational safety, networking support, and feature maturity, making V2 volumes suitable for production use in supported environments.
 
-For a summary of the current V1 and V2 behavior differences and feature parity, see [V1 and V2 Volume Behavior and Feature Parity](../v1-v2-volume-behavior-and-feature-parity).
+For a summary of the current data engine behavior differences and feature support, see [Data Engine Comparison](../data-engine-comparison).
 
 For more information, see [Issue #6229](https://github.com/longhorn/longhorn/issues/6229).
 

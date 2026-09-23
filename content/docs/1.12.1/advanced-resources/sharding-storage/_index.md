@@ -1,6 +1,6 @@
 ---
-title: Sharding with Erasure Coding (Experimental)
-weight: 60
+title: Sharding Storage (Experimental)
+weight: 111
 ---
 
 > **Note**: This feature is **Experimental** and should only be used for evaluation and testing. It is not recommended for production use.
@@ -82,7 +82,7 @@ The total number of chunks (`dataChunks + parityChunks`) cannot be more than 32.
 
 ## How to use
 
-Create a sharded volume by using a StorageClass that sets the `dataLayout.*` parameters, then reference the StorageClass from a PersistentVolumeClaim. For the step-by-step manifests, see [Creating V2 Longhorn Volumes with kubectl (sharding)](../../../nodes-and-volumes/volumes/create-volumes#creating-v2-longhorn-volumes-with-kubectl-sharding).
+Create a sharded volume by using a StorageClass that sets the `dataLayout.*` parameters, then reference the StorageClass from a PersistentVolumeClaim. For the step-by-step manifests, see [Creating V2 Longhorn Volumes with kubectl (sharding)](../../nodes-and-volumes/volumes/create-volumes#creating-v2-longhorn-volumes-with-kubectl-sharding).
 
 ## Inspecting the shards
 

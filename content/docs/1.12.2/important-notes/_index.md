@@ -23,7 +23,7 @@ For the full release note, see the Longhorn v1.12.1 release notes on GitHub.
   - [Host CPU Isolation](#host-cpu-isolation)
   - [SPDK iobuf Pool Size Configuration](#spdk-iobuf-pool-size-configuration)
   - [IPv6 Support](#ipv6-support)
-- [Storage Sharding (Experimental)](#storage-sharding-experimental)
+- [Sharding Storage (Experimental)](#sharding-storage-experimental)
 - [Important Fixes](#important-fixes)
   - [Instance Manager Panic During Replica Rebuild](#instance-manager-panic-during-replica-rebuild)
   - [Replica Rebuild Progress Reporting](#replica-rebuild-progress-reporting)
@@ -96,7 +96,7 @@ For more information, see [Issue #13181](https://github.com/longhorn/longhorn/is
 
 The V2 Data Engine is generally available in Longhorn v1.12.0. This milestone reflects improvements in stability, operational safety, networking support, and feature maturity, making V2 volumes suitable for production use in supported environments.
 
-For a summary of the current V1 and V2 behavior differences and feature parity, see [V1 and V2 Volume Behavior and Feature Parity](../v1-v2-volume-behavior-and-feature-parity).
+For a summary of the current data engine behavior differences and feature support, see [Data Engine Comparison](../data-engine-comparison).
 
 For more information, see [Issue #6229](https://github.com/longhorn/longhorn/issues/6229).
 
@@ -170,13 +170,13 @@ V2 volumes now support single-stack IPv6 Kubernetes clusters. For dual-stack clu
 
 For more information, see [Issue #10928](https://github.com/longhorn/longhorn/issues/10928).
 
-## Storage Sharding (Experimental)
+## Sharding Storage (Experimental)
 
 Longhorn v1.12.1 introduces storage sharding as an experimental data protection and storage layout feature built on the V2 Data Engine. Instead of storing a full copy of the volume on each replica, sharding uses erasure coding to encode written data into data and parity chunks, which are distributed across multiple nodes. This allows a volume to grow beyond the capacity of a single disk or node while using less disk space to achieve the same level of fault tolerance.
 
 Because this feature is experimental, it is intended for evaluation and testing only and is not recommended for production use.
 
-For more information, see [Issue #1061](https://github.com/longhorn/longhorn/issues/1061) and [Sharding with Erasure Coding](../advanced-resources/v2-data-engine/sharding).
+For more information, see [Issue #1061](https://github.com/longhorn/longhorn/issues/1061) and [Sharding Storage](../advanced-resources/sharding-storage).
 
 ## Important Fixes
 
