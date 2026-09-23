@@ -54,7 +54,9 @@ For more information, see [Ticket #12552](https://github.com/longhorn/longhorn/i
 
 ### General Availability
 
-The V2 Data Engine is generally available in Longhorn v1.12.0. This milestone reflects improvements in stability, operational safety, networking support, and feature maturity, making V2 volumes suitable for production use in supported environments.
+The V2 Data Engine became generally available in Longhorn v1.12.0. This milestone reflects improvements in stability, operational safety, networking support, and feature maturity, making V2 volumes suitable for production use in supported environments.
+
+Longhorn v1.13.0 builds on that GA foundation with [live upgrade](#longhorn-system-upgrade) support for V2 volumes and refined V2 linked-clone feature. It also continues to improve V2 volume stability and operational safety.
 
 For a summary of the current V1 and V2 behavior differences and feature parity, see [V1 and V2 Volume Behavior and Feature Parity](../v1-v2-volume-behavior-and-feature-parity).
 
@@ -78,9 +80,9 @@ For more information, see [Issue #13509](https://github.com/longhorn/longhorn/is
 
 #### Longhorn System Upgrade
 
-Starting with Longhorn v1.12.2, attached V2 volumes can use [live upgrade](../deploy/upgrade/v2-instance-upgrade/) without detaching when the prerequisites are met and **Allow Instance Manager Automatic Upgrade** is enabled for V2. Longhorn upgrades instance managers one node at a time by temporarily relocating engines to other nodes.
+For upgrades to Longhorn v1.13.0, [V2 Data Engine live upgrade](../deploy/upgrade/v2-instance-upgrade/) is supported only from Longhorn v1.12.2. Upgrades from earlier versions, such as Longhorn v1.12.0 and v1.12.1, do not support V2 Data Engine live upgrade.
 
-During a live upgrade, do not expand or live-migrate V2 volumes. Wait until all node upgrades are completed and volumes are healthy before performing these operations.
+For more information, see [V2 Data Engine live upgrade](../deploy/upgrade/v2-instance-upgrade/).
 
 ### Full Interrupt Mode
 
