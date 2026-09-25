@@ -116,7 +116,7 @@ Old and new pods cannot coexist on the same node, because the SPDK target proces
 - **No active instances**:  
   If the V2 Instance Manager on a node hosts no engine or replica instances (for example, the node has no attached V2 volumes and no V2 replicas scheduled on it), Longhorn replaces the pod as soon as a new image is available.
 - **Active instances**:  
-  V2 volumes do not support live upgrades and must be detached before upgrading, see (V2 Data Engine/Longhorn System Upgrade)(../important-notes/#longhorn-system-upgrade).
+  V2 volumes do not support live upgrades and must be detached before upgrading, see [V2 Data Engine/Longhorn System Upgrade](../important-notes/#longhorn-system-upgrade).
 
 > **Warning: Resource constraints during upgrades**
 > For the V1 Data Engine, both the old and new pods keep their CPU and memory reservations until the old pod is removed, so each node needs enough spare capacity to run the extra pod. If a node does not have enough reservable resources, Longhorn cannot start the new Instance Manager pod and the upgrade stalls on that node.

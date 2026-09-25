@@ -102,8 +102,8 @@ For `allowedTopologies` to take effect, the Longhorn setting [`csi-allowed-topol
 
 ## Longhorn-specific Parameters
 
-Note that some of these parameters also exist and may be specified in global settings. When a volume is provisioned with Kubernetes against a particular StorageClass, StorageClass parameters override the global settings.
-These fields will be applied for new volume creation only. If a StorageClass is modified, neither Longhorn nor Kubernetes is responsible for propagating changes to its parameters back to volumes previously created with it.
+* **Parameter overrides:** Some of these parameters also exist and may be specified in global settings. When a volume is provisioned with Kubernetes against a particular `StorageClass`, the `StorageClass` parameters override the global settings.
+* **New volumes only:** These fields will be applied for new volume creation only. If a `StorageClass` is modified, neither Longhorn nor Kubernetes is responsible for propagating changes to its parameters back to volumes previously created with it.
 
 ### Number Of Replicas *(field: `parameters.numberOfReplicas`)*
 
@@ -121,7 +121,7 @@ The desired number of copies (replicas) for redundancy.
 
 > Default: `2880`
 
-Minutes after a replica is marked unhealthy before it is deemed useless for rebuilds and is just deleted. The default value `2880` corresponds to 48 hours.
+The number of minutes after a replica is marked unhealthy before it is deemed useless for rebuilds and is deleted. The default value `2880` corresponds to 48 hours.
 
 ### From Backup *(field: `parameters.fromBackup`)*
 
@@ -136,7 +136,7 @@ URL of a backup to be restored from.
 
 The name of the backup target to use for backups or restores.
 
-> More details in [default backup target](../../snapshots-and-backups/backup-and-restore/set-backup-target#default-backup-target) and [Create Volumes](../../nodes-and-volumes/volumes/create-volumes).
+> For more details, see [default backup target](../../snapshots-and-backups/backup-and-restore/set-backup-target#default-backup-target) and [Create Volumes](../../nodes-and-volumes/volumes/create-volumes).
 
 ### Backup Block Size *(field: `parameters.backupBlockSize`)*
 
@@ -146,13 +146,13 @@ The name of the backup target to use for backups or restores.
 Kubernetes quantity string for the backup block size. Specify the empty string `""` to use the global setting.
 
 > Global setting: [default backup block size](../settings#default-backup-block-size).
-> More details in [Configure The Block Size Of Backup](../../snapshots-and-backups/backup-and-restore/configure-backup-block-size).
+> For more details, see [Configure The Block Size Of Backup](../../snapshots-and-backups/backup-and-restore/configure-backup-block-size).
 
 ### FS Type *(field: `parameters.fsType`)*
 
 > Default: `ext4`
 
-Filesystem to format the volume with. Supported filesystems are `ext4` and `xfs`.
+The filesystem used to format the volume. Supported filesystems are `ext4` and `xfs`.
 
 > For more details, see [Creating Longhorn Volumes with Kubernetes](../../nodes-and-volumes/volumes/create-volumes).
 
@@ -175,8 +175,7 @@ Enables live migration capabilities for a Longhorn volume, allowing it to be mig
 - **`migratable: true`**: For workloads requiring live migration. Must be used with `ReadWriteMany` access mode and `volumeMode: Block`.
 - **`migratable: false`**: For standard volumes that don't require live migration capabilities.
 
-> Note: If specified on non-RWX volumes, Longhorn proceeds with non-migratable RWO volume creation.
-> More details in [ReadWriteMany (RWX) Volume](../../nodes-and-volumes/volumes/rwx-volumes).
+> **Note**: If specified on non-RWX volumes, Longhorn proceeds with non-migratable RWO volume creation. For more details, see [ReadWriteMany (RWX) Volumes](../../nodes-and-volumes/volumes/rwx-volumes).
 
 ### Encrypted *(field: `parameters.encrypted`)*
 
@@ -184,7 +183,7 @@ Enables live migration capabilities for a Longhorn volume, allowing it to be mig
 
 Enables volume encryption using dm-crypt/LUKS.
 
-> More details in [Encrypted Volumes](../../advanced-resources/security/volume-encryption).
+> For more details, see [Encrypted Volumes](../../advanced-resources/security/volume-encryption).
 
 ### Data Locality *(field: `parameters.dataLocality`)*
 
@@ -197,7 +196,7 @@ If enabled, try to keep the data on the same node as the workload for better per
 - `"strict-local"`: The replica count must be 1, or volume creation fails with a validation error. Longhorn places the volume data on the workload node and ignores CSI topology/accessibility requirements; `allowedTopologies` is not written to the PV `nodeAffinity`, and `volumeTopology` has no effect. A displaced `strict-local` replica will be marked as "Stopped".
 
 > Global setting: [Default Data Locality](../settings#default-data-locality).
-> More details in [Data Locality](../../high-availability/data-locality).
+> For more details, see [Data Locality](../../high-availability/data-locality).
 
 ### Replica Auto-Balance *(field: `parameters.replicaAutoBalance`)*
 
@@ -209,7 +208,7 @@ If enabled, move replicas to more lightly-loaded nodes.
 - Other options are `"disabled"`, `"least-effort"`, `"best-effort"`.
 
 > Global setting: [Replica Auto Balance](../settings#replica-auto-balance).
-> More details in [Auto Balance Replicas](../../high-availability/auto-balance-replicas).
+> For more details, see [Auto Balance Replicas](../../high-availability/auto-balance-replicas).
 
 ### Disk Selector *(field: `parameters.diskSelector`)*
 
@@ -218,7 +217,7 @@ If enabled, move replicas to more lightly-loaded nodes.
 
 A comma-separated list of disk tags to select which disks are candidates for replica placement.
 
-> More details in [Storage Tags](../../nodes-and-volumes/nodes/storage-tags).
+> For more details, see [Storage Tags](../../nodes-and-volumes/nodes/storage-tags).
 
 ### Node Selector *(field: `parameters.nodeSelector`)*
 
@@ -227,7 +226,7 @@ A comma-separated list of disk tags to select which disks are candidates for rep
 
 A comma-separated list of node tags to select which nodes are candidates for replica placement.
 
-> More details in [Storage Tags](../../nodes-and-volumes/nodes/storage-tags).
+> For more details, see [Storage Tags](../../nodes-and-volumes/nodes/storage-tags).
 
 ### Recurring Job Selector *(field: `parameters.recurringJobSelector`)*
 
@@ -236,7 +235,7 @@ A comma-separated list of node tags to select which nodes are candidates for rep
 
 A JSON array of recurring job or group specifications to attach to the volume.
 
-> More details in [Recurring Snapshots and Backups](../../snapshots-and-backups/scheduling-backups-and-snapshots).
+> For more details, see [Recurring Snapshots and Backups](../../snapshots-and-backups/scheduling-backups-and-snapshots).
 
 ### Backing Image *(field: `parameters.backingImage`)*
 
@@ -244,7 +243,7 @@ A JSON array of recurring job or group specifications to attach to the volume.
 
 The name of the backing image to use for the volume.
 
-> See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc).
+> For more details, see [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc).
 
 ### Backing Image Data Source Type *(field: `parameters.backingImageDataSourceType`)*
 
@@ -252,13 +251,13 @@ The name of the backing image to use for the volume.
 
 The data source type if Longhorn must create a missing backing image during CSI volume provisioning.
 
-- Supported through StorageClass/PVC provisioning: `download` and `export-from-volume`.
-- `upload` is a Longhorn backing image source type, but it is rejected when creating a missing backing image through CSI provisioning.
-- `clone` is a Longhorn backing image source type, but it is not created through this CSI StorageClass path.
+- **Supported via CSI**: `download` and `export-from-volume`.
+- **Unsupported (`upload`)**: `upload` is a valid Longhorn backing image source type, but it is rejected when creating a missing backing image through CSI provisioning.
+- **Unsupported (`clone`)**: `clone` is a valid Longhorn backing image source type, but it is not created through this CSI StorageClass path.
 
-If `backingImage` refers to an existing BackingImage, this parameter is usually unnecessary. If specified, it must match the existing BackingImage source type and source parameters.
+If `backingImage` refers to an existing `backingImage`, this parameter is usually unnecessary. If specified, it must match the existing `backingImage` source type and source parameters.
 
-> See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc).
+> For more details, see [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc).
 
 ### Backing Image Data Source Parameters *(field: `parameters.backingImageDataSourceParameters`)*
 
@@ -267,7 +266,7 @@ If `backingImage` refers to an existing BackingImage, this parameter is usually 
 
 A JSON string representing the parameters required by the specified `backingImageDataSourceType`.
 
-> See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc).
+> For more details, see [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc).
 
 ### Backing Image Checksum *(field: `parameters.backingImageChecksum`)*
 
@@ -275,7 +274,7 @@ A JSON string representing the parameters required by the specified `backingImag
 
 Expected SHA512 checksum of the backing image file.
 
-> See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc).
+> For more details, see [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc).
 
 ### Backing Image Min Number Of Copies *(field: `parameters.backingImageMinNumberOfCopies`)*
 
@@ -284,7 +283,7 @@ Expected SHA512 checksum of the backing image file.
 
 The minimum number of backing image copies Longhorn will automatically maintain on different disks.
 
-> See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc).
+> For more details, see [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc).
 
 ### Backing Image Node Selector *(field: `parameters.backingImageNodeSelector`)*
 
@@ -293,7 +292,7 @@ The minimum number of backing image copies Longhorn will automatically maintain 
 
 A comma-separated list of node tags where copies of the backing image are allowed to be placed.
 
-> See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc).
+> For more details, see [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc).
 
 ### Backing Image Disk Selector *(field: `parameters.backingImageDiskSelector`)*
 
@@ -302,7 +301,7 @@ A comma-separated list of node tags where copies of the backing image are allowe
 
 A comma-separated list of disk tags where copies of the backing image are allowed to be placed.
 
-> See [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc).
+> For more details, see [Backing Image](../../advanced-resources/backing-image/backing-image#create-and-use-a-backing-image-via-storageclass-and-pvc).
 
 ### Unmap Mark Snap Chain Removed *(field: `parameters.unmapMarkSnapChainRemoved`)*
 
@@ -311,9 +310,9 @@ A comma-separated list of disk tags where copies of the backing image are allowe
 - `"ignored"`: Use the global setting.
 - Other values are `"enabled"` and `"disabled"`.
 
-> Note: For V2 Data Engine volumes, this parameter must be `"disabled"` (or left unset).
-> Global setting: [Remove Snapshots During Filesystem Trim](../settings#remove-snapshots-during-filesystem-trim).
-> More details in [Trim Filesystem](../../nodes-and-volumes/volumes/trim-filesystem).
+> **Note**: For V2 Data Engine volumes, this parameter must be `"disabled"` (or left unset).
+> Global setting: [Remove Snapshots During Filesystem Trim](../settings#remove-snapshots-during-filesystem-trim).  
+> For more details, see [Trim Filesystem](../../nodes-and-volumes/volumes/trim-filesystem).
 
 ### Disable Revision Counter *(field: `parameters.disableRevisionCounter`)*
 
@@ -321,9 +320,9 @@ A comma-separated list of disk tags where copies of the backing image are allowe
 
 Controls whether to disable the volume revision counter. When set to `false`, Longhorn tracks revision counts to detect split-brain scenarios. When set to `true` (default), the revision counter is disabled.
 
-> Note: Revision counters do not apply to V2 Data Engine volumes.
+> **Note**: Revision counters do not apply to V2 Data Engine volumes.
 > Global setting: [Disable Revision Counter](../settings#disable-revision-counter).
-> More details in [Revision Counter](../../advanced-resources/deploy/revision_counter).
+> For more details, see [Revision Counter](../../advanced-resources/deploy/revision_counter).
 
 ### Replica Soft Anti-Affinity *(field: `parameters.replicaSoftAntiAffinity`)*
 
@@ -333,7 +332,7 @@ Controls whether to disable the volume revision counter. When set to `false`, Lo
 - Other values are `"enabled"` and `"disabled"`.
 
 > Global setting: [Replica Node Level Soft Anti-Affinity](../settings#replica-node-level-soft-anti-affinity).
-> More details in [Scheduling](../../nodes-and-volumes/nodes/scheduling) and [Best Practices](../../best-practices#replica-node-level-soft-anti-affinity).
+> For more details, see [Scheduling](../../nodes-and-volumes/nodes/scheduling) and [Best Practices](../../best-practices#replica-node-level-soft-anti-affinity).
 
 ### Replica Zone Soft Anti-Affinity *(field: `parameters.replicaZoneSoftAntiAffinity`)*
 
@@ -344,7 +343,7 @@ Controls whether to disable the volume revision counter. When set to `false`, Lo
 
 > Note: For zonal volumes (`volumeTopology: "zonal"`), `replicaZoneSoftAntiAffinity` must be `"enabled"`. If it is unset or set to `"ignored"`, Longhorn records `"enabled"` on the volume instead of following the global setting. Longhorn rejects `volumeTopology: "zonal"` if this is set to `"disabled"`, as all replicas of a zonal volume must reside in the same zone.
 > Global setting: [Replica Zone Level Soft Anti-Affinity](../settings#replica-zone-level-soft-anti-affinity).
-> More details in [Scheduling](../../nodes-and-volumes/nodes/scheduling).
+> For more details, see [Scheduling](../../nodes-and-volumes/nodes/scheduling).
 
 ### Replica Disk Soft Anti-Affinity *(field: `parameters.replicaDiskSoftAntiAffinity`)*
 
@@ -354,17 +353,17 @@ Controls whether to disable the volume revision counter. When set to `false`, Lo
 - Other values are `"enabled"` and `"disabled"`.
 
 > Global setting: [Replica Disk Level Soft Anti-Affinity](../settings#replica-disk-level-soft-anti-affinity).
-> More details in [Scheduling](../../nodes-and-volumes/nodes/scheduling).
+> For more details, see [Scheduling](../../nodes-and-volumes/nodes/scheduling).
 
 ### NFS Options *(field: `parameters.nfsOptions`)*
 
 > Default: `""`
 > Example: `"hard,sync"`
 
-- Overrides for NFS mount of RWX volumes to the share-manager. Use this field with caution.
-- Note: Built-in options vary by release. Check your release details before setting this.
+Overrides for NFS mount of RWX volumes to the share-manager. Use this field with caution.
+> **Note**: Built-in options vary by release. Check your release details before setting this.
 
-> More details in [ReadWriteMany (RWX) Volume](../../nodes-and-volumes/volumes/rwx-volumes#configuring-volume-mount-options-for-generic-non-migratable-rwx-volumes).
+> For more details, see [ReadWriteMany (RWX) Volume](../../nodes-and-volumes/volumes/rwx-volumes#configuring-volume-mount-options-for-generic-non-migratable-rwx-volumes).
 
 ### Data Engine *(field: `parameters.dataEngine`)*
 
@@ -430,7 +429,7 @@ Controls how volume data is distributed.
 
 The data layout is immutable after the volume is created.
 
-> More details in [Sharding with Erasure Coding](../../advanced-resources/v2-data-engine/sharding).
+> For more details, see [Sharding with Erasure Coding](../../advanced-resources/v2-data-engine/sharding).
 
 ### Data Layout Mode *(field: `parameters.dataLayout.mode`)*
 
@@ -468,7 +467,7 @@ When set to `"true"`, the PV is pinned to the topology of the exact node selecte
 - `"false"` (default): The PV `nodeAffinity` includes all topology segments matching the `allowedTopologies` (or all segments if `allowedTopologies` is not set).
 - `"true"`: The PV `nodeAffinity` is restricted to only the topology segment of the node where the pod was scheduled.
 
-This parameter controls only Kubernetes PV `nodeAffinity`. It does not persist a Longhorn replica or shard placement constraint. Use [`volumeTopology`](#volume-topology-field-parametersvolumetopology) when Longhorn data placement must stay in the same zone or region as the PV.
+This parameter controls only Kubernetes PV `nodeAffinity`. It does not persist a Longhorn replica or shard placement constraint. Use [`volumeTopology`](#volume-topology) when Longhorn data placement must stay in the same zone or region as the PV.
 
 > Requires `csi-allowed-topology-keys` to be configured. See [CSI Allowed Topology Keys](../settings#csi-allowed-topology-keys).
 
