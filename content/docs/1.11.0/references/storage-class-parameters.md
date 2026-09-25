@@ -354,9 +354,10 @@ Controls whether to disable the volume revision counter. When set to `false`, Lo
 > Example: `"hard,sync"`
 
 Overrides for NFS mount of RWX volumes to the share-manager. Use this field with caution.
-- Note: Built-in options vary by release. Check your release details before setting this.
 
-> More details in [ReadWriteMany (RWX) Volume](../../nodes-and-volumes/volumes/rwx-volumes#configuring-volume-mount-options-for-generic-non-migratable-rwx-volumes).
+> **Note**: Built-in options vary by release. Check your release details before setting this.
+
+> For more details, see [ReadWriteMany (RWX) Volume](../../nodes-and-volumes/volumes/rwx-volumes#configuring-volume-mount-options-for-generic-non-migratable-rwx-volumes).
 
 ### Data Engine *(field: `parameters.dataEngine`)*
 
