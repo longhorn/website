@@ -346,7 +346,7 @@ Controls whether to disable the volume revision counter. When set to `false`, Lo
 - Other values are `"enabled"` and `"disabled"`.
 
 > Global setting: [Replica Disk Level Soft Anti-Affinity](../settings#replica-disk-level-soft-anti-affinity).
-> More details in [Scheduling](../../nodes-and-volumes/nodes/scheduling).
+> For more details, see [Scheduling](../../nodes-and-volumes/nodes/scheduling).
 
 ### NFS Options *(field: `parameters.nfsOptions`)*
 
