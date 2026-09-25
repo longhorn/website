@@ -415,7 +415,7 @@ Controls how volume data is distributed.
 
 The data layout is immutable after the volume is created.
 
-> For more details, see [Sharding with Erasure Coding](../../advanced-resources/v2-data-engine/sharding).
+> For more details, see [Sharding](../../advanced-resources/v2-data-engine/sharding).
 
 ### Data Layout Mode *(field: `parameters.dataLayout.mode`)*
 

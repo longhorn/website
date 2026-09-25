@@ -83,7 +83,7 @@ In the figure below,
 
 The [Instance Manager](https://github.com/longhorn/longhorn-instance-manager) is the per-node component that hosts and manages the lifecycle of engine and replica instances. It runs as a pod in the `longhorn-system` namespace, and is created and supervised by the Longhorn Manager. Unlike the Longhorn Manager, which is a single DaemonSet across the cluster, the Instance Manager is a system-managed component whose lifecycle is owned by Longhorn itself.
 
-When the Longhorn Manager decides to attach a volume, it does not start the engine or replica processes directly. Instead, it instructs the Instance Manager on the relevant node to start them inside the Instance Manager pod. Each worker node runs a singcvxdf tings/#default-replica-count) setting and can be overridden per volume.
+When the Longhorn Manager decides to attach a volume, it does not start the engine or replica processes directly. Instead, it instructs the Instance Manager on the relevant node to start them inside the Instance Manager pod. Each worker node runs a single Instance Manager pod per data engine version, and that pod hosts the engine and replica instances for many volumes that land on the node. For a given volume, one engine instance lives in the Instance Manager on the node where the workload Pod runs, and one replica instance lives in the Instance Manager on each node selected for that volume's replicas. The number of replicas per volume is controlled by the [Default Replica Count](../references/settings/#default-replica-count) setting and can be overridden per volume.
 
 > **Note:** For RWX volumes without the `migratable` flag, the engine runs on the node hosting the share-manager pod rather than on the workload node.
 

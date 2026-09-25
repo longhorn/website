@@ -277,7 +277,7 @@ Sharding distributes a volume's data across multiple nodes using erasure coding,
 
     The Pod mounts the volume at `/data`, the same as the replicated example above.
 
-For information about data layout parameters, supported and unsupported features, and how sharding compares to replication, see [Sharding with Erasure Coding](../../../advanced-resources/v2-data-engine/sharding).
+For information about data layout parameters, supported and unsupported features, and how sharding compares to replication, see [Sharding Storage](../../../advanced-resources/sharding-storage).
 
 ### Binding Workloads to PVs without a Kubernetes StorageClass
 

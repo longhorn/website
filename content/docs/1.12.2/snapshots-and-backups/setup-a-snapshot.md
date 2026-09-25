@@ -99,4 +99,4 @@ When deleting a snapshot that is the direct parent of the **Volume Head** (the c
 
 This behavioral difference is expected. In **v2 volumes**, the immediate disappearance of the Snapshot CR indicates that the engine has successfully finalized the deletion and merged the data.
 
-For a broader comparison, see [V1 and V2 Volume Feature Support](../../v1-v2-volume-behavior-and-feature-parity/).
+For a broader comparison, see [Data Engine Comparison](../../data-engine-comparison/).
