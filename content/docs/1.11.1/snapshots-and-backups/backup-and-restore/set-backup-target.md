@@ -44,7 +44,7 @@ This page covers the following topics:
 
 ### Default Backup Target
 
-The default backup target (`default`) is automatically created during a fresh installation. You can set the default backup target during or after the installation using either Helm or a [manifest YAML file](https://raw.githubusercontent.com/longhorn/longhorn/v1.8.0/deploy/longhorn.yaml)(`longhorn.yaml`).
+The default backup target (`default`) is automatically created during a fresh installation. You can set the default backup target during or after the installation using either Helm or a [manifest YAML file](https://raw.githubusercontent.com/longhorn/longhorn/v1.8.0/deploy/longhorn.yaml) (`longhorn.yaml`).
 
 #### Set the Default Backup Target Using Helm
 

@@ -1403,4 +1403,4 @@ A comma-separated list of topology keys that the Longhorn CSI driver should use 
 Set this to one or more [well-known Kubernetes topology labels](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) so that StorageClass `allowedTopologies` and `volumeTopology` can take effect. Use `topology.kubernetes.io/zone` for zonal placement and `topology.kubernetes.io/region` for regional placement. The PV-only `strictTopology` parameter also uses this setting.
 
 > **Note:** Changing this setting does not restart any component; it takes effect for newly provisioned volumes. When adding a custom topology key (other than the well-known zone, region, and hostname labels), restart the `longhorn-csi-plugin` DaemonSet so the nodes register the key in CSINode.
-> More details in [Topology-Aware Provisioning](../../nodes-and-volumes/nodes/topology-aware-provisioning).
+> For more details, see [Topology-Aware Provisioning](../../nodes-and-volumes/nodes/topology-aware-provisioning).

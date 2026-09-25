@@ -1397,4 +1397,4 @@ A comma-separated list of topology keys that the Longhorn CSI driver should repo
 Set this to one or more [well-known Kubernetes topology labels](https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone) (for example, `topology.kubernetes.io/zone`) so that StorageClass `allowedTopologies` and the `strictTopology` parameter can take effect.
 
 > **Note:** Changing this setting restarts the CSI components. During the restart, new volume provisioning, expansion, snapshot, or attach/detach operations may be temporarily delayed. Existing mounted volumes remain usable.
-> More details in [Topology-Aware Provisioning](../../nodes-and-volumes/nodes/topology-aware-provisioning).
+> For more details, see [Topology-Aware Provisioning](../../nodes-and-volumes/nodes/topology-aware-provisioning).
