@@ -84,6 +84,36 @@ weight: 3
 | longhorn_manager_cpu_usage_millicpu |  The CPU usage of this Longhorn Manager | longhorn_manager_cpu_usage_millicpu{manager="longhorn-manager-5rx2n",node="worker-2"} 27 |
 | longhorn_manager_memory_usage_bytes | The memory usage of this Longhorn Manager | longhorn_manager_memory_usage_bytes{manager="longhorn-manager-5rx2n",node="worker-2"} 2.6144768e+07|
 
+## Workqueue
+
+Longhorn Manager uses workqueues to process updates of the watched Longhorn and Kubernetes resources. Each Longhorn Manager exposes the metrics of its workqueues, which are important indicators of how well Longhorn Manager is performing. The `name` label is the name of the workqueue, which is the same as the name of the corresponding controller (for example, `longhorn-volume`, `longhorn-engine`, and `longhorn-replica`).
+
+| Name | Description  | Example |
+|---|---|---|
+| longhorn_workqueue_depth | Current depth of the workqueue | longhorn_workqueue_depth{name="longhorn-volume"} 0 |
+| longhorn_workqueue_adds_total | Total number of adds handled by the workqueue | longhorn_workqueue_adds_total{name="longhorn-volume"} 1024 |
+| longhorn_workqueue_queue_duration_seconds | Histogram of how long in seconds an item stays in the workqueue before being requested | longhorn_workqueue_queue_duration_seconds_bucket{name="longhorn-volume",le="0.001"} 1000 |
+| longhorn_workqueue_work_duration_seconds | Histogram of how long in seconds processing an item from the workqueue takes | longhorn_workqueue_work_duration_seconds_bucket{name="longhorn-volume",le="0.1"} 1010 |
+| longhorn_workqueue_unfinished_work_seconds | How many seconds of work has been done that is in progress and has not been observed by `work_duration`. Large values indicate stuck threads. You can deduce the number of stuck threads by observing the rate at which this value increases | longhorn_workqueue_unfinished_work_seconds{name="longhorn-volume"} 0 |
+| longhorn_workqueue_longest_running_processor_seconds | How many seconds the longest running processor for the workqueue has been running | longhorn_workqueue_longest_running_processor_seconds{name="longhorn-volume"} 0 |
+| longhorn_workqueue_retries_total | Total number of retries handled by the workqueue | longhorn_workqueue_retries_total{name="longhorn-volume"} 12 |
+
+## Kubernetes Client
+
+Each Longhorn Manager exposes the metrics of the requests sent by its Kubernetes client (client-go) to the Kubernetes API server. These metrics help you understand the latency, rate limiting, and results of the requests issued by Longhorn Manager.
+
+| Name | Description  | Example |
+|---|---|---|
+| longhorn_rest_client_request_latency_seconds | Histogram of request latency in seconds, broken down by verb and URL | longhorn_rest_client_request_latency_seconds_bucket{url="https://10.43.0.1:443/apis/longhorn.io/v1beta2/namespaces/%7Bnamespace%7D/volumes/%7Bname%7D",verb="PUT",le="0.016"} 250 |
+| longhorn_rest_client_rate_limiter_latency_seconds | Histogram of client-side rate limiter latency in seconds, broken down by verb and URL | longhorn_rest_client_rate_limiter_latency_seconds_bucket{url="https://10.43.0.1:443/apis/longhorn.io/v1beta2/namespaces/%7Bnamespace%7D/volumes/%7Bname%7D",verb="PUT",le="0.001"} 250 |
+| longhorn_rest_client_requests_total | Number of HTTP requests, partitioned by status code, method, and host | longhorn_rest_client_requests_total{code="200",host="10.43.0.1:443",method="GET"} 12345 |
+
+The histogram metrics are exposed as the `_bucket`, `_sum`, and `_count` series. For example, you can calculate the 99th percentile of the time spent processing items for each workqueue by using the following query:
+
+```
+histogram_quantile(0.99, sum by (name, le) (rate(longhorn_workqueue_work_duration_seconds_bucket[5m])))
+```
+
 ## Backup
 
 | Name | Description  | Example |
