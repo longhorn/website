@@ -44,6 +44,8 @@ If the whole Kubernetes cluster or Longhorn system goes offline, the following s
 
     The volume name matches the Kubernetes PV name.
 
+    For the description of the files in a replica directory, see [Replica Directory Layout](../../../references/replica-directory-layout).
+
 3. Use the `lsof` command to make sure no one is currently using the volume, e.g.
    ```
    # lsof pvc-06b4a8a8-b51d-42c6-a8cc-d8c8d6bc65bc-d890efb2/
