@@ -375,6 +375,8 @@ Volume-level metadata is stored in volume.cfg. The metadata files for each backu
 
 Each 2 MB block (.blk file) is compressed.
 
+For the complete directory structure and the content of the files in a backupstore, see [Backupstore Layout](../references/backupstore-layout).
+
 ## 3.2. Recurring Backups
 
 Backup operations can be scheduled using the recurring snapshot and backup feature, but they can also be done as needed.

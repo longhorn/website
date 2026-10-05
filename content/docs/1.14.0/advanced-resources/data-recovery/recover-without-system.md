@@ -19,6 +19,8 @@ This command gives users the ability to restore a backup to a `raw` image or a `
         {"Name":"backup-72bcbdad913546cf","VolumeName":"volume_1","SnapshotName":"79758033-a670-4724-906f-41921f53c475"}
         ```
 
+        For the description of the files in the backup destination, see [Backupstore Layout](../../../references/backupstore-layout).
+
 5. Set argument `output-file` by replacing `<OUTPUT_FILE>`, e.g. `volume.raw` or `volume.qcow2`.
 
 6. Set argument `output-format` by replacing `<OUTPUT_FORMAT>`. The supported options are `raw` or `qcow2`.
