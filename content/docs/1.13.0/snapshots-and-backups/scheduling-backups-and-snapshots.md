@@ -29,7 +29,7 @@ Then Longhorn will automatically create snapshots or backups for the volume at t
 If you want to set up recurring snapshots and backups even when the volumes are detached, see the section [Allow Recurring Job While Volume Is Detached](#allow-recurring-job-while-volume-is-detached)
 
 You can set recurring jobs on a Longhorn Volume, Kubernetes Persistent Volume Claim (PVC), or Kubernetes StorageClass.
-> Note: Recurring job labels on a PVC override all recurring job labels of the associated Volume only when the PVC is labeled as the recurring job source (`recurring-job.longhorn.io/source=enabled`). Without the source label, Longhorn ignores the recurring job labels on the PVC and uses only the recurring job labels on the Volume. For details, see [With PersistentVolumeClaim Using the `kubectl` command](#with-persistentvolumeclaim-using-the-kubectl-command).
+> Note: Recurring job labels on a PVC override all recurring job labels of the associated Volume only when the PVC is labeled as the recurring job source (`recurring-job.longhorn.io/source=enabled`). Without this source label, Longhorn does not sync recurring job labels from the PVC to the Volume, and recurring jobs are selected using the recurring job labels on the Volume. For details, see [With PersistentVolumeClaim Using the `kubectl` command](#with-persistentvolumeclaim-using-the-kubectl-command).
 
 For more information on how snapshots and backups work, refer to the [concepts](../../concepts) section.
 
