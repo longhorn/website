@@ -27,19 +27,20 @@ The default settings can be customized in the following ways:
 > **NOTE:** When using Longhorn Deployment YAML file or Helm for installation, updating or upgrading, if the value of a default setting is an empty string and valid, the default setting will be cleaned up in Longhorn. If not, Longhorn will ignore the invalid values and will not update the default values.
 
 ## Installation
+
 ### Using the Rancher UI
 
 From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Install > Next > Edit Options > Longhorn Default Settings > Customize Default Settings** and edit the settings before installing the app.
 
 ### Using the Longhorn Deployment YAML File
 
-1. Download the longhorn repo:
+1. Download the Longhorn repo:
 
     ```shell
     git clone https://github.com/longhorn/longhorn.git
     ```
 
-1. Modify the config map named `longhorn-default-setting` in the yaml file `longhorn/deploy/longhorn.yaml`.
+2. Modify the config map named `longhorn-default-setting` in the yaml file `longhorn/deploy/longhorn.yaml`.
 
     In the below example, users customize the default settings, backup-target, backup-target-credential-secret, and default-data-path.
     When the setting is absent or has a leading `#` symbol, the default setting will use the default value in Longhorn or the customized values previously configured.
@@ -54,7 +55,7 @@ From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Insta
     data:
       default-setting.yaml: |-
         backup-target: s3://backupbucket@us-east-1/backupstore
-        backup-target-credential-secret: minio-secret
+        backup-target-credential-secret: rustfs-secret
         #allow-recurring-job-while-volume-detached:
         #create-default-disk-labeled-nodes:
         default-data-path: /var/lib/longhorn-example/
@@ -98,8 +99,7 @@ From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Insta
 
 ### Using Helm
 
-> **NOTE:**
-> Use Helm 3 when installing and upgrading Longhorn. Helm 2 is [no longer supported](https://helm.sh/blog/helm-2-becomes-unsupported/).
+> **NOTE:** Use Helm 3 when installing and upgrading Longhorn. Helm 2 is [no longer supported](https://helm.sh/blog/helm-2-becomes-unsupported/).
 
 Use the Helm command with the `--set` flag to modify the default settings. For example:
 
@@ -125,7 +125,7 @@ You can also provide a copy of the `values.yaml` file with the default settings 
     ```yaml
     defaultSettings:
       backupTarget: s3://backupbucket@us-east-1/backupstore
-      backupTargetCredentialSecret: minio-secret
+      backupTargetCredentialSecret: rustfs-secret
       createDefaultDiskLabeledNodes: true
       defaultDataPath: /var/lib/longhorn-example/
       replicaSoftAntiAffinity: false
@@ -159,12 +159,12 @@ You can also provide a copy of the `values.yaml` file with the default settings 
      --values values.yaml
    ```
 
-For more info about using helm, see the section about
-[installing Longhorn with Helm](../../../deploy/install/install-with-helm)
+For more info about using Helm, see [installing Longhorn with Helm](../../../deploy/install/install-with-helm).
 
 ### Using Helm Controller
 
 In the HelmChart YAML file, add lines to spec.set with the desired settings:
+
 ```yaml
 spec:
   ...
@@ -206,6 +206,7 @@ helm upgrade longhorn longhorn/longhorn --namespace longhorn-system --values ./v
 ### Using the Rancher UI
 
 From the project view in Rancher, go to **Apps && Marketplace > Longhorn > Upgrade > Next > Edit Options > Longhorn Default Settings > Customize Default Settings** and edit the settings before upgrading the app.
+
 ### Using the Longhorn Deployment YAML File
 
 Modify the config map named `longhorn-default-setting` in the yaml file `longhorn/deploy/longhorn.yaml` as described in [Fresh Installation > Using the Longhorn Deployment YAML File](#using-the-longhorn-deployment-yaml-file) and then upgrade the Longhorn system using `kubectl`.
@@ -215,4 +216,5 @@ Modify the config map named `longhorn-default-setting` in the yaml file `longhor
 Modify the default settings in the YAML file as described in [Fresh Installation > Using Helm](#using-helm) and then upgrade the Longhorn system using `helm upgrade`.
 
 ## History
+
 Available since v1.3.0 ([Reference](https://github.com/longhorn/longhorn/issues/2570))
