@@ -61,7 +61,7 @@ Migratable RWX volumes are designed specifically for virtualized workloads such 
 
 1. Each NFS client node needs to have a NFSv4 client installed.
 
-    Please refer to [Installing NFSv4 client](../../../deploy/install/#installing-nfsv4-client) for more installation details.
+    Please refer to [Installing NFSv4 client](../../../deploy/install/#install-nfsv4-client) for more installation details.
 
       > **Troubleshooting:** If the NFSv4 client is not available on the node, when trying to mount the volume the below message will be part of the error:
       > ```

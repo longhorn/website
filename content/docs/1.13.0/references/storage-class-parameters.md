@@ -467,7 +467,7 @@ When set to `"true"`, the PV is pinned to the topology of the exact node selecte
 - `"false"` (default): The PV `nodeAffinity` includes all topology segments matching the `allowedTopologies` (or all segments if `allowedTopologies` is not set).
 - `"true"`: The PV `nodeAffinity` is restricted to only the topology segment of the node where the pod was scheduled.
 
-This parameter controls only Kubernetes PV `nodeAffinity`. It does not persist a Longhorn replica or shard placement constraint. Use [`volumeTopology`](#volume-topology) when Longhorn data placement must stay in the same zone or region as the PV.
+This parameter controls only Kubernetes PV `nodeAffinity`. It does not persist a Longhorn replica or shard placement constraint. Use [`volumeTopology`](#volume-topology-field) when Longhorn data placement must stay in the same zone or region as the PV.
 
 > Requires `csi-allowed-topology-keys` to be configured. See [CSI Allowed Topology Keys](../settings#csi-allowed-topology-keys).
 
