@@ -20,7 +20,7 @@ Node conditions:
   Confirms if the `multipathd` service is not running on the node, which may affect the pod with the volume startup. See [Troubleshooting: `MountVolume.SetUp failed for volume` due to multipathd on the node](../../../../../kb/troubleshooting-volume-with-multipath).  
 
 - `RequiredPackages`:  
-  Checks if all required packages ([NFS client](../../../deploy/install/#installing-nfsv4-client), [iSCSI tool](../../../deploy/install/#installing-open-iscsi), [cryptsetup](../../../deploy/install/#installing-cryptsetup-and-luks), [dmsetup](../../../deploy/install/#installing-device-mapper-userspace-tool)) exist for Longhorn  
+  Checks if all required packages ([NFS client](../../../deploy/install/#install-nfsv4-client), [iSCSI tool](../../../deploy/install/#install-open-iscsi), [cryptsetup](../../../deploy/install/#install-cryptsetup-and-luks), [dmsetup](../../../deploy/install/#install-device-mapper-userspace-tool)) exist for Longhorn  
 
 - `NFSClientInstalled`:  
   Identifies if any of the following NFS clients are supported: `v4.2`, `v4.1`, or `v4.0`. NFS client is required for RWX volume and backup.  

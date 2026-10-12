@@ -726,7 +726,7 @@ Maximum snapshot count for a volume. The value should be between 2 to 250.
 
 Warning threshold for the count-based `TooManySnapshots` volume condition. The value should be between 2 to 250.
 
-When the number of snapshots on a volume reaches `min(snapshot-count-warning-threshold, SnapshotMaxCount)`, Longhorn sets the `TooManySnapshots` condition. For more information, see [Snapshot Space Management](../snapshots-and-backups/snapshot-space-management#toomanysnapshots-condition).
+When the number of snapshots on a volume reaches `min(snapshot-count-warning-threshold, SnapshotMaxCount)`, Longhorn sets the `TooManySnapshots` condition. For more information, see [Snapshot Space Management](../../snapshots-and-backups/snapshot-space-management#toomanysnapshots-condition).
 
 #### Freeze Filesystem For Snapshot
 
@@ -975,7 +975,7 @@ By default, Longhorn ensures that at least **25%** of the disk's total capacity 
 
 This helps protect your disks from becoming too full, which can cause performance issues or storage failures. Keeping a buffer of free space helps to keep the system stable and ensures there is room for unexpected storage needs.
 
-See [Multiple Disks Support](../../nodes-and-volumes/nodes/multidisk/#configuration) for details.
+See [Multiple Disks Support](../../nodes-and-volumes/nodes/multidisk/#disk-scheduling-configuration) for details.
 
 #### Storage Over Provisioning Percentage
 

@@ -127,7 +127,7 @@ spec:
 
 ### Clone CSI Snapshot
 
-To clone a CSI snapshot, refer to the documentation on [Creating a Volume from a Snapshot](../snapshots-and-backups/csi-snapshot-support/csi-volume-snapshot-associated-with-longhorn-snapshot).
+To clone a CSI snapshot, refer to the documentation on [Creating a Volume from a Snapshot](../csi-snapshot-support/csi-volume-snapshot-associated-with-longhorn-snapshot).
 
 ### Clone Volume Using the Longhorn UI
 
