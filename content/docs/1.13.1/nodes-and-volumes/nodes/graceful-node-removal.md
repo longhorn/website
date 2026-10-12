@@ -98,4 +98,4 @@ If the replica count does not reach 0, check the **Events** log. Common causes i
 
 - **Insufficient Space**: No other nodes have enough disk space to house the replicas. To recover from this, you can refer to [Manual Recovery of Nodes with Insufficient Space](../../../../kb/manual-recovery-of-nodes-with-insufficient-space).
 - **Anti-Affinity Constraints**: If `Replica Node Level Soft Anti-Affinity` is disabled, and all other nodes already host a replica of the same volume, the eviction will have no valid destination. To learn more about anti-affinity and how to resolve this, see [Replica Scheduling and Anti-Affinity](../../../best-practices/#replica-node-level-soft-anti-affinity).
-- **Volume Health**: Rebuilding cannot start if the volume is already in a `Faulted` state. To learn more volume and volume health, refer to [Volume documentation](../../volumes/create-volumes).
+- **Volume Health**: Rebuilding cannot start if the volume is already in a `Faulted` state. To learn more volume and volume health, refer to [Volume documentation](../volumes/create-volumes).

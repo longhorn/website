@@ -31,7 +31,7 @@ Longhorn supports the following Kubernetes PersistentVolume access modes:
 
 ### Creating V1 Longhorn Volumes with kubectl
 
-Before creating a V1 volume, ensure that Longhorn has at least one available filesystem-type disk. V1 volumes are scheduled only to filesystem-type disks. For more information, see [Add a Filesystem-Type Disk](../nodes/multidisk/#add-a-filesystem-type-disk).
+Before creating a V1 volume, ensure that Longhorn has at least one available filesystem-type disk. V1 volumes are scheduled only to filesystem-type disks. For more information, see [Add a Filesystem-Type Disk](../../nodes/multidisk/#add-a-filesystem-type-disk).
 
 First, you will create a Longhorn StorageClass. The Longhorn StorageClass contains the parameters to provision PVs.
 
@@ -219,7 +219,7 @@ More examples are available under the [examples section](../../../references/exa
 
 > **Note**: Sharding is an Experimental feature. It is intended for evaluation and testing, and is not recommended for production use.
 
-Sharding distributes a volume's data across multiple nodes using erasure coding, allowing a volume to exceed the capacity of a single disk or node. It is an alternative to the default replicated layout and is only available with the V2 Data Engine. As with any V2 volume, ensure that the V2 Data Engine is enabled and Longhorn has available block-type disks. In addition, each chunk is placed on a distinct node, so the cluster must have at least `dataChunks + parityChunks` schedulable nodes. For more information, see [Add a Block-Type Disk](../nodes/multidisk/#add-a-block-type-disk).
+Sharding distributes a volume's data across multiple nodes using erasure coding, allowing a volume to exceed the capacity of a single disk or node. It is an alternative to the default replicated layout and is only available with the V2 Data Engine. As with any V2 volume, ensure that the V2 Data Engine is enabled and Longhorn has available block-type disks. In addition, each chunk is placed on a distinct node, so the cluster must have at least `dataChunks + parityChunks` schedulable nodes. For more information, see [Add a Block-Type Disk](../../nodes/multidisk/#add-a-block-type-disk).
 
 1. Use the following command to create a StorageClass called `longhorn-v2-sharded`:
 
