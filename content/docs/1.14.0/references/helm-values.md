@@ -154,6 +154,7 @@ Longhorn consists of user-deployed components (for example, Longhorn Manager, Lo
 | longhornUI.nodeSelector | object | `{}` | Node selector for Longhorn UI. Specify the nodes allowed to run Longhorn UI. |
 | longhornUI.priorityClass | string | `"longhorn-critical"` | PriorityClass for Longhorn UI. |
 | longhornUI.replicas | int | `2` | Replica count for Longhorn UI. |
+| longhornUI.resources | string | `nil` | Resource requests and limits for Longhorn UI pods. |
 | longhornUI.tolerations | list | `[]` | Toleration for Longhorn UI on nodes allowed to run Longhorn components. |
 
 ### Ingress Settings
