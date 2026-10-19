@@ -291,7 +291,7 @@ During installation, you can either allow Longhorn to use the default system set
 | defaultSettings.storageOverProvisioningPercentage | Percentage of storage that can be allocated relative to hard drive capacity. The default value is "100". |
 | defaultSettings.storageReservedPercentageForDefaultDisk | Percentage of disk space that is not allocated to the default disk on each new Longhorn node. |
 | defaultSettings.supportBundleFailedHistoryLimit | Maximum number of failed support bundles that can exist in the cluster. When the value is "0", Longhorn automatically purges all failed support bundles. |
-| defaultSettings.systemManagedComponentsNodeSelector | Node selector for system-managed Longhorn components. |
+| defaultSettings.systemManagedComponentsNodeSelector | Node selector for system-managed Longhorn components. Specify values using a semicolon-separated list of colon-separated key-value pairs (Example: key1:value1; key2:value2). A YAML map, or a list whose entries are `key=value` strings or maps, is also accepted and normalized to that format. |
 | defaultSettings.systemManagedPodsImagePullPolicy | Image pull policy for system-managed pods, such as Instance Manager, engine images, and CSI Driver. Changes to the image pull policy are applied only after the system-managed pods restart. |
 | defaultSettings.taintToleration | Taint or toleration for system-managed Longhorn components. Specify values using a semicolon-separated list in `kubectl taint` syntax (Example: key1=value1:effect; key2=value2:effect). |
 | defaultSettings.upgradeChecker | Upgrade Checker that periodically checks for new Longhorn versions. When a new version is available, a notification appears on the Longhorn UI. This setting is enabled by default |
