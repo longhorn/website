@@ -311,9 +311,7 @@ Longhorn provides sample backupstore server setups for testing purposes. You can
 ```shell
 export AWS_ACCESS_KEY_ID="bG9uZ2hvcm4tdGVzdC1hY2Nlc3Mta2V5"
 export AWS_SECRET_ACCESS_KEY="bG9uZ2hvcm4tdGVzdC1zZWNyZXQta2V5"
-export AWS_ENDPOINTS="aHR0cHM6Ly9taW5pby1zZXJ2aWNlLmRlZmF1bHQ6OTAwMA=="
-export AWS_CERT="..."
-export AWS_CERT_KEY="..."
+export AWS_ENDPOINTS="aHR0cDovL3J1c3Rmcy1zZXJ2aWNlLmRlZmF1bHQ6OTAwMA=="
 ```
 
 For `AWS_CERT` and `AWS_CERT_KEY` local test samples, see [MinIO backupstore manifest](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/deploy/backupstores/minio-backupstore.yaml).
