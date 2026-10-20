@@ -38,5 +38,8 @@ Node conditions:
   - HugePages (2Mi) are registered as a Kubernetes resource (`hugepages-2Mi`).
   - The configured HugePages capacity meets or exceeds the value defined in the `v2-data-engine-hugepage-limit` setting.
 
+- `RDMACapable`:
+  Set on V2-enabled nodes. Indicates whether the node has an RDMA device (listed in `/sys/class/infiniband`). Replicas of V2 volumes that use the [RDMA transport](../../../advanced-resources/v2-data-engine/rdma-transport) are scheduled only on nodes where this condition is `True`.
+
 Node conditions do not block the Longhorn deployment but they result in warnings in the Longhorn `Node` resource.
 For more information, see [Longhorn Installation Requirements](../../../deploy/install/#installation-requirements).

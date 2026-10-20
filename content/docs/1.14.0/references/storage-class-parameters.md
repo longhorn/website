@@ -42,6 +42,7 @@ parameters:
 #  replicaDiskSoftAntiAffinity: "ignored"
 #  nfsOptions: "soft,timeo=150,retrans=3"
 #  dataEngine: "v1"
+#  dataEngineTransport: "tcp"
 #  freezeFSForSnapshot: "ignored"
 #  strictTopology: "false"
 #  volumeTopology: "any"
@@ -372,6 +373,14 @@ Overrides for NFS mount of RWX volumes to the share-manager. Use this field with
 Specifies the data engine for the volume: `"v1"` or `"v2"`. When unspecified, Longhorn uses `"v1"`.
 
 > Global setting: [V2 Data Engine](../settings#v2-data-engine).
+
+### Data Engine Transport *(field: `parameters.dataEngineTransport`)*
+
+> Default: `"tcp"`
+
+Specifies the NVMe-oF transport between a V2 volume's engine and its replicas: `"tcp"` or `"rdma"` (RoCEv2). `"rdma"` requires the V2 data engine, the replicated data layout, and at least one RDMA-capable node. The transport can be changed only while the volume is detached.
+
+> See [RDMA Transport (Experimental)](../../advanced-resources/v2-data-engine/rdma-transport).
 
 ### Frontend *(field: `parameters.frontend`)*
 
