@@ -23,6 +23,7 @@ The `values.yaml` file contains items used to tweak a deployment of this chart.
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | networkPolicies.enabled | bool | `false` | Setting that allows you to enable network policies that control access to Longhorn pods. |
+| networkPolicies.metricsScrapeSources | list | `[]` | Sources permitted to scrape Longhorn Manager metrics on TCP/9500 and hook executor metrics on TCP/9506 when `restrictInternalTraffic` is enabled. Each entry is a NetworkPolicy peer. TCP/9500 also serves the Longhorn Manager REST API, so scope every entry as narrowly as the scraper allows, for example a `namespaceSelector` and a `podSelector` in one entry rather than a namespace on its own. When empty, only the Longhorn components already listed in the policy can reach Longhorn Manager, and nothing can reach the hook executor. |
 | networkPolicies.restrictInternalTraffic | bool | `true` | Setting that allows you to enable network policies for internal Longhorn components. When enabled, only authorized Longhorn components are allowed to communicate with each other. |
 | networkPolicies.type | string | `"k3s"` | Distribution that determines the policy for allowing access for an ingress. (Options: "k3s", "rke2", "rke1") |
 
@@ -134,6 +135,24 @@ The following settings apply to the [Longhorn Global Manager](../../terminology/
 | longhornGlobalManager.replicas | int | `3` | Replica count for the global manager. One replica is the active leader; the others are warm standbys. |
 | longhornGlobalManager.resources | string | `nil` | Resource requests and limits for global manager pods. Memory scales with the cluster's Pod count (cluster-wide Pod informer cache). |
 | longhornGlobalManager.tolerations | list | `[]` | Node tolerations for global manager pods. |
+
+### Longhorn Hook Executor Settings
+
+The following settings apply to the Longhorn Hook Executor Deployment, which runs the pre and post commands defined in `VolumeHookPolicy` resources inside application pods. For more information, see [Application-Consistent Snapshots](../../snapshots-and-backups/application-consistent-snapshots).
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| longhornHookExecutor.affinity | object | `{"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"podAffinityTerm":{"labelSelector":{"matchExpressions":[{"key":"app","operator":"In","values":["longhorn-hook-executor"]}]},"topologyKey":"kubernetes.io/hostname"},"weight":1}]}}` | Affinity for hook executor pods. The default spreads replicas across nodes. |
+| longhornHookExecutor.annotations | object | `{}` | Annotations for hook executor pods. |
+| longhornHookExecutor.nodeSelector | object | `{}` | Node selector for hook executor pods. |
+| longhornHookExecutor.pauseWorkers | int | `5` | Maximum number of SnapshotGroups whose pre-commands run at the same time. The release side is not bounded by this value. |
+| longhornHookExecutor.podDisruptionBudget | object | `{"enabled":false,"maxUnavailable":1}` | Pod Disruption Budget for the hook executor. Effective only when `longhornHookExecutor.replicas` is greater than 1. |
+| longhornHookExecutor.podDisruptionBudget.enabled | bool | `false` | Setting that allows you to enable the Pod Disruption Budget for the hook executor. |
+| longhornHookExecutor.podDisruptionBudget.maxUnavailable | int | `1` | Maximum number of hook executor pods that can be unavailable during a voluntary disruption such as a node drain. Keep this at least 1 so a drain can always proceed while the standby takes over the leader Lease. |
+| longhornHookExecutor.priorityClass | string | `"longhorn-critical"` | PriorityClass for the hook executor. |
+| longhornHookExecutor.replicas | int | `2` | Replica count for the hook executor. One replica is the active leader; the other is a warm standby. The executor runs VolumeHookPolicy pre and post commands inside application pods. |
+| longhornHookExecutor.resources | string | `nil` | Resource requests and limits for hook executor pods. |
+| longhornHookExecutor.tolerations | list | `[]` | Node tolerations for hook executor pods. |
 
 ### Longhorn Driver Settings
 
@@ -262,6 +281,8 @@ During installation, you can either allow Longhorn to use the default system set
 | defaultSettings.fastReplicaRebuildEnabled | Setting that allows fast rebuilding of replicas using the checksum of snapshot disk files. Before enabling this setting, you must set the snapshot-data-integrity value to "enable" or "fast-check". |
 | defaultSettings.freezeFilesystemForSnapshot | Setting that freezes the filesystem on the root partition before a snapshot is created. |
 | defaultSettings.guaranteedInstanceManagerCPU | Percentage of the total allocatable CPU resources on each node to be reserved for each instance manager pod when the V1 Data Engine is enabled. The default value is "12". |
+| defaultSettings.hookReleaseAttempts | Number of times the hook executor runs a member's post-command in one pod when the command fails or times out, before it gives up and marks the pod PostFailed. The snapshot group controller uses the same number, with `hookReleaseTimeout`, to bound how long a deleting hooked group waits for its release before abandoning it. |
+| defaultSettings.hookReleaseTimeout | Seconds each post-command attempt may run before the hook executor cancels its exec session and counts the attempt as timed out. Cancelling the session does not kill the process in the pod. |
 | defaultSettings.kubernetesClusterAutoscalerEnabled | Setting that notifies Longhorn that the cluster is using the Kubernetes Cluster Autoscaler. |
 | defaultSettings.kubernetesMetricsServerMetricsEnabled | Setting that allows Longhorn to query the Kubernetes Metrics Server (`'metrics.k8s.io'`) for pod and node resource usage. |
 | defaultSettings.logLevel | Log levels that indicate the type and severity of logs in Longhorn Manager. The default value is "Info". (Options: "Panic", "Fatal", "Error", "Warn", "Info", "Debug", "Trace") |

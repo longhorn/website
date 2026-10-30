@@ -195,6 +195,17 @@ kubectl exec -n <namespace> <pod> -c <container> -- <postCommand>
 
 Deleting a hooked group releases the application first: the post-commands run, and the deletion waits for every recorded pod to be released, for as long as the release settings allow. After that, the group is removed anyway, and a `HookReleaseAbandoned` event names every pod that was not released; release those by hand as described in [Manually Release a Paused Pod](#manually-release-a-paused-pod).
 
+## Configure the Hook Executor
+
+When Longhorn is installed with Helm, the `longhornHookExecutor` values configure the hook executor Deployment. Two of them affect how the feature behaves:
+
+- `replicas` (default `2`): One pod is the active leader and the rest are warm standbys, so when a node fails, a standby takes over instead of leaving the application paused while a new pod starts.
+- `pauseWorkers` (default `5`): How many snapshot groups may run their pre-commands at the same time. Post-commands run in a separate pool that is at least as large, so resuming an application never waits behind pause work.
+
+When enabling the `podDisruptionBudget` values, keep `maxUnavailable` at least 1 so a node drain can always proceed while a standby takes over.
+
+For the full list of values, see [Helm Values](../../references/helm-values#longhorn-hook-executor-settings).
+
 ## Limitations
 
 - Any pod change during the window fails the group with `(pod-changed)`:
