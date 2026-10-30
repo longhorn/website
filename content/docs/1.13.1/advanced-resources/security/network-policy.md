@@ -24,6 +24,8 @@ These settings are independent and can be enabled or disabled separately. The fo
 
 When `.Values.networkPolicies.restrictInternalTraffic` is `true`, the chart creates ingress-only policies for Longhorn's internal components. The `.Values.networkPolicies.kubeAPIServerSourceCIDRs` setting configures the allowed source CIDRs for the Longhorn webhook policy.
 
+The `.Values.networkPolicies.v1DataEngineInitiatorSourceCIDRs` setting configures the allowed source CIDRs for the V1 iSCSI target on TCP port `3260` of the `instance-manager` pods. When the list is empty (the default), the `instance-manager` policy has no dedicated TCP `3260` rule, so only the Longhorn components already allowed by the policy and traffic from the pod's own node can connect. This covers the node-hosted V1 iSCSI initiator on CNIs that follow the Kubernetes NetworkPolicy node-local allowance. When the list is non-empty, the policy allows TCP `3260` from one `ipBlock` for each configured CIDR. Set this value when the CNI rewrites the source of host traffic, for example `169.254.7.127/32` and `fd16:9254:7127:1337:ffff:ffff:ffff:ffff/128` for Istio Ambient, or when volumes use the `iscsi` frontend with initiators outside the node. For details, see [Troubleshooting volume attachment stuck due to CNI NetworkPolicies](../../../../../kb/troubleshooting-volume-attachment-stuck-cni-networkpolicies).
+
 The internal policies are generated even when `.Values.networkPolicies.enabled` is `false`, because `restrictInternalTraffic` defaults to `true`. Check the rendered manifests and preserve the required Longhorn labels when adding a new component or moving an existing component to a custom namespace.
 
 ### UI frontend ingress policy
@@ -53,6 +55,7 @@ networkPolicies:
   type: k3s
   kubeAPIServerSourceCIDRs:
     - 10.42.0.0/32
+  v1DataEngineInitiatorSourceCIDRs: []
 ```
 
 Set `.Values.networkPolicies.enabled` to `false` if the UI policy is not wanted. That does not disable the internal policies; set `.Values.networkPolicies.restrictInternalTraffic` to `false` only when you intentionally manage those policies yourself.
