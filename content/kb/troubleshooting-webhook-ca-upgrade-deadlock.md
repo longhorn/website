@@ -26,7 +26,7 @@ categories:
     
     level=info msg="Regenerating webhook CA and leaf for namespace longhorn-system" func=cert.EnsureWebhookSecrets file="bootstrap.go:99"
     
-    level=error msg="Upgrade failed: upgrade resources failed: Internal error occurred: failed calling webhook \"mutator.longhorn.io\": failed to call webhook: Post \"[https://longhorn-admission-webhook.longhorn-system.svc:9502/v1/webhook/mutation?timeout=10s](https://longhorn-admission-webhook.longhorn-system.svc:9502/v1/webhook/mutation?timeout=10s)\": tls: failed to verify certificate: x509: certificate signed by unknown authority"
+    level=error msg="Upgrade failed: upgrade resources failed: Internal error occurred: failed calling webhook \"mutator.longhorn.io\": failed to call webhook: Post \"https://longhorn-admission-webhook.longhorn-system.svc:9502/v1/webhook/mutation?timeout=10s\": tls: failed to verify certificate: x509: certificate signed by unknown authority"
     ```
 
 * Attempting a standard Helm rollback to the previous version (for example, v1.11.2) does not recover the cluster. The downgraded managers reuse the newly regenerated secrets, while the webhook configurations continue to trust the old CA.
