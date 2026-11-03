@@ -314,9 +314,7 @@ export AWS_SECRET_ACCESS_KEY="bG9uZ2hvcm4tdGVzdC1zZWNyZXQta2V5"
 export AWS_ENDPOINTS="aHR0cDovL3J1c3Rmcy1zZXJ2aWNlLmRlZmF1bHQ6OTAwMA=="
 ```
 
-For `AWS_CERT` and `AWS_CERT_KEY` local test samples, see [MinIO backupstore manifest](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/deploy/backupstores/minio-backupstore.yaml).
-
-> **Note**: The AWS_ENDPOINTS above is base64 for `http://rustfs-service.default:9000`. TLS is opt-in for RustFS. To use HTTPS, provide AWS_CERT and AWS_CERT_KEY environment variables and change the endpoint scheme to https://. For local test TLS samples, see the [RustFS backupstore README](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/deploy/backupstores/README.md).
+> **Note**: The `AWS_ENDPOINTS` above is base64 for `http://rustfs-service.default:9000`. TLS is opt-in for RustFS. To configure HTTPS for local testing, see the [RustFS backupstore README](https://github.com/longhorn/longhorn/blob/v{{< current-version >}}/deploy/backupstores/README.md).
 
 - Generate the Kustomize overlay
 
