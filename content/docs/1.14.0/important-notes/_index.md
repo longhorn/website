@@ -262,10 +262,20 @@ Longhorn v1.12.1 enables ingress `NetworkPolicy` resources for internal componen
 
 Longhorn v1.12.2 resolves the CNI compatibility issues found in v1.12.1 by providing two Helm values to manage the affected traffic paths:
 
-- **`networkPolicies.v1DataEngineInitiatorSourceCIDRs`**: Controls source filtering for V1 iSCSI on TCP port 3260. An empty list leaves this port without source filtering, allowing any source that can reach instance-manager to connect to TCP/3260. If populated, the CIDRs restrict connections to the effective sources observed by the CNI, so the required values are CNI-specific.
+- **`networkPolicies.v1DataEngineInitiatorSourceCIDRs`**: Controls source filtering for the V1 iSCSI target on TCP port 3260. In v1.12.2 through v1.13.0, an empty list leaves this port without source filtering, allowing any source that can reach instance-manager to connect to TCP/3260. If populated, the CIDRs restrict connections to the effective sources observed by the CNI, so the required values are CNI-specific. The default changed in v1.13.1; see below.
 - **`networkPolicies.recoveryBackendAdditionalIngressPorts`**: Adds TCP ingress ports to the recovery backend (defaults to an empty list). Add `15008` when using Istio Ambient, which uses HTTP-Based Overlay Network Environment (HBONE) on this port. This should only be configured for applicable mesh transports.
 
 For migration instructions from v1.12.1 and targeted workarounds, see [Troubleshooting volume attachment stuck due to CNI NetworkPolicies](../../../kb/troubleshooting-volume-attachment-stuck-cni-networkpolicies).
+
+Starting in v1.13.1, the `instance-manager` policy renders the TCP/3260 rule only when `networkPolicies.v1DataEngineInitiatorSourceCIDRs` is non-empty, with one `ipBlock` per CIDR. With the default empty list, no dedicated TCP/3260 rule is generated, so pods other than the Longhorn components already allowed by the policy can no longer connect to the V1 iSCSI target, whether they run on the same node or on other nodes. The V1 `blockdev` frontend continues to work on CNIs that follow the Kubernetes NetworkPolicy rule that traffic from the pod's own node is always allowed, because the kernel iSCSI initiator runs in the host network namespace and logs in to the instance-manager pod on the same node. Host processes and `hostNetwork` pods on the same node can still reach TCP/3260, because Kubernetes treats them as node traffic.
+
+Set the value before or together with the upgrade to v1.13.1 or later (for example, with `helm upgrade --set` or a values file) if any of the following applies. Otherwise, V1 volume attachment can get stuck.
+
+- **Istio Ambient**: Ambient rewrites the source of node-local host-to-pod traffic to fixed link-local addresses. Set `169.254.7.127/32` and, on dual-stack or IPv6 clusters, also `fd16:9254:7127:1337:ffff:ffff:ffff:ffff/128`. See the [Istio Ambient NetworkPolicy documentation](https://istio.io/latest/docs/ambient/usage/networkpolicy/).
+- **Other CNIs that rewrite the source of host-originated traffic** so that it is no longer treated as node traffic: Set the source observed in the CNI verdict or flow logs. The required values are CNI-specific.
+- **V1 volumes that use the `iscsi` frontend**: Add the CIDRs of the external initiators that connect to `<instance-manager-pod-ip>:3260`. Setting `["0.0.0.0/0", "::/0"]` restores the previous behavior without source filtering, which is not recommended.
+
+Manifest installations (`longhorn.yaml`) have no dedicated TCP/3260 rule. If you need one, apply an additive NetworkPolicy as described in the knowledge base article above. For more information, see [Issue #14416](https://github.com/longhorn/longhorn/issues/14416).
 
 For the Kubernetes distribution and CNI combinations validated with `networkPolicies.restrictInternalTraffic` enabled, see [CNI Plugin Compatibility](../best-practices#cni-plugin-compatibility). If your combination is not listed, test the policies in a non-production environment before upgrading.
 

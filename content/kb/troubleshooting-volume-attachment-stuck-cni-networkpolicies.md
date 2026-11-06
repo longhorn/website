@@ -6,6 +6,8 @@ draft: false
 date: 2026-08-21
 versions:
 - "1.12.1"
+- "1.13.1"
+- "1.14.0"
 categories:
 - "network"
 - "network policy"
@@ -15,6 +17,8 @@ categories:
 ## Applicable versions
 
 Longhorn v1.12.1 with `networkPolicies.restrictInternalTraffic` enabled and a CNI that enforces Kubernetes `NetworkPolicy` resources. Longhorn v1.12.1 creates these internal policies by default. If your CNI does not enforce NetworkPolicy, this workaround is not needed for traffic filtering.
+
+The V1 iSCSI symptom also applies to Longhorn v1.13.1 and later when `networkPolicies.v1DataEngineInitiatorSourceCIDRs` is empty and the CNI does not treat the host-originated iSCSI connection as node traffic. In that case, set the Helm value as described in [Upgrading to v1.12.2 and above](#upgrading-to-v1122-and-above) instead of applying the supplemental V1 policy, unless Longhorn is installed from the manifest.
 
 > **Important:** This article describes two independent traffic paths. Apply **only** the policy that matches your specific symptom and the networking features enabled in your cluster.
 
@@ -41,7 +45,7 @@ Longhorn v1.12.1 with `networkPolicies.restrictInternalTraffic` enabled and a CN
 
 For the V1 data engine, the node's kernel iSCSI initiator connects to the instance-manager iSCSI target. Because the initiator runs from the host network namespace, it is not a pod selected by the v1.12.1 instance-manager policy. As a result, a NetworkPolicy-enforcing CNI can deny the connection even though the Longhorn manager and instance-manager pods are healthy.
 
-> **Warning:** The source address evaluated by the CNI is implementation- and topology-specific. The CIDR `169.254.0.0/16` used in the workaround below is merely a Cilium-specific example. It is **not** a portable Longhorn or Kubernetes default. Do not copy it unless the CNI verdict or flow logs for your cluster confirm it is the effective source range for your host iSCSI initiators. Pod, service, or node CIDRs are not substitutes for the exact source observed by the CNI.
+> **Warning:** The source address evaluated by the CNI is implementation- and topology-specific. The addresses `169.254.7.127/32` and `fd16:9254:7127:1337:ffff:ffff:ffff:ffff/128` used in the workaround below apply to Istio Ambient, which rewrites the source of node-local host-to-pod TCP traffic to these fixed link-local addresses (see the [Istio Ambient NetworkPolicy documentation](https://istio.io/latest/docs/ambient/usage/networkpolicy/)). They are **not** a portable Longhorn or Kubernetes default. For other CNIs, do not copy them unless the CNI verdict or flow logs for your cluster confirm they are the effective source for your host iSCSI initiators. Pod, service, or node CIDRs are not substitutes for the exact source observed by the CNI.
 
 ### Istio Ambient tunnels the RWX recovery request
 
@@ -59,11 +63,12 @@ These are additive policies. They supplement the policies installed by Longhorn 
 
 > **Important:** The YAML block below contains two distinct policies. If only one symptom applies to your cluster, **remove the other YAML document before applying** so you only grant the required access.
 
-Save the following YAML, adjust the example CIDR if your CNI reports a different effective source, and apply it in the `longhorn-system` namespace (if Longhorn is installed in another namespace, update the manifests and commands accordingly).
+Save the following YAML, adjust the example CIDRs if your CNI reports a different effective source, and apply it in the `longhorn-system` namespace (if Longhorn is installed in another namespace, update the manifests and commands accordingly).
 
 ```yaml
-# Use this CIDR only when CNI verdict or flow logs show that it is the
-# effective source range for the node-hosted V1 iSCSI initiators.
+# The CIDRs below are the Istio Ambient source addresses for node-local
+# host-to-pod traffic. For other CNIs, use only the sources that CNI verdict
+# or flow logs show for the node-hosted V1 iSCSI initiators.
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -78,7 +83,9 @@ spec:
   ingress:
   - from:
     - ipBlock:
-        cidr: 169.254.0.0/16
+        cidr: 169.254.7.127/32
+    - ipBlock:
+        cidr: fd16:9254:7127:1337:ffff:ffff:ffff:ffff/128
     ports:
     - protocol: TCP
       port: 3260
@@ -119,7 +126,7 @@ kubectl apply -f longhorn-cni-networkpolicy-workaround.yaml
 3. Record the source address after the CNI's source translation and policy classification. Repeat this on every node that can host a V1 volume workload, including failover destinations.
 4. Use the narrowest set of CIDRs that covers those observed sources. Use individual host prefixes where the CNI presents stable individual addresses; use a range only when the CNI uses a range for the host path.
 
-**A note on the example CIDR**: `169.254.0.0/16` is an example for the reported Cilium setup (where a source such as `169.254.7.127` was observed). An `ipBlock` cannot express that the source must be the same node as the destination pod, so a broad range increases the set of clients that can reach TCP `3260`. Keep the range narrow and review it if you ever change the CNI, routing, node addressing, or topology.
+**A note on the example CIDRs**: `169.254.7.127/32` (IPv4) and `fd16:9254:7127:1337:ffff:ffff:ffff:ffff/128` (IPv6) are the fixed addresses that Istio Ambient uses as the source of TCP traffic from a node to pods on the same node. Use both on dual-stack or IPv6 clusters. Ambient uses these addresses only for traffic that originates from the local node, so they stay node-local in practice. An `ipBlock` cannot express that the source must be the same node as the destination pod, so for other CNIs, a broad range increases the set of clients that can reach TCP `3260`. Keep the range narrow and review it if you ever change the CNI, routing, node addressing, or topology.
 
 **A note on the recovery-backend policy**: This policy is narrower. It allows only the `share-manager` pod selector to reach the recovery-backend pod selector on TCP `15008`. It does not open the application port `9503` to other sources, and it does not add access for CSI sidecars.
 
@@ -168,22 +175,34 @@ Longhorn v1.12.2 and later provide Helm values for these paths. Configure the V1
 ```yaml
 networkPolicies:
   v1DataEngineInitiatorSourceCIDRs:
-    - 169.254.0.0/16
+    - 169.254.7.127/32
+    - fd16:9254:7127:1337:ffff:ffff:ffff:ffff/128
   recoveryBackendAdditionalIngressPorts:
     - 15008
 ```
 
-The `169.254.0.0/16` entry remains only an example for the reported Cilium source range; derive the value from your own CNI observations.
+The `v1DataEngineInitiatorSourceCIDRs` entries are the Istio Ambient source addresses; for other CNIs, derive the value from your own CNI observations.
 
 In v1.12.2 and later, these values dictate the following behavior:
 
-* **v1DataEngineInitiatorSourceCIDRs**: An empty list leaves the generated TCP `3260` rule without source filtering (meaning any source that can reach an instance-manager pod can connect to TCP 3260). Set explicit observed CIDRs when least-privilege filtering is required.
+* **v1DataEngineInitiatorSourceCIDRs**:
+  * v1.12.2 to v1.13.0: An empty list leaves the generated TCP `3260` rule without source filtering (meaning any source that can reach an instance-manager pod can connect to TCP 3260). Set explicit observed CIDRs when least-privilege filtering is required.
+  * v1.13.1 and later: The TCP `3260` rule is generated only when the list is non-empty, with one `ipBlock` per CIDR. An empty list (the default) generates no dedicated TCP `3260` rule, so the V1 initiator relies on the Kubernetes NetworkPolicy rule that traffic from the pod's own node is always allowed. Pods other than the Longhorn components already allowed by the policy cannot connect to TCP `3260` from the same or other nodes, but host processes and `hostNetwork` pods on the same node still can, because Kubernetes treats them as node traffic.
 * **recoveryBackendAdditionalIngressPorts**: An empty list adds no mesh ports (the default share-manager access to TCP `9503` remains, but `15008` is not allowed). Only add `15008` when Istio Ambient or another deployed mesh transport uses that exact port for this recovery path.
+
+**Who must set `v1DataEngineInitiatorSourceCIDRs` when upgrading to v1.13.1 or later**: Set the value before or together with the upgrade (for example, with `helm upgrade --set` or a values file). Otherwise, V1 volume attachment can get stuck on the affected clusters.
+
+* Istio Ambient users: Set `169.254.7.127/32` and, on dual-stack or IPv6 clusters, also `fd16:9254:7127:1337:ffff:ffff:ffff:ffff/128`.
+* Users of other CNIs that rewrite the source of host-originated traffic so that it is no longer treated as node traffic: Set the source observed in the CNI verdict or flow logs, as described in [Choose the V1 source CIDR carefully](#choose-the-v1-source-cidr-carefully). The required values are CNI-specific.
+* Users of the V1 `iscsi` volume frontend, where external initiators connect to `<instance-manager-pod-ip>:3260`: Add the CIDRs of those initiators. Setting `["0.0.0.0/0", "::/0"]` restores the previous behavior without source filtering, which is not recommended.
+
+The v1.13.1 and later manifests (`longhorn.yaml`) have no dedicated TCP `3260` rule. Manifest users who need the rule must apply an additive NetworkPolicy such as `longhorn-instance-manager-v1-iscsi` in the workaround above.
 
 **Migration steps**: During the upgrade, add the values to the Helm release before removing the corresponding v1.12.1 supplemental policies. Render or inspect the resulting policies and verify the CNI flows. Once the Helm-managed policies contain the equivalent allowed paths, remove the v1.12.1 supplemental policies. If the upgrade is ever rolled back to v1.12.1, restore the supplemental policies as needed.
 
 ## Related information
 
 * [Longhorn issue #13802](https://github.com/longhorn/longhorn/issues/13802)
+* [Longhorn issue #14416](https://github.com/longhorn/longhorn/issues/14416)
 * [Longhorn Network Policies](../../docs/1.12.1/advanced-resources/security/network-policy)
 * [Longhorn Networking reference](../../docs/1.12.1/references/networking)
