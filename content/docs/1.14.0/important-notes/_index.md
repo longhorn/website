@@ -35,6 +35,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
   - [Longhorn Global Manager](#longhorn-global-manager)
 - [Snapshots and Backups](#snapshots-and-backups)
   - [Volume Group Snapshot Support](#volume-group-snapshot-support)
+  - [Application-Consistent Snapshots](#application-consistent-snapshots)
   - [Age-Based Retention for Recurring Jobs](#age-based-retention-for-recurring-jobs)
 - [Networking](#networking)
   - [Internal Network Policies](#internal-network-policies)
@@ -239,12 +240,24 @@ Longhorn v{{< current-version >}} can snapshot a set of volumes as one group wit
 The UI and kubectl paths work out of the box. The CSI path is disabled by default: it requires the VolumeGroupSnapshot CRDs, the `CSIVolumeGroupSnapshot` feature gate on the snapshot-controller, and a Longhorn toggle. For the setup steps, see [Enable CSI Volume Group Snapshot Support](../snapshots-and-backups/csi-snapshot-support/enable-csi-volume-group-snapshot-support).
 
 > **Important: Snapshot Consistency**
-> Each member volume is snapshotted independently, meaning the group is **not** captured at a single point in time. Application-level consistency across the group is future work built on top of this feature ([Issue #2128](https://github.com/longhorn/longhorn/issues/2128)).
+> Each member volume is snapshotted independently, meaning the group is **not** captured at a single point in time by default. To capture one consistent moment, use [application-consistent snapshots](#application-consistent-snapshots).
 
 For more information, see:
 * [Issue #13349](https://github.com/longhorn/longhorn/issues/13349)
 * [Create a Snapshot Group](../snapshots-and-backups/snapshot-groups)
 * [CSI VolumeGroupSnapshot Associated with Longhorn Snapshot Group](../snapshots-and-backups/csi-snapshot-support/csi-volume-group-snapshot)
+
+### Application-Consistent Snapshots
+
+Longhorn v{{< current-version >}} can pause an application before taking a snapshot group and resume it afterward, so all member snapshots capture one consistent moment.
+
+To use this feature, define the pause and resume commands in a `VolumeHookPolicy` in the application's namespace, then create the snapshot group with `hooks: command`. A new hook executor Deployment in `longhorn-system` executes the commands in the application's pods. This requires a RoleBinding in the application's namespace.
+
+During the upgrade, creating a group with `hooks: command` is rejected until every longhorn-manager pod runs the new version. Snapshots and backups taken outside a hooked group, per volume or by a recurring job, do not run hooks; when a `VolumeHookPolicy` covers the volume, Longhorn emits a `HookPolicyBypassed` warning.
+
+For more information, see:
+* [Issue #2128](https://github.com/longhorn/longhorn/issues/2128)
+* [Application-Consistent Snapshots](../snapshots-and-backups/application-consistent-snapshots)
 
 ### Age-Based Retention for Recurring Jobs
 
