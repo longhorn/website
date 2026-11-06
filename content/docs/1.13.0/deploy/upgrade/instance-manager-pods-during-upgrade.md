@@ -3,9 +3,7 @@ title: Instance Manager Pods During Upgrade
 weight: 4
 ---
 
-This page describes V1 Data Engine behavior. For V2 Data Engine upgrades, see [V2 Data Engine Instance Manager Upgrade](../v2-instance-upgrade/).
-
-After a V1 live upgrade, you may notice that some **old instance manager pods** are still running. This is expected behavior and **not a bug**.
+After a live upgrade, you may notice that some **old instance manager pods** are still running. This is expected behavior and **not a bug**.
 
 ## Why This Happens
 

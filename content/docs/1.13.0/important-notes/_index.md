@@ -97,9 +97,7 @@ For more information, see [Issue #13509](https://github.com/longhorn/longhorn/is
 
 #### Longhorn System Upgrade
 
-For upgrades to Longhorn v1.13.0, [V2 Data Engine live upgrade](../deploy/upgrade/v2-instance-upgrade/) is supported only from Longhorn v1.12.2. Upgrades from earlier versions, such as Longhorn v1.12.0 and v1.12.1, do not support V2 Data Engine live upgrade.
-
-For more information, see [V2 Data Engine live upgrade](../deploy/upgrade/v2-instance-upgrade/).
+V2 live upgrade to v1.13.0 is **not supported**. During a live upgrade, replicas are rebuilt while volumes are serving I/O, and several V2 replica rebuild and live-upgrade issues discovered after v1.13.0 ([Issue #14411](https://github.com/longhorn/longhorn/issues/14411), [Issue #14482](https://github.com/longhorn/longhorn/issues/14482), [Issue #14424](https://github.com/longhorn/longhorn/issues/14424), and [Issue #14353](https://github.com/longhorn/longhorn/issues/14353)) can cause `spdk_tgt` in the instance-manager pods to crash or the upgrade to get stuck. Detach all V2 volumes and ensure their replicas are stopped before upgrading to v1.13.0.
 
 ### Full Interrupt Mode
 
@@ -183,7 +181,7 @@ Because the CSI external provisioner is upgraded to v6.3.0, all clusters must be
 
 Automated pre-upgrade checks do not cover all scenarios. Manual checks via kubectl or the UI are recommended:
 
-- For V2 Data Engine volumes, check the [V2 live upgrade prerequisites](../deploy/upgrade/v2-instance-upgrade/#prerequisites). If your deployment does not meet these prerequisites, detach all V2 volumes and ensure their replicas are stopped before upgrading.
+- Detach all V2 Data Engine volumes and ensure their replicas are stopped before upgrading to v1.13.0.
 - Avoid upgrading when volumes are in the "Faulted" state, as unusable replicas may be deleted, causing permanent data loss if no backups exist.
 - Avoid upgrading if a failed BackingImage exists. See [Backing Image](../advanced-resources/backing-image/backing-image) for details.
 - Creating a [Longhorn system backup](../advanced-resources/system-backup-restore/backup-longhorn-system) before upgrading is recommended to ensure recoverability.
