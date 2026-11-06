@@ -34,7 +34,7 @@ The following table outlines the supported upgrade paths.
 
 ## Manual Checks Before Upgrade
 Automated checks are only performed on some upgrade paths, and the pre-upgrade checker may not cover some scenarios.  Manual checks, performed using either kubectl or the UI, are recommended for these schenarios.  You can take mitigating actions or defer the upgrade until issues are addressed.
-- For V2 Data Engine volumes, check the [V2 live upgrade prerequisites](./v2-instance-upgrade/#prerequisites). If your deployment does not meet these prerequisites, detach all V2 volumes and ensure their replicas are stopped before upgrading.
+- Ensure that all V2 Data Engine volumes are detached and the replicas are stopped. The V2 Data Engine does not support live upgrades to v1.13.0.
 - Avoid upgrading when volumes are in the "Faulted" status.  If all the replicas are deemed unusable, they may be deleted and data may be permanently lost (if no usable backups exist).
 - Avoid upgrading if a failed BackingImage exists.  For more information, see [Backing Image](../../advanced-resources/backing-image/backing-image).
 - It is recommended to create a [Longhorn system backup](../../advanced-resources/system-backup-restore/backup-longhorn-system) before performing the upgrade. This ensures that all critical resources, such as volumes and backing images, are backed up and can be restored in case any issues arise.
@@ -55,11 +55,7 @@ After Longhorn Manager is upgraded, Longhorn Engine also needs to be upgraded [u
 
 Since Longhorn v1.1.1, we provide an option to help you [automatically upgrade engines](./auto-upgrade-engine)
 
-## 4. Upgrade V2 Data Engine
-
-V2 instance managers need to be upgraded separately. See [V2 Data Engine Instance Manager Upgrade](./v2-instance-upgrade/) for offline and live upgrade options.
-
-## 5. Automatically Migrate Recurring Jobs
+## 4. Automatically Migrate Recurring Jobs
 
 With the introduction of the new label-driven `Recurring Job` feature, Longhorn has removed the `RecurringJobs` field in the Volume Spec and planned to deprecate `RecurringJobs` in the StorageClass.
 
