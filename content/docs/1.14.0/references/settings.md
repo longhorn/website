@@ -67,6 +67,8 @@ weight: 1
   - [Snapshot Maximum Count](#snapshot-maximum-count)
   - [Snapshot Count Warning Threshold](#snapshot-count-warning-threshold)
   - [Freeze Filesystem For Snapshot](#freeze-filesystem-for-snapshot)
+  - [Hook Release Attempts](#hook-release-attempts)
+  - [Hook Release Timeout](#hook-release-timeout)
 - [Orphan](#orphan)
   - [Orphaned Resource Automatic Deletion](#orphaned-resource-automatic-deletion)
   - [Orphaned Resource Automatic Deletion Grace Period](#orphaned-resource-automatic-deletion-grace-period)
@@ -757,6 +759,22 @@ UI, a StorageClass, or direct changes to an existing volume. `freezeFilesystemFo
 - `ignored`: Instructs Longhorn to use the global setting. This is the default option.
 - `enabled`: Enables freezing before snapshots, regardless of the global setting.
 - `disabled`: Disables freezing before snapshots, regardless of the global setting.
+
+#### Hook Release Attempts
+
+> Default: `3`
+
+Maximum number of times Longhorn runs a post-hook command in a pod. Longhorn retries the command when it fails or times out, and gives up on the pod after the last attempt. The value should be between 1 and 20.
+
+This setting and the [Hook Release Timeout](#hook-release-timeout) setting limit how long a snapshot group being deleted waits for its hooks to finish. For more information, see [Application-Consistent Snapshots](../../snapshots-and-backups/application-consistent-snapshots).
+
+#### Hook Release Timeout
+
+> Default: `60`
+
+Maximum number of seconds Longhorn waits for a post-hook command to finish. When the command does not finish in time, Longhorn counts the attempt as timed out, but the command itself keeps running in the pod. The value should be between 5 and 600.
+
+This setting and the [Hook Release Attempts](#hook-release-attempts) setting limit how long a snapshot group being deleted waits for its hooks to finish. The wait increases with the number of members that have recorded hook pods. For more information, see [Application-Consistent Snapshots](../../snapshots-and-backups/application-consistent-snapshots).
 
 ### Orphan
 

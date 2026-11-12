@@ -141,6 +141,17 @@ histogram_quantile(0.99, sum by (name, le) (rate(longhorn_workqueue_work_duratio
 |---|---|---|
 | `longhorn_snapshot_actual_size_bytes` | Actual size of this snapshot | `longhorn_snapshot_actual_size_bytes{snapshot="f4468111-2efa-45f5-aef6-63109e30d92c",user_created="false",volume="testvol"} 1.048576e+07` |
 
+## Snapshot Group Hooks
+
+The hook executor pods serve the following metrics for [application-consistent snapshots](../../snapshots-and-backups/application-consistent-snapshots) on port `9506`, not Longhorn Manager. When `metrics.serviceMonitor.enabled` is set to `true` in the Helm chart, Longhorn also creates a ServiceMonitor for the hook executor.
+
+| Name | Description | Example |
+|---|---|---|
+| `longhorn_snapshot_group_hook_releases_total` | Total number of snapshot group releases. The `result` label is either `released` or `post_failed`, and the `operation` label is either `snapshot` or `backup` | `longhorn_snapshot_group_hook_releases_total{result="released",operation="snapshot"} 12` |
+| `longhorn_snapshot_group_hook_deadline_exceeded_total` | Total number of snapshot groups that were released because the hook deadline was exceeded | `longhorn_snapshot_group_hook_deadline_exceeded_total{operation="snapshot"} 1` |
+| `longhorn_snapshot_group_hook_command_failures_total` | Total number of hook command failures. The `step` label is either `pre` or `post`, and the `reason` label indicates the cause of the failure | `longhorn_snapshot_group_hook_command_failures_total{step="pre",reason="Timeout",operation="snapshot"} 2` |
+| `longhorn_snapshot_group_hook_window_seconds` | Histogram of the time in seconds between the first pre-command and the last post-command of a snapshot group. Failed releases are not included | `longhorn_snapshot_group_hook_window_seconds_bucket{operation="snapshot",le="8"} 10` |
+
 ## BackingImage
 
 | Name | Description | Example |
