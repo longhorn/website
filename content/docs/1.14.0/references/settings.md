@@ -1210,7 +1210,7 @@ If it's hard to estimate the usage now, you can leave it with the default value,
 
 > **Warning:**
 >  - Value 0 means unsetting CPU requests for instance manager pods.
->  - Considering the possible new instance manager pods in the further system upgrade, this float value ranges from 0 to 40.
+>  - Considering the possible new instance manager pods in the further system upgrade, this float value ranges from 0 to 50.
 >  - One more set of instance manager pods may need to be deployed when the Longhorn system is upgraded. If current available CPUs of the nodes are not enough for the new instance manager pods, you need to detach the volumes using the oldest instance manager pods so that Longhorn can clean up the old pods automatically and release the CPU resources. And the new pods with the latest instance manager image will be launched then.
 >  - This global setting will be ignored for a node if the field "InstanceManagerCPURequest" on the node is set.
 >  - After this setting is changed, each instance manager pod that uses it is automatically restarted once no instances are running on it. For the V1 Data Engine on nodes running Kubernetes v1.35 or later, the CPU request of a running instance manager pod is resized in place instead, without restarting the pod or interrupting its volumes. The pod is still restarted when the change sets or removes the CPU request (changing the value from or to `0`), or when the resize cannot be performed.
