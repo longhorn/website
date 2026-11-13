@@ -278,7 +278,7 @@ The `Guaranteed Instance Manager CPU` setting allows you to reserve a percentage
 
 The primary CPU consumer in the pod is the Storage Performance Development Kit (SPDK) target daemon (`spdk_tgt`). The [Data Engine CPU Mask](../references/settings#data-engine-cpu-mask) and [Data Engine Number of CPU Cores](../references/settings#data-engine-number-of-cpu-cores) settings control how many CPU cores `spdk_tgt` uses.
 
-It is necessary that the effective V2 instance manager pod CPU request reserve at least the same number of CPU cores configured for `spdk_tgt`, based on the node's allocatable CPU capacity. For example, reserving 2 CPU cores on a node with 8 allocatable CPUs requires an effective CPU request of at least 25% or 2 CPU cores.
+It is necessary that the effective V2 instance manager pod CPU request reserve at least the same number of CPU cores configured for `spdk_tgt`, based on the node's allocatable CPU capacity. For example, reserving 2 CPU cores on a node with 8 allocatable CPUs requires an effective CPU request of at least 25% or 2 CPU cores. For the V2 Data Engine, the setting accepts up to 50%, so reserving 2 CPU cores on a node with 4 allocatable CPUs requires 50%. If the CPU request is lower than the number of CPU cores in the CPU mask and interrupt mode is disabled, Longhorn records a warning event on the instance manager.
 
 Reserving sufficient CPU is essential for maintaining engine and replica stability, especially during periods of high node workload. The default value of the `Guaranteed Instance Manager CPU` setting is 12%.
 
