@@ -193,6 +193,23 @@ It is still possible to expand the RWX volume offline using these steps:
 
 The reattached volume will have the expanded size. Furthermore, the Share Manager pod will be recreated with the current version.
 
+
+## Expansion results
+
+An accepted expansion request does not always mean the volume is already expanded. Longhorn can accept the new size and then continue expanding the volume in the background. For PVC expansion, Kubernetes might also need to resize the filesystem after Longhorn finishes expanding the block device.
+
+In general, the Longhorn block-device expansion is complete when the volume reports the requested size and `Volume.status.expansionRequired` becomes `false`. If `Volume.status.expansionRequired` remains `true`, expansion is not complete. Check `LastExpansionError` and `LastExpansionFailedAt` for failure details. These fields can also record partial replica failures, so they do not by themselves mean that block-device expansion is incomplete.
+
+### Outcomes
+
+| Scenario | V1 Data Engine outcome | V2 Data Engine outcome |
+| --- | --- | --- |
+| The volume expands to the requested size. | Success. | Success. |
+| Some replicas fail during expansion. | Partial success. The volume can continue serving I/O with the remaining healthy replicas, but robustness is degraded until Longhorn rebuilds the failed replicas. If the block device reaches the requested size, expansion is complete. | Partial success after retry. If RAID reconstruction and exposure succeed, the engine stays running and marks the failed replicas as ERR. It initially keeps reporting its previous size. After the failed replicas are removed, a retry can complete expansion using the remaining replicas. The volume remains degraded until enough healthy replicas are rebuilt. |
+| All replicas fail to expand, or the volume cannot use the requested size. | Failure. The controller keeps its previous size and expansion remains pending. Replicas that fail to roll back are marked as ERR; I/O can be affected if no healthy replicas remain. | Failure. If replica expansion, RAID reconstruction, or RAID exposure fails, the engine enters the error state, keeps its previous reported size, and records the expansion error. |
+| The request is blocked before expansion starts, for example by a disk-space check or, for PVC expansion, because expansion is disabled in the StorageClass. | The request is rejected and the volume size is unchanged. | Same as V1. |
+
+
 ## References
 
 - [[FEATURE] v2 supports volume expansion](https://github.com/longhorn/longhorn/issues/8022)
