@@ -10,6 +10,8 @@ The V2 Data Engine uses SPDK, which by default allocates memory through huge pag
 - [`data-engine-hugepage-enabled`](../../../references/settings#data-engine-hugepage-enabled)
 - [`data-engine-memory-size`](../../../references/settings#data-engine-memory-size)
 
+> **Tip**: SPDK's `iobuf` small and large buffer pools are allocated from `data-engine-memory-size` at startup. If you increase [`data-engine-iobuf-large-pool-size`](../../../references/settings#data-engine-iobuf-large-pool-size) or [`data-engine-iobuf-small-pool-size`](../../../references/settings#data-engine-iobuf-small-pool-size), review [I/O Buffer Pool Configuration](../iobuf-configuration) to ensure `data-engine-memory-size` and node huge pages have sufficient headroom.
+
 ## Using Huge Pages (Default)
 
 When huge pages are enabled, you must pre-allocate huge pages on each node that runs V2 volumes.
@@ -17,6 +19,8 @@ When huge pages are enabled, you must pre-allocate huge pages on each node that 
 ### Pre-allocate Huge Pages on Nodes
 
 The total huge page allocation on each node must be at least equal to the `data-engine-memory-size` value (default 2048 MiB). For detailed steps on enabling and verifying huge pages, see [Enable HugePages](../../../deploy/install#enable-hugepages).
+
+> **Note**: On multi-socket / multi-NUMA hosts, Linux divides system-wide `vm.nr_hugepages` evenly across NUMA nodes, while SPDK allocates each `iobuf` pool as one contiguous block within a single NUMA node (subsequent SPDK allocations can spill over to other NUMA nodes). When raising `iobuf` pool sizes on multi-NUMA hosts, ensure at least one NUMA node has enough huge pages within `data-engine-memory-size` to hold the contiguous pool. See [Multi-NUMA Considerations](../iobuf-configuration#multi-numa-considerations).
 
 ### Adjust Memory Size
 
