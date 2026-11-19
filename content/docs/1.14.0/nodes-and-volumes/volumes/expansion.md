@@ -193,6 +193,23 @@ It is still possible to expand the RWX volume offline using these steps:
 
 The reattached volume will have the expanded size. Furthermore, the Share Manager pod will be recreated with the current version.
 
+
+## Expansion results
+
+An accepted expansion request does not always mean the volume is immediately expanded. Longhorn can accept the new size and then continue expanding the volume in the background. For PVC expansion, Kubernetes might also need to resize the filesystem after Longhorn finishes expanding the block device.
+
+In general, the Longhorn block-device expansion is complete when the volume reports the requested size and `Volume.status.expansionRequired` becomes `false`. If `Volume.status.expansionRequired` remains `true`, expansion is not complete. Check `Engine.status.lastExpansionError` and `Engine.status.lastExpansionFailedAt` for failure details. Longhorn also records each failed or partially failed attempt as a `FailedExpansion` event on the Engine. These fields are cleared after the expansion completes, so a partial replica failure might only be visible in the events.
+
+### Outcomes
+
+| Scenario | V1 Data Engine outcome | V2 Data Engine outcome |
+| --- | --- | --- |
+| The volume expands to the requested size. | Success. | Success. |
+| Some replicas fail during expansion. | Partial success. The volume can continue serving I/O with the remaining healthy replicas, but robustness is degraded until Longhorn rebuilds the failed replicas. If the block device reaches the requested size, expansion is complete. | Partial success. The engine marks the failed replicas as `ERR`, removes them from the RAID bdev, and expands the volume to the requested size using the remaining replicas. The volume remains degraded until Longhorn rebuilds the failed replicas. |
+| All replicas fail to expand, or the volume cannot use the requested size. | Failure. The controller retains its previous size, expansion remains pending, and Longhorn retries the expansion automatically. Replicas that fail to roll back are marked as `ERR`; I/O can be affected if no healthy replicas remain. | Failure. If all replicas fail to expand, or the RAID bdev cannot be resized, the engine enters the error state, keeps its previous size, and records the expansion error. Replicas that were removed from the RAID bdev are marked as `ERR`. The volume becomes faulted and is detached, and I/O is interrupted. Longhorn attempts to recover the volume through automatic salvage. After the cause of the failure is resolved, the volume is reattached and expanded to the requested size. |
+| The request is blocked before expansion starts, for example by a disk-space check or, for PVC expansion, because expansion is disabled in the StorageClass. | The request is rejected and the volume size is unchanged. | Same as V1. |
+
+
 ## References
 
 - [[FEATURE] v2 supports volume expansion](https://github.com/longhorn/longhorn/issues/8022)
