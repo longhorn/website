@@ -33,6 +33,7 @@ For the full release note, see the Longhorn v{{< current-version >}} release not
   - [Scheduler Extender](#scheduler-extender)
 - [Resource Efficiency](#resource-efficiency)
   - [Longhorn Global Manager](#longhorn-global-manager)
+  - [In-Place CPU Resize for V1 Instance Manager Pods](#in-place-cpu-resize-for-v1-instance-manager-pods)
 - [Snapshots and Backups](#snapshots-and-backups)
   - [Volume Group Snapshot Support](#volume-group-snapshot-support)
   - [Age-Based Retention for Recurring Jobs](#age-based-retention-for-recurring-jobs)
@@ -229,6 +230,12 @@ For more information, see:
 * [Longhorn Global Manager](../terminology/#longhorn-global-manager)
 * [Longhorn Global Manager Settings](../references/helm-values/#longhorn-global-manager-settings)
 * [Networking](../references/networking/#longhorn-global-manager)
+
+### In-Place CPU Resize for V1 Instance Manager Pods
+
+Longhorn v{{< current-version >}} applies changes to the **Guaranteed Instance Manager CPU** setting and to a node's **Instance Manager CPU Request** to running V1 Data Engine instance manager pods through Kubernetes in-place pod resize. Previously, a new CPU request took effect only after the instance manager pod was restarted, which happened only after all volumes using that pod were detached. On nodes running Kubernetes v1.35 or later, Longhorn now updates the CPU request of the running pod, so volumes stay attached and I/O is not interrupted. The previous restart behavior still applies when the change sets or removes the CPU request (from or to `0`), when the node runs an older Kubernetes version, or when Kubernetes rejects the resize. The V2 Data Engine is not affected by this change.
+
+For more information, see [Guaranteed Instance Manager CPU](../references/settings/#guaranteed-instance-manager-cpu) and [Issue #11029](https://github.com/longhorn/longhorn/issues/11029).
 
 ## Snapshots and Backups
 
