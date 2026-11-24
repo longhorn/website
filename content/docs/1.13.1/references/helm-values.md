@@ -134,6 +134,7 @@ The following settings apply to the [Longhorn Global Manager](../../terminology/
 | longhornGlobalManager.replicas | int | `3` | Replica count for the global manager. One replica is the active leader; the others are warm standbys. |
 | longhornGlobalManager.resources | string | `nil` | Resource requests and limits for global manager pods. Memory scales with the cluster's Pod count (cluster-wide Pod informer cache). |
 | longhornGlobalManager.tolerations | list | `[]` | Node tolerations for global manager pods. |
+| longhornGlobalManager.topologySpreadConstraints | list | `[]` | Topology spread constraints for global manager pods. Unlike `longhornGlobalManager.affinity`, these can guarantee that replicas stay spread across a topology domain during a rolling update or a mass reschedule. |
 
 ### Longhorn Driver Settings
 
