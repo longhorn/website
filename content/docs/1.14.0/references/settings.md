@@ -123,6 +123,7 @@ weight: 1
   - [Data Engine Memory Size](#data-engine-memory-size)
   - [Data Engine Interrupt Mode Enabled](#data-engine-interrupt-mode-enabled)
   - [Data Engine CPU Isolation Enabled](#data-engine-cpu-isolation-enabled)
+  - [Data Engine Dedicated Main Core Enabled](#data-engine-dedicated-main-core-enabled)
   - [Log Path](#log-path)
   - [Snapshot Heavy Task Concurrent Limit](#snapshot-heavy-task-concurrent-limit)
   - [System Managed CSI Components Resource Limits](#system-managed-csi-components-resource-limits)
@@ -1345,6 +1346,19 @@ Steers host hardware IRQs, unbound kernel workqueue workers, and network Receive
 
 - When applying the setting, Longhorn will try to restart all V2 instance-manager pods if all volumes are detached and eventually restart the instance manager pod without instances running on the instance manager.
 - This value can be overridden per Instance Manager via `Spec.DataEngineSpec.V2.CPUIsolationEnabled` (set to `"true"` or `"false"` on a specific instance manager to force the value on that node; leave empty to inherit this setting).
+
+#### Data Engine Dedicated Main Core Enabled
+
+> Default: `{"v2":"true"}`
+
+Applies only to the **V2 Data Engine**.
+
+Specifies whether the first (lowest-numbered) core of the Storage Performance Development Kit (SPDK) target daemon's CPU cores is dedicated to the admin (main) reactor, which handles management RPCs.
+
+- `true`: The admin reactor runs alone on the first core, and the I/O pollers (the NVMe-oF target poll groups and the ublk target) run on the other cores.
+- `false`: The I/O pollers run on every assigned core, and the admin reactor shares the first core with them. In polling mode, every assigned core spins at 100% regardless of load, so dedicating a core reserves a full CPU core that serves no I/O. Disabling this setting keeps that core available for I/O (for example, when 2 cores are assigned).
+- With a single assigned core, the admin reactor always shares the core, regardless of this setting.
+- Changing this setting recreates Instance Manager pods that have no running instances so the change can take effect.
 
 #### Log Path
 
