@@ -1299,9 +1299,9 @@ Applies only to the V2 Data Engine. It can be applied only when the kubelet CPU 
 
 #### Data Engine iobuf Large Pool Size
 
-> Default: `{"v2":"1024"}`
+> Default: `{"v2":"6144"}`
 
-Applies only to the V2 Data Engine. Sets the SPDK iobuf large buffer pool size (`large_pool_count`) on the Instance Manager's SPDK target. The Instance Manager passes the value to `spdk_tgt` at startup through a generated JSON configuration file, since the iobuf pool can only be sized at startup and not changed at runtime. The default value 1024 keeps SPDK's built-in behavior; values not greater than 1024 are a no-op.
+Applies only to the V2 Data Engine. Sets the SPDK iobuf large buffer pool size (`large_pool_count`) on the Instance Manager's SPDK target. The Instance Manager passes the value to `spdk_tgt` at startup through a generated JSON configuration file, since the iobuf pool can only be sized at startup and not changed at runtime. The default value 6144 relieves NVMe-oF TCP large-buffer exhaustion (`large_pool` `retry` / `NEED_BUFFER` stalls) under heavy workloads with I/O larger than 8 KiB and during concurrent replica rebuilds. The minimum value 1024 is SPDK's built-in default. Each large buffer consumes 132 KiB of the Data Engine Memory Size budget; for example, 1024 buffers use 132 MiB, 6144 use 792 MiB, and 16384 use about 2 GiB. SPDK allocates the large pool as one contiguous block within a single NUMA node, while Linux divides huge pages evenly across NUMA nodes. On hosts with 4 or more NUMA nodes, or with a reduced Data Engine Memory Size, increase the Data Engine Memory Size and the host huge pages, or lower this setting toward 1024, so that `spdk_tgt` can start.
 
 #### Data Engine iobuf Small Pool Size
 
