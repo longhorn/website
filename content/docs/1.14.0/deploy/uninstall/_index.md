@@ -29,6 +29,8 @@ You can set this flag using setting page in Longhorn UI or `kubectl -n longhorn-
 
 To prevent damage to the Kubernetes cluster, we recommend deleting all Kubernetes workloads using Longhorn volumes (PersistentVolume, PersistentVolumeClaim, StorageClass, Deployment, StatefulSet, DaemonSet, etc).
 
+> **Note:** If you use [application-consistent snapshots](../../snapshots-and-backups/application-consistent-snapshots), the uninstaller deletes all snapshot groups. For snapshot groups that have not finished yet, Longhorn runs their post-commands to resume the workloads paused by snapshot hooks. If a snapshot group cannot be released in time, Longhorn deletes it forcibly and logs the affected pods in the uninstaller job. To resume those workloads, run the hook's `postCommand` manually with `kubectl exec`. Removing the CRDs also deletes every `VolumeHookPolicy`: export, or remove from your GitOps source, any policy you want to keep.
+
 ### Uninstalling Longhorn from the Rancher UI
 
 From Rancher UI, navigate to `Catalog Apps` tab and delete Longhorn app.

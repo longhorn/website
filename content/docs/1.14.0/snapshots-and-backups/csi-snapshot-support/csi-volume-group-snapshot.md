@@ -8,7 +8,7 @@ A `VolumeGroupSnapshot` takes snapshots of a set of Longhorn volumes as one grou
 Snapshot groups can also be created and managed without CSI, from the Longhorn UI or with kubectl. For details, see [Create a Snapshot Group](../../snapshot-groups).
 
 > **Important: Consistency boundary**
-> Longhorn snapshots each member volume independently, so member snapshots are taken at slightly different times, not at one instant. A group snapshot is crash-consistent per volume; it does not guarantee application consistency across volumes. To get a recoverable set, include every volume the application needs (for example data, log, and metadata volumes) and quiesce or pause the application while the group snapshot is taken. See [Issue #2128](https://github.com/longhorn/longhorn/issues/2128) for the planned application-consistent snapshot work that builds on this feature.
+> Longhorn snapshots each member volume independently, so member snapshots are taken at slightly different times, not at one instant. A group snapshot is crash-consistent per volume; it does not guarantee application consistency across volumes. To get a recoverable set, use [application-consistent snapshots](../../application-consistent-snapshots) to pause the application while the group snapshot is taken.
 
 ## Prerequisites
 
@@ -61,7 +61,7 @@ NAME                                                 PHASE   READYTOUSE   CREATI
 groupsnapshot-59e29b09-2661-4faf-9862-1571f8e68e94   Ready   true         2026-08-25T02:11:05Z   1m
 ```
 
-The group starts in `InProgress` and becomes `Ready` when every member snapshot is taken, or `Failed` if the completion deadline (300 seconds by default) passes first. A failed CSI-created group is cleaned up automatically, and the snapshot-controller retries with a fresh group.
+The group starts in `InProgress` and becomes `Ready` when every member snapshot is taken, or `Failed` if the completion deadline (by default 300 seconds, or 60 when the class sets `hooks: command`) passes first. A failed CSI-created group is cleaned up automatically, and the snapshot-controller retries with a fresh group.
 
 ## Create a CSI VolumeGroupSnapshot Associated with Longhorn Backups
 
@@ -84,7 +84,7 @@ The group label is stored in each member backup's metadata on the backup target,
 
 The optional `backupMode` parameter sets the backup mode for the member backups: `incremental` (default) or `full`. For more information about `backupMode`, see [Create A Backup](../../backup-and-restore/create-a-backup).
 
-> **Note:** The `type` parameter must be `snap` or `bak`. All other class parameters (except the reserved `backupMode`) are applied to every member snapshot as Longhorn snapshot labels.
+> **Note:** The `type` parameter must be `snap` or `bak`. All other class parameters (except the reserved `backupMode`, `hooks`, and `deadlineSeconds`) are applied to every member snapshot as Longhorn snapshot labels. For `hooks` and `deadlineSeconds`, see [Application-Consistent Snapshots](../../application-consistent-snapshots).
 
 ## Restore a Member PVC
 
@@ -98,7 +98,7 @@ Delete the `VolumeGroupSnapshot` object. With a `Delete` deletion policy, this d
 
 - A group is capped at 64 member volumes.
 - The group name is at most 54 characters, because member snapshots are named `<group-name>-<8-character-suffix>` and the result must fit the 63-character name limit.
-- `deadlineSeconds` sets the time allowed for taking all member snapshots; the default is 300 and the valid range is 10 to 3600. It does not limit the backup uploads of a `bak` group.
+- `deadlineSeconds` sets the time allowed for taking all member snapshots; the default is 300 (60 when `hooks: command` is set) and the valid range is 10 to 3600. It does not limit the backup uploads of a `bak` group.
 - A snapshot group cannot be edited after creation: a group is a point-in-time request.
 - Member volumes must be eligible for a snapshot at creation time: standby (DR), restoring, and faulted volumes are rejected. Detached volumes are eligible and are automatically attached.
 - After a group becomes `Ready`, deleting one of its member snapshots marks the group `Degraded`. Longhorn does not take a replacement snapshot, because it would not match the group's point in time.

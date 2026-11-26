@@ -8,7 +8,7 @@ A snapshot group takes snapshots of a set of volumes with a single request. Long
 You can manage snapshot groups from the Longhorn UI or with kubectl regardless of whether [CSI VolumeGroupSnapshot support](../csi-snapshot-support/csi-volume-group-snapshot) is enabled. Groups created through CSI appear on the **Snapshot Groups** page as well.
 
 > **Important: Consistency boundary** 
-> Longhorn snapshots each member volume independently, so a group snapshot is crash-consistent per volume and only loosely aligned in time across volumes. For application-level consistency, quiesce or pause the application while the group snapshot is taken.
+> Longhorn snapshots each member volume independently, so a group snapshot is crash-consistent per volume and only loosely aligned in time across volumes. For application-level consistency, use [application-consistent snapshots](../application-consistent-snapshots) to pause the application while the group snapshot is taken.
 
 ## Create a Snapshot Group
 

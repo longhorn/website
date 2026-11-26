@@ -54,6 +54,18 @@ To | Port | Protocol
 --- | --- | ---
 `Kubernetes API server` | `Kubernetes API server port` | TCP
 
+### Longhorn Hook Executor
+#### Ingress:
+From | Port | Protocol
+--- | --- | ---
+`Kubelet (health probes)` | 9506 | TCP
+`Metrics scrapers defined in networkPolicies.metricsScrapeSources` | 9506 | TCP
+
+#### Egress:
+To | Port | Protocol
+--- | --- | ---
+`Kubernetes API server` | `Kubernetes API server port` | TCP
+
 ### UI
 #### ingress:
 Users defined
