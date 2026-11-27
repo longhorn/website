@@ -16,7 +16,7 @@ You may manually install these components by executing the following steps.
 
 > **Prerequisite**
 >
-> Please install the snapshot CRDs and snapshot controller from the same release version to ensure that the CRD version is compatible with the controller. You can refer to the external snapshotter version `image.csi.snapshotter.tag` listed in [Helm Values](../../../references/helm-values/) to determine which version of the snapshot CRDs and snapshot controller to install. Then replace `<version>` in the following steps with the appropriate version. For example, if the external snapshotter version is v8.5.0-xxx, use v8.5.0 for both the snapshot CRDs and snapshot controller.
+> Please install the snapshot CRDs and snapshot controller from the same release version to ensure that the CRD version is compatible with the controller. You can refer to the external snapshotter version `image.csi.snapshotter.tag` listed in [Helm Values](../../../references/helm-values/) to determine which version of the snapshot CRDs and snapshot controller to install. Then replace `<version>` in the following steps with the appropriate version. For example, if the external snapshotter version is v8.7.1-xxx, use v8.7.1 for both the snapshot CRDs and snapshot controller.
 >
 > For general use, update the snapshot controller YAMLs with an appropriate **namespace** prior to installing.
 >
