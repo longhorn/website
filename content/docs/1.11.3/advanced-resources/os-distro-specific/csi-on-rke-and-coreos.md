@@ -26,7 +26,7 @@ Therefore, in this case, Kubernetes cannot connect to Longhorn using the CSI dri
 
 ###  1. Add extra binds for the kubelet
 
-> This step is only required for For CoreOS + and Kubernetes v1.11. It is not needed for Kubernetes v1.12+.
+> This step is only required for CoreOS + and Kubernetes v1.11. It is not needed for Kubernetes v1.12+.
 
 Add extra_binds for kubelet in RKE `cluster.yml`:
 
